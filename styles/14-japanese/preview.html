@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日系极简 Japanese · 预览</title>
+<style>
+  /* ============================================================
+     Token 契约（内联，无外链）。亮色 :root + 暗色 [data-theme=dark]。
+     ============================================================ */
+  :root {
+    --ds-bg: #f4f1ea; --ds-bg-subtle: #ece7db; --ds-bg-elevated: #faf8f3; --ds-bg-sunken: #e6e0d2;
+    --ds-fg: #33312c; --ds-fg-muted: #6b6862; --ds-fg-subtle: #6f6b61; --ds-fg-on-accent: #faf8f3;
+    --ds-border: #e2ddd2; --ds-border-strong: #cfc8b9;
+    --ds-primary: #3a4a5a; --ds-primary-hover: #2f3d4a; --ds-primary-active: #26313c; --ds-primary-fg: #faf8f3;
+    --ds-accent: #5d6e4f; --ds-accent-fg: #faf8f3;
+    --ds-success: #5d7a52; --ds-success-bg: #e8eee2; --ds-success-fg: #2c3d26;
+    --ds-warning: #a07535; --ds-warning-bg: #f3ead8; --ds-warning-fg: #543a14;
+    --ds-danger:  #a8513f; --ds-danger-bg:  #f1e2dc; --ds-danger-fg:  #582316;
+    --ds-info:    #4a6275; --ds-info-bg:    #e2e8ed; --ds-info-fg:    #243440;
+    --ds-focus: #3a4a5a; --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm: 4px; --ds-radius-md: 8px; --ds-radius-lg: 12px; --ds-radius-full: 9999px;
+    --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;--ds-space-6:24px;
+    --ds-space-7:32px;--ds-space-8:40px;--ds-space-9:48px;--ds-space-10:64px;--ds-space-11:80px;--ds-space-12:96px;
+    --ds-font-sans: "Inter",-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","PingFang SC","Microsoft YaHei",sans-serif;
+    --ds-font-serif: "Noto Serif","Hiragino Mincho ProN","Source Han Serif SC","Songti SC",Georgia,"Times New Roman",serif;
+    --ds-font-mono: "JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --ds-text-xs:12px;--ds-text-sm:13px;--ds-text-base:15px;--ds-text-md:17px;--ds-text-lg:20px;
+    --ds-text-xl:26px;--ds-text-2xl:34px;--ds-text-3xl:46px;
+    --ds-leading-tight:1.3;--ds-leading-normal:1.6;--ds-leading-relaxed:1.8;
+    --ds-weight-normal:400;--ds-weight-medium:500;--ds-weight-bold:600;
+    --ds-tracking-tight:-0.02em;--ds-tracking-normal:0;
+    --ds-shadow-sm: 0 1px 2px rgba(51,49,44,.04);
+    --ds-shadow-md: 0 1px 2px rgba(51,49,44,.03), 0 4px 12px -6px rgba(51,49,44,.07);
+    --ds-shadow-lg: 0 2px 4px rgba(51,49,44,.04), 0 12px 28px -10px rgba(51,49,44,.10);
+    --ds-ease: cubic-bezier(.22,.61,.36,1);
+    --ds-dur-fast:160ms;--ds-dur-base:240ms;--ds-dur-slow:320ms;
+    /* 语义层级（z-index）：禁用魔法值 */
+    --ds-z-dropdown: 30; --ds-z-sticky: 20; --ds-z-modal-backdrop: 50; --ds-z-modal: 51; --ds-z-toast: 60; --ds-z-tooltip: 70;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg: #1c1a17; --ds-bg-subtle: #232019; --ds-bg-elevated: #2a2620; --ds-bg-sunken: #151310;
+    --ds-fg: #e8e4da; --ds-fg-muted: #aaa493; --ds-fg-subtle: #928c7c; --ds-fg-on-accent: #1c1a17;
+    --ds-border: #38342c; --ds-border-strong: #4f4a3f;
+    --ds-primary: #8ba6bd; --ds-primary-hover: #9cb4c8; --ds-primary-active: #7d99b1; --ds-primary-fg: #1c1a17;
+    --ds-accent: #9bb087; --ds-accent-fg: #1c1a17;
+    --ds-success: #9cb888; --ds-success-bg: #222a1c; --ds-success-fg: #dde9d2;
+    --ds-warning: #d2a55f; --ds-warning-bg: #2c2110; --ds-warning-fg: #f3e3c6;
+    --ds-danger:  #d2856f; --ds-danger-bg:  #2e1812; --ds-danger-fg:  #f3ddd4;
+    --ds-info:    #82a3bc; --ds-info-bg:    #16222c; --ds-info-fg:    #d7e5ef;
+    --ds-focus: #8ba6bd; --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --ds-shadow-md: 0 2px 6px -2px rgba(0,0,0,.5), 0 8px 20px -10px rgba(0,0,0,.6);
+    --ds-shadow-lg: 0 4px 10px -2px rgba(0,0,0,.55), 0 16px 32px -12px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--ds-bg); color: var(--ds-fg);
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-base);
+    line-height: var(--ds-leading-normal);
+    transition: background var(--ds-dur-slow) var(--ds-ease), color var(--ds-dur-slow) var(--ds-ease);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 标题走衬线（Noto Serif）建立对比轴 */
+  h1, h2, h3, .serif, .brand, .hero h1, .card h3, .article h1, .article h2, .article h3, .modal h3, .media-card h3 { font-family: var(--ds-font-serif); }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: var(--ds-z-sticky);
+    display: flex; align-items: center; gap: var(--ds-space-4);
+    padding: 0 var(--ds-space-6); height: 60px;
+    background: color-mix(in srgb, var(--ds-bg) 86%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--ds-border);
+  }
+  .brand { display: flex; align-items: center; gap: var(--ds-space-3); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-lg); letter-spacing: var(--ds-tracking-tight); }
+  .brand .mark { display: inline-flex; }
+  .topbar-nav { display: flex; gap: var(--ds-space-5); margin-left: var(--ds-space-6); }
+  .topbar-nav a { color: var(--ds-fg-muted); text-decoration: none; font-size: var(--ds-text-sm); transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .topbar-nav a:hover { color: var(--ds-fg); }
+  .topbar-spacer { flex: 1; }
+  .theme-btn {
+    font-family: var(--ds-font-sans); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated);
+    color: var(--ds-fg-muted); cursor: pointer; height: 36px; padding: 0 var(--ds-space-4);
+    border-radius: var(--ds-radius-sm); display: inline-flex; align-items: center; gap: var(--ds-space-2); font-size: var(--ds-text-sm);
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .theme-btn:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  .theme-btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+
+  /* ---------- 布局 ---------- */
+  .page { max-width: 1120px; margin: 0 auto; padding: 0 var(--ds-space-6) var(--ds-space-12); }
+  section { margin-bottom: var(--ds-space-11); }
+  .sec-label {
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase;
+    letter-spacing: .16em; color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-5);
+    padding-bottom: var(--ds-space-2); border-bottom: 1px solid var(--ds-border);
+    display: flex; align-items: center; gap: var(--ds-space-2);
+  }
+  .sec-en { color: var(--ds-fg-subtle); font-weight: var(--ds-weight-normal); text-transform: none; letter-spacing: 0; margin-left: auto; }
+  .lede { font-size: var(--ds-text-md); color: var(--ds-fg-muted); max-width: 64ch; text-wrap: pretty; line-height: var(--ds-leading-relaxed); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    margin: var(--ds-space-9) 0 var(--ds-space-11);
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 0;
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg); overflow: hidden;
+    background: var(--ds-bg-elevated);
+  }
+  .hero-copy { padding: var(--ds-space-10) var(--ds-space-9); display: flex; flex-direction: column; justify-content: center; }
+  .hero .kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .2em; color: var(--ds-accent); margin: 0 0 var(--ds-space-4); }
+  .hero h1 { font-size: var(--ds-text-3xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); margin: 0 0 var(--ds-space-5); text-wrap: balance; }
+  .hero p { font-size: var(--ds-text-md); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-7); max-width: 42ch; line-height: var(--ds-leading-relaxed); }
+  .hero-actions { display: flex; gap: var(--ds-space-3); flex-wrap: wrap; margin-bottom: var(--ds-space-7); }
+  .hero-meta { display: flex; gap: var(--ds-space-7); border-top: 1px solid var(--ds-border); padding-top: var(--ds-space-5); }
+  .hero-meta .num { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); font-variant-numeric: tabular-nums; }
+  .hero-meta .cap { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin-top: 2px; }
+  .hero-media { position: relative; min-height: 420px; border-left: 1px solid var(--ds-border); }
+  .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-media .tag {
+    position: absolute; left: var(--ds-space-5); bottom: var(--ds-space-5); z-index: 1;
+    background: color-mix(in srgb, var(--ds-bg-elevated) 90%, transparent); backdrop-filter: blur(6px);
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-full);
+    padding: var(--ds-space-2) var(--ds-space-4); font-size: var(--ds-text-xs); color: var(--ds-fg-muted);
+    display: inline-flex; align-items: center; gap: var(--ds-space-2);
+  }
+
+  /* ---------- 色板 ---------- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px,1fr)); gap: var(--ds-space-3); }
+  .swatch { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+  .swatch .chip { height: 54px; }
+  .swatch .info { padding: var(--ds-space-2) var(--ds-space-3); }
+  .swatch-name { font-size: var(--ds-text-xs); color: var(--ds-fg); display: block; }
+  .swatch-hex { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .state-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: var(--ds-space-3); }
+  .state-card { border-radius: var(--ds-radius-md); padding: var(--ds-space-4); font-size: var(--ds-text-sm); }
+  .ramp { display: flex; border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border); margin-top: var(--ds-space-3); }
+  .ramp div { flex: 1; height: 44px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; font-family: var(--ds-font-mono); font-size: 10px; }
+
+  /* ---------- 字体比例尺 ---------- */
+  .type-row { display: flex; align-items: baseline; gap: var(--ds-space-5); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .type-tag { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); width: 130px; flex: none; }
+  .weights { display: flex; gap: var(--ds-space-6); flex-wrap: wrap; margin-top: var(--ds-space-5); }
+  .weights span { font-size: var(--ds-text-lg); }
+
+  /* ---------- 按钮 ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--ds-space-2);
+    height: 40px; padding: 0 var(--ds-space-5); border-radius: var(--ds-radius-sm);
+    font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); cursor: pointer;
+    border: 1px solid transparent; background: none; color: var(--ds-fg); font-family: var(--ds-font-sans);
+    transition: background var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .btn-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .btn-primary:hover { background: var(--ds-primary-hover); }
+  .btn-primary:active { background: var(--ds-primary-active); }
+  .btn-secondary { background: var(--ds-bg-elevated); color: var(--ds-fg); border-color: var(--ds-border-strong); }
+  .btn-secondary:hover { background: var(--ds-bg-subtle); }
+  .btn-tertiary { background: transparent; color: var(--ds-primary); }
+  .btn-tertiary:hover { background: var(--ds-bg-subtle); }
+  .btn-danger { background: var(--ds-danger); color: #faf8f3; }
+  .btn-danger:hover { filter: brightness(.94); }
+  .btn:disabled, .btn.is-disabled { opacity: .45; cursor: not-allowed; }
+  .btn-sm { height: 32px; padding: 0 var(--ds-space-3); }
+  .btn-lg { height: 48px; padding: 0 var(--ds-space-6); font-size: var(--ds-text-base); }
+  .btn-icon { width: 40px; padding: 0; }
+  .btn-grid { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; }
+
+  /* ---------- 表单 ---------- */
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: var(--ds-space-5); max-width: 760px; }
+  .field { display: flex; flex-direction: column; gap: var(--ds-space-2); }
+  label { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  input[type=text], input[type=email], textarea, select {
+    height: 40px; padding: 0 var(--ds-space-3); font-size: var(--ds-text-sm); font-family: var(--ds-font-sans);
+    background: var(--ds-bg-sunken); color: var(--ds-fg);
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); width: 100%;
+    transition: border-color var(--ds-dur-fast) var(--ds-ease), box-shadow var(--ds-dur-fast) var(--ds-ease), background var(--ds-dur-fast) var(--ds-ease);
+  }
+  textarea { height: auto; padding: var(--ds-space-3); resize: vertical; min-height: 84px; line-height: var(--ds-leading-normal); }
+  input::placeholder, textarea::placeholder { color: var(--ds-fg-subtle); }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ds-primary); background: var(--ds-bg-elevated); box-shadow: var(--ds-focus-ring); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap .lead-ico { position: absolute; left: var(--ds-space-3); color: var(--ds-fg-subtle); display: inline-flex; pointer-events: none; }
+  .input-wrap input { padding-left: 38px; }
+  .field-hint { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .field.err input { border-color: var(--ds-danger); }
+  .field.err .field-hint { color: var(--ds-danger); }
+  .choice { display: flex; align-items: center; gap: var(--ds-space-2); font-size: var(--ds-text-sm); }
+  input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-color: var(--ds-primary); }
+  .switch { position: relative; width: 44px; height: 24px; flex: none; }
+  .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--ds-border-strong); border-radius: var(--ds-radius-full); transition: background var(--ds-dur-base) var(--ds-ease); }
+  .switch .thumb { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: var(--ds-bg-elevated); border-radius: 50%; transition: transform var(--ds-dur-base) var(--ds-ease); box-shadow: var(--ds-shadow-sm); }
+  .switch input:checked + .track { background: var(--ds-primary); }
+  .switch input:checked + .track + .thumb { transform: translateX(20px); }
+  .switch input:focus-visible + .track { box-shadow: var(--ds-focus-ring); }
+
+  /* ---------- 卡片 ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: var(--ds-space-5); }
+  .card {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); padding: var(--ds-space-6);
+    transition: border-color var(--ds-dur-base) var(--ds-ease);
+  }
+  .card:hover { border-color: var(--ds-border-strong); }
+  .card h3 { font-size: var(--ds-text-lg); margin: 0 0 var(--ds-space-2); font-weight: var(--ds-weight-bold); }
+  .card .meta { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-bottom: var(--ds-space-3); }
+  .card p { margin: 0 0 var(--ds-space-4); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); line-height: var(--ds-leading-normal); }
+
+  /* ---------- 徽章/标签 ---------- */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 var(--ds-space-3);
+    border-radius: var(--ds-radius-full); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium);
+    background: var(--ds-bg-subtle); color: var(--ds-fg-muted); border: 1px solid var(--ds-border);
+  }
+  .badge.success { background: var(--ds-success-bg); color: var(--ds-success-fg); border-color: color-mix(in srgb, var(--ds-success) 35%, var(--ds-border)); }
+  .badge.warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); border-color: color-mix(in srgb, var(--ds-warning) 35%, var(--ds-border)); }
+  .badge.danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg);  border-color: color-mix(in srgb, var(--ds-danger) 35%, var(--ds-border)); }
+  .badge.info    { background: var(--ds-info-bg);    color: var(--ds-info-fg);    border-color: color-mix(in srgb, var(--ds-info) 35%, var(--ds-border)); }
+  .badge.primary { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); }
+  .badge-row { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; align-items: center; }
+
+  /* ---------- 内联图标（统一细线 1.6，1em，继承 currentColor） ---------- */
+  .ico-svg { width: 1em; height: 1em; flex: none; vertical-align: -0.125em; }
+
+  /* ---------- alert（前置语义图标 + 浅底 + 1px 全描边，无侧边色条） ---------- */
+  .alert { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4); border-radius: var(--ds-radius-md); margin-bottom: var(--ds-space-3); border: 1px solid; }
+  .alert .alert-ico { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+  .alert .alert-ico svg { width: 20px; height: 20px; display: block; }
+  .alert .alert-title { font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); margin: 0 0 2px; }
+  .alert p { margin: 0; font-size: var(--ds-text-sm); line-height: var(--ds-leading-normal); }
+  .alert.success { background: var(--ds-success-bg); color: var(--ds-success-fg); border-color: color-mix(in srgb, var(--ds-success) 45%, var(--ds-border)); }
+  .alert.success .alert-ico { color: var(--ds-success); }
+  .alert.warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); border-color: color-mix(in srgb, var(--ds-warning) 45%, var(--ds-border)); }
+  .alert.warning .alert-ico { color: var(--ds-warning); }
+  .alert.danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg);  border-color: color-mix(in srgb, var(--ds-danger) 45%, var(--ds-border)); }
+  .alert.danger .alert-ico { color: var(--ds-danger); }
+  .alert.info    { background: var(--ds-info-bg);    color: var(--ds-info-fg);    border-color: color-mix(in srgb, var(--ds-info) 45%, var(--ds-border)); }
+  .alert.info .alert-ico { color: var(--ds-info); }
+
+  /* ---------- tabs ---------- */
+  .tabs { display: flex; gap: var(--ds-space-5); border-bottom: 1px solid var(--ds-border); margin-bottom: var(--ds-space-4); }
+  .tab { padding: var(--ds-space-3) 0; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); cursor: pointer; border-bottom: 1px solid transparent; margin-bottom: -1px; transition: color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease); }
+  .tab:hover { color: var(--ds-fg); }
+  .tab.active { color: var(--ds-fg); border-bottom-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+
+  /* ---------- 表格 ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: var(--ds-text-sm); }
+  th, td { text-align: left; padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  th { font-weight: var(--ds-weight-medium); color: var(--ds-fg-muted); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .08em; }
+  td { color: var(--ds-fg); }
+  td.num, th.num { text-align: right; font-family: var(--ds-font-mono); font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: var(--ds-bg-subtle); }
+
+  /* ---------- 图片用法 ---------- */
+  figure { margin: 0; }
+  .img-frame { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-subtle); display: block; }
+  .img-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ratio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-4); }
+  .ar-16-9 { aspect-ratio: 16/9; } .ar-4-3 { aspect-ratio: 4/3; } .ar-1-1 { aspect-ratio: 1/1; } .ar-3-4 { aspect-ratio: 3/4; }
+  .ratio-cap { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin-top: var(--ds-space-2); }
+
+  .media-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-5); }
+  .media-card { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); display: flex; flex-direction: column; transition: border-color var(--ds-dur-base) var(--ds-ease); }
+  .media-card:hover { border-color: var(--ds-border-strong); }
+  .media-card .thumb { aspect-ratio: 4/3; }
+  .media-card .body { padding: var(--ds-space-5); flex: 1; display: flex; flex-direction: column; }
+  .media-card .eyebrow { font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .14em; color: var(--ds-accent); margin: 0 0 var(--ds-space-2); }
+  .media-card h3 { font-size: var(--ds-text-md); margin: 0 0 var(--ds-space-2); font-weight: var(--ds-weight-bold); }
+  .media-card p { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-4); line-height: var(--ds-leading-normal); flex: 1; }
+  .media-card .foot { display: flex; align-items: center; justify-content: space-between; font-size: var(--ds-text-sm); }
+  .price { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); }
+
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 110px; gap: var(--ds-space-3); }
+  .gallery a { display: block; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
+  .gallery a img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--ds-dur-slow) var(--ds-ease); }
+  .gallery a:hover img { transform: scale(1.04); }
+  .gallery .tall { grid-row: span 2; }
+  .gallery .wide { grid-column: span 2; }
+
+  .splitfeature { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-8); align-items: center; }
+  .splitfeature .img-frame { aspect-ratio: 4/3; }
+  .splitfeature h3 { font-size: var(--ds-text-xl); margin: 0 0 var(--ds-space-3); letter-spacing: var(--ds-tracking-tight); }
+  .splitfeature p { color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-4); line-height: var(--ds-leading-relaxed); }
+  .feat-list { list-style: none; margin: 0; padding: 0; }
+  .feat-list li { display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-2) 0; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+  .feat-list li .ic { color: var(--ds-accent); flex: none; margin-top: 2px; }
+
+  .overlay-card { position: relative; aspect-ratio: 16/9; border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border); }
+  .overlay-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .overlay-card .scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(28,26,23,.78) 0%, rgba(28,26,23,.32) 45%, rgba(28,26,23,0) 75%); }
+  .overlay-card .txt { position: absolute; left: var(--ds-space-6); right: var(--ds-space-6); bottom: var(--ds-space-6); color: #faf8f3; }
+  .overlay-card .eyebrow { font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .18em; opacity: .85; margin: 0 0 var(--ds-space-2); }
+  .overlay-card h3 { font-size: var(--ds-text-xl); margin: 0; color: #faf8f3; letter-spacing: var(--ds-tracking-tight); text-wrap: balance; }
+
+  /* 背景大图区 */
+  .bigbg { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; border: 1px solid var(--ds-border); padding: var(--ds-space-12) var(--ds-space-9); }
+  .bigbg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bigbg .scrim { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(28,26,23,.72), rgba(28,26,23,.40)); }
+  .bigbg .inner { position: relative; max-width: 460px; color: #faf8f3; }
+  .bigbg .inner h3 { font-size: var(--ds-text-2xl); margin: 0 0 var(--ds-space-3); color: #faf8f3; letter-spacing: var(--ds-tracking-tight); text-wrap: balance; }
+  .bigbg .inner p { margin: 0 0 var(--ds-space-5); opacity: .9; line-height: var(--ds-leading-relaxed); }
+
+  /* 头像 */
+  .avatar { border-radius: var(--ds-radius-full); object-fit: cover; border: 1px solid var(--ds-border); display: inline-block; }
+  .av-24 { width: 24px; height: 24px; } .av-32 { width: 32px; height: 32px; } .av-40 { width: 40px; height: 40px; } .av-48 { width: 48px; height: 48px; }
+  .avatar-stack { display: inline-flex; }
+  .avatar-stack img { margin-left: -10px; border: 2px solid var(--ds-bg); border-radius: var(--ds-radius-full); width: 36px; height: 36px; object-fit: cover; }
+  .avatar-stack img:first-child { margin-left: 0; }
+  .avatar-stack .more { margin-left: -10px; width: 36px; height: 36px; border-radius: var(--ds-radius-full); background: var(--ds-bg-subtle); border: 2px solid var(--ds-bg); display: inline-flex; align-items: center; justify-content: center; font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .user-row { display: flex; align-items: center; gap: var(--ds-space-3); }
+  .user-row .nm { font-weight: var(--ds-weight-medium); font-size: var(--ds-text-sm); }
+  .user-row .sig { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+
+  /* ---------- 图标用法 ---------- */
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--ds-space-2); }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-4) var(--ds-space-2); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); transition: border-color var(--ds-dur-fast) var(--ds-ease); }
+  .icon-cell:hover { border-color: var(--ds-border-strong); }
+  .icon-cell svg { width: 24px; height: 24px; color: var(--ds-fg); }
+  .icon-cell span { font-family: var(--ds-font-mono); font-size: 11px; color: var(--ds-fg-subtle); }
+  .icon-sizes { display: flex; align-items: flex-end; gap: var(--ds-space-6); }
+  .icon-sizes .col { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); color: var(--ds-fg); }
+  .icon-sizes .col span { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-scene { display: flex; gap: var(--ds-space-3); flex-wrap: wrap; align-items: center; }
+  .icon-pair { display: flex; gap: var(--ds-space-6); flex-wrap: wrap; }
+  .icon-pair .grp { display: flex; flex-direction: column; gap: var(--ds-space-2); padding: var(--ds-space-4); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); }
+  .icon-pair .grp .lab { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-pair .grp .ico-line { display: flex; gap: var(--ds-space-4); color: var(--ds-fg); }
+  .icon-pair .grp .ico-line svg { width: 24px; height: 24px; }
+
+  /* ---------- 浏览器 frame（桌面布局） ---------- */
+  .browser { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg-elevated); box-shadow: var(--ds-shadow-md); }
+  .browser-bar { display: flex; align-items: center; gap: var(--ds-space-3); height: 42px; padding: 0 var(--ds-space-4); border-bottom: 1px solid var(--ds-border); background: var(--ds-bg-subtle); }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 11px; height: 11px; border-radius: 50%; border: 1px solid var(--ds-border-strong); display: block; }
+  .addr { flex: 1; height: 26px; background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-full); display: flex; align-items: center; gap: 6px; padding: 0 var(--ds-space-3); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); max-width: 360px; margin: 0 auto; }
+  .layout-name { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-3); display: flex; align-items: center; gap: var(--ds-space-2); }
+
+  /* 仪表盘小样 */
+  .dash { display: grid; grid-template-columns: 180px 1fr; min-height: 380px; }
+  .dash-side { border-right: 1px solid var(--ds-border); padding: var(--ds-space-5) var(--ds-space-4); background: var(--ds-bg-subtle); }
+  .dash-side .logo { display: flex; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); margin-bottom: var(--ds-space-6); }
+  .dash-side nav { display: flex; flex-direction: column; gap: 2px; }
+  .dash-side nav a { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); color: var(--ds-fg-muted); text-decoration: none; font-size: var(--ds-text-sm); transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease); }
+  .dash-side nav a svg { width: 18px; height: 18px; }
+  .dash-side nav a:hover { background: var(--ds-bg-elevated); color: var(--ds-fg); }
+  .dash-side nav a.active { background: var(--ds-bg-elevated); color: var(--ds-primary); font-weight: var(--ds-weight-medium); border: 1px solid var(--ds-border); }
+  .dash-main { padding: var(--ds-space-5) var(--ds-space-6); }
+  .dash-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--ds-space-5); }
+  .dash-top h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); margin: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-4); margin-bottom: var(--ds-space-5); }
+  .kpi { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-4); }
+  .kpi .k-lab { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin-bottom: var(--ds-space-2); }
+  .kpi .k-num { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); font-variant-numeric: tabular-nums; }
+  .kpi .k-delta { font-size: var(--ds-text-xs); margin-top: 4px; display: inline-flex; align-items: center; gap: 3px; }
+  .k-up { color: var(--ds-success); } .k-down { color: var(--ds-danger); }
+  .chart { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-4); }
+  .chart .c-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--ds-space-4); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+  .bars { display: flex; align-items: flex-end; gap: var(--ds-space-3); height: 110px; }
+  .bars .bar { flex: 1; background: var(--ds-bg-subtle); border: 1px solid var(--ds-border); border-bottom: none; border-radius: var(--ds-radius-sm) var(--ds-radius-sm) 0 0; position: relative; }
+  .bars .bar.hl { background: color-mix(in srgb, var(--ds-accent) 22%, var(--ds-bg-elevated)); border-color: color-mix(in srgb, var(--ds-accent) 45%, var(--ds-border)); }
+
+  /* 商品网格小样 */
+  .shop { padding: var(--ds-space-6); }
+  .shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-5); }
+  .shop-item .img-frame { aspect-ratio: 1/1; margin-bottom: var(--ds-space-3); }
+  .shop-item .nm { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); margin: 0 0 2px; }
+  .shop-item .cat { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-2); }
+  .shop-item .row { display: flex; align-items: center; justify-content: space-between; }
+
+  /* ---------- 移动端框（iPhone 17 Pro Max 套壳见 _assets/device.css） ---------- */
+  .phones { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; justify-content: center; }
+  .dvc-body .p-top { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  .dvc-body .p-top .pt-title { flex: 1; font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
+  .dvc-body .p-top .pt-ico { width: 34px; height: 34px; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--ds-fg-muted); background: var(--ds-bg-elevated); }
+  .dvc-body .p-body { padding: var(--ds-space-4); }
+  .dvc-body .p-hero { aspect-ratio: 16/10; border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border); margin-bottom: var(--ds-space-4); }
+  .dvc-body .p-hero img { width: 100%; height: 100%; object-fit: cover; }
+  .dvc-body .feed-card { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); margin-bottom: var(--ds-space-3); }
+  .dvc-body .feed-card .fc-img { aspect-ratio: 16/9; }
+  .dvc-body .feed-card .fc-img img { width: 100%; height: 100%; object-fit: cover; }
+  .dvc-body .feed-card .fc-body { padding: var(--ds-space-3) var(--ds-space-4); }
+  .dvc-body .feed-card .fc-cat { font-size: var(--ds-text-xs); color: var(--ds-accent); text-transform: uppercase; letter-spacing: .12em; margin: 0 0 4px; }
+  .dvc-body .feed-card h5 { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); margin: 0 0 4px; font-weight: var(--ds-weight-bold); }
+  .dvc-body .feed-card p { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+  .dvc-body .p-tabbar { display: flex; border-top: 1px solid var(--ds-border); }
+  .dvc-body .p-tabbar a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--ds-space-3) 0; color: var(--ds-fg-subtle); text-decoration: none; font-size: 10px; }
+  .dvc-body .p-tabbar a svg { width: 20px; height: 20px; }
+  .dvc-body .p-tabbar a.active { color: var(--ds-primary); }
+  /* 列表行 */
+  .list-row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .list-row .lr-thumb { width: 48px; height: 48px; border-radius: var(--ds-radius-sm); object-fit: cover; border: 1px solid var(--ds-border); flex: none; }
+  .list-row .lr-main { flex: 1; min-width: 0; }
+  .list-row .lr-main .t { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); margin: 0 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-row .lr-main .s { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-row .lr-meta { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); flex: none; }
+  /* 详情页 */
+  .p-detail-hero { aspect-ratio: 4/3; }
+  .p-detail-hero img { width: 100%; height: 100%; object-fit: cover; }
+  .p-detail-body { padding: var(--ds-space-4); }
+  .p-detail-body .eyebrow { font-size: var(--ds-text-xs); color: var(--ds-accent); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 var(--ds-space-2); }
+  .p-detail-body h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); margin: 0 0 var(--ds-space-2); }
+  .p-detail-body .pr { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); }
+  .p-detail-body p { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-4); }
+
+  /* ---------- dropdown / tooltip / modal / toast ---------- */
+  .dropdown { position: relative; display: inline-block; }
+  .menu {
+    position: absolute; top: calc(100% + var(--ds-space-2)); left: 0; min-width: 190px; z-index: var(--ds-z-dropdown);
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-lg); padding: var(--ds-space-2);
+  }
+  .menu[hidden] { display: none; }
+  .menu .menu-item {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-4);
+    padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); font-size: var(--ds-text-sm);
+    color: var(--ds-fg); cursor: pointer; border: none; background: none; width: 100%; text-align: left; font-family: var(--ds-font-sans);
+    transition: background var(--ds-dur-fast) var(--ds-ease);
+  }
+  .menu .menu-item:hover, .menu .menu-item:focus-visible { background: var(--ds-bg-subtle); outline: none; }
+  .menu .menu-item.selected { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .menu .menu-item .check { color: var(--ds-primary); width: 16px; height: 16px; flex: none; opacity: 0; }
+  .menu .menu-item.selected .check { opacity: 1; }
+  .menu .menu-sep { height: 1px; background: var(--ds-border); margin: var(--ds-space-2) 0; }
+  .menu .menu-label { padding: var(--ds-space-1) var(--ds-space-3); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-fg-subtle); }
+
+  .tip { position: relative; display: inline-block; }
+  .tip .tip-bubble {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); z-index: var(--ds-z-tooltip);
+    background: var(--ds-fg); color: var(--ds-bg); font-size: var(--ds-text-xs);
+    padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); white-space: nowrap;
+    opacity: 0; visibility: hidden; pointer-events: none; box-shadow: var(--ds-shadow-md);
+    transition: opacity var(--ds-dur-fast) var(--ds-ease), visibility var(--ds-dur-fast) var(--ds-ease);
+  }
+  .tip .tip-bubble::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--ds-fg); }
+  .tip:hover .tip-bubble, .tip:focus-within .tip-bubble { opacity: 1; visibility: visible; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: var(--ds-z-modal); display: flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--ds-fg) 38%, transparent); padding: var(--ds-space-5);
+    opacity: 0; visibility: hidden; transition: opacity var(--ds-dur-base) var(--ds-ease), visibility var(--ds-dur-base) var(--ds-ease);
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg); max-width: 460px; width: 100%; padding: var(--ds-space-7);
+    transform: translateY(8px); transition: transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal h3 { font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); }
+  .modal p { margin: 0 0 var(--ds-space-6); color: var(--ds-fg-muted); font-size: var(--ds-text-base); line-height: var(--ds-leading-normal); }
+  .modal .modal-actions { display: flex; justify-content: flex-end; gap: var(--ds-space-3); }
+
+  .toast-wrap { position: fixed; bottom: var(--ds-space-6); right: var(--ds-space-6); z-index: var(--ds-z-toast); display: flex; flex-direction: column; gap: var(--ds-space-3); max-width: 360px; }
+  .toast {
+    display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-4);
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-lg);
+    transform: translateY(8px); opacity: 0; transition: transform var(--ds-dur-base) var(--ds-ease), opacity var(--ds-dur-base) var(--ds-ease);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast .toast-ico { flex: none; width: 20px; height: 20px; margin-top: 1px; color: var(--ds-primary); }
+  .toast .toast-ico svg { width: 20px; height: 20px; display: block; }
+  .toast.success .toast-ico { color: var(--ds-success); }
+  .toast.danger .toast-ico { color: var(--ds-danger); }
+  .toast .toast-body { flex: 1; }
+  .toast .toast-title { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); color: var(--ds-fg); margin: 0 0 2px; }
+  .toast .toast-msg { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+  .toast .toast-close { border: none; background: none; color: var(--ds-fg-subtle); cursor: pointer; line-height: 1; padding: 0; display: inline-flex; }
+  .toast .toast-close:hover { color: var(--ds-fg); }
+
+  /* ---------- 文章 ---------- */
+  .article { max-width: 680px; }
+  .article .kicker { font-size: var(--ds-text-sm); text-transform: uppercase; letter-spacing: .14em; color: var(--ds-accent); margin: 0 0 var(--ds-space-3); }
+  .article h1 { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); text-wrap: balance; margin: 0 0 var(--ds-space-4); }
+  .article .byline { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-7); }
+  .article p { margin: 0 0 var(--ds-space-5); line-height: var(--ds-leading-relaxed); text-wrap: pretty; }
+  .article a { color: var(--ds-accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--ds-accent) 40%, transparent); }
+  .article a:hover { border-bottom-color: var(--ds-accent); }
+  .article blockquote { margin: var(--ds-space-7) 0; padding: var(--ds-space-3) 0 var(--ds-space-3) var(--ds-space-5); border-left: 2px solid var(--ds-border-strong); color: var(--ds-fg-muted); font-family: var(--ds-font-serif); font-style: italic; font-size: var(--ds-text-md); }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--ds-border); padding-top: var(--ds-space-5); color: var(--ds-fg-subtle); font-size: var(--ds-text-sm); display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }
+  code.var { font-family: var(--ds-font-mono); background: var(--ds-bg-sunken); padding: 1px 5px; border-radius: 4px; }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-media { min-height: 260px; border-left: none; border-top: 1px solid var(--ds-border); order: -1; }
+    .ratio-grid { grid-template-columns: repeat(2, 1fr); }
+    .media-cards { grid-template-columns: repeat(2, 1fr); }
+    .splitfeature { grid-template-columns: 1fr; gap: var(--ds-space-6); }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    .dash { grid-template-columns: 1fr; }
+    .dash-side { border-right: none; border-bottom: 1px solid var(--ds-border); }
+    .dash-side nav { flex-direction: row; flex-wrap: wrap; }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 0 var(--ds-space-5) var(--ds-space-10); }
+    .topbar { padding: 0 var(--ds-space-4); gap: var(--ds-space-2); }
+    .topbar-nav { display: none; }
+    section { margin-bottom: var(--ds-space-9); }
+    .swatches, .state-row, .cards, .form, .ratio-grid, .media-cards, .gallery, .shop-grid, .kpis { grid-template-columns: 1fr; }
+    .hero-copy { padding: var(--ds-space-7) var(--ds-space-6); }
+    .hero h1 { font-size: var(--ds-text-2xl); }
+    .type-row { flex-wrap: wrap; gap: var(--ds-space-2); }
+    .type-tag { width: auto; }
+    .toast-wrap { left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-4); max-width: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+  <!-- 顶栏 -->
+  <header class="topbar">
+    <span class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ds-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></svg>
+      </span>
+      無印 <span style="font-family:var(--ds-font-sans);font-weight:var(--ds-weight-normal);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);">Mu·jin</span>
+    </span>
+    <nav class="topbar-nav" aria-label="主导航">
+      <a href="#colors">颜色</a>
+      <a href="#type">字体</a>
+      <a href="#images">图片</a>
+      <a href="#icons">图标</a>
+      <a href="#layouts">布局</a>
+    </nav>
+    <span class="topbar-spacer"></span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="切换主题">
+      <svg class="ico-svg" id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <span id="themeTxt">夜间</span>
+    </button>
+  </header>
+
+  <div class="page">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" aria-label="首屏">
+      <div class="hero-copy">
+        <p class="kicker">Design System · 設計の素</p>
+        <h1>素之美——把多余的拿掉，留下能呼吸的留白。</h1>
+        <p>米白与原木为底，墨色为字，低饱和的大地色只作偶尔点缀。细线分层，几乎不用阴影。一套给生活方式品牌、杂货电商与安静内容站的日系极简设计系统。</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg">浏览组件
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-lg" onclick="toggleTheme()">切换日 / 夜</button>
+        </div>
+        <div class="hero-meta">
+          <div><div class="num">14</div><div class="cap">语义色 Tokens</div></div>
+          <div><div class="num">28</div><div class="cap">组件 Components</div></div>
+          <div><div class="num">AA</div><div class="cap">对比度达标</div></div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img src="../../_assets/gen/japanese-hero.jpg" alt="自然光下的原木桌面与米白器物" loading="lazy"
+             onerror="this.onerror=null;this.src='../../_assets/photos/coffee.jpg';">
+        <span class="tag">
+          <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+          自然光 · 米白细边
+        </span>
+      </div>
+    </section>
+
+    <!-- ===== 色板 ===== -->
+    <section id="colors">
+      <p class="sec-label">颜色 · 表面与文字 <span class="sec-en">Surfaces & Text</span></p>
+      <div class="swatches" id="surfSwatches"></div>
+      <p class="sec-label" style="margin-top:var(--ds-space-7);">颜色 · 品牌与强调 <span class="sec-en">Brand & Accent</span></p>
+      <div class="swatches" id="brandSwatches"></div>
+      <p class="lede" style="margin-top:var(--ds-space-4);">主操作用沉静藏青，链接 / 次强调用苔绿。强调色梯度（hover → active）：</p>
+      <div class="ramp" id="primaryRamp"></div>
+      <p class="sec-label" style="margin-top:var(--ds-space-7);">颜色 · 语义状态 <span class="sec-en">Semantic</span></p>
+      <div class="state-row" id="stateRow"></div>
+    </section>
+
+    <!-- ===== 字体 ===== -->
+    <section id="type">
+      <p class="sec-label">字体 · 对比轴（衬线标题 / 无衬线正文） <span class="sec-en">Typography</span></p>
+      <div class="type-row"><span class="type-tag">3xl · 46 · serif</span><span class="serif" style="font-size:var(--ds-text-3xl);letter-spacing:var(--ds-tracking-tight);">静かな暮らし</span></div>
+      <div class="type-row"><span class="type-tag">2xl · 34 · h1</span><span class="serif" style="font-size:var(--ds-text-2xl);letter-spacing:var(--ds-tracking-tight);">留白是一种语言</span></div>
+      <div class="type-row"><span class="type-tag">xl · 26 · h2</span><span class="serif" style="font-size:var(--ds-text-xl);">器物与日常</span></div>
+      <div class="type-row"><span class="type-tag">lg · 20 · h3</span><span class="serif" style="font-size:var(--ds-text-lg);">小标题 Heading</span></div>
+      <div class="type-row"><span class="type-tag">md · 17 · 导语</span><span style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);">导语用稍大的灰墨，安静地引人入文。</span></div>
+      <div class="type-row"><span class="type-tag">base · 15 · 正文</span><span style="font-size:var(--ds-text-base);">正文无衬线，行高 1.6，读起来清爽不费力。</span></div>
+      <div class="type-row"><span class="type-tag">sm · 13 · 元信息</span><span style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);">作者 · 日期 · 分类（控件元信息）</span></div>
+      <div class="type-row"><span class="type-tag">xs · 12 · 脚注</span><span style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);">脚注与版权（muted，仍 ≥4.5:1）</span></div>
+      <div class="weights">
+        <span style="font-weight:var(--ds-weight-normal);">Normal 400 正文</span>
+        <span style="font-weight:var(--ds-weight-medium);">Medium 500 强调</span>
+        <span style="font-weight:var(--ds-weight-bold);" class="serif">Bold 600 标题</span>
+      </div>
+    </section>
+
+    <!-- ===== 按钮 ===== -->
+    <section>
+      <p class="sec-label">按钮 <span class="sec-en">Buttons</span></p>
+      <div class="btn-grid" style="margin-bottom:var(--ds-space-4);">
+        <button class="btn btn-primary">主操作</button>
+        <button class="btn btn-secondary">次操作</button>
+        <button class="btn btn-tertiary">文字按钮</button>
+        <button class="btn btn-danger">删除</button>
+        <button class="btn btn-primary is-disabled" disabled>禁用</button>
+      </div>
+      <div class="btn-grid" style="margin-bottom:var(--ds-space-4);">
+        <button class="btn btn-primary btn-sm">小 32</button>
+        <button class="btn btn-primary">中 40</button>
+        <button class="btn btn-primary btn-lg">大 48</button>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-secondary"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> 前置图标</button>
+        <button class="btn btn-secondary">后置图标 <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+        <button class="btn btn-secondary btn-icon" aria-label="更多"><svg class="ico-svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+        <button class="btn btn-secondary btn-icon" aria-label="收藏"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z"/></svg></button>
+      </div>
+    </section>
+
+    <!-- ===== 表单 ===== -->
+    <section>
+      <p class="sec-label">表单 <span class="sec-en">Forms · 聚焦看焦点环</span></p>
+      <div class="form">
+        <div class="field">
+          <label for="i1">姓名</label>
+          <div class="input-wrap">
+            <span class="lead-ico"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>
+            <input id="i1" type="text" placeholder="请输入你的名字">
+          </div>
+          <span class="field-hint">显示在订单与评价处</span>
+        </div>
+        <div class="field err">
+          <label for="i2">邮箱</label>
+          <input id="i2" type="email" value="not-an-email" aria-invalid="true">
+          <span class="field-hint">邮箱格式不正确</span>
+        </div>
+        <div class="field">
+          <label for="s1">分类</label>
+          <select id="s1"><option>厨房器物</option><option>文具</option><option>织品</option></select>
+        </div>
+        <div class="field" style="grid-column:1/-1;">
+          <label for="t1">备注</label>
+          <textarea id="t1" placeholder="一句话写下你的偏好……"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;margin-top:var(--ds-space-5);align-items:center;">
+        <label class="choice"><input type="checkbox" checked> 订阅季刊</label>
+        <label class="choice"><input type="radio" name="r" checked> 标准配送</label>
+        <label class="choice"><input type="radio" name="r"> 门店自提</label>
+        <label class="choice"><span class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></span> 夜间自动</label>
+      </div>
+    </section>
+
+    <!-- ===== 卡片 ===== -->
+    <section>
+      <p class="sec-label">卡片 <span class="sec-en">Cards</span></p>
+      <div class="cards">
+        <div class="card">
+          <h3>原木餐桌的日常</h3>
+          <p class="meta">器物随笔 · 6 月 18 日</p>
+          <p>木纹会随使用变深。我们谈一张桌子如何在十年里慢慢成为家的一部分。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">继续阅读
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="card">
+          <h3>留白不是空</h3>
+          <p class="meta">设计笔记 · 6 月 12 日</p>
+          <p>适度的留白，是给内容呼吸的余地。本风格把留白当作一种排版语言来用。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">继续阅读
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="card">
+          <h3>米白与墨</h3>
+          <p class="meta">色彩 · 6 月 5 日</p>
+          <p>为什么我们用米白而不是纯白？从色温与长时间观看的舒适度说起。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">继续阅读
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 徽章 ===== -->
+    <section>
+      <p class="sec-label">徽章 / 标签 <span class="sec-en">Badges</span></p>
+      <div class="badge-row">
+        <span class="badge">默认</span>
+        <span class="badge primary">精选</span>
+        <span class="badge success">有货</span>
+        <span class="badge warning">少量</span>
+        <span class="badge danger">售罄</span>
+        <span class="badge info">预订</span>
+        <span class="badge"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 8.4 13.1 1A2 2 0 0 0 11.7.4H4a2 2 0 0 0-2 2v7.7a2 2 0 0 0 .6 1.4l7.5 7.5a2 2 0 0 0 2.8 0l7.7-7.7a2 2 0 0 0 0-2.9Z"/><circle cx="7" cy="7" r="1.2"/></svg>新品</span>
+      </div>
+    </section>
+
+    <!-- ===== alert ===== -->
+    <section>
+      <p class="sec-label">提示条 <span class="sec-en">Alerts · 图标 + 浅底 + 细描边</span></p>
+      <div class="alert success"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg></span><div><p class="alert-title">已下单</p><p>订单已确认，预计 3–5 个工作日送达。</p></div></div>
+      <div class="alert warning"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 2.3 18a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><div><p class="alert-title">库存偏低</p><p>这件织品仅剩 3 件，下单请尽快。</p></div></div>
+      <div class="alert danger"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span><div><p class="alert-title">支付失败</p><p>银行卡被拒，请更换支付方式后重试。</p></div></div>
+      <div class="alert info"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div><p class="alert-title">小贴士</p><p>满 ¥299 免运费，会员另享九折。</p></div></div>
+    </section>
+
+    <!-- ===== 导航 tab ===== -->
+    <section>
+      <p class="sec-label">导航 · Tabs <span class="sec-en">Navigation</span></p>
+      <div class="tabs">
+        <div class="tab active">全部</div>
+        <div class="tab">厨房</div>
+        <div class="tab">文具</div>
+        <div class="tab">织品</div>
+        <div class="tab">收纳</div>
+      </div>
+      <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);margin:0;">顶栏见页面最上方——含主导航与日 / 夜主题切换。</p>
+    </section>
+
+    <!-- ===== 下拉菜单 / 工具提示 ===== -->
+    <section>
+      <p class="sec-label">下拉菜单 · 工具提示 <span class="sec-en">Dropdown · Tooltip</span></p>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;align-items:flex-start;">
+        <div class="dropdown">
+          <button class="btn btn-secondary" id="ddBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">排序
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="menu" id="ddMenu" role="menu" hidden>
+            <div class="menu-label">排序方式</div>
+            <button class="menu-item selected" role="menuitem"><span>上新优先</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></button>
+            <button class="menu-item" role="menuitem"><span>价格从低到高</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></button>
+            <button class="menu-item" role="menuitem"><span>好评优先</span></button>
+            <div class="menu-sep"></div>
+            <button class="menu-item" role="menuitem"><span>重置</span></button>
+          </div>
+        </div>
+        <span class="tip">
+          <button class="btn btn-secondary" aria-describedby="tip1">悬停看提示</button>
+          <span class="tip-bubble" role="tooltip" id="tip1">天然原木，每件纹理各异</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- ===== 图片用法 ===== -->
+    <section id="images">
+      <p class="sec-label">图片用法 · 宽高比框 <span class="sec-en">Image Usage · Ratios</span></p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">统一 <code class="var">aspect-ratio</code> + <code class="var">object-fit:cover</code>；本风格图片处理：自然光照片 + 米白细边框（1px）+ 8px 小圆角 + 几乎无阴影。</p>
+      <div class="ratio-grid">
+        <figure><span class="img-frame ar-16-9"><img src="../../_assets/photos/forest.jpg" alt="自然光下的林间小径" loading="lazy"></span><figcaption class="ratio-cap">16 : 9</figcaption></figure>
+        <figure><span class="img-frame ar-4-3"><img src="../../_assets/photos/coffee.jpg" alt="木桌上的一杯手冲咖啡" loading="lazy"></span><figcaption class="ratio-cap">4 : 3</figcaption></figure>
+        <figure><span class="img-frame ar-1-1"><img src="../../_assets/photos/square1.jpg" alt="米白布面上的器物" loading="lazy"></span><figcaption class="ratio-cap">1 : 1</figcaption></figure>
+        <figure><span class="img-frame ar-3-4"><img src="../../_assets/photos/square2.jpg" alt="竖幅静物" loading="lazy"></span><figcaption class="ratio-cap">3 : 4</figcaption></figure>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">媒体卡 <span class="sec-en">Media Cards</span></p>
+      <div class="media-cards">
+        <article class="media-card">
+          <span class="img-frame thumb"><img src="../../_assets/photos/desk.jpg" alt="原木工作桌一角" loading="lazy"></span>
+          <div class="body">
+            <p class="eyebrow">文具</p>
+            <h3>桧木笔筒</h3>
+            <p>取自疏伐桧木，未上漆，留住木材本来的香气与触感。</p>
+            <div class="foot"><span class="price">¥128</span><button class="btn btn-secondary btn-sm">加入购物袋</button></div>
+          </div>
+        </article>
+        <article class="media-card">
+          <span class="img-frame thumb"><img src="../../_assets/photos/food.jpg" alt="陶碗盛装的简餐" loading="lazy"></span>
+          <div class="body">
+            <p class="eyebrow">厨房</p>
+            <h3>粗陶饭碗</h3>
+            <p>手作粗陶，低饱和的大地釉色，盛饭盛汤都温润。</p>
+            <div class="foot"><span class="price">¥86</span><button class="btn btn-secondary btn-sm">加入购物袋</button></div>
+          </div>
+        </article>
+        <article class="media-card">
+          <span class="img-frame thumb"><img src="../../_assets/photos/workspace.jpg" alt="整洁的居家工作区" loading="lazy"></span>
+          <div class="body">
+            <p class="eyebrow">收纳</p>
+            <h3>亚麻收纳篮</h3>
+            <p>水洗亚麻，可折叠，自然垂坠的褶皱也是一种美。</p>
+            <div class="foot"><span class="price">¥159</span><button class="btn btn-secondary btn-sm">加入购物袋</button></div>
+          </div>
+        </article>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">图片网格 / 画廊 <span class="sec-en">Gallery</span></p>
+      <div class="gallery">
+        <a href="#" class="wide"><img src="../../_assets/photos/mountain.jpg" alt="远山" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/architecture.jpg" alt="清水混凝土建筑" loading="lazy"></a>
+        <a href="#" class="tall"><img src="../../_assets/photos/street.jpg" alt="安静的街角" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/square3.jpg" alt="静物" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/ocean.jpg" alt="海面" loading="lazy"></a>
+        <a href="#" class="wide"><img src="../../_assets/photos/travel.jpg" alt="旅途" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/tech.jpg" alt="桌面器物" loading="lazy"></a>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">图文混排 <span class="sec-en">Split Feature</span></p>
+      <div class="splitfeature">
+        <span class="img-frame"><img src="../../_assets/photos/city.jpg" alt="清晨自然光中的城市一隅" loading="lazy"></span>
+        <div>
+          <h3>取材自然，归于日常</h3>
+          <p>我们相信好的器物不喧哗。它安静地待在那里，在每天的使用里慢慢长出与你相处的痕迹。这是日系极简想传达的——少而精，久而暖。</p>
+          <ul class="feat-list">
+            <li><span class="ic"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span> 天然材质，可降解包装</li>
+            <li><span class="ic"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span> 低饱和大地色，耐看不过时</li>
+            <li><span class="ic"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span> 十年质保，一物长用</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">图上叠字 · 背景大图 <span class="sec-en">Overlay & Big BG</span></p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-5);" class="overlay-pair">
+        <div class="overlay-card">
+          <img src="../../_assets/photos/hero-gallery.jpg" alt="展陈空间" loading="lazy">
+          <div class="scrim"></div>
+          <div class="txt"><p class="eyebrow">企划展</p><h3>无言之物 · 春季企划</h3></div>
+        </div>
+        <div class="bigbg">
+          <img src="../../_assets/photos/hero-summit.jpg" alt="山间晨光" loading="lazy">
+          <div class="scrim"></div>
+          <div class="inner">
+            <h3>把山的安静，搬进房间</h3>
+            <p>季节限定的自然系列，灵感来自清晨的山色与雾气。</p>
+            <button class="btn btn-secondary">查看系列</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">头像用法 <span class="sec-en">Avatars</span></p>
+      <div style="display:flex;gap:var(--ds-space-9);flex-wrap:wrap;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:var(--ds-space-4);">
+          <img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="用户 林" loading="lazy">
+          <img class="avatar av-32" src="../../_assets/avatars/a5.jpg" alt="用户 森" loading="lazy">
+          <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="用户 川" loading="lazy">
+          <img class="avatar av-48" src="../../_assets/avatars/a12.jpg" alt="用户 海" loading="lazy">
+        </div>
+        <div class="avatar-stack" aria-label="6 位协作者">
+          <img src="../../_assets/avatars/a15.jpg" alt="" loading="lazy">
+          <img src="../../_assets/avatars/a23.jpg" alt="" loading="lazy">
+          <img src="../../_assets/avatars/a33.jpg" alt="" loading="lazy">
+          <img src="../../_assets/avatars/a47.jpg" alt="" loading="lazy">
+          <span class="more">+2</span>
+        </div>
+        <div class="user-row">
+          <img class="avatar av-40" src="../../_assets/avatars/a1.jpg" alt="森田 葵" loading="lazy">
+          <div><div class="nm">森田 葵</div><div class="sig">器物策展人 · 京都</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 图标用法 ===== -->
+    <section id="icons">
+      <p class="sec-label">图标用法 · 图标集 <span class="sec-en">Icon Set · 细线 1.6 / 24px</span></p>
+      <div class="icon-grid" id="iconGrid"></div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">尺寸阶 · 线性 vs 实心 · 单色 vs 双色 <span class="sec-en">Sizes & Styles</span></p>
+      <div style="display:flex;gap:var(--ds-space-10);flex-wrap:wrap;align-items:flex-start;">
+        <div class="icon-sizes">
+          <div class="col"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z"/></svg><span>16</span></div>
+          <div class="col"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z"/></svg><span>20</span></div>
+          <div class="col"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z"/></svg><span>24</span></div>
+          <div class="col"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z"/></svg><span>32</span></div>
+        </div>
+        <div class="icon-pair">
+          <div class="grp">
+            <span class="lab">线性 Line</span>
+            <div class="ico-line">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c0-4-3.6-7-7-7s-7 3-7 7"/><path d="M5 14h14l-1.2 5a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/></svg>
+            </div>
+          </div>
+          <div class="grp">
+            <span class="lab">实心 Solid</span>
+            <div class="ico-line">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.7l5.9-.9z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 13c0-4 3-7 7-7s7 3 7 7l1 5.5a1 1 0 0 1-1 1.2H5a1 1 0 0 1-1-1.2z"/></svg>
+            </div>
+          </div>
+          <div class="grp">
+            <span class="lab">双色 Duotone</span>
+            <div class="ico-line">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="color-mix(in srgb, var(--ds-accent) 30%, transparent)" d="M5 13c0-4 3-7 7-7s7 3 7 7l1 5.5a1 1 0 0 1-1 1.2H5a1 1 0 0 1-1-1.2z"/><path fill="none" stroke="var(--ds-accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M19 14c0-4-3.6-7-7-7s-7 3-7 7l-1 5.5a1 1 0 0 0 1 1.2h14a1 1 0 0 0 1-1.2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="color-mix(in srgb, var(--ds-primary) 22%, transparent)"/><path fill="none" stroke="var(--ds-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">在场景里 <span class="sec-en">In Context</span></p>
+      <div class="icon-scene">
+        <button class="btn btn-secondary btn-icon" aria-label="搜索"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></button>
+        <button class="btn btn-primary"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg> 加入购物袋</button>
+        <div class="input-wrap" style="width:200px;">
+          <span class="lead-ico"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></span>
+          <input type="text" placeholder="搜索器物…">
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:6px;color:var(--ds-success);font-size:var(--ds-text-sm);"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg> 已收藏</span>
+        <span style="position:relative;display:inline-flex;">
+          <button class="btn btn-secondary btn-icon" aria-label="通知，3 条未读"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c0-4-3.6-7-7-7s-7 3-7 7l-1 4h16z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg></button>
+          <span class="badge danger" style="position:absolute;top:-6px;right:-6px;height:18px;min-width:18px;padding:0 4px;justify-content:center;">3</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- ===== 桌面布局 ===== -->
+    <section id="layouts">
+      <p class="sec-label">桌面布局 · 仪表盘 <span class="sec-en">Desktop · Dashboard</span></p>
+      <p class="layout-name">
+        <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        店铺后台 · 销售概览
+      </p>
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="addr"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> mujin.store/admin</span>
+        </div>
+        <div class="dash">
+          <aside class="dash-side">
+            <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ds-primary)" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></svg> 無印</div>
+            <nav>
+              <a class="active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg> 概览</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg> 商品</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg> 订单</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 6a3 3 0 0 1 0 6"/></svg> 客户</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 6 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 4.3 14H4a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 5.3 7.3l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1A1.6 1.6 0 0 0 18 4.6l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H22a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.1z"/></svg> 设置</a>
+            </nav>
+          </aside>
+          <main class="dash-main">
+            <div class="dash-top">
+              <h4>销售概览</h4>
+              <div style="display:flex;gap:var(--ds-space-2);">
+                <button class="btn btn-secondary btn-sm">本月</button>
+                <button class="btn btn-primary btn-sm">导出</button>
+              </div>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><div class="k-lab">本月销售额</div><div class="k-num">¥84,200</div><div class="k-delta k-up"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg> 12.4%</div></div>
+              <div class="kpi"><div class="k-lab">订单数</div><div class="k-num">1,284</div><div class="k-delta k-up"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg> 5.1%</div></div>
+              <div class="kpi"><div class="k-lab">退货率</div><div class="k-num">1.8%</div><div class="k-delta k-down"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> 0.3%</div></div>
+            </div>
+            <div class="chart">
+              <div class="c-head"><span>近 7 天销售额</span><span class="badge success">趋势上升</span></div>
+              <div class="bars">
+                <div class="bar" style="height:46%"></div>
+                <div class="bar" style="height:62%"></div>
+                <div class="bar" style="height:54%"></div>
+                <div class="bar" style="height:78%"></div>
+                <div class="bar hl" style="height:92%"></div>
+                <div class="bar" style="height:70%"></div>
+                <div class="bar" style="height:84%"></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <p class="sec-label" style="margin-top:var(--ds-space-8);">桌面布局 · 商品网格 <span class="sec-en">Desktop · Shop</span></p>
+      <p class="layout-name">
+        <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        生活杂货 · 上新
+      </p>
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="addr"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> mujin.store/new</span>
+        </div>
+        <div class="shop">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--ds-space-5);">
+            <h4 class="serif" style="font-size:var(--ds-text-lg);margin:0;">本季上新</h4>
+            <div class="tabs" style="border:none;margin:0;gap:var(--ds-space-4);">
+              <span class="tab active">全部</span><span class="tab">厨房</span><span class="tab">文具</span><span class="tab">织品</span>
+            </div>
+          </div>
+          <div class="shop-grid">
+            <div class="shop-item"><span class="img-frame"><img src="../../_assets/photos/coffee.jpg" alt="手冲咖啡壶" loading="lazy"></span><p class="nm">细嘴手冲壶</p><p class="cat">厨房</p><div class="row"><span class="price">¥168</span><span class="badge success">有货</span></div></div>
+            <div class="shop-item"><span class="img-frame"><img src="../../_assets/photos/desk.jpg" alt="桧木托盘" loading="lazy"></span><p class="nm">桧木方盘</p><p class="cat">餐桌</p><div class="row"><span class="price">¥98</span><span class="badge warning">少量</span></div></div>
+            <div class="shop-item"><span class="img-frame"><img src="../../_assets/photos/food.jpg" alt="粗陶碗" loading="lazy"></span><p class="nm">粗陶饭碗</p><p class="cat">厨房</p><div class="row"><span class="price">¥86</span><span class="badge success">有货</span></div></div>
+            <div class="shop-item"><span class="img-frame"><img src="../../_assets/photos/square1.jpg" alt="亚麻方巾" loading="lazy"></span><p class="nm">水洗亚麻巾</p><p class="cat">织品</p><div class="row"><span class="price">¥45</span><span class="badge info">预订</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 移动端布局 ===== -->
+    <section>
+      <p class="sec-label">移动端布局 <span class="sec-en">Mobile · ~320px</span></p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">App 首页（feed + 底部标签栏）、商品详情、列表收件箱三个 iPhone 17 Pro Max 套壳。栅格在窄屏自动换行。</p>
+      <div class="phones">
+
+        <!-- App 首页 -->
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+              <div class="p-top">
+                <span class="pt-title">無印 · 生活</span>
+                <span class="pt-ico" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></span>
+                <span class="pt-ico" aria-label="购物袋"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></span>
+              </div>
+              <div class="p-body">
+                <div class="p-hero"><img src="../../_assets/photos/forest.jpg" alt="自然系列主视觉" loading="lazy"></div>
+                <div class="feed-card">
+                  <div class="fc-img"><img src="../../_assets/photos/coffee.jpg" alt="手冲" loading="lazy"></div>
+                  <div class="fc-body"><p class="fc-cat">厨房</p><h5>慢下来的早晨</h5><p>一套手冲器具，把通勤前的十分钟还给自己。</p></div>
+                </div>
+                <div class="feed-card">
+                  <div class="fc-img"><img src="../../_assets/photos/workspace.jpg" alt="收纳" loading="lazy"></div>
+                  <div class="fc-body"><p class="fc-cat">收纳</p><h5>看得见的整洁</h5><p>亚麻收纳系列，让桌面只留下需要的东西。</p></div>
+                </div>
+              </div>
+              <div class="p-tabbar">
+                <a class="active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-7 9 7"/><path d="M5 10v10h14V10"/></svg> 首页</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> 分类</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg> 购物袋</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg> 我的</a>
+              </div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+
+        <!-- 商品详情 -->
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+              <div class="p-top">
+                <span class="pt-ico" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></span>
+                <span class="pt-title" style="font-size:var(--ds-text-sm);">商品详情</span>
+                <span class="pt-ico" aria-label="收藏"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 8.5c0 4.5-7 9.5-7 9.5s-7-5-7-9.5A3.5 3.5 0 0 1 12 6a3.5 3.5 0 0 1 7 2.5z"/></svg></span>
+              </div>
+              <div class="p-detail-hero"><img src="../../_assets/photos/food.jpg" alt="粗陶饭碗" loading="lazy"></div>
+              <div class="p-detail-body">
+                <p class="eyebrow">厨房 · 手作</p>
+                <h4>粗陶饭碗</h4>
+                <p class="pr">¥86</p>
+                <p>手作粗陶，低饱和的大地釉色。每一只的釉面纹理都略有不同，那是窑火留下的痕迹。容量约 350ml，可入微波。</p>
+                <div style="display:flex;gap:var(--ds-space-3);">
+                  <button class="btn btn-secondary" style="flex:1;">加入购物袋</button>
+                  <button class="btn btn-primary" style="flex:1;">立即购买</button>
+                </div>
+              </div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+
+        <!-- 列表 / 收件箱 -->
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+              <div class="p-top">
+                <span class="pt-title">我的订单</span>
+                <span class="pt-ico" aria-label="筛选"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span>
+              </div>
+              <div class="p-body" style="padding-top:var(--ds-space-2);">
+                <div class="list-row">
+                  <img class="lr-thumb" src="../../_assets/photos/coffee.jpg" alt="" loading="lazy">
+                  <div class="lr-main"><p class="t">细嘴手冲壶</p><p class="s">已发货 · 顺丰 SF1394</p></div>
+                  <span class="lr-meta">¥168</span>
+                </div>
+                <div class="list-row">
+                  <img class="lr-thumb" src="../../_assets/photos/food.jpg" alt="" loading="lazy">
+                  <div class="lr-main"><p class="t">粗陶饭碗 ×2</p><p class="s">待付款 · 30 分钟内有效</p></div>
+                  <span class="lr-meta">¥172</span>
+                </div>
+                <div class="list-row">
+                  <img class="lr-thumb" src="../../_assets/photos/desk.jpg" alt="" loading="lazy">
+                  <div class="lr-main"><p class="t">桧木方盘</p><p class="s">已完成 · 6 月 12 日送达</p></div>
+                  <span class="lr-meta">¥98</span>
+                </div>
+                <div class="list-row" style="border-bottom:none;">
+                  <img class="lr-thumb" src="../../_assets/photos/square1.jpg" alt="" loading="lazy">
+                  <div class="lr-main"><p class="t">水洗亚麻巾</p><p class="s">已评价 · 谢谢你的好评</p></div>
+                  <span class="lr-meta">¥45</span>
+                </div>
+              </div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 表格 ===== -->
+    <section>
+      <p class="sec-label">表格 <span class="sec-en">Table · tabular 数字</span></p>
+      <table>
+        <thead><tr><th>商品</th><th>分类</th><th class="num">库存</th><th class="num">月销</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>细嘴手冲壶</td><td>厨房</td><td class="num">128</td><td class="num">342</td><td><span class="badge success">有货</span></td></tr>
+          <tr><td>粗陶饭碗</td><td>厨房</td><td class="num">46</td><td class="num">512</td><td><span class="badge warning">少量</span></td></tr>
+          <tr><td>桧木方盘</td><td>餐桌</td><td class="num">0</td><td class="num">208</td><td><span class="badge danger">售罄</span></td></tr>
+          <tr><td>水洗亚麻巾</td><td>织品</td><td class="num">—</td><td class="num">96</td><td><span class="badge info">预订</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== 步进器 + 模态/Toast 触发 ===== -->
+    <section>
+      <p class="sec-label">模态框 · Toast <span class="sec-en">Modal · Toast</span></p>
+      <div class="btn-grid">
+        <button class="btn btn-primary" onclick="openModal()">打开模态框</button>
+        <button class="btn btn-secondary" onclick="showToast('success','已加入购物袋','「粗陶饭碗」已加入，共 1 件。')">触发 Toast（成功）</button>
+        <button class="btn btn-secondary" onclick="showToast('danger','操作失败','网络异常，请稍后重试。')">触发 Toast（错误）</button>
+      </div>
+    </section>
+
+    <!-- ===== 真实排版 ===== -->
+    <section>
+      <p class="sec-label">真实排版示例 <span class="sec-en">Editorial</span></p>
+      <article class="article">
+        <p class="kicker">器物随笔</p>
+        <h1>素之美：把多余的拿掉，留下能呼吸的留白</h1>
+        <p class="byline">森田 葵 · 2026 年 6 月 18 日 · 约 6 分钟</p>
+        <p>所谓极简，并不是空无一物，而是<a href="#">克制</a>——知道哪些东西可以不出现。一张原木桌、一只粗陶碗、一束自然光，就足以构成一个安静的早晨。</p>
+        <p>我们用米白而非纯白作底，是因为纯白在长时间观看时偏冷偏刺眼；用墨色而非纯黑作字，是因为纯黑落在暖底上会显得突兀。两者之间留出足够的对比，却都收着一点，像一段克制的对话。</p>
+        <blockquote>留白不是空白，是版面在呼吸时，胸腔起伏的那段距离。</blockquote>
+        <p>分层不靠阴影，而靠一条条一像素的细线，与慷慨的留白。强调色也只有沉静的藏青与一点苔绿，偶尔出现，其余都交给米白与墨。强调之所以是强调，正因为它稀少。</p>
+      </article>
+    </section>
+
+    <footer>
+      <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="vertical-align:-0.18em;"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></svg>
+      日系极简 Japanese Kit · 全部取值走 <code class="var">var(--ds-*)</code> · 亮 / 暗双主题 · 自然光素材来自 <code class="var">_assets/</code> · 满足 WCAG AA
+    </footer>
+  </div>
+
+  <!-- 模态框 -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3 id="modalTitle">从购物袋移除？</h3>
+      <p>「桧木方盘」将从购物袋中移除。你随时可以重新加入。</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+        <button class="btn btn-danger" onclick="closeModal();showToast('success','已移除','商品已从购物袋移除。')">移除</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  // 主题切换
+  var MOON_PATH = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+  var SUN_PATH = '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.5 4.5l1.4 1.4M18.1 18.1l1.4 1.4M2.5 12h2M19.5 12h2M4.5 19.5l1.4-1.4M18.1 5.9l1.4-1.4"/>';
+  function toggleTheme(){
+    var el = document.documentElement;
+    var dark = el.dataset.theme === 'dark';
+    el.dataset.theme = dark ? 'light' : 'dark';
+    var nowDark = !dark;
+    document.getElementById('themeIco').innerHTML = nowDark ? SUN_PATH : MOON_PATH;
+    document.getElementById('themeTxt').textContent = nowDark ? '日间' : '夜间';
+    setTimeout(refreshHex, 50);
+  }
+  // 色板
+  var surf = [
+    ['--ds-bg','背景'],['--ds-bg-subtle','次背景'],['--ds-bg-elevated','浮层'],['--ds-bg-sunken','凹陷'],
+    ['--ds-fg','主文字'],['--ds-fg-muted','次文字'],['--ds-fg-subtle','弱文字'],['--ds-border','描边'],['--ds-border-strong','强描边']
+  ];
+  var brand = [
+    ['--ds-primary','primary 藏青'],['--ds-primary-hover','hover'],['--ds-primary-active','active'],['--ds-accent','accent 苔绿']
+  ];
+  function hexOf(varName){
+    var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return v || '—';
+  }
+  function renderSwatches(id, arr){
+    document.getElementById(id).innerHTML = arr.map(function(p){
+      return '<div class="swatch"><div class="chip" style="background:var('+p[0]+');border-bottom:1px solid var(--ds-border)"></div>'+
+        '<div class="info"><span class="swatch-name">'+p[1]+'</span><span class="swatch-hex" data-var="'+p[0]+'">'+hexOf(p[0])+'</span></div></div>';
+    }).join('');
+  }
+  function renderRamp(){
+    var steps = ['--ds-primary','--ds-primary-hover','--ds-primary-active','--ds-accent'];
+    document.getElementById('primaryRamp').innerHTML = steps.map(function(v){
+      return '<div style="background:var('+v+');color:var(--ds-primary-fg)">'+v.replace('--ds-','')+'</div>';
+    }).join('');
+  }
+  var states = [
+    ['success','成功 Success'],['warning','警告 Warning'],['danger','危险 Danger'],['info','信息 Info']
+  ];
+  function renderStates(){
+    document.getElementById('stateRow').innerHTML = states.map(function(s){
+      return '<div class="state-card" style="background:var(--ds-'+s[0]+'-bg);color:var(--ds-'+s[0]+'-fg);border:1px solid color-mix(in srgb, var(--ds-'+s[0]+') 40%, var(--ds-border))">'+
+        '<b>'+s[1]+'</b><br><span style="opacity:.9">浅底 + 主色细边 + 底上文字</span></div>';
+    }).join('');
+  }
+  function refreshHex(){
+    document.querySelectorAll('.swatch-hex[data-var]').forEach(function(el){ el.textContent = hexOf(el.dataset.var); });
+  }
+  // 图标集（细线 1.6 / 24）
+  var ICONS = {
+    '首页':'<path d="m3 11 9-7 9 7"/><path d="M5 10v10h14V10"/>',
+    '搜索':'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>',
+    '购物袋':'<path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/>',
+    '收藏':'<path d="M19 8.5c0 4.5-7 9.5-7 9.5s-7-5-7-9.5A3.5 3.5 0 0 1 12 6a3.5 3.5 0 0 1 7 2.5z"/>',
+    '用户':'<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>',
+    '设置':'<circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.6 1.6 0 0 0 .3 1.8 2 2 0 1 1-2.8 2.8 1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0 1.6 1.6 0 0 0-2.7-1.1 2 2 0 1 1-2.8-2.8A1.6 1.6 0 0 0 4.3 14 2 2 0 1 1 4 10a1.6 1.6 0 0 0 1.1-2.7 2 2 0 1 1 2.8-2.8A1.6 1.6 0 0 0 11 3V3a2 2 0 1 1 4 0 1.6 1.6 0 0 0 2.7 1.1 2 2 0 1 1 2.8 2.8A1.6 1.6 0 0 0 21 10z"/>',
+    '日历':'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>',
+    '通知':'<path d="M19 14c0-4-3.6-7-7-7s-7 3-7 7l-1 4h16z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/>',
+    '邮件':'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    '叶':'<path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16z"/><path d="M11 20c0-6 2-9 6-12"/>',
+    '咖啡':'<path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 9h2a2.5 2.5 0 0 1 0 5h-2"/><path d="M7 4v1.5M11 4v1.5"/>',
+    '位置':'<path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+    '心':'<path d="M19 8.5c0 4.5-7 9.5-7 9.5s-7-5-7-9.5A3.5 3.5 0 0 1 12 6a3.5 3.5 0 0 1 7 2.5z"/>',
+    '相机':'<rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-2h5L16 7"/>',
+    '标签':'<path d="M20.6 8.4 13.1 1A2 2 0 0 0 11.7.4H4a2 2 0 0 0-2 2v7.7a2 2 0 0 0 .6 1.4l7.5 7.5a2 2 0 0 0 2.8 0l7.7-7.7a2 2 0 0 0 0-2.9Z"/><circle cx="7" cy="7" r="1.2"/>',
+    '时钟':'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    '下载':'<path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/>'
+  };
+  function renderIcons(){
+    document.getElementById('iconGrid').innerHTML = Object.keys(ICONS).map(function(name){
+      return '<div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[name]+'</svg><span>'+name+'</span></div>';
+    }).join('');
+  }
+  renderSwatches('surfSwatches', surf);
+  renderSwatches('brandSwatches', brand);
+  renderRamp();
+  renderStates();
+  renderIcons();
+
+  // 下拉菜单
+  function toggleMenu(){
+    var m = document.getElementById('ddMenu'), b = document.getElementById('ddBtn');
+    var open = !m.hasAttribute('hidden');
+    if(open){ m.setAttribute('hidden',''); b.setAttribute('aria-expanded','false'); }
+    else { m.removeAttribute('hidden'); b.setAttribute('aria-expanded','true'); }
+  }
+  document.addEventListener('click', function(e){
+    var dd = document.querySelector('.dropdown');
+    if(dd && !dd.contains(e.target)){ var m=document.getElementById('ddMenu'); if(m && !m.hasAttribute('hidden')){ m.setAttribute('hidden',''); document.getElementById('ddBtn').setAttribute('aria-expanded','false'); } }
+  });
+
+  // 模态框
+  function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
+  function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  // Toast
+  var TOAST_ICONS = {
+    success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg>',
+    danger:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+    info:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>'
+  };
+  var CLOSE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg>';
+  function showToast(type, title, msg){
+    var wrap = document.getElementById('toastWrap');
+    var t = document.createElement('div');
+    t.className = 'toast ' + (type || '');
+    t.setAttribute('role','status');
+    var icoSvg = TOAST_ICONS[type] || TOAST_ICONS.info;
+    t.innerHTML = '<span class="toast-ico">'+icoSvg+'</span>'+
+                  '<div class="toast-body"><p class="toast-title"></p><p class="toast-msg"></p></div>'+
+                  '<button class="toast-close" aria-label="关闭">'+CLOSE_ICON+'</button>';
+    t.querySelector('.toast-title').textContent = title;
+    t.querySelector('.toast-msg').textContent = msg;
+    var close = function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 240); };
+    t.querySelector('.toast-close').onclick = close;
+    wrap.appendChild(t);
+    requestAnimationFrame(function(){ t.classList.add('show'); });
+    setTimeout(close, 4000);
+  }
+</script>
+</body>
+</html>

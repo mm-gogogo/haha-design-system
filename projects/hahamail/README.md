@@ -409,4 +409,36 @@ module.exports = { presets: [require('./projects/hahamail/tailwind.preset.js')] 
 <span class="bg-success-bg text-success-fg rounded-sm px-2 text-xs"><svg class="ic-svg w-3 h-3"><use href="#i-check"/></svg> DKIM pass</span>
 ```
 
-**5. 预览**：双击 `preview.html` 即开（自包含、亮暗切换），含指标卡 + 路由规则表 + 收件箱列表 + 认证结果徽章 + DNS 代码块，全走变量。
+**5. 预览**：双击 `preview.html` 即开（自包含、亮暗切换），全走变量。preview 为**作品级 v2 展示**——顶部 Hero（`bside-hero.jpg` 分栏 + 关键指标 + CTA + 玻璃叠卡），后接指标卡 + 路由规则表 + 收件箱列表 + 认证结果徽章 + DNS 代码块等核心组件，并新增【图片用法】【图标用法】【桌面布局 ×2】【移动布局 ×2】四大区块（详见 §13）。除 `../../_fonts/fonts.css` 与 `../../_assets/**` 本地素材外**不引任何外网资源**；所有图片 `loading="lazy"` + 有意义 `alt`。
+
+---
+
+## 13. 展示页 v2（preview.html 富化区块）
+
+preview.html 在保留全部 7 类组件、亮暗主题、AA 对比与 `--ds-*` 契约的基础上，按 Showcase v2 规范补齐了「有图、有布局、信息饱满」的作品级展示。新增区块均沿用本风格身份：**靛蓝克制点缀、小圆角（4/6/8px）、描边分隔、tabular 数字、高密度**。
+
+### Hero 首屏
+顶部靛蓝分栏 Hero：左侧 eyebrow（mono）+ 大标题（`-0.04em` 字距、靛蓝重点词）+ 引导文 + 三枚关键指标（收信 / 邮箱 / 可投递性，tabular）+ 主/次 CTA；右侧 `_assets/gen/bside-hero.jpg` 实图 + 105° 渐变 scrim + 玻璃叠卡（域名在线状态 + SPF/DKIM/DMARC），消灭首屏留白。
+
+### 图片用法 Image Usage
+- **宽高比框**：16:9 / 4:3 / 1:1 / 3:4，统一 `aspect-ratio` + `object-fit:cover` + `radius-md` 小圆角。
+- **收件人头像**：尺寸阶 24 / 32 / 40 / 48；堆叠头像组（`avatar-stack`，`+N` 计数）；用户行（头像 + 名 + mono 地址）。素材取 `_assets/avatars/*`。
+- **媒体卡**：图在上（16:9）+ 标题 / 正文 / 来源，回形针附件角标，三列网格。
+- **附件缩略图**：1:1 图片缩略（`_assets/photos/square*`）+ 文档占位（SVG 图标），mono 文件名 + tabular 大小，六格网格。
+- **图文混排**：4:3 大图 + 能力清单（前导 success ✓ SVG）并排。
+- **图上叠字 Overlay**：full-bleed 图 + 上行渐变 scrim，叠白字标题与标签，保证 AA。
+
+### 图标用法 Icon Usage
+全站统一**紧凑线性内联 SVG**（`viewBox 0 0 24 24`、`stroke=currentColor`、线宽 ~1.6），经 `<symbol>`/`<use>` 精灵复用：
+- **图标集**：20 枚命名图标网格（mail/inbox/route/server/shield/key/clip/filter/star/bell/settings… 等）。
+- **尺寸阶**：16 / 20 / 24 / 32 基线对齐；线性 vs 实心（趋势箭头）、语义双色对比。
+- **场景内**：图标按钮（仅图标 + `aria-label`）、按钮内前/后置图标、输入框前置搜索图标、列表项前导图标（状态用语义色）、带数字徽标图标（`badge-icon`）。
+
+### 桌面布局 Desktop Layouts（×2）
+均包浏览器 chrome（圆点 + mono 地址栏 + 锁标），用本风格 token + 真实头像/图片：
+- **邮件三栏**：文件夹侧栏（收件箱 / 星标 / 队列 / 域名…）+ 收件箱列表（头像 + 发件人 + 主题 + 预览 + 时间）+ 阅读区（标题 + 发件人头像 + SPF/DKIM/DMARC 认证条 + 正文）。
+- **管理后台**：左侧导航 + 顶部操作栏 + 四枚 KPI 指标卡（命中 / 队列深度 / webhook 失败 / 退信率）+ 路由规则表（地址 → 动作 Tag + 目标 + 状态点 + 命中数）。
+
+### 移动布局 Mobile Layouts（×2，≈375px 手机框）
+- **收件箱**：顶栏（Logo + 搜索 / 写信图标）+ 收件箱列表（未读点 / mono 发件人 / 主题 / 预览 / 时间）+ 认证徽章条 + 底部 Tab 导航。
+- **阅读视图**：返回 / 星标 / 归档 顶栏 + 邮件标题 + 发件人头像行 + 认证徽章 + 正文 + 附件缩略图 + 回复 / 转发 / 下载 操作条；触控目标 ≥44px。

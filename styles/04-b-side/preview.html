@@ -2,6 +2,7 @@
 <html lang="zh-CN" data-theme="light">
 <head>
 <link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>B 端风 · 后台控制台 — Design System Preview</title>
@@ -406,25 +407,284 @@
     font-family:inherit; font-size:var(--ds-text-sm); font-variant-numeric:var(--ds-numeric); }
   .pager .pg-jump input:focus { outline:none; border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
 
-  /* ---------- 移动端示意框 ---------- */
-  .phone { width:375px; max-width:100%; flex:none; border:1px solid var(--ds-border-strong);
-    border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg); box-shadow:var(--ds-shadow-md); }
-  .phone .p-top { display:flex; align-items:center; gap:var(--ds-space-2); height:48px;
+  /* ---------- 移动端屏内内容（置于 .dvc17 .dvc-body 中） ---------- */
+  .dvc-body .p-top { display:flex; align-items:center; gap:var(--ds-space-2); height:48px;
     padding:0 var(--ds-space-3); background:var(--ds-bg); border-bottom:1px solid var(--ds-border); }
-  .phone .p-top .p-brand { font-size:var(--ds-text-base); font-weight:var(--ds-weight-bold); flex:1; }
-  .phone .p-top .p-ic { width:28px; height:28px; flex:none; border-radius:var(--ds-radius-sm);
+  .dvc-body .p-top .p-brand { font-size:var(--ds-text-base); font-weight:var(--ds-weight-bold); flex:1; }
+  .dvc-body .p-top .p-ic { width:28px; height:28px; flex:none; border-radius:var(--ds-radius-sm);
     background:var(--ds-bg-sunken); }
-  .phone .p-body { padding:var(--ds-space-3); background:var(--ds-bg-subtle); }
-  .phone .p-card { background:var(--ds-bg-elevated); border:1px solid var(--ds-border);
+  .dvc-body .p-body { padding:var(--ds-space-3); background:var(--ds-bg-subtle); }
+  .dvc-body .p-card { background:var(--ds-bg-elevated); border:1px solid var(--ds-border);
     border-radius:var(--ds-radius-md); padding:var(--ds-space-3); margin-bottom:var(--ds-space-3); }
-  .phone .p-card .k { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-bottom:var(--ds-space-1); }
-  .phone .p-card .v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold);
+  .dvc-body .p-card .k { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-bottom:var(--ds-space-1); }
+  .dvc-body .p-card .v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold);
     letter-spacing:var(--ds-tracking-tight); font-variant-numeric:var(--ds-numeric); }
-  .phone .p-list .p-li { display:flex; align-items:center; gap:var(--ds-space-2);
+  .dvc-body .p-list .p-li { display:flex; align-items:center; gap:var(--ds-space-2);
     padding:var(--ds-space-2) 0; border-bottom:1px solid var(--ds-border); font-size:var(--ds-text-sm); }
-  .phone .p-list .p-li:last-child { border-bottom:none; }
-  .phone .p-list .p-li .spacer { flex:1; }
-  .phone .p-list .p-li .num { font-variant-numeric:var(--ds-numeric); color:var(--ds-fg-muted); }
+  .dvc-body .p-list .p-li:last-child { border-bottom:none; }
+  .dvc-body .p-list .p-li .spacer { flex:1; }
+  .dvc-body .p-list .p-li .num { font-variant-numeric:var(--ds-numeric); color:var(--ds-fg-muted); }
+
+  /* ============================================================
+     富化区块：Hero / 图片用法 / 图标用法 / 布局小样
+     —— 身份：中性灰 + 高密度 + 小圆角(--ds-radius) + 弱阴影靠描边
+     ============================================================ */
+
+  /* ---------- Hero 首屏（分栏图 + 信息密集） ---------- */
+  .hero { background:var(--ds-bg); border-bottom:1px solid var(--ds-border); }
+  .hero-inner { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:var(--ds-space-9);
+    align-items:center; max-width:1240px; margin:0 auto; padding:var(--ds-space-9) var(--ds-space-7); }
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:var(--ds-space-2); height:24px; padding:0 var(--ds-space-3);
+    background:var(--ds-info-bg); color:var(--ds-info-fg); border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-full); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium);
+    letter-spacing:.02em; }
+  .hero h1 { margin:var(--ds-space-4) 0 var(--ds-space-3); font-size:var(--ds-text-3xl); font-weight:var(--ds-weight-bold);
+    letter-spacing:-0.02em; line-height:var(--ds-leading-tight); }
+  .hero .lede { margin:0; max-width:48ch; color:var(--ds-fg-muted); font-size:var(--ds-text-md); line-height:var(--ds-leading-relaxed); }
+  .hero-cta { display:flex; flex-wrap:wrap; gap:var(--ds-space-3); margin-top:var(--ds-space-6); align-items:center; }
+  .hero-metrics { display:flex; flex-wrap:wrap; gap:var(--ds-space-7); margin-top:var(--ds-space-7);
+    padding-top:var(--ds-space-6); border-top:1px solid var(--ds-border); }
+  .hero-metrics .m .v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:var(--ds-tracking-tight);
+    font-variant-numeric:var(--ds-numeric); }
+  .hero-metrics .m .k { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-top:2px; }
+  .hero-media { position:relative; }
+  .hero-media img { display:block; width:100%; height:100%; max-height:380px; object-fit:cover;
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); }
+  .hero-media .badge { position:absolute; left:var(--ds-space-4); bottom:var(--ds-space-4);
+    display:inline-flex; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-2) var(--ds-space-3);
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md);
+    box-shadow:var(--ds-shadow-md); font-size:var(--ds-text-xs); }
+  @media (max-width:840px){ .hero-inner { grid-template-columns:1fr; gap:var(--ds-space-6); padding:var(--ds-space-7) var(--ds-space-5); }
+    .hero-media img { max-height:260px; } }
+
+  /* 富化区块的外层容器（与 shell 内容区分开，居中铺排） */
+  .showcase { max-width:1240px; margin:0 auto; padding:var(--ds-space-8) var(--ds-space-7); }
+  .sc-head { margin:0 0 var(--ds-space-5); }
+  .sc-head h2 { margin:0; font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); letter-spacing:var(--ds-tracking-tight); }
+  .sc-head .en { font-size:var(--ds-text-sm); color:var(--ds-fg-subtle); margin-top:2px; }
+  .sc-sub { font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); color:var(--ds-fg-subtle);
+    text-transform:uppercase; letter-spacing:.06em; margin:var(--ds-space-6) 0 var(--ds-space-3); }
+  .sc-sub:first-child { margin-top:0; }
+
+  /* ---------- 图片用法 ---------- */
+  /* 统一比例框 */
+  .ratio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:var(--ds-space-4); }
+  .ratio { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-sunken); }
+  .ratio img { display:block; width:100%; height:100%; object-fit:cover; }
+  .ratio-16x9 { aspect-ratio:16/9; } .ratio-4x3 { aspect-ratio:4/3; }
+  .ratio-1x1 { aspect-ratio:1/1; } .ratio-3x4 { aspect-ratio:3/4; }
+  .ratio-cap { display:flex; justify-content:space-between; padding:var(--ds-space-2) var(--ds-space-3);
+    background:var(--ds-bg-elevated); border-top:1px solid var(--ds-border); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .ratio-cap .mono { color:var(--ds-fg-subtle); }
+
+  /* 媒体卡 */
+  .media-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:var(--ds-space-4); }
+  .media-card { background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; }
+  .media-card .thumb { aspect-ratio:16/9; background:var(--ds-bg-sunken); }
+  .media-card .thumb img { display:block; width:100%; height:100%; object-fit:cover; }
+  .media-card .mc-body { padding:var(--ds-space-4); }
+  .media-card .mc-title { font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); margin:0 0 var(--ds-space-1); }
+  .media-card .mc-desc { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); margin:0 0 var(--ds-space-3); line-height:var(--ds-leading-normal); }
+  .media-card .mc-foot { display:flex; align-items:center; gap:var(--ds-space-2); }
+  .media-card .mc-foot .spacer { flex:1; }
+
+  /* 等高画廊网格 */
+  .gallery { display:grid; grid-template-columns:repeat(6,1fr); gap:var(--ds-space-3); }
+  .gallery .g-cell { aspect-ratio:1/1; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-sunken); }
+  .gallery .g-cell.wide { grid-column:span 2; aspect-ratio:2/1; }
+  .gallery .g-cell img { display:block; width:100%; height:100%; object-fit:cover;
+    transition:transform var(--ds-dur-base) var(--ds-ease); }
+  .gallery .g-cell:hover img { transform:scale(1.04); }
+  @media (max-width:640px){ .gallery { grid-template-columns:repeat(3,1fr); } .gallery .g-cell.wide { grid-column:span 2; } }
+
+  /* 图文混排 */
+  .feature-split { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:var(--ds-space-7); align-items:center;
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; }
+  .feature-split .fs-media { aspect-ratio:4/3; background:var(--ds-bg-sunken); }
+  .feature-split .fs-media img { display:block; width:100%; height:100%; object-fit:cover; }
+  .feature-split .fs-body { padding:var(--ds-space-7); }
+  .feature-split .fs-body h3 { margin:0 0 var(--ds-space-2); font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); }
+  .feature-split .fs-body p { margin:0 0 var(--ds-space-4); color:var(--ds-fg-muted); font-size:var(--ds-text-base); line-height:var(--ds-leading-relaxed); max-width:60ch; }
+  .feature-split ul.fs-points { list-style:none; padding:0; margin:0 0 var(--ds-space-5); }
+  .feature-split ul.fs-points li { display:flex; align-items:flex-start; gap:var(--ds-space-2);
+    font-size:var(--ds-text-sm); color:var(--ds-fg); padding:var(--ds-space-1) 0; }
+  .feature-split ul.fs-points li svg { width:16px; height:16px; flex:none; margin-top:1px; color:var(--ds-primary);
+    stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  @media (max-width:840px){ .feature-split { grid-template-columns:1fr; } .feature-split .fs-body { padding:var(--ds-space-5); } }
+
+  /* 图上叠字 Overlay */
+  .overlay-card { position:relative; aspect-ratio:21/9; border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg);
+    overflow:hidden; background:var(--ds-bg-sunken); }
+  .overlay-card img { display:block; width:100%; height:100%; object-fit:cover; }
+  .overlay-card .scrim { position:absolute; inset:0; background:linear-gradient(90deg, rgba(8,12,20,.78) 0%, rgba(8,12,20,.45) 45%, rgba(8,12,20,0) 80%); }
+  .overlay-card .ov-body { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+    padding:var(--ds-space-7); max-width:60%; }
+  .overlay-card .ov-body .ov-tag { display:inline-flex; align-self:flex-start; padding:2px var(--ds-space-2);
+    background:rgba(255,255,255,.16); color:#fff; border-radius:var(--ds-radius-sm); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); }
+  .overlay-card .ov-body h3 { margin:var(--ds-space-3) 0 var(--ds-space-2); color:#fff; font-size:var(--ds-text-2xl);
+    font-weight:var(--ds-weight-bold); letter-spacing:var(--ds-tracking-tight); }
+  .overlay-card .ov-body p { margin:0; color:rgba(255,255,255,.86); font-size:var(--ds-text-sm); line-height:var(--ds-leading-normal); }
+  @media (max-width:640px){ .overlay-card { aspect-ratio:16/9; } .overlay-card .ov-body { max-width:88%; padding:var(--ds-space-5); }
+    .overlay-card .scrim { background:linear-gradient(90deg, rgba(8,12,20,.8) 0%, rgba(8,12,20,.45) 100%); } }
+
+  /* 头像用法 */
+  .avatar { border-radius:var(--ds-radius-full); object-fit:cover; border:1px solid var(--ds-border); background:var(--ds-bg-sunken); display:block; }
+  .av-24 { width:24px; height:24px; } .av-32 { width:32px; height:32px; }
+  .av-40 { width:40px; height:40px; } .av-48 { width:48px; height:48px; }
+  .avatar-stack { display:inline-flex; }
+  .avatar-stack .avatar { margin-left:-8px; box-shadow:0 0 0 2px var(--ds-bg-elevated); border:none; }
+  .avatar-stack .avatar:first-child { margin-left:0; }
+  .avatar-stack .more { width:32px; height:32px; margin-left:-8px; border-radius:var(--ds-radius-full);
+    background:var(--ds-bg-sunken); color:var(--ds-fg-muted); display:inline-flex; align-items:center; justify-content:center;
+    font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); box-shadow:0 0 0 2px var(--ds-bg-elevated); font-variant-numeric:var(--ds-numeric); }
+  .user-row { display:flex; align-items:center; gap:var(--ds-space-3); }
+  .user-row .u-name { font-size:var(--ds-text-base); font-weight:var(--ds-weight-medium); }
+  .user-row .u-sub { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); }
+
+  /* 背景大图区 */
+  .bg-feature { position:relative; border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; }
+  .bg-feature img.bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .bg-feature .bg-scrim { position:absolute; inset:0; background:rgba(13,18,28,.66); }
+  .bg-feature .bg-body { position:relative; padding:var(--ds-space-9) var(--ds-space-7); color:#fff; }
+  .bg-feature .bg-body h3 { margin:0 0 var(--ds-space-2); font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:var(--ds-tracking-tight); }
+  .bg-feature .bg-body p { margin:0 0 var(--ds-space-5); color:rgba(255,255,255,.84); font-size:var(--ds-text-base); max-width:56ch; line-height:var(--ds-leading-relaxed); }
+  .bg-feature .bg-stats { display:flex; flex-wrap:wrap; gap:var(--ds-space-8); }
+  .bg-feature .bg-stats .v { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); }
+  .bg-feature .bg-stats .k { font-size:var(--ds-text-xs); color:rgba(255,255,255,.7); margin-top:2px; }
+
+  /* ---------- 图标用法 ---------- */
+  .icon-set { display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:var(--ds-space-2); }
+  .icon-cell { display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-4) var(--ds-space-2);
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); background:var(--ds-bg-elevated); text-align:center; }
+  .icon-cell svg { width:24px; height:24px; color:var(--ds-fg); stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  .icon-cell .nm { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .icon-scale { display:flex; align-items:flex-end; gap:var(--ds-space-6); }
+  .icon-scale .is { display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-1); color:var(--ds-fg); }
+  .icon-scale .is svg { stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  .icon-scale .is .lbl { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .icon-baseline { display:inline-flex; align-items:center; gap:var(--ds-space-1); font-size:var(--ds-text-base); }
+  .icon-baseline svg { width:1em; height:1em; vertical-align:-0.15em; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  .icon-btn { width:var(--ds-control-md); height:var(--ds-control-md); flex:none; display:inline-flex; align-items:center; justify-content:center;
+    background:var(--ds-bg); color:var(--ds-fg-muted); border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-md); cursor:pointer;
+    transition:color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease); }
+  .icon-btn:hover { color:var(--ds-primary); border-color:var(--ds-primary); }
+  .icon-btn:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .icon-btn svg { width:18px; height:18px; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  .input-icon { position:relative; }
+  .input-icon svg { position:absolute; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--ds-fg-subtle);
+    stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; pointer-events:none; }
+  .input-icon svg.lead { left:var(--ds-space-3); } .input-icon svg.trail { right:var(--ds-space-3); }
+  .input-icon .input { padding-left:32px; }
+  .icon-badge { position:relative; display:inline-flex; }
+  .icon-badge .count { position:absolute; top:-6px; right:-8px; min-width:16px; height:16px; padding:0 4px;
+    display:inline-flex; align-items:center; justify-content:center; background:var(--ds-danger); color:#fff;
+    border-radius:var(--ds-radius-full); font-size:10px; font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); }
+
+  /* ---------- 浏览器 chrome frame（桌面小样） ---------- */
+  .frame { border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg);
+    box-shadow:var(--ds-shadow-md); }
+  .frame-bar { display:flex; align-items:center; gap:var(--ds-space-3); height:36px; padding:0 var(--ds-space-3);
+    background:var(--ds-bg-subtle); border-bottom:1px solid var(--ds-border); }
+  .frame-bar .dots { display:flex; gap:6px; }
+  .frame-bar .dots i { width:10px; height:10px; border-radius:var(--ds-radius-full); background:var(--ds-border-strong); display:block; }
+  .frame-bar .addr { flex:1; height:22px; max-width:420px; display:flex; align-items:center; gap:var(--ds-space-1);
+    padding:0 var(--ds-space-2); background:var(--ds-bg); border:1px solid var(--ds-border); border-radius:var(--ds-radius-full);
+    font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .frame-bar .addr svg { width:11px; height:11px; flex:none; stroke:currentColor; stroke-width:2; fill:none; }
+  .frame-bar .lbl { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); }
+  .frame-body { background:var(--ds-bg-subtle); }
+
+  /* 迷你应用外壳（用于桌面小样） */
+  .mini { display:grid; grid-template-columns:160px 1fr; min-height:340px; }
+  .mini-side { background:var(--ds-bg); border-right:1px solid var(--ds-border); padding:var(--ds-space-3); }
+  .mini-brand { display:flex; align-items:center; gap:var(--ds-space-2); font-size:var(--ds-text-sm); font-weight:var(--ds-weight-bold);
+    padding:var(--ds-space-1) var(--ds-space-2) var(--ds-space-3); }
+  .mini-brand svg { width:16px; height:16px; color:var(--ds-primary); }
+  .mini-nav { display:flex; align-items:center; gap:var(--ds-space-2); height:30px; padding:0 var(--ds-space-2); margin-bottom:2px;
+    border-radius:var(--ds-radius-sm); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+  .mini-nav svg { width:15px; height:15px; flex:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  .mini-nav.active { background:var(--ds-info-bg); color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .mini-main { padding:var(--ds-space-4); overflow:hidden; }
+  .mini-top { display:flex; align-items:center; gap:var(--ds-space-2); margin-bottom:var(--ds-space-3); }
+  .mini-top h4 { margin:0; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); flex:1; }
+  .mini-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-3); margin-bottom:var(--ds-space-3); }
+  .mini-kpi { background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:var(--ds-space-3); }
+  .mini-kpi .k { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); }
+  .mini-kpi .v { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); letter-spacing:var(--ds-tracking-tight); }
+  .mini-kpi .d { font-size:11px; font-variant-numeric:var(--ds-numeric); }
+  .mini-chart { background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md);
+    padding:var(--ds-space-3); }
+  .mini-chart .ch-head { display:flex; align-items:center; margin-bottom:var(--ds-space-3); }
+  .mini-chart .ch-head .t { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); flex:1; }
+  .bars { display:flex; align-items:flex-end; gap:var(--ds-space-2); height:88px; }
+  .bars .bar { flex:1; background:var(--ds-info-bg); border:1px solid var(--ds-border); border-bottom:none;
+    border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 0 0; position:relative; }
+  .bars .bar::after { content:""; position:absolute; left:0; right:0; bottom:0; background:var(--ds-primary);
+    border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 0 0; height:var(--h,40%); }
+  .mini-table { width:100%; border-collapse:collapse; font-size:var(--ds-text-xs); background:var(--ds-bg-elevated);
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; }
+  .mini-table th { background:var(--ds-bg-subtle); color:var(--ds-fg-muted); text-align:left; font-weight:var(--ds-weight-medium);
+    padding:var(--ds-space-1) var(--ds-space-2); border-bottom:1px solid var(--ds-border-strong); }
+  .mini-table td { padding:var(--ds-space-1) var(--ds-space-2); border-bottom:1px solid var(--ds-border); }
+  .mini-table tr:last-child td { border-bottom:none; }
+  .mini-table .num { font-variant-numeric:var(--ds-numeric); text-align:right; }
+
+  /* 列表-详情 小样 */
+  .mini-ld { display:grid; grid-template-columns:248px 1fr; min-height:360px; }
+  .mini-list { background:var(--ds-bg); border-right:1px solid var(--ds-border); }
+  .mini-list .ml-head { display:flex; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-3);
+    border-bottom:1px solid var(--ds-border); }
+  .ml-item { display:flex; gap:var(--ds-space-2); padding:var(--ds-space-3); border-bottom:1px solid var(--ds-border); cursor:pointer;
+    transition:background var(--ds-dur-fast) var(--ds-ease); }
+  .ml-item:hover { background:var(--ds-bg-subtle); }
+  .ml-item.active { background:var(--ds-info-bg); }
+  .ml-item .ml-thumb { width:40px; height:40px; flex:none; border-radius:var(--ds-radius-md); object-fit:cover;
+    border:1px solid var(--ds-border); background:var(--ds-bg-sunken); }
+  .ml-item .ml-name { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  .ml-item .ml-meta { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-top:2px; }
+  .ml-item .spacer { flex:1; }
+  .mini-detail { padding:var(--ds-space-5); overflow:hidden; }
+  .mini-detail .md-hero { aspect-ratio:21/9; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden;
+    background:var(--ds-bg-sunken); margin-bottom:var(--ds-space-4); }
+  .mini-detail .md-hero img { width:100%; height:100%; object-fit:cover; display:block; }
+  .mini-detail h4 { margin:0 0 var(--ds-space-1); font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); }
+  .mini-detail .md-sub { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); margin:0 0 var(--ds-space-4); }
+  .md-meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:var(--ds-space-3); margin-bottom:var(--ds-space-4); }
+  .md-meta .mi { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:var(--ds-space-2) var(--ds-space-3); }
+  .md-meta .mi .k { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); }
+  .md-meta .mi .v { font-size:var(--ds-text-base); font-weight:var(--ds-weight-medium); font-variant-numeric:var(--ds-numeric); margin-top:2px; }
+  @media (max-width:640px){ .mini-ld { grid-template-columns:1fr; } .mini-list { display:none; } .mini { grid-template-columns:1fr; } .mini-side { display:none; } }
+
+  /* 移动布局并排陈列（多台 .dvc17 并排） */
+  .phones { display:flex; flex-wrap:wrap; gap:var(--ds-space-7); justify-content:center; align-items:flex-start; }
+  .dvc-body .p-hero { position:relative; aspect-ratio:16/10; background:var(--ds-bg-sunken); }
+  .dvc-body .p-hero img { width:100%; height:100%; object-fit:cover; display:block; }
+  .dvc-body .p-hero .scrim { position:absolute; inset:0; background:linear-gradient(0deg, rgba(8,12,20,.7), rgba(8,12,20,0) 60%); }
+  .dvc-body .p-hero .ph-title { position:absolute; left:var(--ds-space-3); bottom:var(--ds-space-3); right:var(--ds-space-3); color:#fff; }
+  .dvc-body .p-hero .ph-title h5 { margin:0; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .dvc-body .p-hero .ph-title .s { font-size:var(--ds-text-xs); color:rgba(255,255,255,.85); }
+  .dvc-body .p-feed .p-fcard { background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md);
+    overflow:hidden; margin-bottom:var(--ds-space-3); }
+  .dvc-body .p-feed .p-fcard .fc-img { aspect-ratio:16/9; background:var(--ds-bg-sunken); }
+  .dvc-body .p-feed .p-fcard .fc-img img { width:100%; height:100%; object-fit:cover; display:block; }
+  .dvc-body .p-feed .p-fcard .fc-body { padding:var(--ds-space-3); }
+  .dvc-body .p-feed .p-fcard .fc-t { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  .dvc-body .p-feed .p-fcard .fc-m { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-top:2px; display:flex; align-items:center; gap:var(--ds-space-1); }
+  .dvc-body .p-listrow { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) 0; border-bottom:1px solid var(--ds-border); }
+  .dvc-body .p-listrow:last-child { border-bottom:none; }
+  .dvc-body .p-listrow .lr-name { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  .dvc-body .p-listrow .lr-msg { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-top:2px; }
+  .dvc-body .p-listrow .spacer { flex:1; }
+  .dvc-body .p-listrow .lr-time { font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric); }
+  /* 底部标签栏：吸附在屏内底部，避让 home 指示条 */
+  .dvc-body .p-tabbar { position:sticky; bottom:0; display:flex; height:50px; padding-bottom:18px;
+    border-top:1px solid var(--ds-border); background:var(--ds-bg); }
+  .dvc-body .p-tabbar .p-tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    color:var(--ds-fg-subtle); font-size:10px; }
+  .dvc-body .p-tabbar .p-tab.active { color:var(--ds-primary); }
+  .dvc-body .p-tabbar .p-tab svg { width:18px; height:18px; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+  .dvc-body .p-detail-actions { display:flex; gap:var(--ds-space-2); padding:var(--ds-space-3) var(--ds-space-3) 28px; }
+  .dvc-body .p-detail-actions .btn { flex:1; }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition-duration:.01ms !important; animation-duration:.01ms !important; }
@@ -452,6 +712,35 @@
 </style>
 </head>
 <body>
+
+<!-- ============ Hero 首屏 ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="hero-eyebrow">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;stroke-width:2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        后台控制台 · Console Kit
+      </span>
+      <h1>为「一天盯八小时」的后台而生的设计系统</h1>
+      <p class="lede">高密度、信息优先、中性克制。表格友好、表单密集、效率至上——小圆角、弱阴影、靠 1px 描边划界，让每一处都可扫读。对标 Ant Design / Arco 的克制版。</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg">进入控制台</button>
+        <button class="btn btn-secondary btn-lg">查看组件</button>
+        <span class="subtle" style="font-size:var(--ds-text-sm);">亮 / 暗双主题 · WCAG AA · 全量 <code>--ds-*</code> 契约</span>
+      </div>
+      <div class="hero-metrics">
+        <div class="m"><div class="v">38,902</div><div class="k">活跃用户</div></div>
+        <div class="m"><div class="v">¥892,401</div><div class="k">今日交易额</div></div>
+        <div class="m"><div class="v">99.98%</div><div class="k">服务可用性</div></div>
+        <div class="m"><div class="v">142ms</div><div class="k">P95 延迟</div></div>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="../../_assets/gen/bside-hero.jpg" alt="后台控制台数据看板示意图" loading="lazy" />
+      <span class="badge"><span class="dot dot-success"></span>实时数据 · 12 节点在线</span>
+    </div>
+  </div>
+</section>
 
 <!-- ============ 顶栏 ============ -->
 <header class="topbar">
@@ -831,30 +1120,46 @@
 
     <!-- 移动端 / 响应式 -->
     <section class="block">
-      <h3 class="block-title">移动端 · Mobile（约 375px）</h3>
-      <p class="subtle" style="font-size:12px;margin:0 0 12px;">窄屏下侧栏收起、多列栅格收为一列、宽表横向滚动；下方为约 375px 手机框示意。</p>
+      <h3 class="block-title">移动端 · Mobile（iPhone 17 Pro Max 套壳）</h3>
+      <p class="subtle" style="font-size:12px;margin:0 0 12px;">窄屏下侧栏收起、多列栅格收为一列、宽表横向滚动；下方为标准 iPhone 17 Pro Max 设备框示意。</p>
       <div class="card row" style="gap:24px;align-items:flex-start;background:var(--ds-bg-sunken);justify-content:center;">
-        <div class="phone">
-          <div class="p-top">
-            <span class="p-ic"></span>
-            <span class="p-brand">控制台</span>
-            <button class="btn btn-primary btn-sm">+ 新建</button>
-          </div>
-          <div class="p-body">
-            <div class="p-card">
-              <div class="k">今日交易额（元）</div>
-              <div class="v">¥ 892,401</div>
-              <div class="up num" style="font-size:12px;margin-top:4px;"><svg class="delta-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>3.1% 环比</div>
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
             </div>
-            <div class="p-card" style="padding:0;">
-              <div class="p-list" style="padding:0 12px;">
-                <div class="p-li"><span class="status"><span class="dot dot-success"></span>北京云图科技</span><span class="spacer"></span><span class="num">128,400</span></div>
-                <div class="p-li"><span class="status"><span class="dot dot-info"></span>上海数擎信息</span><span class="spacer"></span><span class="num">9,820</span></div>
-                <div class="p-li"><span class="status"><span class="dot dot-warning"></span>深圳鲸落网络</span><span class="spacer"></span><span class="num">76,005</span></div>
-                <div class="p-li"><span class="status"><span class="dot dot-danger"></span>杭州栖云数据</span><span class="spacer"></span><span class="num">2,140</span></div>
+            <div class="dvc-body">
+              <div class="p-top">
+                <span class="p-ic"></span>
+                <span class="p-brand">控制台</span>
+                <button class="btn btn-primary btn-sm">+ 新建</button>
+              </div>
+              <div class="p-body">
+                <div class="p-card">
+                  <div class="k">今日交易额（元）</div>
+                  <div class="v">¥ 892,401</div>
+                  <div class="up num" style="font-size:12px;margin-top:4px;"><svg class="delta-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>3.1% 环比</div>
+                </div>
+                <div class="p-card" style="padding:0;">
+                  <div class="p-list" style="padding:0 12px;">
+                    <div class="p-li"><span class="status"><span class="dot dot-success"></span>北京云图科技</span><span class="spacer"></span><span class="num">128,400</span></div>
+                    <div class="p-li"><span class="status"><span class="dot dot-info"></span>上海数擎信息</span><span class="spacer"></span><span class="num">9,820</span></div>
+                    <div class="p-li"><span class="status"><span class="dot dot-warning"></span>深圳鲸落网络</span><span class="spacer"></span><span class="num">76,005</span></div>
+                    <div class="p-li"><span class="status"><span class="dot dot-danger"></span>杭州栖云数据</span><span class="spacer"></span><span class="num">2,140</span></div>
+                  </div>
+                </div>
+                <button class="btn btn-secondary" style="width:100%;">查看全部订单</button>
               </div>
             </div>
-            <button class="btn btn-secondary" style="width:100%;">查看全部订单</button>
+            <div class="home"></div>
           </div>
         </div>
         <div style="flex:1;min-width:200px;max-width:320px;">
@@ -869,11 +1174,482 @@
       </div>
     </section>
 
-    <p class="subtle" style="text-align:center;font-size:12px;margin:32px 0 8px;">
-      B 端风 · 后台控制台 Kit — 全部样式走 <code>var(--ds-*)</code>，真实字体来自 <code>../../_fonts/fonts.css</code> · 切换主题验证亮暗双相。
-    </p>
   </main>
 </div>
+
+<!-- ============================================================
+     富化区块：图片用法 / 图标用法 / 桌面布局 / 移动布局
+     ============================================================ -->
+
+<!-- ============ 图片用法 ============ -->
+<section class="showcase">
+  <div class="sc-head">
+    <h2>图片用法</h2>
+    <div class="en">Image Usage — 统一比例、小圆角、1px 描边；图片服务于信息，不喧宾夺主</div>
+  </div>
+
+  <div class="sc-sub">统一宽高比框 · aspect-ratio + object-fit:cover</div>
+  <div class="ratio-grid">
+    <div class="ratio"><div class="ratio-16x9"><img src="../../_assets/photos/workspace.jpg" alt="协作工位环境" loading="lazy" /></div><div class="ratio-cap"><span>16:9</span><span class="mono">封面 / 大图</span></div></div>
+    <div class="ratio"><div class="ratio-4x3"><img src="../../_assets/photos/tech.jpg" alt="数据中心机房" loading="lazy" /></div><div class="ratio-cap"><span>4:3</span><span class="mono">卡片缩略</span></div></div>
+    <div class="ratio"><div class="ratio-1x1"><img src="../../_assets/photos/square1.jpg" alt="方形素材" loading="lazy" /></div><div class="ratio-cap"><span>1:1</span><span class="mono">头像 / 图标位</span></div></div>
+    <div class="ratio"><div class="ratio-3x4"><img src="../../_assets/photos/portrait1.jpg" alt="人物纵向照片" loading="lazy" /></div><div class="ratio-cap"><span>3:4</span><span class="mono">纵向卡</span></div></div>
+  </div>
+
+  <div class="sc-sub">媒体卡 · 图在上 + 标题正文操作</div>
+  <div class="media-grid">
+    <article class="media-card">
+      <div class="thumb"><img src="../../_assets/photos/architecture.jpg" alt="园区建筑外景" loading="lazy" /></div>
+      <div class="mc-body">
+        <h3 class="mc-title">机房巡检报告</h3>
+        <p class="mc-desc">华东 3 区季度巡检完成，PUE 1.28，无高危项。报告含 12 项指标趋势与建议。</p>
+        <div class="mc-foot"><span class="tag tag-success"><span class="dot dot-success"></span>已通过</span><span class="spacer"></span><button class="btn btn-secondary btn-sm">查看</button></div>
+      </div>
+    </article>
+    <article class="media-card">
+      <div class="thumb"><img src="../../_assets/photos/city.jpg" alt="城市天际线" loading="lazy" /></div>
+      <div class="mc-body">
+        <h3 class="mc-title">区域容量规划</h3>
+        <p class="mc-desc">华南节点流量同比 <span class="num">+24%</span>，建议 Q3 扩容两个可用区以缓冲峰值。</p>
+        <div class="mc-foot"><span class="tag tag-warning"><span class="dot dot-warning"></span>需评审</span><span class="spacer"></span><button class="btn btn-secondary btn-sm">查看</button></div>
+      </div>
+    </article>
+    <article class="media-card">
+      <div class="thumb"><img src="../../_assets/photos/desk.jpg" alt="办公桌与显示器" loading="lazy" /></div>
+      <div class="mc-body">
+        <h3 class="mc-title">坐席工作台升级</h3>
+        <p class="mc-desc">客服坐席界面重构上线，平均处理时长下降 <span class="num">18%</span>，满意度提升。</p>
+        <div class="mc-foot"><span class="tag tag-info"><span class="dot dot-info"></span>进行中</span><span class="spacer"></span><button class="btn btn-secondary btn-sm">查看</button></div>
+      </div>
+    </article>
+  </div>
+
+  <div class="sc-sub">图片网格 / 画廊 · 等高网格</div>
+  <div class="gallery">
+    <div class="g-cell wide"><img src="../../_assets/photos/mountain.jpg" alt="山脉风景" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/ocean.jpg" alt="海洋" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/forest.jpg" alt="森林" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/coffee.jpg" alt="咖啡" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/street.jpg" alt="街景" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/square2.jpg" alt="方形素材二" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/square3.jpg" alt="方形素材三" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/travel.jpg" alt="旅行" loading="lazy" /></div>
+    <div class="g-cell"><img src="../../_assets/photos/food.jpg" alt="食物" loading="lazy" /></div>
+  </div>
+
+  <div class="sc-sub">图文混排 · 大图 + 段落并排</div>
+  <div class="feature-split">
+    <div class="fs-media"><img src="../../_assets/gen/abstract-wave.jpg" alt="抽象数据波形" loading="lazy" /></div>
+    <div class="fs-body">
+      <h3>可观测性平台</h3>
+      <p>把指标、日志、链路追踪汇聚到同一视图。秒级下钻定位异常节点，告警与工单一键打通，让排障从「翻日志」变成「看趋势」。</p>
+      <ul class="fs-points">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4 10-11"/></svg>1,200+ 指标实时采集，<span class="num">15</span> 秒粒度</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4 10-11"/></svg>异常自动归因，告警降噪 <span class="num">62%</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4 10-11"/></svg>看板可分享、可导出、可定时订阅</li>
+      </ul>
+      <button class="btn btn-primary">了解平台</button>
+    </div>
+  </div>
+
+  <div class="sc-sub">图上叠字 Overlay · 渐变 scrim 保证文字 AA</div>
+  <div class="overlay-card">
+    <img src="../../_assets/photos/hero-studio.jpg" alt="数据运营中心" loading="lazy" />
+    <div class="scrim"></div>
+    <div class="ov-body">
+      <span class="ov-tag">运营简报</span>
+      <h3>618 大促保障复盘</h3>
+      <p>峰值 QPS <span class="num">8.4 万</span>，零 P0 故障，扩容预案命中率 100%。</p>
+    </div>
+  </div>
+
+  <div class="sc-sub">头像用法 · 尺寸阶 / 堆叠组 / 用户行</div>
+  <div class="card row" style="align-items:center;gap:40px;">
+    <div class="row" style="align-items:flex-end;gap:16px;">
+      <img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="用户头像 24px" loading="lazy" />
+      <img class="avatar av-32" src="../../_assets/avatars/a5.jpg" alt="用户头像 32px" loading="lazy" />
+      <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="用户头像 40px" loading="lazy" />
+      <img class="avatar av-48" src="../../_assets/avatars/a12.jpg" alt="用户头像 48px" loading="lazy" />
+      <span class="subtle" style="font-size:12px;">24 / 32 / 40 / 48</span>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--ds-border);"></div>
+    <div class="avatar-stack" aria-label="协作成员 6 人">
+      <img class="avatar av-32" src="../../_assets/avatars/a15.jpg" alt="协作成员" loading="lazy" />
+      <img class="avatar av-32" src="../../_assets/avatars/a23.jpg" alt="协作成员" loading="lazy" />
+      <img class="avatar av-32" src="../../_assets/avatars/a33.jpg" alt="协作成员" loading="lazy" />
+      <img class="avatar av-32" src="../../_assets/avatars/a47.jpg" alt="协作成员" loading="lazy" />
+      <span class="more num">+2</span>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--ds-border);"></div>
+    <div class="user-row">
+      <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="张明的头像" loading="lazy" />
+      <div><div class="u-name">张明</div><div class="u-sub">平台运维 · 在线</div></div>
+    </div>
+  </div>
+
+  <div class="sc-sub">背景大图区 · full-bleed + 遮罩</div>
+  <div class="bg-feature">
+    <img class="bg" src="../../_assets/photos/hero-summit.jpg" alt="高山峰顶全景" loading="lazy" />
+    <div class="bg-scrim"></div>
+    <div class="bg-body">
+      <h3>把控制台部署到任何环境</h3>
+      <p>公有云、私有云、混合云一套交付。容器化部署，分钟级上线，权限与审计开箱即用。</p>
+      <div class="bg-stats">
+        <div><div class="v">31</div><div class="k">支持地域</div></div>
+        <div><div class="v">99.98%</div><div class="k">SLA 可用性</div></div>
+        <div><div class="v">2,400+</div><div class="k">企业部署</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 图标用法 ============ -->
+<section class="showcase" style="border-top:1px solid var(--ds-border);">
+  <div class="sc-head">
+    <h2>图标用法</h2>
+    <div class="en">Icon Usage — 统一线性内联 SVG，viewBox 0 0 24 24，线宽 1.8，currentColor</div>
+  </div>
+
+  <div class="sc-sub">图标集 · 本 Kit 线性图标</div>
+  <div class="icon-set">
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span class="nm">dashboard</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.5 6 4-13L17 12h4"/></svg><span class="nm">activity</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span class="nm">order</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 6a3 3 0 0 1 0 5.6M17 19a5.5 5.5 0 0 0-3-4.9"/></svg><span class="nm">users</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4-9-4Z"/><path d="M3 8v8l9 4 9-4V8"/></svg><span class="nm">package</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="M9.2 12l2 2 3.6-4"/></svg><span class="nm">shield</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><span class="nm">clock</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><span class="nm">search</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg><span class="nm">chevron</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="nm">plus</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span class="nm">upload</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span class="nm">download</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M11 4h2a8 8 0 0 1 8 8 8 8 0 0 1-8 8h-2a8 8 0 0 1 0-16Z" fill="none"/><circle cx="12" cy="12" r="7.5"/><path d="M12 8v4l3 2"/></svg><span class="nm">refresh</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="nm">list</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1l-.4-2.5h-3.8l-.4 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.4 2.5h3.8l.4-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6a7 7 0 0 0 .1-1Z"/></svg><span class="nm">settings</span></div>
+    <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nm">bell</span></div>
+  </div>
+
+  <div class="sc-sub">尺寸阶 16 / 20 / 24 / 32 · 基线对齐 · 线性 vs 实心</div>
+  <div class="card row" style="align-items:flex-end;gap:48px;">
+    <div class="icon-scale">
+      <div class="is"><svg viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg><span class="lbl">16</span></div>
+      <div class="is"><svg viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg><span class="lbl">20</span></div>
+      <div class="is"><svg viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg><span class="lbl">24</span></div>
+      <div class="is"><svg viewBox="0 0 24 24" style="width:32px;height:32px"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg><span class="lbl">32</span></div>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--ds-border);"></div>
+    <div class="row" style="gap:28px;align-items:center;">
+      <div class="is" style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ds-fg);"><svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.8;fill:none"><path d="M12 3l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L12 17.8 6.1 21.6l1.7-6.7L2.5 10l6.9-.5Z"/></svg><span class="subtle" style="font-size:12px;">线性 stroke</span></div>
+      <div class="is" style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ds-primary);"><svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:currentColor;stroke:none"><path d="M12 3l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L12 17.8 6.1 21.6l1.7-6.7L2.5 10l6.9-.5Z"/></svg><span class="subtle" style="font-size:12px;">实心 fill</span></div>
+    </div>
+  </div>
+
+  <div class="sc-sub">在场景里 · 图标按钮 / 输入框 / 列表 / 状态 / 徽标</div>
+  <div class="card">
+    <div class="row" style="align-items:center;gap:24px;margin-bottom:20px;">
+      <div class="row" style="gap:8px;">
+        <button class="icon-btn" aria-label="刷新"><svg viewBox="0 0 24 24"><path d="M20 11A8 8 0 1 0 18 16"/><path d="M20 5v6h-6"/></svg></button>
+        <button class="icon-btn" aria-label="筛选"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5Z"/></svg></button>
+        <button class="icon-btn" aria-label="更多"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg></button>
+        <span class="subtle" style="font-size:12px;">图标按钮（仅图标，有 aria-label）</span>
+      </div>
+      <div class="row" style="gap:8px;">
+        <button class="btn btn-primary"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:2"><path d="M12 5v14M5 12h14"/></svg>新建</button>
+        <button class="btn btn-secondary">导出<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:2"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 19h14"/></svg></button>
+        <span class="subtle" style="font-size:12px;">按钮内前 / 后置图标</span>
+      </div>
+    </div>
+    <div class="row" style="align-items:center;gap:24px;margin-bottom:20px;">
+      <div class="input-icon" style="width:240px;">
+        <svg class="lead" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
+        <input class="input" placeholder="搜索订单号 / 客户" />
+      </div>
+      <div class="input-icon" style="width:200px;">
+        <input class="input" value="2026-06-24" aria-label="日期" style="padding-right:32px;" />
+        <svg class="trail" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/></svg>
+      </div>
+      <span class="subtle" style="font-size:12px;">输入框前 / 后置图标</span>
+    </div>
+    <div class="row" style="align-items:center;gap:32px;">
+      <div class="row" style="gap:20px;align-items:center;">
+        <span class="status" style="color:var(--ds-success)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg>正常</span>
+        <span class="status" style="color:var(--ds-warning)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9.5 16.5H2.5L12 3Z"/><path d="M12 10v4"/><circle cx="12" cy="17.2" r="0.6" fill="currentColor" stroke="none"/></svg>预警</span>
+        <span class="status" style="color:var(--ds-danger)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>故障</span>
+        <span class="subtle" style="font-size:12px;">状态图标（语义色）</span>
+      </div>
+      <div style="width:1px;align-self:stretch;background:var(--ds-border);height:32px;"></div>
+      <div class="row" style="gap:20px;align-items:center;">
+        <span class="icon-badge"><button class="icon-btn" aria-label="通知 12 条"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button><span class="count num">12</span></span>
+        <span class="icon-badge"><button class="icon-btn" aria-label="待办 3 项"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 9h6M9 13h6"/></svg></button><span class="count num">3</span></span>
+        <span class="subtle" style="font-size:12px;">带数字的徽标图标</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 桌面布局 ============ -->
+<section class="showcase" style="border-top:1px solid var(--ds-border);">
+  <div class="sc-head">
+    <h2>桌面布局</h2>
+    <div class="en">Desktop Layouts — 用本风格 token + 真实图片做的可信缩略界面</div>
+  </div>
+
+  <div class="sc-sub">布局一 · 控制台仪表盘（侧栏 + 顶栏 + KPI + 图表 + 表格）</div>
+  <div class="frame">
+    <div class="frame-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="addr"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>console.acme.com/dashboard</span>
+      <span class="lbl">仪表盘 Dashboard</span>
+    </div>
+    <div class="frame-body">
+      <div class="mini">
+        <div class="mini-side">
+          <div class="mini-brand"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor"/></svg>Acme 控制台</div>
+          <div class="mini-nav active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>仪表盘</div>
+          <div class="mini-nav"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 9h6M9 13h6"/></svg>订单</div>
+          <div class="mini-nav"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/></svg>用户</div>
+          <div class="mini-nav"><svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4-9-4Z"/><path d="M3 8v8l9 4 9-4V8"/></svg>商品</div>
+          <div class="mini-nav"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1l-.4-2.5h-3.8l-.4 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.4 2.5h3.8l.4-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6a7 7 0 0 0 .1-1Z"/></svg>设置</div>
+        </div>
+        <div class="mini-main">
+          <div class="mini-top">
+            <h4>运营总览</h4>
+            <button class="btn btn-secondary btn-sm">本周</button>
+            <button class="btn btn-primary btn-sm">导出</button>
+          </div>
+          <div class="mini-kpis">
+            <div class="mini-kpi"><div class="k">今日订单</div><div class="v">1,284</div><div class="d up num"><svg class="delta-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>12.4%</div></div>
+            <div class="mini-kpi"><div class="k">交易额</div><div class="v">¥892k</div><div class="d up num"><svg class="delta-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>3.1%</div></div>
+            <div class="mini-kpi"><div class="k">异常工单</div><div class="v">17</div><div class="d down num"><svg class="delta-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>5</div></div>
+          </div>
+          <div class="mini-chart">
+            <div class="ch-head"><span class="t">近 7 日交易趋势</span><span class="subtle" style="font-size:11px;">单位：万元</span></div>
+            <div class="bars">
+              <span class="bar" style="--h:48%"></span><span class="bar" style="--h:62%"></span><span class="bar" style="--h:40%"></span>
+              <span class="bar" style="--h:78%"></span><span class="bar" style="--h:55%"></span><span class="bar" style="--h:90%"></span><span class="bar" style="--h:70%"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc-sub">布局二 · 列表-详情 / 数据管理（左列表 + 右详情大图 + 元信息）</div>
+  <div class="frame">
+    <div class="frame-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="addr"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>console.acme.com/assets</span>
+      <span class="lbl">资产管理 Assets</span>
+    </div>
+    <div class="frame-body">
+      <div class="mini-ld">
+        <div class="mini-list">
+          <div class="ml-head">
+            <div class="input-icon" style="flex:1;">
+              <svg class="lead" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
+              <input class="input" style="height:var(--ds-control-sm);" placeholder="筛选资产" />
+            </div>
+          </div>
+          <div class="ml-item active">
+            <img class="ml-thumb" src="../../_assets/photos/tech.jpg" alt="服务器资产缩略图" loading="lazy" />
+            <div><div class="ml-name">华东-DB-01</div><div class="ml-meta">数据库 · 运行中</div></div>
+            <span class="spacer"></span><span class="dot dot-success"></span>
+          </div>
+          <div class="ml-item">
+            <img class="ml-thumb" src="../../_assets/photos/architecture.jpg" alt="网关资产缩略图" loading="lazy" />
+            <div><div class="ml-name">华东-GW-02</div><div class="ml-meta">网关 · 运行中</div></div>
+            <span class="spacer"></span><span class="dot dot-success"></span>
+          </div>
+          <div class="ml-item">
+            <img class="ml-thumb" src="../../_assets/photos/city.jpg" alt="缓存资产缩略图" loading="lazy" />
+            <div><div class="ml-name">华南-Cache-07</div><div class="ml-meta">缓存 · 降级</div></div>
+            <span class="spacer"></span><span class="dot dot-warning"></span>
+          </div>
+          <div class="ml-item">
+            <img class="ml-thumb" src="../../_assets/photos/desk.jpg" alt="任务节点缩略图" loading="lazy" />
+            <div><div class="ml-name">华北-Job-12</div><div class="ml-meta">任务 · 离线</div></div>
+            <span class="spacer"></span><span class="dot dot-danger"></span>
+          </div>
+        </div>
+        <div class="mini-detail">
+          <div class="md-hero"><img src="../../_assets/photos/tech.jpg" alt="华东-DB-01 资产详情大图" loading="lazy" /></div>
+          <div class="row" style="align-items:center;margin-bottom:4px;">
+            <h4 style="flex:1;">华东-DB-01</h4>
+            <span class="tag tag-success"><span class="dot dot-success"></span>运行中</span>
+          </div>
+          <p class="md-sub">PostgreSQL 15 · 主实例 · 华东 3 区 · 创建于 2025-08-12</p>
+          <div class="md-meta">
+            <div class="mi"><div class="k">CPU 使用率</div><div class="v">42%</div></div>
+            <div class="mi"><div class="k">内存</div><div class="v">28.4 GB</div></div>
+            <div class="mi"><div class="k">连接数</div><div class="v">312</div></div>
+            <div class="mi"><div class="k">QPS</div><div class="v">8,940</div></div>
+          </div>
+          <div class="row">
+            <button class="btn btn-primary btn-sm">查看监控</button>
+            <button class="btn btn-secondary btn-sm">备份</button>
+            <button class="btn btn-tertiary btn-sm">配置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 移动布局 ============ -->
+<section class="showcase" style="border-top:1px solid var(--ds-border);">
+  <div class="sc-head">
+    <h2>移动布局</h2>
+    <div class="en">Mobile Layouts — iPhone 17 Pro Max 套壳；内容真实饱满，数字仍走 tabular-nums</div>
+  </div>
+
+  <div class="phones">
+    <!-- 移动布局一：App 首页 feed + 底部标签栏 -->
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="p-top">
+            <span class="p-brand">运维助手</span>
+            <span class="icon-badge"><button class="icon-btn" aria-label="通知 12 条" style="width:28px;height:28px;border:none;background:transparent;"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button><span class="count num">12</span></span>
+          </div>
+          <div class="p-hero">
+            <img src="../../_assets/gen/bside-hero.jpg" alt="今日运营概览大图" loading="lazy" />
+            <div class="scrim"></div>
+            <div class="ph-title"><h5>今日运营概览</h5><span class="s">交易额 ¥892,401 · 同比 +3.1%</span></div>
+          </div>
+          <div class="p-body">
+            <div class="p-feed">
+              <div class="p-fcard">
+                <div class="fc-img"><img src="../../_assets/photos/tech.jpg" alt="机房巡检封面" loading="lazy" /></div>
+                <div class="fc-body"><div class="fc-t">华东 3 区巡检完成</div><div class="fc-m"><span class="dot dot-success"></span>无高危项 · 12 分钟前</div></div>
+              </div>
+              <div class="p-fcard">
+                <div class="fc-img"><img src="../../_assets/photos/city.jpg" alt="容量规划封面" loading="lazy" /></div>
+                <div class="fc-body"><div class="fc-t">华南节点流量 <span class="num">+24%</span></div><div class="fc-m"><span class="dot dot-warning"></span>建议扩容 · 1 小时前</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-tabbar">
+            <div class="p-tab active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>概览</div>
+            <div class="p-tab"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 9h6M9 13h6"/></svg>工单</div>
+            <div class="p-tab"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.5 6 4-13L17 12h4"/></svg>监控</div>
+            <div class="p-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>我的</div>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+
+    <!-- 移动布局二：详情 / 资产页 大图 header + 信息 + 操作 -->
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="p-top">
+            <button class="icon-btn" aria-label="返回" style="width:28px;height:28px;border:none;background:transparent;"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <span class="p-brand" style="flex:1;text-align:center;">资产详情</span>
+            <button class="icon-btn" aria-label="更多" style="width:28px;height:28px;border:none;background:transparent;"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg></button>
+          </div>
+          <div class="p-hero" style="aspect-ratio:16/9;">
+            <img src="../../_assets/photos/architecture.jpg" alt="华东-DB-01 资产详情大图" loading="lazy" />
+          </div>
+          <div class="p-body">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span style="font-size:var(--ds-text-md);font-weight:600;flex:1;">华东-DB-01</span>
+              <span class="tag tag-success"><span class="dot dot-success"></span>运行中</span>
+            </div>
+            <p class="subtle" style="font-size:12px;margin:0 0 12px;">PostgreSQL 15 · 主实例 · 华东 3 区</p>
+            <div class="p-card" style="padding:0;">
+              <div class="p-listrow" style="padding:10px 12px;"><span class="lr-name">CPU 使用率</span><span class="spacer"></span><span class="num">42%</span></div>
+              <div class="p-listrow" style="padding:10px 12px;"><span class="lr-name">内存</span><span class="spacer"></span><span class="num">28.4 GB</span></div>
+              <div class="p-listrow" style="padding:10px 12px;"><span class="lr-name">连接数</span><span class="spacer"></span><span class="num">312</span></div>
+              <div class="p-listrow" style="padding:10px 12px;"><span class="lr-name">QPS</span><span class="spacer"></span><span class="num">8,940</span></div>
+            </div>
+          </div>
+          <div class="p-detail-actions">
+            <button class="btn btn-secondary">备份</button>
+            <button class="btn btn-primary">查看监控</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+
+    <!-- 移动布局三：收件箱 / 列表（头像 + 缩略） -->
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="p-top">
+            <span class="p-brand">工单收件箱</span>
+            <span class="icon-badge"><button class="icon-btn" aria-label="待办 3 项" style="width:28px;height:28px;border:none;background:transparent;"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span class="count num">3</span></span>
+          </div>
+          <div class="p-body" style="padding-bottom:28px;">
+            <div class="p-listrow">
+              <img class="avatar av-40" src="../../_assets/avatars/a1.jpg" alt="李伟的头像" loading="lazy" />
+              <div><div class="lr-name">李伟 · 数据库告警</div><div class="lr-msg">华南-Cache-07 内存占用过高</div></div>
+              <span class="spacer"></span><span class="lr-time">09:32</span>
+            </div>
+            <div class="p-listrow">
+              <img class="avatar av-40" src="../../_assets/avatars/a5.jpg" alt="王芳的头像" loading="lazy" />
+              <div><div class="lr-name">王芳 · 工单转派</div><div class="lr-msg">网关延迟工单已转给您</div></div>
+              <span class="spacer"></span><span class="lr-time">08:54</span>
+            </div>
+            <div class="p-listrow">
+              <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="赵敏的头像" loading="lazy" />
+              <div><div class="lr-name">赵敏 · 审批通过</div><div class="lr-msg">扩容申请已批准，等待执行</div></div>
+              <span class="spacer"></span><span class="lr-time">昨天</span>
+            </div>
+            <div class="p-listrow">
+              <img class="avatar av-40" src="../../_assets/avatars/a12.jpg" alt="陈强的头像" loading="lazy" />
+              <div><div class="lr-name">陈强 · 巡检报告</div><div class="lr-msg">华东 3 区季度巡检报告已生成</div></div>
+              <span class="spacer"></span><span class="lr-time">昨天</span>
+            </div>
+            <button class="btn btn-secondary" style="width:100%;margin-top:12px;">查看全部工单</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="showcase" style="border-top:1px solid var(--ds-border);text-align:center;padding-top:var(--ds-space-7);padding-bottom:var(--ds-space-7);">
+  <p class="subtle" style="font-size:12px;margin:0;">
+    B 端风 · 后台控制台 Kit — 全部样式走 <code>var(--ds-*)</code>，真实字体来自 <code>../../_fonts/fonts.css</code>，图片来自 <code>../../_assets/**</code> · 切换主题验证亮暗双相。
+  </p>
+</footer>
 
 <script>
   // 主题切换（图标在月亮 / 太阳间切换，文字同步）

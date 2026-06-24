@@ -2,7 +2,7 @@
    用法：在 preview.html <head> 加  <link rel="stylesheet" href="../../_fonts/fonts.css">
    字体名与各 Kit tokens.css 的 font-family 声明一致，无需改 token。 */
 
-/* 像素体（像素风/subei-travel 标题） */
+/* 像素体（像素风标题） */
 @font-face{font-family:"Press Start 2P";src:url("pressstart2p-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 /* 像素终端体（像素风正文/数据） */
 @font-face{font-family:"VT323";src:url("vt323-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
@@ -22,6 +22,6 @@
 @font-face{font-family:"JetBrains Mono";src:url("jetbrainsmono-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url("jetbrainsmono-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
 
-/* 衬线（editorial/aibacknovel 的拉丁标题；中文走思源宋/Songti 系统回退） */
+/* 衬线（editorial 风的拉丁标题；中文走思源宋/Songti 系统回退） */
 @font-face{font-family:"Noto Serif";src:url("notoserif-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Noto Serif";src:url("notoserif-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}

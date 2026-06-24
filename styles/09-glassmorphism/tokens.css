@@ -1,0 +1,120 @@
+/* ============================================================
+   Glassmorphism · 玻璃拟态 设计系统 Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"]（并加 .dark 兼容）。
+   灵魂 = 半透明玻璃面 + backdrop-filter:blur + 1px 高光描边 + 鲜艳渐变垫底。
+   关键：承载文字的玻璃面用较高不透明度（亮 .72 / 暗 .14 量级），
+   叠在浅底/深底上后文字仍 ≥4.5:1（WCAG AA）。纯装饰玻璃可更透。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（玻璃面是半透明白；区块底用浅冷灰，hero/区块另叠鲜艳渐变） ---- */
+  --ds-bg: #eef1f8;                          /* 浅冷灰主背景（渐变垫底之上的安全底） */
+  --ds-bg-subtle: #e6eaf5;                   /* 次背景 · 区块分组底 */
+  --ds-bg-elevated: rgba(255,255,255,.72);   /* 玻璃卡 · 承载文字（叠底后≈#fafbfd，对比安全） */
+  --ds-bg-sunken: rgba(255,255,255,.42);     /* 凹陷玻璃 · 输入槽/代码块（更透，配 inset 高光） */
+  --ds-fg: #14182a;                          /* 主文字（在玻璃上 ≈17:1） */
+  --ds-fg-muted: #44496a;                    /* 次要文字（玻璃上 ≈8.4:1） */
+  --ds-fg-subtle: #565b7d;                   /* 占位/弱文字（玻璃上 ≈6.4:1） */
+  --ds-fg-on-accent: #ffffff;                /* 落在强调色上的文字 */
+  --ds-border: rgba(255,255,255,.60);        /* 玻璃高光描边（1px 亮边是灵魂） */
+  --ds-border-strong: rgba(255,255,255,.85); /* 强高光描边 */
+
+  /* ---- 品牌与强调（靛蓝 primary / 玫红 accent；取值已为 AA 微调） ---- */
+  --ds-primary: #5b5ef0;        /* 靛紫主操作色（白字 4.9:1，保留 #6366f1 气质） */
+  --ds-primary-hover: #4f51e6;
+  --ds-primary-active: #4346d4;
+  --ds-primary-fg: #ffffff;     /* 主操作上的文字 */
+  --ds-accent: #db2777;         /* 玫红次强调/链接（白字 4.6:1；装饰用更鲜的 #ec4899 见 preview） */
+  --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态（主色 + 浅玻璃底 + 底上文字，全部 AA） ---- */
+  --ds-success: #0e9f6e; --ds-success-bg: #d7f2e6; --ds-success-fg: #0f6e4e;
+  --ds-warning: #b97e0c; --ds-warning-bg: #fbecd2; --ds-warning-fg: #7a4a06;
+  --ds-danger:  #e02424; --ds-danger-bg:  #fbe0e3; --ds-danger-fg:  #9b1c2e;
+  --ds-info:    #5b5ef0; --ds-info-bg:    #e2e8fd; --ds-info-fg:    #1d3a8a;
+
+  /* ---- 焦点（底色环 + 主色环） ---- */
+  --ds-focus: #5b5ef0;
+  --ds-focus-ring: 0 0 0 2px rgba(255,255,255,.9), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（玻璃片偏大而圆润：16/20/28） ---- */
+  --ds-radius-sm: 16px;
+  --ds-radius-md: 20px;
+  --ds-radius-lg: 28px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（Inter；中文走系统 PingFang/雅黑回退） ---- */
+  --ds-font-sans: "Inter", "PingFang SC", -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 柔影（玻璃漂浮在彩色底之上的轻柔投影 + 内顶高光） ---- */
+  --ds-shadow-sm: 0 2px 8px rgba(31,38,89,.08);
+  --ds-shadow-md: 0 8px 28px rgba(31,38,89,.14);
+  --ds-shadow-lg: 0 20px 56px rgba(31,38,89,.20);
+  /* 玻璃专用：模糊半径 + 顶部内高光（组件层引用） */
+  --ds-glass-blur: 18px;
+  --ds-glass-blur-sm: 12px;
+  --ds-glass-inset: inset 0 1px 0 rgba(255,255,255,.55);
+
+  /* ---- 动效（柔顺顺滑） ---- */
+  --ds-ease: cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast: 140ms; --ds-dur-base: 220ms; --ds-dur-slow: 360ms;
+
+  /* ---- 语义层级（替代魔法值） ---- */
+  --ds-z-dropdown: 1000; --ds-z-sticky: 1100; --ds-z-modal-backdrop: 1200;
+  --ds-z-modal: 1300; --ds-z-toast: 1400; --ds-z-tooltip: 1500;
+}
+
+/* ============================================================
+   暗色：深靛底 + 低透白玻璃，blur 不变，高光描边减弱
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #0f1226;                          /* 深靛主背景（渐变垫底之上的安全底） */
+  --ds-bg-subtle: #0c0f20;                   /* 次背景 */
+  --ds-bg-elevated: rgba(255,255,255,.14);   /* 玻璃卡 · 承载文字（叠深底后对比安全） */
+  --ds-bg-sunken: rgba(255,255,255,.07);     /* 凹陷玻璃 · 输入槽 */
+  --ds-fg: #eef0ff;                          /* 主文字（玻璃上 ≈11:1） */
+  --ds-fg-muted: #aeb2da;                    /* 次要文字（玻璃上 ≈6:1） */
+  --ds-fg-subtle: #9499c9;                   /* 弱文字（玻璃上 ≈4.5:1） */
+  --ds-fg-on-accent: #ffffff;
+  --ds-border: rgba(255,255,255,.18);        /* 暗色玻璃高光描边 */
+  --ds-border-strong: rgba(255,255,255,.32);
+
+  /* ---- 品牌与强调（暗底提亮） ---- */
+  --ds-primary: #818cf8;        /* 亮靛主色 */
+  --ds-primary-hover: #939dfa;
+  --ds-primary-active: #a3acff;
+  --ds-primary-fg: #0c1033;     /* 深字落在亮靛上（6.2:1） */
+  --ds-accent: #f472b6;         /* 亮玫红 */
+  --ds-accent-fg: #2a0a18;      /* 深字落在亮玫红上（6.9:1） */
+
+  /* ---- 语义状态（暗玻璃底 + 浅彩文字，全部 AA） ---- */
+  --ds-success: #34d399; --ds-success-bg: #103226; --ds-success-fg: #7be0b0;
+  --ds-warning: #fbbf24; --ds-warning-bg: #332306; --ds-warning-fg: #f0c069;
+  --ds-danger:  #f87171; --ds-danger-bg:  #361a22; --ds-danger-fg:  #f7a3ac;
+  --ds-info:    #818cf8; --ds-info-bg:    #18203f; --ds-info-fg:    #aab4ff;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #818cf8;
+  --ds-focus-ring: 0 0 0 2px rgba(15,18,38,.9), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（暗底加深近黑） ---- */
+  --ds-shadow-sm: 0 2px 8px rgba(0,0,0,.40);
+  --ds-shadow-md: 0 8px 28px rgba(0,0,0,.50);
+  --ds-shadow-lg: 0 20px 56px rgba(0,0,0,.62);
+  --ds-glass-inset: inset 0 1px 0 rgba(255,255,255,.18);
+}

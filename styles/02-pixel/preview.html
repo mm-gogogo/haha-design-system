@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pixel / 8-bit — Design System Preview</title>
 <link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css" />
 <style>
 /* ====================================================================
    TOKENS（内联，与 tokens.css 同步；preview 自包含、双击即开、无外链）
@@ -349,6 +350,196 @@ tbody tr:last-child td{border-bottom:none}
 .phone .ph-tabbar button:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);position:relative;z-index:1}
 
 /* ====================================================================
+   语义层级 z-index（替代魔法值；像素风沿用统一尺度）
+   ==================================================================== */
+:root{
+  --ds-z-dropdown:1000; --ds-z-sticky:1100; --ds-z-modal-backdrop:1200;
+  --ds-z-modal:1300; --ds-z-toast:1400; --ds-z-tooltip:1500;
+}
+
+/* ====================================================================
+   HERO（顶部首屏，有图，消灭留白）
+   像素风：image-rendering:pixelated + 粗黑边 + 硬实心偏移阴影 + 0 圆角
+   ==================================================================== */
+.hero{
+  position:relative;
+  border:3px solid var(--ds-border-strong);
+  box-shadow:var(--ds-shadow-lg);
+  background:var(--ds-bg-elevated);
+  margin:var(--ds-space-7) auto 0;
+  max-width:1080px;
+  overflow:hidden;
+}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch}
+.hero-copy{padding:var(--ds-space-9) var(--ds-space-8);display:flex;flex-direction:column;gap:var(--ds-space-4);justify-content:center}
+.hero-kicker{font-family:var(--ds-font-mono);font-size:9px;line-height:1.4;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);display:inline-flex;align-items:center;gap:8px}
+.hero-kicker .blink{width:9px;height:9px;background:var(--ds-primary);border:2px solid var(--ds-border-strong);display:inline-block}
+.hero-copy h1{font-family:var(--ds-font-mono);line-height:1.2;letter-spacing:0}
+.hero-copy .lead{color:var(--ds-fg-muted);font-size:var(--ds-text-md);line-height:var(--ds-leading-relaxed);max-width:42ch;margin:0}
+.hero-cta{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);margin-top:var(--ds-space-2)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:var(--ds-space-5);margin-top:var(--ds-space-4);border-top:2px dotted var(--ds-border);padding-top:var(--ds-space-4)}
+.hero-stats .st{display:flex;flex-direction:column;gap:2px}
+.hero-stats .st b{font-family:var(--ds-font-mono);font-size:18px;line-height:1;font-variant-numeric:tabular-nums;color:var(--ds-fg)}
+.hero-stats .st span{font-family:var(--ds-font-mono);font-size:8px;line-height:1.4;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-subtle)}
+.hero-media{position:relative;border-left:3px solid var(--ds-border-strong);min-height:340px;background:var(--ds-bg-sunken)}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;display:block}
+/* 像素扫描线叠层（纯 CSS，不外链） */
+.hero-media::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.10) 2px 3px);pointer-events:none}
+.hero-tag{position:absolute;left:var(--ds-space-4);bottom:var(--ds-space-4);z-index:1;font-family:var(--ds-font-mono);font-size:8px;line-height:1;letter-spacing:0;text-transform:uppercase;background:var(--ds-fg);color:var(--ds-bg);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);padding:6px 8px}
+
+/* ====================================================================
+   图片用法 Image Usage（像素处理：pixelated + 粗黑边 + 硬投影 + 0 圆角）
+   ==================================================================== */
+.pic{display:block;border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);background:var(--ds-bg-sunken);overflow:hidden;position:relative}
+.pic img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.pic.ar-169{aspect-ratio:16/9}
+.pic.ar-43{aspect-ratio:4/3}
+.pic.ar-11{aspect-ratio:1/1}
+.pic.ar-34{aspect-ratio:3/4}
+.ar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--ds-space-4);align-items:start}
+.ar-grid figure{margin:0;display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.ar-grid figcaption{font-family:var(--ds-font-mono);font-size:8px;line-height:1.4;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted)}
+
+/* media cards（图在上 + 标题正文操作） */
+.media-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-5)}
+.media-card{display:flex;flex-direction:column;background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md)}
+.media-card .pic{border:none;border-bottom:2px solid var(--ds-border-strong);box-shadow:none;aspect-ratio:16/10}
+.media-card .mc-body{padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.media-card h4{font-family:var(--ds-font-mono);font-size:10px;line-height:1.5;letter-spacing:0;text-transform:uppercase}
+.media-card p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+.media-card .mc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--ds-space-2)}
+.media-card .price{font-family:var(--ds-font-mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--ds-fg)}
+
+/* gallery grid（等高网格，≥6 图） */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:96px;gap:var(--ds-space-3)}
+.gallery .pic{box-shadow:var(--ds-shadow-sm);border-width:2px;height:100%}
+.gallery .pic.tall{grid-row:span 2}
+.gallery .pic.wide{grid-column:span 2}
+
+/* 图文混排 split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-6);align-items:center}
+.split .copy h3{font-family:var(--ds-font-mono);font-size:13px;line-height:1.6;letter-spacing:0;margin-bottom:var(--ds-space-3)}
+.split .copy p{color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-relaxed);max-width:60ch}
+
+/* overlay（图 + scrim + 标题） */
+.overlay{position:relative;aspect-ratio:21/9;border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);overflow:hidden}
+.overlay img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.overlay .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,18,.86) 0%,rgba(10,10,18,.30) 55%,rgba(10,10,18,.05) 100%)}
+.overlay .ov-body{position:absolute;left:var(--ds-space-6);bottom:var(--ds-space-6);right:var(--ds-space-6);z-index:1;color:#fffdf5}
+.overlay .ov-body h3{font-family:var(--ds-font-mono);font-size:14px;line-height:1.4;letter-spacing:0;color:#fffdf5;margin-bottom:6px;text-shadow:2px 2px 0 #000}
+.overlay .ov-body p{margin:0;font-size:var(--ds-text-base);color:#fffdf5;max-width:50ch;text-shadow:1px 1px 0 #000}
+.overlay .ov-tag{display:inline-flex;font-family:var(--ds-font-mono);font-size:8px;letter-spacing:0;text-transform:uppercase;background:var(--ds-primary);color:var(--ds-primary-fg);border:2px solid var(--ds-border-strong);padding:4px 7px;margin-bottom:8px}
+
+/* avatars */
+.av{display:inline-block;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);background:var(--ds-bg-sunken);image-rendering:pixelated;object-fit:cover;vertical-align:middle}
+.av-24{width:24px;height:24px}.av-32{width:32px;height:32px}.av-40{width:40px;height:40px}.av-48{width:48px;height:48px}
+.av-stack{display:inline-flex}
+.av-stack .av{margin-left:-10px;box-shadow:none}
+.av-stack .av:first-child{margin-left:0}
+.av-stack .more{width:40px;height:40px;margin-left:-10px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-sunken);color:var(--ds-fg);font-family:var(--ds-font-mono);font-size:9px;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.user-row{display:flex;align-items:center;gap:var(--ds-space-3)}
+.user-row .ur-name{font-family:var(--ds-font-mono);font-size:11px;line-height:1.4;letter-spacing:0}
+.user-row .ur-sub{font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+
+/* full-bleed background image band */
+.bgband{position:relative;border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);overflow:hidden;min-height:220px;display:flex;align-items:center}
+.bgband img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.bgband .mask{position:absolute;inset:0;background:rgba(10,10,18,.66);background-image:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.18) 2px 3px)}
+.bgband .bg-body{position:relative;z-index:1;padding:var(--ds-space-8);color:#fffdf5;max-width:60ch}
+.bgband .bg-body h3{font-family:var(--ds-font-mono);font-size:14px;line-height:1.5;letter-spacing:0;color:#fffdf5;margin-bottom:var(--ds-space-3);text-shadow:2px 2px 0 #000}
+.bgband .bg-body p{margin:0 0 var(--ds-space-4);font-size:var(--ds-text-base);color:#fffdf5;text-shadow:1px 1px 0 #000}
+
+/* ====================================================================
+   图标用法 Icon Usage
+   ==================================================================== */
+.ico-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--ds-space-3)}
+.ico-cell{display:flex;flex-direction:column;align-items:center;gap:var(--ds-space-2);padding:var(--ds-space-4) var(--ds-space-2);border:2px solid var(--ds-border);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);text-align:center}
+.ico-cell .gico{width:24px;height:24px;color:var(--ds-fg);image-rendering:pixelated}
+.ico-cell .gico svg{display:block;width:100%;height:100%}
+.ico-cell .nm{font-family:var(--ds-font-mono);font-size:7px;line-height:1.4;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);overflow-wrap:anywhere}
+.ico-sizes{display:flex;align-items:flex-end;gap:var(--ds-space-5);flex-wrap:wrap}
+.ico-sizes .s{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ico-sizes .gico{color:var(--ds-fg);image-rendering:pixelated}
+.ico-sizes .gico svg{display:block;width:100%;height:100%}
+.ico-sizes .lbl{font-family:var(--ds-font-mono);font-size:8px;color:var(--ds-fg-muted)}
+.ico-sizes .s16 .gico{width:16px;height:16px}.ico-sizes .s20 .gico{width:20px;height:20px}
+.ico-sizes .s24 .gico{width:24px;height:24px}.ico-sizes .s32 .gico{width:32px;height:32px}
+.icon-input{position:relative;display:flex;align-items:center}
+.icon-input .gico{position:absolute;left:10px;width:16px;height:16px;color:var(--ds-fg-subtle);image-rendering:pixelated;pointer-events:none}
+.icon-input .gico svg{display:block;width:100%;height:100%}
+.icon-input .input{padding-left:34px}
+.icon-btn{width:40px;height:40px;padding:0;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);color:var(--ds-fg);box-shadow:var(--ds-shadow-sm);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease)}
+.icon-btn:hover{transform:translate(-1px,-1px);box-shadow:var(--ds-shadow-md)}
+.icon-btn:active{transform:translate(2px,2px);box-shadow:none}
+.icon-btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+.icon-btn .gico{width:18px;height:18px;image-rendering:pixelated}
+.icon-btn .gico svg{display:block;width:100%;height:100%}
+.ico-list{list-style:none;margin:0;padding:0;border:2px solid var(--ds-border);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);max-width:360px}
+.ico-list li{display:flex;align-items:center;gap:var(--ds-space-3);padding:10px 12px;border-bottom:2px solid var(--ds-border);font-size:var(--ds-text-base)}
+.ico-list li:last-child{border-bottom:none}
+.ico-list .gico{width:18px;height:18px;flex:0 0 18px;color:var(--ds-fg-muted);image-rendering:pixelated}
+.ico-list .gico svg{display:block;width:100%;height:100%}
+.ico-list .st-ok{color:var(--ds-success)}.ico-list .st-warn{color:var(--ds-warning)}.ico-list .st-bad{color:var(--ds-danger)}
+.badge-ico{position:relative;display:inline-flex;width:40px;height:40px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);align-items:center;justify-content:center}
+.badge-ico .gico{width:20px;height:20px;color:var(--ds-fg);image-rendering:pixelated}
+.badge-ico .gico svg{display:block;width:100%;height:100%}
+.badge-ico .cnt{position:absolute;top:-8px;right:-8px;min-width:18px;height:18px;padding:0 3px;border:2px solid var(--ds-border-strong);background:var(--ds-danger);color:#fff;font-family:var(--ds-font-mono);font-size:8px;line-height:1;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+
+/* ====================================================================
+   桌面布局 Desktop Layouts（带浏览器 chrome 的 frame）
+   ==================================================================== */
+.frame{border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);background:var(--ds-bg-elevated);overflow:hidden}
+.frame .chrome{display:flex;align-items:center;gap:var(--ds-space-3);background:var(--ds-bg-subtle);border-bottom:3px solid var(--ds-border-strong);padding:8px 12px}
+.frame .dots{display:inline-flex;gap:5px}
+.frame .dots i{width:11px;height:11px;display:block;border:2px solid var(--ds-border-strong)}
+.frame .addr{flex:1;font-family:var(--ds-font-mono);font-size:9px;line-height:1;letter-spacing:0;color:var(--ds-fg-muted);background:var(--ds-bg-sunken);border:2px solid var(--ds-border);padding:6px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frame .lbl{font-family:var(--ds-font-mono);font-size:8px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-subtle);white-space:nowrap}
+
+/* layout A — dashboard */
+.dash{display:grid;grid-template-columns:150px 1fr;min-height:340px;background:var(--ds-bg)}
+.dash .side{background:var(--ds-bg-subtle);border-right:3px solid var(--ds-border-strong);padding:var(--ds-space-4) var(--ds-space-3);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.dash .side .lg{display:flex;align-items:center;gap:8px;font-family:var(--ds-font-mono);font-size:9px;line-height:1.3;letter-spacing:0;margin-bottom:var(--ds-space-3)}
+.dash .nav-i{display:flex;align-items:center;gap:8px;font-family:var(--ds-font-mono);font-size:9px;line-height:1.3;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);padding:8px;border:2px solid transparent;cursor:pointer}
+.dash .nav-i .gico{width:14px;height:14px;flex:0 0 14px;image-rendering:pixelated}
+.dash .nav-i .gico svg{display:block;width:100%;height:100%}
+.dash .nav-i.on{color:var(--ds-fg);background:var(--ds-primary);border-color:var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.dash .nav-i.on{color:var(--ds-primary-fg)}
+.dash .main{display:flex;flex-direction:column;min-width:0}
+.dash .dtop{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);border-bottom:2px solid var(--ds-border);padding:var(--ds-space-3) var(--ds-space-4);background:var(--ds-bg-elevated)}
+.dash .dtop .dt-title{font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase}
+.dash .dbody{padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-4);overflow:hidden}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-3)}
+.kpi{border:2px solid var(--ds-border);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-3)}
+.kpi .k-lbl{font-family:var(--ds-font-mono);font-size:7px;line-height:1.4;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-subtle)}
+.kpi .k-val{font-family:var(--ds-font-mono);font-size:18px;line-height:1.1;font-variant-numeric:tabular-nums;margin-top:4px}
+.kpi .k-dl{font-family:var(--ds-font-mono);font-size:8px;margin-top:2px}
+.kpi .k-up{color:var(--ds-success)}.kpi .k-dn{color:var(--ds-danger)}
+.chartbox{border:2px solid var(--ds-border);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-4)}
+.chartbox .ch-h{font-family:var(--ds-font-mono);font-size:8px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-3)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:96px}
+.bars i{flex:1;background:var(--ds-primary);border:2px solid var(--ds-border-strong);display:block}
+.bars i:nth-child(even){background:var(--ds-accent)}
+.mini-table{font-size:var(--ds-text-sm)}
+.mini-table table{width:100%;border-collapse:collapse}
+.mini-table th{font-family:var(--ds-font-mono);font-size:7px;letter-spacing:0;text-transform:uppercase;text-align:left;background:var(--ds-bg-subtle);padding:6px 8px;border-bottom:2px solid var(--ds-border-strong)}
+.mini-table td{padding:6px 8px;border-bottom:2px solid var(--ds-border);font-size:var(--ds-text-sm)}
+.mini-table .num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-align:right}
+
+/* layout B — list-detail */
+.listdetail{display:grid;grid-template-columns:240px 1fr;min-height:360px;background:var(--ds-bg)}
+.ld-list{border-right:3px solid var(--ds-border-strong);background:var(--ds-bg-subtle);overflow:hidden}
+.ld-list .ld-i{display:flex;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3);border-bottom:2px solid var(--ds-border);cursor:pointer}
+.ld-list .ld-i.on{background:var(--ds-bg-elevated);box-shadow:inset 4px 0 0 0 var(--ds-primary)}
+.ld-list .ld-thumb{width:44px;height:44px;flex:0 0 44px;border:2px solid var(--ds-border-strong);object-fit:cover;image-rendering:pixelated}
+.ld-list .ld-tx .t{font-family:var(--ds-font-mono);font-size:9px;line-height:1.4;letter-spacing:0}
+.ld-list .ld-tx .s{font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+.ld-detail{padding:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-4);overflow:hidden}
+.ld-detail .pic{aspect-ratio:16/8}
+.ld-meta{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center}
+.ld-detail h3{font-family:var(--ds-font-mono);font-size:13px;line-height:1.5;letter-spacing:0}
+.ld-detail p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-relaxed);max-width:62ch}
+
+/* ====================================================================
    响应式断点：≤640px 栅格收一列、堆叠、避免溢出
    ==================================================================== */
 @media (max-width:640px){
@@ -359,7 +550,25 @@ tbody tr:last-child td{border-bottom:none}
   .topbar{flex-wrap:wrap;gap:var(--ds-space-3)}
   .brand .tagline{display:none}
   .row{gap:var(--ds-space-3)}
-  .phone{width:100%}
+  /* iPhone 17 Pro Max 套壳在窄屏整体缩放，避免横向溢出（外壳保持真实质感） */
+  .dvc17{--dvc-w:300px;transform-origin:top left}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-media{border-left:none;border-top:3px solid var(--ds-border-strong);min-height:240px}
+  .hero-copy{padding:var(--ds-space-6) var(--ds-space-5)}
+  .ar-grid{grid-template-columns:repeat(2,1fr)}
+  .media-cards{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr}
+  .ico-grid{grid-template-columns:repeat(3,1fr)}
+  .kpis{grid-template-columns:1fr}
+  .dash{grid-template-columns:1fr}
+  .dash .side{flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:3px solid var(--ds-border-strong)}
+  .listdetail{grid-template-columns:1fr}
+  .ld-list{border-right:none;border-bottom:3px solid var(--ds-border-strong)}
+  .frame{overflow-x:auto}
+}
+@media (max-width:980px) and (min-width:641px){
+  .ico-grid{grid-template-columns:repeat(4,1fr)}
 }
 
 /* ---- REDUCED MOTION ---- */
@@ -387,11 +596,36 @@ tbody tr:last-child td{border-bottom:none}
   </button>
 </div>
 
+<!-- HERO（首屏，有图，消灭留白） -->
+<header class="hero" style="margin-left:var(--ds-space-5);margin-right:var(--ds-space-5)">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="hero-kicker"><span class="blink" aria-hidden="true"></span>INSERT COIN · DESIGN SYSTEM v1.0</span>
+      <h1 class="display d-2xl">PRESS&nbsp;START</h1>
+      <p class="lead">把界面当成游戏机屏幕来做：硬边、粗黑描边、硬实心偏移阴影、steps() 跳帧动效、等宽像素字。一眼像红白机开机画面，仍是一套讲规矩、满足 WCAG AA 的设计系统。</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg">START GAME</button>
+        <button class="btn btn-secondary btn-lg">VIEW TOKENS</button>
+      </div>
+      <div class="hero-stats">
+        <div class="st"><b>0px</b><span>圆角 Radius</span></div>
+        <div class="st"><b>16</b><span>组件 Components</span></div>
+        <div class="st"><b>AA</b><span>对比 Contrast</span></div>
+        <div class="st"><b>2</b><span>主题 Themes</span></div>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="../../_assets/gen/pixel-hero.jpg" alt="像素 8-bit 风格主视觉：复古游戏机屏幕场景" loading="lazy" />
+      <span class="hero-tag">PIXEL / 8-BIT</span>
+    </div>
+  </div>
+</header>
+
 <div class="wrap">
 
   <!-- INTRO -->
-  <section style="margin-top:var(--ds-space-7)">
-    <h1 class="display d-2xl" style="margin-bottom:var(--ds-space-4)">PRESS&nbsp;START</h1>
+  <section style="margin-top:var(--ds-space-9)">
+    <h2 class="sec-title">概览 / Overview</h2>
     <p class="muted" style="max-width:60ch">硬边 · 像素描边 · 硬实心偏移阴影 · steps() 跳帧动效 · 等宽像素字回退。
     所有取值均走 <code>var(--ds-*)</code>，满足 WCAG AA。点右上角切换亮 / 暗（街机霓虹）主题。</p>
     <div class="deco" aria-hidden="true">
@@ -644,33 +878,425 @@ tbody tr:last-child td{border-bottom:none}
   <section>
     <h2 class="sec-title">移动端 / Mobile</h2>
     <div class="phone-row">
-      <div class="phone" aria-label="移动端示意">
-        <div class="ph-status"><span>9:41</span><span style="display:inline-flex;align-items:center;gap:5px"><svg width="18" height="9" viewBox="0 0 18 9" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h16v1H0zM0 8h16v1H0zM0 1h1v7H0zM15 1h1v7h-1zM16 3h2v3h-2zM2 2h12v5H2z"/></svg>100%</span></div>
-        <div class="ph-top">
-          <span class="ph-title">WORLD&nbsp;MAP</span>
-          <button class="ph-burger" aria-label="菜单"><i></i><i></i><i></i></button>
-        </div>
-        <div class="ph-body">
-          <div class="ph-card">
-            <h4>DAILY QUEST</h4>
-            <p>通关任意 3 关即可领取金币 ×500。窄屏下卡片占满整列。</p>
-            <button class="btn btn-primary btn-sm" style="align-self:flex-start">START</button>
+
+      <!-- iPhone 17 Pro Max · 世界地图首页 -->
+      <div class="dvc17" aria-label="移动端 · 世界地图首页">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
           </div>
-          <ul class="ph-list">
-            <li><span><span class="px" style="background:var(--ds-success)"></span>&nbsp;Stage 1-1</span><span class="stars" role="img" aria-label="评分 3 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
-            <li><span><span class="px" style="background:var(--ds-warning)"></span>&nbsp;Stage 1-2</span><span class="stars" role="img" aria-label="评分 2 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
-            <li><span><span class="px" style="background:var(--ds-danger)"></span>&nbsp;Stage 1-3</span><span class="stars" role="img" aria-label="评分 0 / 3"><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
-          </ul>
-          <button class="btn btn-secondary" style="width:100%">CONTINUE <span class="svg-ico" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M3 1h2v2H3zm2 2h2v2H5zm2 2h2v2H7zm-2 2h2v2H5zm-2 2h2v2H3z"/></svg></span></button>
+          <div class="dvc-body">
+            <div class="ph-top">
+              <span class="ph-title">WORLD&nbsp;MAP</span>
+              <button class="ph-burger" aria-label="菜单"><i></i><i></i><i></i></button>
+            </div>
+            <div class="ph-body">
+              <div class="ph-card">
+                <h4>DAILY QUEST</h4>
+                <p>通关任意 3 关即可领取金币 ×500。窄屏下卡片占满整列。</p>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start">START</button>
+              </div>
+              <ul class="ph-list">
+                <li><span><span class="px" style="background:var(--ds-success)"></span>&nbsp;Stage 1-1</span><span class="stars" role="img" aria-label="评分 3 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+                <li><span><span class="px" style="background:var(--ds-warning)"></span>&nbsp;Stage 1-2</span><span class="stars" role="img" aria-label="评分 2 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+                <li><span><span class="px" style="background:var(--ds-danger)"></span>&nbsp;Stage 1-3</span><span class="stars" role="img" aria-label="评分 0 / 3"><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+              </ul>
+              <button class="btn btn-secondary" style="width:100%">CONTINUE <span class="svg-ico" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M3 1h2v2H3zm2 2h2v2H5zm2 2h2v2H7zm-2 2h2v2H5zm-2 2h2v2H3z"/></svg></span></button>
+            </div>
+            <nav class="ph-tabbar" aria-label="底部导航">
+              <button aria-current="page">PLAY</button>
+              <button>MAP</button>
+              <button>SHOP</button>
+              <button>ME</button>
+            </nav>
+          </div>
+          <div class="home"></div>
         </div>
-        <nav class="ph-tabbar" aria-label="底部导航">
-          <button aria-current="page">PLAY</button>
-          <button>MAP</button>
-          <button>SHOP</button>
-          <button>ME</button>
-        </nav>
       </div>
-      <p class="muted" style="max-width:32ch">约 375px 手机框：状态条 + 顶栏（标题 + 汉堡键）+ 卡片 + 列表 + 通栏按钮 + 底部 tabbar。所有元素硬边硬阴影，触控目标 ≥44px。窄屏断点下手机框自适应满宽。</p>
+
+      <!-- iPhone 17 Pro Max · 商店（深色顶部 -> sb-light） -->
+      <div class="dvc17 sb-light" aria-label="移动端 · 商店">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <!-- 深色 header：满铺主视觉 + 标题 -->
+            <div style="position:relative;border-bottom:3px solid var(--ds-border-strong)">
+              <span class="pic" style="display:block;border:none;box-shadow:none;aspect-ratio:16/9"><img src="../../_assets/gen/pixel-hero.jpg" alt="商店首图：8-bit 街机精选" loading="lazy"></span>
+              <span class="scrim" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <span style="position:absolute;left:var(--ds-space-4);bottom:var(--ds-space-3);z-index:1;font-family:var(--ds-font-mono);font-size:12px;letter-spacing:0;color:#fffdf5;text-shadow:2px 2px 0 #000">PIXEL&nbsp;SHOP</span>
+            </div>
+            <div class="ph-body">
+              <article class="media-card">
+                <span class="pic"><img src="../../_assets/gen/product-shoe.jpg" alt="像素跑鞋商品图" loading="lazy"></span>
+                <div class="mc-body">
+                  <h4>PIXEL RUNNER</h4>
+                  <p>8-bit 联名跑鞋，硬边卡片把商品当精灵处理。</p>
+                  <div class="mc-foot"><span class="price">¥ 599</span><button class="btn btn-primary btn-sm">BUY</button></div>
+                </div>
+              </article>
+              <ul class="ph-list">
+                <li><span><span class="px" style="background:var(--ds-primary)"></span>&nbsp;RETRO WATCH</span><span class="num">¥1,280</span></li>
+                <li><span><span class="px" style="background:var(--ds-accent)"></span>&nbsp;POWER BOWL</span><span class="num">¥48</span></li>
+                <li><span><span class="px" style="background:var(--ds-info)"></span>&nbsp;COIN PACK</span><span class="num">¥30</span></li>
+              </ul>
+            </div>
+            <nav class="ph-tabbar" aria-label="底部导航">
+              <button>PLAY</button>
+              <button>MAP</button>
+              <button aria-current="page">SHOP</button>
+              <button>ME</button>
+            </nav>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <p class="muted" style="max-width:32ch">iPhone 17 Pro Max 钛金套壳（侧键 / 灵动岛 / 状态栏 / Home 条由 device.css 提供，外壳保持真实质感不像素化）。屏内像素风内容仍硬边硬阴影、触控目标 ≥44px；深色顶部那台加 <code>sb-light</code> 使状态栏 / Home 条转白。</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 图片用法 IMAGE USAGE -->
+  <!-- ============================================================ -->
+  <section>
+    <h2 class="sec-title">图片用法 / Image Usage</h2>
+    <p class="muted" style="max-width:64ch;margin-bottom:var(--ds-space-6)">像素风的图片处理：<code>image-rendering:pixelated</code> + 2–3px 粗黑描边 + 硬实心偏移阴影 + 0 圆角。所有图来自 <code>_assets/</code>，<code>loading="lazy"</code> 且有 alt。</p>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">宽高比框 Aspect Ratios</h3>
+    <div class="ar-grid" style="margin-bottom:var(--ds-space-9)">
+      <figure><span class="pic ar-169"><img src="../../_assets/photos/city.jpg" alt="城市夜景" loading="lazy"></span><figcaption>16 : 9</figcaption></figure>
+      <figure><span class="pic ar-43"><img src="../../_assets/photos/mountain.jpg" alt="远山" loading="lazy"></span><figcaption>4 : 3</figcaption></figure>
+      <figure><span class="pic ar-11"><img src="../../_assets/photos/coffee.jpg" alt="咖啡杯" loading="lazy"></span><figcaption>1 : 1</figcaption></figure>
+      <figure><span class="pic ar-34"><img src="../../_assets/photos/portrait1.jpg" alt="人物肖像" loading="lazy"></span><figcaption>3 : 4</figcaption></figure>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">媒体卡 Media Cards</h3>
+    <div class="media-cards" style="margin-bottom:var(--ds-space-9)">
+      <article class="media-card">
+        <span class="pic"><img src="../../_assets/gen/product-shoe.jpg" alt="像素跑鞋商品图" loading="lazy"></span>
+        <div class="mc-body">
+          <h4>PIXEL RUNNER</h4>
+          <p>8-bit 联名跑鞋。硬边卡片把商品图当贴在屏上的精灵处理。</p>
+          <div class="mc-foot"><span class="price">¥ 599</span><button class="btn btn-primary btn-sm">BUY</button></div>
+        </div>
+      </article>
+      <article class="media-card">
+        <span class="pic"><img src="../../_assets/gen/product-watch.jpg" alt="像素腕表商品图" loading="lazy"></span>
+        <div class="mc-body">
+          <h4>RETRO WATCH</h4>
+          <p>液晶点阵表盘，复古数字风。粗黑描边 + 硬投影撑起立体感。</p>
+          <div class="mc-foot"><span class="price">¥ 1,280</span><button class="btn btn-primary btn-sm">BUY</button></div>
+        </div>
+      </article>
+      <article class="media-card">
+        <span class="pic"><img src="../../_assets/gen/food-bowl.jpg" alt="像素料理碗" loading="lazy"></span>
+        <div class="mc-body">
+          <h4>POWER BOWL</h4>
+          <p>回血料理 +30 HP。pixelated 渲染让缩放也不糊。</p>
+          <div class="mc-foot"><span class="price">¥ 48</span><button class="btn btn-primary btn-sm">BUY</button></div>
+        </div>
+      </article>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">画廊网格 Gallery</h3>
+    <div class="gallery" style="margin-bottom:var(--ds-space-9)">
+      <span class="pic wide tall"><img src="../../_assets/photos/forest.jpg" alt="森林" loading="lazy"></span>
+      <span class="pic"><img src="../../_assets/photos/ocean.jpg" alt="海洋" loading="lazy"></span>
+      <span class="pic"><img src="../../_assets/photos/desk.jpg" alt="桌面工作区" loading="lazy"></span>
+      <span class="pic tall"><img src="../../_assets/photos/street.jpg" alt="街景" loading="lazy"></span>
+      <span class="pic"><img src="../../_assets/photos/architecture.jpg" alt="建筑" loading="lazy"></span>
+      <span class="pic"><img src="../../_assets/photos/travel.jpg" alt="旅行" loading="lazy"></span>
+      <span class="pic wide"><img src="../../_assets/photos/tech.jpg" alt="科技" loading="lazy"></span>
+      <span class="pic"><img src="../../_assets/photos/square1.jpg" alt="方形素材一" loading="lazy"></span>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">图文混排 Split</h3>
+    <div class="split" style="margin-bottom:var(--ds-space-9)">
+      <span class="pic ar-43"><img src="../../_assets/gen/abstract-wave.jpg" alt="像素抽象波纹" loading="lazy"></span>
+      <div class="copy">
+        <h3>WORLD 1-1 RELOADED</h3>
+        <p>大图 + 文字并排，做出产品介绍/编辑感。图片统一 pixelated 渲染、粗黑描边、硬投影；正文走 VT323 像素终端体，行宽控制在 60ch 内以保证像素字可读。所有间距对齐到 4px 网格，硬阴影偏移落在整像素上。</p>
+        <div class="row" style="margin-top:var(--ds-space-3)"><button class="btn btn-primary btn-sm">PLAY DEMO</button><button class="btn btn-tertiary btn-sm">DETAILS</button></div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">图上叠字 Overlay</h3>
+    <div class="overlay" style="margin-bottom:var(--ds-space-9)">
+      <img src="../../_assets/photos/hero-summit.jpg" alt="登顶山巅" loading="lazy">
+      <span class="scrim" aria-hidden="true"></span>
+      <div class="ov-body">
+        <span class="ov-tag">NEW STAGE</span>
+        <h3>FINAL BOSS — SUMMIT</h3>
+        <p>渐变 scrim 压暗下半区，文字加硬黑描影确保在任意图上达 AA 对比。</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">头像用法 Avatars</h3>
+    <div class="row" style="align-items:center;gap:var(--ds-space-7);margin-bottom:var(--ds-space-6)">
+      <div class="row" style="align-items:flex-end;gap:var(--ds-space-4)">
+        <img class="av av-24" src="../../_assets/avatars/a1.jpg" alt="玩家头像 24" loading="lazy">
+        <img class="av av-32" src="../../_assets/avatars/a5.jpg" alt="玩家头像 32" loading="lazy">
+        <img class="av av-40" src="../../_assets/avatars/a8.jpg" alt="玩家头像 40" loading="lazy">
+        <img class="av av-48" src="../../_assets/avatars/a12.jpg" alt="玩家头像 48" loading="lazy">
+      </div>
+      <div class="av-stack" role="img" aria-label="队伍成员 4 人，另有 8 人">
+        <img class="av av-40" src="../../_assets/avatars/a15.jpg" alt="" loading="lazy">
+        <img class="av av-40" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy">
+        <img class="av av-40" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy">
+        <img class="av av-40" src="../../_assets/avatars/a47.jpg" alt="" loading="lazy">
+        <span class="more">+8</span>
+      </div>
+    </div>
+    <div class="user-row" style="margin-bottom:var(--ds-space-9)">
+      <img class="av av-48" src="../../_assets/avatars/a8.jpg" alt="ARCADE_KING 的头像" loading="lazy">
+      <div><div class="ur-name">ARCADE_KING</div><div class="ur-sub">高分榜 #1 · 128,400 pts</div></div>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">背景大图区 Background Band</h3>
+    <div class="bgband">
+      <img src="../../_assets/photos/hero-studio.jpg" alt="复古工作室场景" loading="lazy">
+      <span class="mask" aria-hidden="true"></span>
+      <div class="bg-body">
+        <h3>BUILD YOUR ARCADE</h3>
+        <p>full-bleed 背景图 + 半透明遮罩 + 像素扫描线叠层，文字加硬黑描影保 AA 对比。内容区限制 60ch 行宽。</p>
+        <button class="btn btn-primary">GET STARTED</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 图标用法 ICON USAGE -->
+  <!-- ============================================================ -->
+  <section>
+    <h2 class="sec-title">图标用法 / Icon Usage</h2>
+    <p class="muted" style="max-width:64ch;margin-bottom:var(--ds-space-6)">本 kit 内联 SVG 图标统一方块化路径（<code>shape-rendering:crispEdges</code> + <code>image-rendering:pixelated</code>）、<code>currentColor</code> 继承上下文、<code>viewBox="0 0 24 24"</code>，零 emoji。</p>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">图标集 Icon Set</h3>
+    <div class="ico-grid" id="icoGrid" style="margin-bottom:var(--ds-space-9)"></div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">尺寸阶 Sizes（16 / 20 / 24 / 32）</h3>
+    <div class="ico-sizes" style="margin-bottom:var(--ds-space-9)">
+      <div class="s s16"><span class="gico" aria-hidden="true" data-ico="heart"></span><span class="lbl">16</span></div>
+      <div class="s s20"><span class="gico" aria-hidden="true" data-ico="heart"></span><span class="lbl">20</span></div>
+      <div class="s s24"><span class="gico" aria-hidden="true" data-ico="heart"></span><span class="lbl">24</span></div>
+      <div class="s s32"><span class="gico" aria-hidden="true" data-ico="heart"></span><span class="lbl">32</span></div>
+      <div style="width:2px;align-self:stretch;background:var(--ds-border)"></div>
+      <div class="s s24"><span class="gico" aria-hidden="true" data-ico="star"></span><span class="lbl">实心 Solid</span></div>
+      <div class="s s24"><span class="gico" aria-hidden="true" data-ico="star-o"></span><span class="lbl">线性 Outline</span></div>
+    </div>
+
+    <h3 style="font-family:var(--ds-font-mono);font-size:10px;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin-bottom:var(--ds-space-4)">在场景里 In Context</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--ds-space-5)">
+      <div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-3)">图标按钮（仅图标，有 aria-label）</p>
+        <div class="row">
+          <button class="icon-btn" aria-label="搜索"><span class="gico" data-ico="search"></span></button>
+          <button class="icon-btn" aria-label="设置"><span class="gico" data-ico="gear"></span></button>
+          <button class="icon-btn" aria-label="收藏"><span class="gico" data-ico="heart"></span></button>
+          <button class="icon-btn" aria-label="下载"><span class="gico" data-ico="download"></span></button>
+        </div>
+      </div>
+      <div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-3)">按钮内前/后置图标</p>
+        <div class="row">
+          <button class="btn btn-primary"><span class="svg-ico" aria-hidden="true" data-ico="play"></span>PLAY</button>
+          <button class="btn btn-secondary">NEXT<span class="svg-ico" aria-hidden="true" data-ico="arrow"></span></button>
+        </div>
+      </div>
+      <div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-3)">输入框前/后置图标</p>
+        <div class="icon-input">
+          <span class="gico" aria-hidden="true" data-ico="search"></span>
+          <input class="input" placeholder="SEARCH STAGES…" aria-label="搜索关卡">
+        </div>
+      </div>
+      <div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-3)">列表前导 + 状态图标（语义色）</p>
+        <ul class="ico-list">
+          <li><span class="gico st-ok" aria-hidden="true" data-ico="check"></span>存档成功</li>
+          <li><span class="gico st-warn" aria-hidden="true" data-ico="warn"></span>生命值偏低</li>
+          <li><span class="gico st-bad" aria-hidden="true" data-ico="cross"></span>连接已断开</li>
+        </ul>
+      </div>
+      <div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-3)">带数字徽标 Badge Icon</p>
+        <div class="row" style="gap:var(--ds-space-5)">
+          <span class="badge-ico"><span class="gico" aria-hidden="true" data-ico="bell"></span><span class="cnt">3</span></span>
+          <span class="badge-ico"><span class="gico" aria-hidden="true" data-ico="mail"></span><span class="cnt">12</span></span>
+          <span class="badge-ico"><span class="gico" aria-hidden="true" data-ico="cart"></span><span class="cnt">1</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 桌面布局 DESKTOP LAYOUTS -->
+  <!-- ============================================================ -->
+  <section>
+    <h2 class="sec-title">桌面布局 / Desktop Layouts</h2>
+    <p class="muted" style="max-width:64ch;margin-bottom:var(--ds-space-6)">用本风格 token + 真实图片做成可信缩略界面，置入带浏览器 chrome 的 frame。全程硬边 / 硬实心偏移阴影 / 0 圆角。</p>
+
+    <p class="subtle" style="font-family:var(--ds-font-mono);font-size:9px;letter-spacing:0;text-transform:uppercase;margin:0 0 var(--ds-space-3)">布局 A — 仪表盘 Dashboard</p>
+    <div class="frame" style="margin-bottom:var(--ds-space-9)">
+      <div class="chrome"><span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span><span class="addr">arcade.pixel.dev/dashboard</span><span class="lbl">DASHBOARD</span></div>
+      <div class="dash">
+        <aside class="side">
+          <div class="lg"><svg class="brand-mark" style="width:18px;height:18px;flex:0 0 18px" viewBox="0 0 26 26" fill="none" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M6 2h14v2H6zM4 4h2v2H4zm16 0h2v2h-2zM2 6h2v14H2zm20 0h2v14h-2zM4 20h2v2H4zm16 0h2v2h-2zM6 22h4v2H6zm10 0h4v2h-4z"/><path fill="var(--ds-primary)" d="M6 4h14v16H6z"/></svg>ARCADE</div>
+          <div class="nav-i on"><span class="gico" data-ico="grid"></span>OVERVIEW</div>
+          <div class="nav-i"><span class="gico" data-ico="chart"></span>STATS</div>
+          <div class="nav-i"><span class="gico" data-ico="users"></span>PLAYERS</div>
+          <div class="nav-i"><span class="gico" data-ico="cart"></span>STORE</div>
+          <div class="nav-i"><span class="gico" data-ico="gear"></span>OPTIONS</div>
+        </aside>
+        <div class="main">
+          <div class="dtop"><span class="dt-title">OVERVIEW</span><button class="btn btn-primary btn-sm">+ NEW</button></div>
+          <div class="dbody">
+            <div class="kpis">
+              <div class="kpi"><div class="k-lbl">DAILY PLAYS</div><div class="k-val">12,480</div><div class="k-dl k-up">▲ 8.2%</div></div>
+              <div class="kpi"><div class="k-lbl">HIGH SCORE</div><div class="k-val">128,400</div><div class="k-dl k-up">▲ NEW</div></div>
+              <div class="kpi"><div class="k-lbl">CHURN</div><div class="k-val">3.1%</div><div class="k-dl k-dn">▼ 0.4%</div></div>
+            </div>
+            <div class="chartbox">
+              <div class="ch-h">PLAYS / WEEK</div>
+              <div class="bars" aria-hidden="true"><i style="height:40%"></i><i style="height:62%"></i><i style="height:48%"></i><i style="height:80%"></i><i style="height:55%"></i><i style="height:92%"></i><i style="height:70%"></i></div>
+            </div>
+            <div class="chartbox mini-table" style="padding:0">
+              <table>
+                <thead><tr><th>PLAYER</th><th>STAGE</th><th class="num">SCORE</th></tr></thead>
+                <tbody>
+                  <tr><td>AAA</td><td>8-4</td><td class="num">128,400</td></tr>
+                  <tr><td>BIT</td><td>6-2</td><td class="num">097,250</td></tr>
+                  <tr><td>NEO</td><td>4-1</td><td class="num">061,980</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="subtle" style="font-family:var(--ds-font-mono);font-size:9px;letter-spacing:0;text-transform:uppercase;margin:0 0 var(--ds-space-3)">布局 B — 列表-详情 List · Detail</p>
+    <div class="frame">
+      <div class="chrome"><span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span><span class="addr">arcade.pixel.dev/library</span><span class="lbl">LIBRARY</span></div>
+      <div class="listdetail">
+        <div class="ld-list">
+          <div class="ld-i on"><img class="ld-thumb" src="../../_assets/gen/product-shoe.jpg" alt="" loading="lazy"><div class="ld-tx"><div class="t">PIXEL RUNNER</div><div class="s">动作 · 1-2P</div></div></div>
+          <div class="ld-i"><img class="ld-thumb" src="../../_assets/gen/abstract-wave.jpg" alt="" loading="lazy"><div class="ld-tx"><div class="t">WAVE RIDER</div><div class="s">休闲 · 1P</div></div></div>
+          <div class="ld-i"><img class="ld-thumb" src="../../_assets/photos/city.jpg" alt="" loading="lazy"><div class="ld-tx"><div class="t">NEON CITY</div><div class="s">射击 · 1-4P</div></div></div>
+          <div class="ld-i"><img class="ld-thumb" src="../../_assets/photos/forest.jpg" alt="" loading="lazy"><div class="ld-tx"><div class="t">FOREST QUEST</div><div class="s">冒险 · 1P</div></div></div>
+        </div>
+        <div class="ld-detail">
+          <span class="pic"><img src="../../_assets/gen/product-shoe.jpg" alt="PIXEL RUNNER 大图" loading="lazy"></span>
+          <h3>PIXEL RUNNER</h3>
+          <div class="ld-meta"><span class="badge b-success">已安装</span><span class="badge b-info">1-2 玩家</span><span class="stars" role="img" aria-label="评分 3 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></div>
+          <p>经典横版动作。左列表带缩略图，右详情大图 + 元信息 + 正文。所有图 pixelated 渲染、粗黑描边；当前列表项用左侧 4px 主色实线 + 抬起底标记，行宽控制在 62ch 内。</p>
+          <div class="row"><button class="btn btn-primary">START</button><button class="btn btn-secondary">详情</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 移动布局 MOBILE LAYOUTS（追加：详情/个人页，共 ≥2） -->
+  <!-- ============================================================ -->
+  <section>
+    <h2 class="sec-title">移动布局 / Mobile Layouts</h2>
+    <p class="muted" style="max-width:64ch;margin-bottom:var(--ds-space-6)">iPhone 17 Pro Max 钛金套壳，并排两套布局：大图 header 的个人页（顶部深色 -> <code>sb-light</code>）与收件箱列表页。屏内内容真实饱满、触控目标 ≥44px，外壳保持真实质感不像素化。</p>
+    <div class="phone-row">
+
+      <!-- 移动布局 1：详情 / 个人页（大图 header -> sb-light） -->
+      <div class="dvc17 sb-light" aria-label="移动布局 · 个人页">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div style="position:relative">
+              <span class="pic" style="display:block;border:none;border-bottom:3px solid var(--ds-border-strong);box-shadow:none;aspect-ratio:16/9"><img src="../../_assets/photos/hero-gallery.jpg" alt="个人主页封面" loading="lazy"></span>
+              <span class="overlay" style="position:absolute;inset:0;border:none;box-shadow:none;aspect-ratio:auto"><span class="scrim" aria-hidden="true"></span></span>
+            </div>
+            <div class="ph-body" style="padding-top:var(--ds-space-3)">
+              <div class="user-row" style="margin-top:calc(var(--ds-space-7) * -1);position:relative;z-index:1">
+                <img class="av av-48" src="../../_assets/avatars/a23.jpg" alt="ARCADE_KING 头像" loading="lazy">
+                <div><div class="ur-name" style="color:var(--ds-fg)">ARCADE_KING</div><div class="ur-sub">LV.42 · 高分榜 #1</div></div>
+              </div>
+              <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+                <div class="kpi"><div class="k-lbl">SCORE</div><div class="k-val" style="font-size:13px">128K</div></div>
+                <div class="kpi"><div class="k-lbl">STAGES</div><div class="k-val" style="font-size:13px">86</div></div>
+                <div class="kpi"><div class="k-lbl">BADGES</div><div class="k-val" style="font-size:13px">24</div></div>
+              </div>
+              <button class="btn btn-primary" style="width:100%"><span class="svg-ico" aria-hidden="true" data-ico="heart"></span>FOLLOW</button>
+            </div>
+            <nav class="ph-tabbar" aria-label="底部导航">
+              <button>PLAY</button><button>MAP</button><button>SHOP</button><button aria-current="page">ME</button>
+            </nav>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <!-- 移动布局 2：列表 / 收件箱（带头像缩略图行） -->
+      <div class="dvc17" aria-label="移动布局 · 收件箱">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="ph-top">
+              <span class="ph-title">INBOX</span>
+              <span class="badge-ico" style="width:28px;height:28px"><span class="gico" aria-hidden="true" data-ico="bell"></span><span class="cnt" style="top:-7px;right:-7px">5</span></span>
+            </div>
+            <div class="ph-body" style="gap:var(--ds-space-3)">
+              <div class="icon-input"><span class="gico" aria-hidden="true" data-ico="search"></span><input class="input" placeholder="SEARCH…" aria-label="搜索消息"></div>
+              <ul class="ph-list">
+                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a1.jpg" alt="" loading="lazy">&nbsp;NEO_RGB</span><span class="num">2m</span></li>
+                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a5.jpg" alt="" loading="lazy">&nbsp;PIX_LORD</span><span class="num">1h</span></li>
+                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a12.jpg" alt="" loading="lazy">&nbsp;BIT_QUEEN</span><span class="num">3h</span></li>
+                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy">&nbsp;GG_BOT</span><span class="num">1d</span></li>
+              </ul>
+              <button class="btn btn-secondary" style="width:100%">LOAD MORE</button>
+            </div>
+            <nav class="ph-tabbar" aria-label="底部导航">
+              <button>PLAY</button><button aria-current="page">INBOX</button><button>SHOP</button><button>ME</button>
+            </nav>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -720,6 +1346,51 @@ function render(){
 render();
 /* 切主题后刷新 hex 显示 */
 new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---- 像素 SVG 图标库（方块化路径、currentColor、crispEdges；零 emoji） ---- */
+var ICONS={
+  search:'<path d="M3 3h6v1H3zm-1 1h1v6H2zm7 0h1v6H9zM3 10h6v1H3zm6 0h2v1H9zm1 1h2v1h-2zm1 1h2v1h-2z"/>',
+  gear:'<path d="M10 1h4v3h-4zM10 20h4v3h-4zM1 10h3v4H1zm19 0h3v4h-3zM4 4h3v3H4zm13 0h3v3h-3zM4 17h3v3H4zm13 0h3v3h-3zM8 8h8v8H8zm2 2h4v4h-4z"/>',
+  heart:'<path d="M3 4h6v2H3zm12 0h6v2h-6zM1 6h2v4H1zm8 0h6v2H9zm12 0h2v4h-2zM3 10h2v3H3zm16 0h2v3h-2zM5 13h2v2H5zm12 0h2v2h-2zM7 15h2v2H7zm8 0h2v2h-2zM9 17h2v2H9zm4 0h2v2h-2zm-2 2h2v2h-2z"/>',
+  download:'<path d="M11 1h2v9h-2zM7 8h2v2H7zm8 0h2v2h-2zM9 10h2v2H9zm4 0h2v2h-2zm-2 2h2v2h-2zM3 16h2v5H3zm16 0h2v5h-2zM3 19h18v2H3z"/>',
+  play:'<path d="M5 3h2v18H5zm2 1h2v16H7zm2 1h2v14H9zm2 1h2v12h-2zm2 1h2v10h-2zm2 1h2v8h-2zm2 1h2v6h-2z"/>',
+  arrow:'<path d="M3 11h14v2H3zm12-4h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm-2 2h2v2h-2zm-2 2h2v2h-2z"/>',
+  check:'<path d="M19 5h3v3h-3zM16 8h3v3h-3zM13 11h3v3h-3zM10 14h3v3h-3zM7 17h3v3H7zM4 14h3v3H4zM1 11h3v3H1z"/>',
+  warn:'<path d="M10 1h4v3h-4zM7 4h3v4H7zm7 0h3v4h-3zM4 8h3v5H4zm13 0h3v5h-3zM1 13h3v6H1zm19 0h3v6h-3zM4 19h16v3H4zM11 7h2v8h-2zm0 9h2v3h-2z"/>',
+  cross:'<path d="M3 3h3v3H3zm4 4h3v3H7zm4 4h3v3h-3zm4 4h3v3h-3zm4 4h3v3h-3zM18 3h3v3h-3zm-4 4h3v3h-3zm-8 8h3v3H6zm-4 4h3v3H2z"/>',
+  bell:'<path d="M10 1h4v3h-4zM7 4h10v2H7zM5 6h2v9H5zm12 0h2v9h-2zM7 13h10v2H7zM3 15h18v2H3zM9 19h6v2H9zm2 2h2v1h-2z"/>',
+  mail:'<path d="M2 4h20v16H2zm2 2v12h16V6zm0 0h16v2l-8 5-8-5z"/>',
+  cart:'<path d="M1 2h4v2H1zm4 2h2v11H5zm2 11h12v2H7zm0-3h11v2H7zm10-7h4v2h-4zM6 4h13v2H6zm-1 2h2v2H5zm12 0h2v2h-2zM7 18h2v2H7zm8 0h2v2h-2z"/>',
+  star:'<path d="M11 1h2v6h6v2h-2v2h2v6h-4v-2H8v2H4v-6h2V9H4V7h6z"/>',
+  'star-o':'<path d="M11 1h2v6h6v2h-2v2h2v6h-4v-2H8v2H4v-6h2V9H4V7h6zm0 2H8v4H6v4h2v4h2v-2h4v2h2v-4h2V7h-2V3h-3z"/>',
+  grid:'<path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/>',
+  chart:'<path d="M2 2h2v20H2zm2 18h18v2H4zM7 14h3v6H7zm5-5h3v11h-3zm5-5h3v16h-3z"/>',
+  users:'<path d="M6 2h6v6H6zm-2 8h10v2H4zm-2 2h2v6H2zm12 0h2v6h-2zM15 4h4v4h-4zm1 6h6v2h-6zm4 2h2v5h-2z"/>',
+  layers:'<path d="M11 1h2v1l9 5-9 5-9-5 9-5zm-9 9 9 5 9-5 1 1-10 5-10-5zm0 5 9 5 9-5 1 1-10 5-10-5z"/>',
+  folder:'<path d="M2 4h8v2H2zm8 0h2v2h-2zm2 2h10v14H2V6h10zm-8 2v10h16V8z"/>',
+  trophy:'<path d="M6 2h12v8h-2v2h-2v2h-4v-2H8v-2H6zM2 4h4v4H2zm16 0h4v4h-4zM10 14h4v4h-4zm-3 4h10v2H7zm-2 2h14v2H5z"/>',
+  bolt:'<path d="M12 1h4v8h4l-8 14v-8H8z"/>',
+  lock:'<path d="M8 2h8v2H8zM6 4h2v4H6zm10 0h2v4h-2zM4 8h16v14H4zm6 4h4v6h-4z"/>',
+  pin:'<path d="M8 1h8v2H8zM6 3h12v6h-2v4h2v2H6v-2h2V9H6zM11 17h2v6h-2z"/>'
+};
+function svg(name,vb){
+  var p=ICONS[name]||ICONS.grid;
+  return '<svg viewBox="0 0 24 24" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">'+p+'</svg>';
+}
+/* 填充所有 data-ico 占位 */
+Array.prototype.forEach.call(document.querySelectorAll('[data-ico]'),function(el){
+  el.innerHTML=svg(el.getAttribute('data-ico'));
+});
+/* 图标集网格（≥12，带名） */
+var SET=['search','gear','heart','download','play','arrow','check','warn','cross','bell','mail','cart','star','grid','chart','users','layers','folder','trophy','bolt','lock','pin'];
+var ig=document.getElementById('icoGrid');
+if(ig){
+  SET.forEach(function(n){
+    var c=document.createElement('div'); c.className='ico-cell';
+    c.innerHTML='<span class="gico" aria-hidden="true">'+svg(n)+'</span><span class="nm">'+n+'</span>';
+    ig.appendChild(c);
+  });
+}
 </script>
 </body>
 </html>

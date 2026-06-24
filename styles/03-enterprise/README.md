@@ -347,4 +347,41 @@ module.exports = {
 
 ---
 
+## 13. 预览页 Showcase（preview.html）
+
+`preview.html` 在「色板 / 字体 / 组件清单」之外，按 Showcase v2 富化标准补齐了**有图、有布局、信息饱满**的作品级展示，所有素材均来自本仓库 `_assets/`（`loading="lazy"` + 有意义 alt），除 `_fonts/fonts.css` 外无任何外链。
+
+### 有图首屏 Hero
+顶部为左文右图的分栏 hero：左侧标题 / 副标题 / 双 CTA / 指标条（SLA、月活席位、SOC 2），右侧 `enterprise-hero.jpg`（4:3 框 + 底部渐变 scrim 叠字 + 「部署成功」浮卡），消灭首屏留白。
+
+### 图片用法 Image Usage（`#images`）
+- **宽高比框**：16:9 / 4:3 / 1:1 / 3:4，统一 `aspect-ratio` + `object-fit:cover`，圆角 `--ds-radius-md`、轻边轻影。
+- **媒体卡 Media Card**：图在上 + 元信息 + 标题 + 正文 + 操作，3 张成网格。
+- **画廊 Gallery**：8 图等高网格，含跨格（wide / tall）强调，hover 轻微放大。
+- **图文混排 Feature Split**：大图 + 文字段落并排，配语义对勾要点列表。
+- **图上叠字 Overlay**：21:9 大图 + 渐变 scrim，保证白字 AA。
+- **头像 Avatar**：尺寸阶 24 / 32 / 40 / 48、堆叠头像组（`avatar-stack`，+N）、用户行（头像 + 名 + 角色）。
+- **背景大图区 Banner**：full-bleed 背景图 + 商务蓝半透明遮罩 + 文案与双 CTA。
+
+### 图标用法 Icon Usage（`#icons`）
+- **图标集**：12 枚统一线性内联 SVG（dashboard / team / analytics / security…），网格带名展示。
+- **尺寸阶**：16 / 20 / 24 / 32 基线对齐；**线性 vs 实心**、**单色 vs 双色**对比。
+- **在场景里**：图标按钮（仅图标带 `aria-label`）、按钮内前 / 后置图标、输入框前 / 后置图标、列表项前导图标、语义色状态图标（成功 / 警告 / 危险 / 信息）、带数字徽标图标。
+
+### 桌面布局 Desktop Layouts（`#layouts`，3 个）
+均置于带浏览器 chrome（圆点 + 地址栏 + 标签）的 frame 中：
+1. **应用外壳 / 仪表盘**：侧边导航 + 顶栏 + 三 KPI 卡 + 柱状图占位 + 表格。
+2. **落地页 / 营销**：hero（图文）+ 带图标的特性三栏。
+3. **列表-详情**：左侧带缩略图列表 + 右侧大图详情（元信息 + 正文 + 操作）。
+
+### 移动布局 Mobile Layouts（`#mobile`，3 个）
+约 320px 手机框（状态条意象 + 真实饱满内容）：
+1. **App 首页**：封面图 + feed 卡片流 + 底部标签栏（图标）。
+2. **详情 / 个人页**：大图 header + 头像 + 统计行 + 设置列表。
+3. **列表 / 收件箱**：折叠导航顶栏 + 指标卡 + 全宽主操作 + 头像列表。
+
+> 富化区块全部复用既有 `--ds-*` token 与组件类，保持商务蓝 + 克制可信 + Inter + 克制阴影统一圆角的风格身份；亮 / 暗主题与响应式（≤640px 收单列、≤900px 布局收敛）均生效。
+
+---
+
 *Enterprise Kit · 基于 Geist 语义骨架 · 变量契约见 `_base/KIT-TEMPLATE.md`*

@@ -2,6 +2,7 @@
 <html lang="zh-CN" data-theme="light">
 <head>
 <link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HahaClean · 哈哈清理 设计系统预览</title>
@@ -367,6 +368,252 @@
   @media (max-width: 400px) {
     .gauges { grid-template-columns: 1fr; }
   }
+
+  /* ============================================================
+     ===== Showcase v2 新增样式（hero / 图片 / 图标 / 布局） =====
+     ============================================================ */
+
+  /* ===== Hero 首屏 ===== */
+  .hero {
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: var(--ds-space-8);
+    align-items: center;
+    background: var(--ds-bg); border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg); padding: var(--ds-space-9);
+    margin-top: var(--ds-space-7);
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; font-size: var(--ds-text-xs);
+    font-weight: var(--ds-weight-medium); letter-spacing: .04em; text-transform: uppercase;
+    color: var(--ds-primary-strong); background: var(--ds-bg-sunken);
+    box-shadow: var(--ds-shadow-inset-sm); border-radius: var(--ds-radius-full);
+    padding: 6px 14px; margin-bottom: var(--ds-space-5);
+  }
+  .hero-eyebrow .icon { width: 14px; height: 14px; }
+  .hero h2 { font-size: var(--ds-text-3xl); letter-spacing: -0.04em; line-height: 1.08; margin-bottom: var(--ds-space-4); }
+  .hero p.lede { font-size: var(--ds-text-md); color: var(--ds-fg-muted); line-height: var(--ds-leading-normal); max-width: 46ch; margin: 0 0 var(--ds-space-6); }
+  .hero-cta { display: flex; gap: var(--ds-space-3); flex-wrap: wrap; align-items: center; }
+  .hero-stats { display: flex; gap: var(--ds-space-7); margin-top: var(--ds-space-7); flex-wrap: wrap; }
+  .hero-stat .n { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .hero-stat .l { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  /* hero 图：放进凸起卡，图本身嵌入 inset 凹槽（新拟物身份） */
+  .hero-media {
+    background: var(--ds-bg); border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-md); padding: var(--ds-space-4);
+  }
+  .hero-media .frame {
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-inset);
+    padding: var(--ds-space-3); background: var(--ds-bg-sunken);
+  }
+  .hero-media img {
+    display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-sm);
+  }
+  .hero-media .cap { display: flex; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-2) var(--ds-space-1); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .hero-media .cap .icon { width: 14px; height: 14px; color: var(--ds-primary-strong); }
+
+  /* ===== 图片用法 ===== */
+  .ratio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-5); }
+  .ratio-card { text-align: center; }
+  .ratio-card .inset {
+    background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset);
+    border-radius: var(--ds-radius-md); padding: var(--ds-space-3);
+  }
+  .ratio-card img { display: block; width: 100%; object-fit: cover; border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-sm); }
+  .ratio-card .lbl { margin-top: var(--ds-space-2); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); font-family: var(--ds-font-mono); }
+  .r-16x9 { aspect-ratio: 16 / 9; } .r-4x3 { aspect-ratio: 4 / 3; } .r-1x1 { aspect-ratio: 1 / 1; } .r-3x4 { aspect-ratio: 3 / 4; }
+
+  .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-6); }
+  .media-card { background: var(--ds-bg-elevated); border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-md); overflow: hidden; display: flex; flex-direction: column; }
+  .media-card .pic { aspect-ratio: 16 / 10; overflow: hidden; margin: var(--ds-space-3) var(--ds-space-3) 0; border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-inset-sm); }
+  .media-card .pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .media-card .body { padding: var(--ds-space-4); display: flex; flex-direction: column; gap: var(--ds-space-2); flex: 1; }
+  .media-card .body h4 { font-size: var(--ds-text-md); }
+  .media-card .body p { margin: 0; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); flex: 1; }
+  .media-card .body .act { margin-top: var(--ds-space-2); }
+
+  /* 图片网格 / 画廊 */
+  .gallery { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--ds-space-3); }
+  .gallery .g { aspect-ratio: 1 / 1; border-radius: var(--ds-radius-sm); overflow: hidden; box-shadow: var(--ds-shadow-sm); }
+  .gallery .g.wide { grid-column: span 2; aspect-ratio: 2 / 1; }
+  .gallery .g img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* 图文混排 */
+  .feature-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-7); align-items: center; }
+  .feature-split .pic { background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset); border-radius: var(--ds-radius-md); padding: var(--ds-space-3); }
+  .feature-split .pic img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-sm); }
+  .feature-split h3 { font-size: var(--ds-text-xl); margin-bottom: var(--ds-space-3); letter-spacing: -0.02em; }
+  .feature-split p { color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-4); max-width: 52ch; }
+  .feat-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--ds-space-3); }
+  .feat-list li { display: flex; align-items: flex-start; gap: var(--ds-space-3); font-size: var(--ds-text-sm); }
+  .feat-list .ico { flex: none; width: 26px; height: 26px; border-radius: var(--ds-radius-sm); background: var(--ds-bg); box-shadow: var(--ds-shadow-sm); display: grid; place-items: center; color: var(--ds-primary-strong); }
+  .feat-list .ico .icon { width: 15px; height: 15px; }
+
+  /* 图上叠字 overlay */
+  .overlay-card { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-md); aspect-ratio: 21 / 9; }
+  .overlay-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .overlay-card .scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,40,36,.82) 0%, rgba(20,40,36,.55) 45%, rgba(20,40,36,.12) 100%); }
+  .overlay-card .ov-body { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: var(--ds-space-3); padding: var(--ds-space-8); max-width: 60%; }
+  .overlay-card .ov-body h3 { color: #fff; font-size: var(--ds-text-2xl); letter-spacing: -0.03em; }
+  .overlay-card .ov-body p { color: rgba(255,255,255,.92); margin: 0; font-size: var(--ds-text-sm); }
+  .overlay-card .ov-body .badge { align-self: flex-start; background: rgba(255,255,255,.92); color: var(--ds-primary-strong); box-shadow: none; }
+
+  /* 头像用法 */
+  .avatar { border-radius: var(--ds-radius-full); object-fit: cover; box-shadow: var(--ds-shadow-sm); background: var(--ds-bg); }
+  .avatar.a24 { width: 24px; height: 24px; } .avatar.a32 { width: 32px; height: 32px; }
+  .avatar.a40 { width: 40px; height: 40px; } .avatar.a48 { width: 48px; height: 48px; }
+  .avatar-stack { display: flex; }
+  .avatar-stack img { border: 3px solid var(--ds-bg); margin-left: -12px; box-shadow: var(--ds-shadow-sm); }
+  .avatar-stack img:first-child { margin-left: 0; }
+  .avatar-stack .more { width: 40px; height: 40px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); display: grid; place-items: center; font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold); color: var(--ds-fg-muted); border: 3px solid var(--ds-bg); margin-left: -12px; }
+  .user-row { display: flex; align-items: center; gap: var(--ds-space-3); }
+  .user-row .nm { font-weight: var(--ds-weight-medium); }
+  .user-row .sg { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+
+  /* 背景大图区 */
+  .bg-feature { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-md); }
+  .bg-feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bg-feature .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,40,36,.30), rgba(20,40,36,.78)); }
+  .bg-feature .bf-body { position: relative; padding: var(--ds-space-9) var(--ds-space-8); display: flex; flex-direction: column; gap: var(--ds-space-4); }
+  .bg-feature h3 { color: #fff; font-size: var(--ds-text-2xl); letter-spacing: -0.03em; max-width: 22ch; }
+  .bg-feature p { color: rgba(255,255,255,.92); margin: 0; max-width: 50ch; }
+  .bf-stats { display: flex; gap: var(--ds-space-8); margin-top: var(--ds-space-3); flex-wrap: wrap; }
+  .bf-stats .n { color: #fff; font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); font-variant-numeric: tabular-nums; }
+  .bf-stats .l { color: rgba(255,255,255,.85); font-size: var(--ds-text-xs); }
+
+  /* ===== 图标用法 ===== */
+  .icon-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--ds-space-4); }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-4) var(--ds-space-2); background: var(--ds-bg); border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-sm); }
+  .icon-cell .ig { width: 40px; height: 40px; border-radius: var(--ds-radius-sm); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); display: grid; place-items: center; color: var(--ds-primary-strong); }
+  .icon-cell .ig .icon { width: 22px; height: 22px; }
+  .icon-cell .nm { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .icon-sizes { display: flex; align-items: flex-end; gap: var(--ds-space-6); }
+  .icon-sizes .iz { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--ds-primary-strong); }
+  .icon-sizes .iz .lbl { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); font-family: var(--ds-font-mono); }
+  .icon-btn { width: 40px; height: 40px; border: none; background: var(--ds-bg); box-shadow: var(--ds-shadow-sm); border-radius: var(--ds-radius-sm); color: var(--ds-fg); cursor: pointer; display: grid; place-items: center; transition: box-shadow var(--ds-dur-fast) var(--ds-ease); }
+  .icon-btn:hover { box-shadow: var(--ds-shadow-md); }
+  .icon-btn:active { box-shadow: var(--ds-shadow-inset-sm); }
+  .icon-btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .input-icon { position: relative; display: flex; align-items: center; }
+  .input-icon .lead-ic { position: absolute; left: 14px; color: var(--ds-fg-muted); display: grid; place-items: center; pointer-events: none; }
+  .input-icon input { width: 100%; height: 40px; border: none; background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset); border-radius: var(--ds-radius-sm); padding: 0 16px 0 42px; color: var(--ds-fg); font-family: inherit; font-size: var(--ds-text-base); }
+  .input-icon input::placeholder { color: var(--ds-fg-subtle); }
+  .input-icon input:focus-visible { outline: none; box-shadow: var(--ds-shadow-inset), var(--ds-focus-ring); }
+  .badge-ic { position: relative; display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--ds-radius-md); background: var(--ds-bg); box-shadow: var(--ds-shadow-md); color: var(--ds-primary-strong); }
+  .badge-ic .count { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: var(--ds-radius-full); background: var(--ds-danger); color: #fff; font-size: 11px; font-weight: var(--ds-weight-bold); display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+
+  /* ===== 桌面布局小样 (browser chrome frame) ===== */
+  .frame-win { background: var(--ds-bg); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-shadow-lg); overflow: hidden; }
+  .frame-bar { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4); background: var(--ds-bg-subtle); box-shadow: var(--ds-shadow-inset-sm); }
+  .frame-dots { display: flex; gap: 7px; }
+  .frame-dots i { width: 12px; height: 12px; border-radius: 50%; box-shadow: var(--ds-shadow-inset-sm); }
+  .frame-dots i:nth-child(1) { background: #e09a9a; } .frame-dots i:nth-child(2) { background: #e0c98a; } .frame-dots i:nth-child(3) { background: #8fcaa6; }
+  .frame-url { flex: 1; height: 26px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); display: flex; align-items: center; gap: 7px; padding: 0 var(--ds-space-3); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .frame-url .icon { width: 12px; height: 12px; }
+  .frame-name { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); font-weight: var(--ds-weight-medium); }
+  .frame-body { padding: var(--ds-space-5); }
+
+  /* mock app shell inside frame */
+  .mock-app { display: grid; grid-template-columns: 168px 1fr; gap: var(--ds-space-4); }
+  .mock-nav { display: flex; flex-direction: column; gap: 5px; }
+  .mock-brand { display: flex; align-items: center; gap: var(--ds-space-2); padding: 0 var(--ds-space-2) var(--ds-space-3); }
+  .mock-brand .bm { width: 26px; height: 26px; border-radius: var(--ds-radius-sm); background: var(--ds-bg); box-shadow: var(--ds-shadow-sm); display: grid; place-items: center; color: var(--ds-primary-strong); }
+  .mock-brand .bm .icon { width: 15px; height: 15px; }
+  .mock-brand b { font-size: var(--ds-text-sm); }
+  .mni { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 34px; padding: 0 var(--ds-space-3); border-radius: var(--ds-radius-sm); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  .mni .icon { width: 16px; height: 16px; flex: none; }
+  .mni.active { background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); color: var(--ds-primary-strong); font-weight: var(--ds-weight-medium); }
+  .mni .m { margin-left: auto; font-size: 11px; font-family: var(--ds-font-mono); }
+  .mock-main { min-width: 0; }
+  .mock-h { display: flex; align-items: center; gap: var(--ds-space-3); margin-bottom: var(--ds-space-4); }
+  .mock-h h4 { font-size: var(--ds-text-md); }
+  .mock-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-3); margin-bottom: var(--ds-space-4); }
+  .kpi { background: var(--ds-bg); border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-sm); padding: var(--ds-space-3); }
+  .kpi .n { font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpi .l { font-size: 11px; color: var(--ds-fg-muted); }
+  .mock-row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); border-top: 1px solid var(--ds-border); font-size: var(--ds-text-sm); }
+  .mock-list { background: var(--ds-bg-elevated); border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-sm); overflow: hidden; }
+  .mock-row:first-child { border-top: none; }
+  .mock-row .pip { width: 26px; height: 26px; border-radius: var(--ds-radius-sm); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); display: grid; place-items: center; color: var(--ds-primary-strong); flex: none; }
+  .mock-row .pip .icon { width: 14px; height: 14px; }
+  .mock-row .sz { margin-left: auto; font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); }
+  .mini-bar { height: 12px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); display: flex; overflow: hidden; padding: 2px; gap: 2px; }
+  .mini-bar i { border-radius: var(--ds-radius-full); }
+  /* treemap (disk analysis) */
+  .treemap { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px; height: 188px; }
+  .tm { border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-inset-sm); padding: var(--ds-space-3); color: #fff; display: flex; flex-direction: column; justify-content: flex-end; }
+  .tm .tn { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); }
+  .tm .ts { font-size: 11px; opacity: .9; font-variant-numeric: tabular-nums; }
+  .tm.big { grid-row: span 2; }
+
+  /* desktop landing mock */
+  .mlp-hero { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-5); align-items: center; padding: var(--ds-space-4) 0 var(--ds-space-6); }
+  .mlp-hero h3 { font-size: var(--ds-text-xl); letter-spacing: -0.03em; margin-bottom: var(--ds-space-2); }
+  .mlp-hero p { color: var(--ds-fg-muted); font-size: var(--ds-text-sm); margin: 0 0 var(--ds-space-4); }
+  .mlp-pic { background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset); border-radius: var(--ds-radius-md); padding: var(--ds-space-2); }
+  .mlp-pic img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-sm); }
+  .mlp-feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-4); }
+  .mlp-feat { background: var(--ds-bg); border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-sm); padding: var(--ds-space-4); }
+  .mlp-feat .fi { width: 34px; height: 34px; border-radius: var(--ds-radius-sm); background: var(--ds-bg); box-shadow: var(--ds-shadow-sm); display: grid; place-items: center; color: var(--ds-primary-strong); margin-bottom: var(--ds-space-3); }
+  .mlp-feat .fi .icon { width: 18px; height: 18px; }
+  .mlp-feat h5 { margin: 0 0 4px; font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); }
+  .mlp-feat p { margin: 0; font-size: var(--ds-text-xs); color: var(--ds-fg-muted); line-height: var(--ds-leading-normal); }
+
+  /* ===== 移动布局：两台手机并排 ===== */
+  .phone-row { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+  .phone-cap { text-align: center; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-top: var(--ds-space-3); }
+  .phone-status { display: flex; align-items: center; justify-content: space-between; padding: var(--ds-space-2) var(--ds-space-5) 0; font-size: 11px; color: var(--ds-fg-muted); font-weight: var(--ds-weight-medium); }
+  .phone-status .dots { display: flex; gap: 3px; align-items: center; }
+  .phone-status .dots .icon { width: 13px; height: 13px; }
+  /* mobile detail / profile */
+  .m-hero { position: relative; aspect-ratio: 16 / 10; margin: var(--ds-space-3); border-radius: var(--ds-radius-md); overflow: hidden; box-shadow: var(--ds-shadow-inset-sm); }
+  /* 套壳内：详情页大图 header 顶到状态栏下，使深色背景托起 sb-light 白色状态栏文字 */
+  .dvc-body > .m-hero:first-child { margin: -54px 0 0; border-radius: 0; aspect-ratio: auto; height: 232px; padding-top: 54px; box-shadow: none; }
+  .m-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .m-hero .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,40,36,.05), rgba(20,40,36,.72)); }
+  .m-hero .h-body { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--ds-space-4); }
+  .m-hero .h-body h4 { color: #fff; font-size: var(--ds-text-md); }
+  .m-hero .h-body .s { color: rgba(255,255,255,.9); font-size: 11px; }
+  .m-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-4); }
+  .m-stat { background: var(--ds-bg); border-radius: var(--ds-radius-sm); box-shadow: var(--ds-shadow-sm); padding: var(--ds-space-3); text-align: center; }
+  .m-stat .n { font-size: var(--ds-text-md); font-weight: var(--ds-weight-bold); font-variant-numeric: tabular-nums; }
+  .m-stat .l { font-size: 10px; color: var(--ds-fg-muted); }
+  .m-toggle-row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4); border-top: 1px solid var(--ds-border); }
+  .m-toggle-row:first-child { border-top: none; }
+  .m-toggle-row .ic { width: 30px; height: 30px; border-radius: var(--ds-radius-sm); background: var(--ds-bg); box-shadow: var(--ds-shadow-sm); display: grid; place-items: center; color: var(--ds-primary-strong); flex: none; }
+  .m-toggle-row .ic .icon { width: 16px; height: 16px; }
+  .m-toggle-row .meta { flex: 1; min-width: 0; }
+  .m-toggle-row .name { font-weight: var(--ds-weight-medium); font-size: var(--ds-text-sm); }
+  .m-toggle-row .sub { font-size: 11px; color: var(--ds-fg-muted); }
+  .sw-track { width: 46px; height: 26px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); position: relative; flex: none; }
+  .sw-track .knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--ds-bg); box-shadow: var(--ds-shadow-sm); transition: left var(--ds-dur-base) var(--ds-ease); }
+  .sw-track.on { background: var(--ds-primary); }
+  .sw-track.on .knob { left: 23px; }
+  .m-tabbar { display: flex; padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4); gap: var(--ds-space-1); box-shadow: var(--ds-shadow-inset-sm); border-radius: var(--ds-radius-md); margin: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3); }
+  .m-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--ds-space-2); border-radius: var(--ds-radius-sm); color: var(--ds-fg-muted); font-size: 10px; }
+  .m-tab .icon { width: 20px; height: 20px; }
+  .m-tab.active { color: var(--ds-primary-strong); background: var(--ds-bg-sunken); box-shadow: var(--ds-shadow-inset-sm); font-weight: var(--ds-weight-medium); }
+
+  /* ===== v2 响应式 ===== */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: var(--ds-space-6); padding: var(--ds-space-7); }
+    .hero h2 { font-size: var(--ds-text-2xl); }
+    .feature-split, .mlp-hero { grid-template-columns: 1fr; }
+    .media-grid, .mlp-feats { grid-template-columns: 1fr 1fr; }
+    .ratio-grid { grid-template-columns: 1fr 1fr; }
+    .icon-grid { grid-template-columns: repeat(4, 1fr); }
+    .gallery { grid-template-columns: repeat(3, 1fr); }
+    .mock-app { grid-template-columns: 1fr; }
+    .mock-nav { flex-direction: row; flex-wrap: wrap; }
+    .mock-nav .mock-brand { width: 100%; }
+    .overlay-card { aspect-ratio: 16 / 10; }
+    .overlay-card .ov-body { max-width: 100%; }
+  }
+  @media (max-width: 520px) {
+    .media-grid, .mlp-feats, .icon-grid, .gallery, .mock-kpis, .treemap { grid-template-columns: 1fr 1fr; }
+    .treemap { height: auto; grid-template-rows: none; }
+    .tm.big { grid-row: auto; min-height: 80px; }
+    .hero h2 { font-size: var(--ds-text-xl); }
+  }
 </style>
 </head>
 <body>
@@ -392,8 +639,32 @@
 
 <div class="wrap">
 
+  <!-- ===== Hero 首屏 ===== -->
+  <section class="hero" style="margin-top:0" aria-label="概览">
+    <div class="hero-text">
+      <span class="hero-eyebrow"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 新拟物风 · 洁净薄荷定制</span>
+      <h2>把 Mac 清干净，<br>而不让你紧张。</h2>
+      <p class="lede">HahaClean 哈哈清理是一款平静、单窗、人人会用的 macOS 清理工具。先扫描预览，看清能回收多少再决定——删除项进废纸篓、随时可恢复，重要文件有保护名单守着。</p>
+      <div class="hero-cta">
+        <button class="btn primary lg"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 扫描可回收空间</button>
+        <button class="btn lg">查看磁盘分析</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="n">4.7 GB</div><div class="l">本次可回收</div></div>
+        <div class="hero-stat"><div class="n">82</div><div class="l">系统健康分</div></div>
+        <div class="hero-stat"><div class="n">12 类</div><div class="l">智能扫描项</div></div>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="frame">
+        <img src="../../_assets/gen/neumorph-hero.jpg" alt="洁净薄荷色调的新拟物界面材质特写，柔和双向阴影的圆角控件" loading="lazy" width="1400" height="1749">
+      </div>
+      <div class="cap"><svg class="icon fill" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg> 同底卡片 + 双向柔和阴影 + 大圆角 + 薄荷青——一眼可辨的身份。</div>
+    </div>
+  </section>
+
   <!-- ===== 应用外壳：左侧导航(凹陷选中) + 主操作 + 概览仪表 ===== -->
-  <section style="margin-top: var(--ds-space-6)">
+  <section style="margin-top: var(--ds-space-9)">
     <h2 class="sec-title">应用外壳 · 单窗 + 左侧分组导航（凹陷选中态）</h2>
     <p class="sec-desc">同色基底，选中项做 inset 凹陷 + 转主色文字；右侧概览仪表（健康分 / 磁盘 / 内存）用 inset 凹槽环。</p>
     <div class="app">
@@ -596,6 +867,436 @@
     </div>
   </section>
 
+  <!-- ===== 图片用法 Image Usage ===== -->
+  <section>
+    <h2 class="sec-title">图片用法 · Image Usage</h2>
+    <p class="sec-desc">本风格图片处理：媒体一律嵌进 inset 凹槽或托在凸起卡上，统一大圆角 + 极轻凸阴影；比例与圆角全风格一致——清理工具的「磁盘可视化 / app 截图 / 媒体」都按此放置。</p>
+
+    <!-- 宽高比框 -->
+    <div class="card" style="margin-bottom:var(--ds-space-6)">
+      <h4 style="margin-bottom:var(--ds-space-4)">宽高比框 · aspect-ratio + object-fit:cover（凹槽承托）</h4>
+      <div class="ratio-grid">
+        <div class="ratio-card"><div class="inset"><img class="r-16x9" src="../../_assets/photos/tech.jpg" alt="科技工作场景，宽屏裁切" loading="lazy"></div><div class="lbl">16 : 9</div></div>
+        <div class="ratio-card"><div class="inset"><img class="r-4x3" src="../../_assets/photos/desk.jpg" alt="整洁的桌面工作环境" loading="lazy"></div><div class="lbl">4 : 3</div></div>
+        <div class="ratio-card"><div class="inset"><img class="r-1x1" src="../../_assets/photos/workspace.jpg" alt="俯拍工作台，方形裁切" loading="lazy"></div><div class="lbl">1 : 1</div></div>
+        <div class="ratio-card"><div class="inset"><img class="r-3x4" src="../../_assets/photos/coffee.jpg" alt="桌上的咖啡，竖向裁切" loading="lazy"></div><div class="lbl">3 : 4</div></div>
+      </div>
+    </div>
+
+    <!-- 媒体卡网格 -->
+    <h4 style="margin-bottom:var(--ds-space-4)">媒体卡 Media Card · 图嵌凹槽 + 标题正文操作</h4>
+    <div class="media-grid" style="margin-bottom:var(--ds-space-7)">
+      <div class="media-card">
+        <div class="pic"><img src="../../_assets/photos/tech.jpg" alt="系统缓存分析界面示意" loading="lazy"></div>
+        <div class="body">
+          <h4>系统缓存分析</h4>
+          <p>扫描应用与系统缓存，可回收约 2.1 GB，删除项进废纸篓可恢复。</p>
+          <div class="act"><button class="btn sm primary">立即扫描</button></div>
+        </div>
+      </div>
+      <div class="media-card">
+        <div class="pic"><img src="../../_assets/photos/architecture.jpg" alt="大文件可视化磁盘视图示意" loading="lazy"></div>
+        <div class="body">
+          <h4>大文件可视化</h4>
+          <p>按目录树状图展开磁盘占用，一眼找出最吃空间的几个文件夹。</p>
+          <div class="act"><button class="btn sm">打开磁盘分析</button></div>
+        </div>
+      </div>
+      <div class="media-card">
+        <div class="pic"><img src="../../_assets/photos/workspace.jpg" alt="应用卸载残留清理界面示意" loading="lazy"></div>
+        <div class="body">
+          <h4>应用彻底卸载</h4>
+          <p>连带偏好、缓存与支持文件一并清走，不留残渣，保护名单永不触碰。</p>
+          <div class="act"><button class="btn sm">查看残留</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图文混排 + 头像用法 -->
+    <div class="feature-split" style="margin-bottom:var(--ds-space-7)">
+      <div class="pic"><img src="../../_assets/gen/abstract-wave.jpg" alt="抽象的薄荷青波纹，象征平静的清理过程" loading="lazy" width="1400" height="788"></div>
+      <div>
+        <h3>磁盘可视化 · 看清每一寸空间</h3>
+        <p>把 SSD 的占用拆成应用、文档、缓存、其他与可用，分段条与树状图都用同一套薄荷青 / 松石青色阶，配文字图例——不只靠色辨认。</p>
+        <ul class="feat-list">
+          <li><span class="ico" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg></span><span><b>实时分段</b>——应用 / 文档 / 缓存 / 其他逐段着色，悬停看明细。</span></li>
+          <li><span class="ico" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg></span><span><b>趋势曲线</b>——一周内可用空间走势，提前预警空间偏紧。</span></li>
+          <li><span class="ico" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span><b>保护名单</b>——重要目录标记后清理永不触碰，安心可信。</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 图上叠字 overlay + 头像 -->
+    <div class="two" style="margin-bottom:var(--ds-space-7);align-items:stretch">
+      <div class="overlay-card">
+        <img src="../../_assets/photos/mountain.jpg" alt="清晨山景，象征清爽与轻盈" loading="lazy">
+        <div class="scrim" aria-hidden="true"></div>
+        <div class="ov-body">
+          <span class="badge">本月已回收</span>
+          <h3>清理后，腾出 12.4 GB</h3>
+          <p>图上叠字用左侧渐变 scrim 压暗背景，保证白字 ≥4.5:1 AA。</p>
+        </div>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom:var(--ds-space-4)">头像用法 · 尺寸阶 / 头像组 / 用户行</h4>
+        <div class="row" style="align-items:flex-end;gap:var(--ds-space-4);margin-bottom:var(--ds-space-5)">
+          <img class="avatar a24" src="../../_assets/avatars/a1.jpg" alt="用户头像 24px" loading="lazy">
+          <img class="avatar a32" src="../../_assets/avatars/a5.jpg" alt="用户头像 32px" loading="lazy">
+          <img class="avatar a40" src="../../_assets/avatars/a8.jpg" alt="用户头像 40px" loading="lazy">
+          <img class="avatar a48" src="../../_assets/avatars/a12.jpg" alt="用户头像 48px" loading="lazy">
+          <span class="subtle mono" style="margin-left:auto">24 / 32 / 40 / 48</span>
+        </div>
+        <div class="row" style="gap:var(--ds-space-5);margin-bottom:var(--ds-space-5)">
+          <div class="avatar-stack">
+            <img class="avatar a40" src="../../_assets/avatars/a15.jpg" alt="团队成员头像" loading="lazy">
+            <img class="avatar a40" src="../../_assets/avatars/a23.jpg" alt="团队成员头像" loading="lazy">
+            <img class="avatar a40" src="../../_assets/avatars/a33.jpg" alt="团队成员头像" loading="lazy">
+            <span class="more">+9</span>
+          </div>
+          <span class="muted" style="font-size:var(--ds-text-sm)">12 台设备已同步清理策略</span>
+        </div>
+        <div class="user-row">
+          <img class="avatar a48" src="../../_assets/avatars/a47.jpg" alt="林清的头像" loading="lazy">
+          <div><div class="nm">林清</div><div class="sg">上次清理 · 今天 09:24 · 回收 3.3 GB</div></div>
+          <button class="btn sm" style="margin-left:auto">管理设备</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图片网格 / 画廊 -->
+    <h4 style="margin-bottom:var(--ds-space-4)">图片网格 / 画廊 · 等高网格</h4>
+    <div class="gallery" style="margin-bottom:var(--ds-space-7)">
+      <div class="g wide"><img src="../../_assets/photos/ocean.jpg" alt="海面，宽幅展示图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/forest.jpg" alt="森林缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/city.jpg" alt="城市缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/desk.jpg" alt="书桌缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/street.jpg" alt="街景缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/travel.jpg" alt="旅行缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/coffee.jpg" alt="咖啡缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/food.jpg" alt="食物缩略图" loading="lazy"></div>
+      <div class="g"><img src="../../_assets/photos/architecture.jpg" alt="建筑缩略图" loading="lazy"></div>
+    </div>
+
+    <!-- 背景大图区 -->
+    <h4 style="margin-bottom:var(--ds-space-4)">背景大图区 · full-bleed 背景 + 遮罩 + 内容</h4>
+    <div class="bg-feature">
+      <img src="../../_assets/photos/hero-summit.jpg" alt="登顶远眺的开阔景色，象征轻装上阵" loading="lazy">
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="bf-body">
+        <h3>每月自动深度清理，长保轻盈</h3>
+        <p>设定计划任务，HahaClean 会在你休息时静默扫描并把可回收项备好，下次打开一键确认即可。</p>
+        <div class="bf-stats">
+          <div><div class="n">2.4M+</div><div class="l">累计清理次数</div></div>
+          <div><div class="n">98%</div><div class="l">用户感到放心</div></div>
+          <div><div class="n">0</div><div class="l">误删投诉</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 图标用法 Icon Usage ===== -->
+  <section>
+    <h2 class="sec-title">图标用法 · Icon Usage</h2>
+    <p class="sec-desc">全部内联 SVG（零 emoji），`stroke="currentColor"` 继承上下文、线宽 1.8、`viewBox 0 0 24 24`、基线对齐；颜色用 `--ds-fg` 或主色，务必 ≥4.5:1。</p>
+
+    <!-- 图标集 -->
+    <div class="card" style="margin-bottom:var(--ds-space-6)">
+      <h4 style="margin-bottom:var(--ds-space-4)">图标集 · 本 Kit 统一线性图标</h4>
+      <div class="icon-grid">
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg></span><span class="nm">概览</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg></span><span class="nm">清理</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M6 7l1 13h10l1-13"/><path d="M9.5 7V4.5h5V7"/></svg></span><span class="nm">卸载</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg></span><span class="nm">磁盘</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></span><span class="nm">系统优化</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="nm">保护</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><circle cx="12" cy="17" r="1.4" class="fill"/></svg></span><span class="nm">温度</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><path d="M12 10c0-4 1-7 3-7s2 3-1 6M14 12c4 0 7 1 7 3s-3 2-6-1M12 14c0 4-1 7-3 7s-2-3 1-6M10 12c-4 0-7-1-7-3s3-2 6 1"/></svg></span><span class="nm">风扇</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5.5A3 3 0 0 0 7 18a2.5 2.5 0 0 0 5 .5V5a2 2 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5.5A3 3 0 0 1 17 18a2.5 2.5 0 0 1-5 .5"/></svg></span><span class="nm">内存</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></span><span class="nm">项目瘦身</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="nm">在访达显示</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><span class="nm">搜索</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M12 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a8 8 0 0 0-1.7 1l-2.4-1-2 3.5L4.6 11a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 2.5h4l.4-2.5a8 8 0 0 0 1.7-1l2.4 1 2-3.5z"/></svg></span><span class="nm">设置</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></span><span class="nm">完成</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4"/><circle cx="12" cy="17.5" r="0.5" class="fill"/></svg></span><span class="nm">警告</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r="0.5" class="fill"/></svg></span><span class="nm">信息</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-1 5"/><path d="M20 5v6h-6"/></svg></span><span class="nm">重新扫描</span></div>
+        <div class="icon-cell"><span class="ig"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3v11"/><path d="M8 10l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span><span class="nm">安装包</span></div>
+      </div>
+    </div>
+
+    <div class="two">
+      <!-- 尺寸阶 + 线性vs实心 -->
+      <div class="card">
+        <h4 style="margin-bottom:var(--ds-space-5)">尺寸阶 · 基线对齐</h4>
+        <div class="icon-sizes" style="margin-bottom:var(--ds-space-6)">
+          <span class="iz"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg><span class="lbl">16</span></span>
+          <span class="iz"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg><span class="lbl">20</span></span>
+          <span class="iz"><svg class="icon" viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg><span class="lbl">24</span></span>
+          <span class="iz"><svg class="icon" viewBox="0 0 24 24" style="width:32px;height:32px"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg><span class="lbl">32</span></span>
+        </div>
+        <h4 style="margin-bottom:var(--ds-space-4)">线性 vs 实心 · 单色 vs 双色</h4>
+        <div class="row" style="gap:var(--ds-space-6)">
+          <span class="iz" style="color:var(--ds-primary-strong)"><svg class="icon" viewBox="0 0 24 24" style="width:28px;height:28px"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg><span class="lbl">线性</span></span>
+          <span class="iz" style="color:var(--ds-primary-strong)"><svg class="icon fill" viewBox="0 0 24 24" style="width:28px;height:28px"><circle cx="12" cy="12" r="9"/></svg><span class="lbl">实心</span></span>
+          <span class="iz"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:none"><circle cx="12" cy="12" r="9" fill="var(--ds-success-bg)" stroke="var(--ds-success)" stroke-width="1.8"/><path d="M8 12.5l2.5 2.5L16 9" stroke="var(--ds-success-fg)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="lbl" style="color:var(--ds-success-fg)">双色</span></span>
+        </div>
+      </div>
+
+      <!-- 场景中 -->
+      <div class="card">
+        <h4 style="margin-bottom:var(--ds-space-5)">在场景里</h4>
+        <div class="row" style="gap:var(--ds-space-3);margin-bottom:var(--ds-space-5)">
+          <button class="icon-btn" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
+          <button class="icon-btn" aria-label="设置"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px" aria-hidden="true"><path d="M12 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a8 8 0 0 0-1.7 1l-2.4-1-2 3.5L4.6 11a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 2.5h4l.4-2.5a8 8 0 0 0 1.7-1l2.4 1 2-3.5z"/></svg></button>
+          <button class="btn sm primary"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 前置图标</button>
+          <button class="btn sm">后置 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <span class="badge-ic" role="img" aria-label="通知 3 条"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="count">3</span></span>
+        </div>
+        <div class="input-icon" style="margin-bottom:var(--ds-space-4)">
+          <span class="lead-ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
+          <input type="text" placeholder="搜索可回收项 / 大文件…" aria-label="搜索可回收项">
+        </div>
+        <div class="row" style="gap:var(--ds-space-4)">
+          <span class="badge success"><svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg> 已完成</span>
+          <span class="badge warning"><svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4"/></svg> 偏高</span>
+          <span class="badge danger"><svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> 失败</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 桌面布局 Desktop Layouts ===== -->
+  <section>
+    <h2 class="sec-title">桌面布局 · Desktop Layouts（macOS 单窗 ×2）</h2>
+    <p class="sec-desc">用本风格 token + 真实结构做可信缩略界面：① 清理主窗（左导航 + 概览仪表 + 扫描结果）；② 磁盘分析页（树状图可视化 + 大文件列表）。两者都带窗口 chrome。</p>
+
+    <!-- 布局 1：清理主窗 -->
+    <div class="frame-win" style="margin-bottom:var(--ds-space-7)">
+      <div class="frame-bar">
+        <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="frame-name">HahaClean · 概览</span>
+        <span class="spacer" style="flex:1"></span>
+        <span class="frame-name">macOS 单窗</span>
+      </div>
+      <div class="frame-body">
+        <div class="mock-app">
+          <div class="mock-nav">
+            <div class="mock-brand"><span class="bm" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg></span><b>哈哈清理</b></div>
+            <div class="mni active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg> 概览</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 一键清理</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg> 磁盘分析</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M6 7l1 13h10l1-13"/><path d="M9.5 7V4.5h5V7"/></svg> 卸载应用</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><circle cx="12" cy="17" r="1.4" class="fill"/></svg> 温度 <span class="m" style="color:var(--ds-warning)">82°</span></div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg> 保护名单</div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-h"><h4>概览</h4><span class="badge success" style="margin-left:auto"><svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg> 健康 82</span></div>
+            <div class="mock-kpis">
+              <div class="kpi"><div class="n">4.7 GB</div><div class="l">可回收</div></div>
+              <div class="kpi"><div class="n">66%</div><div class="l">磁盘已用</div></div>
+              <div class="kpi"><div class="n">71%</div><div class="l">内存占用</div></div>
+            </div>
+            <div style="margin-bottom:var(--ds-space-4)">
+              <div class="mini-bar"><i style="width:34%;background:var(--ds-primary)"></i><i style="width:22%;background:var(--ds-accent)"></i><i style="width:10%;background:var(--ds-warning)"></i></div>
+            </div>
+            <div class="mock-list">
+              <div class="mock-row"><span class="pip" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M10 4H6a2 2 0 0 0-2 2v3a2 2 0 0 1 0 4v3a2 2 0 0 0 2 2h3a2 2 0 0 1 4 0h3a2 2 0 0 0 2-2v-3a2 2 0 0 1 0-4V6a2 2 0 0 0-2-2h-4a2 2 0 0 1-4 0z"/></svg></span> 系统缓存 <span class="sz">2.1 GB</span></div>
+              <div class="mock-row"><span class="pip" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z"/><path d="M13 3v6h6"/></svg></span> 应用日志 <span class="sz">820 MB</span></div>
+              <div class="mock-row"><span class="pip" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3v11"/><path d="M8 10l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span> 安装包残留 <span class="sz">390 MB</span></div>
+            </div>
+            <div class="row" style="margin-top:var(--ds-space-4);justify-content:flex-end">
+              <button class="btn sm primary">清理 3.3 GB</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 布局 2：磁盘分析页 -->
+    <div class="frame-win">
+      <div class="frame-bar">
+        <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="frame-name">HahaClean · 磁盘分析</span>
+        <span class="spacer" style="flex:1"></span>
+        <span class="frame-name">Macintosh HD · 500 GB</span>
+      </div>
+      <div class="frame-body">
+        <div class="mock-app">
+          <div class="mock-nav">
+            <div class="mock-brand"><span class="bm" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg></span><b>哈哈清理</b></div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg> 概览</div>
+            <div class="mni active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg> 磁盘分析</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg> 项目瘦身</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> 系统优化</div>
+            <div class="mni"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a8 8 0 0 0-1.7 1l-2.4-1-2 3.5L4.6 11a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 2.5h4l.4-2.5a8 8 0 0 0 1.7-1l2.4 1 2-3.5z"/></svg> 设置</div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-h"><h4>磁盘占用 · 树状图</h4><span class="frame-name" style="margin-left:auto">已用 330 / 500 GB</span></div>
+            <div class="treemap" style="margin-bottom:var(--ds-space-4)">
+              <div class="tm big" style="background:var(--ds-primary)"><span class="tn">应用程序</span><span class="ts">170 GB</span></div>
+              <div class="tm" style="background:var(--ds-accent)"><span class="tn">文档</span><span class="ts">110 GB</span></div>
+              <div class="tm" style="background:var(--ds-warning)"><span class="tn">其他</span><span class="ts">50 GB</span></div>
+              <div class="tm" style="background:var(--ds-info)"><span class="tn">缓存</span><span class="ts">22 GB</span></div>
+              <div class="tm" style="background:var(--ds-primary-strong)"><span class="tn">媒体</span><span class="ts">28 GB</span></div>
+            </div>
+            <div class="mock-list">
+              <div class="mock-row"><span class="pip" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></svg></span> Xcode DerivedData <span class="sz">14.2 GB</span></div>
+              <div class="mock-row"><span class="pip" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15l-5-5L5 21"/><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.6"/></svg></span> 照片图库副本 <span class="sz">9.8 GB</span></div>
+              <div class="mock-row"><span class="pip" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7z"/></svg></span> node_modules 残留 <span class="sz">6.1 GB</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 桌面布局 3：落地页（图文 + 特性三栏） ===== -->
+  <section>
+    <h2 class="sec-title">桌面布局 · 官网落地页（薄荷青营销页）</h2>
+    <p class="sec-desc">官网 site/ 用同套 token：hero 图文 + 三栏特性（带图标）。安静工具气质，不堆砌装饰。</p>
+    <div class="frame-win">
+      <div class="frame-bar">
+        <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="frame-url"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> hahaclean.app</span>
+        <span class="frame-name">官网</span>
+      </div>
+      <div class="frame-body">
+        <div class="mlp-hero">
+          <div>
+            <span class="hero-eyebrow" style="margin-bottom:var(--ds-space-4)">macOS 清理 · 让人安心</span>
+            <h3>给 Mac 一次温柔的大扫除</h3>
+            <p>先扫描、看清、再清理。删除项进废纸篓可恢复，重要文件有保护名单，过程平静不吓人。</p>
+            <div class="row"><button class="btn primary">免费下载</button><button class="btn">查看演示</button></div>
+          </div>
+          <div class="mlp-pic"><img src="../../_assets/photos/desk.jpg" alt="整洁明亮的 Mac 工作环境产品图" loading="lazy"></div>
+        </div>
+        <div class="mlp-feats">
+          <div class="mlp-feat"><span class="fi" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M19 4l-9 9"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg></span><h5>智能扫描</h5><p>12 类可回收项一次扫清，预估回收量心里有数。</p></div>
+          <div class="mlp-feat"><span class="fi" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg></span><h5>磁盘可视化</h5><p>树状图看清每一寸空间，最吃容量的目录一目了然。</p></div>
+          <div class="mlp-feat"><span class="fi" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><h5>保护名单</h5><p>标记重要目录，清理永不触碰，安心放手交给它。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 移动布局 Mobile Layouts ===== -->
+  <section>
+    <h2 class="sec-title">移动布局 · Mobile Layouts（×2）</h2>
+    <p class="sec-desc">同一套 var(--ds-*) 与软阴影语言落到 ~390px 手机框：① App 首页（大主操作 + feed + 底部标签栏）；② 详情/设置页（大图 header + 开关项）。</p>
+    <div class="phone-row">
+
+      <!-- 手机 1：App 首页 + 底部标签栏 -->
+      <div>
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+            <div class="m-topbar">
+              <button class="m-menu-btn" aria-label="打开导航抽屉"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+              <div class="m-title">哈哈清理</div>
+              <div class="spacer"></div>
+              <span class="badge success">健康 82</span>
+            </div>
+            <div class="m-body">
+              <button class="m-action"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 扫描可回收空间</button>
+              <div class="m-sub">先扫描预览，再决定清理 · 可恢复</div>
+              <div class="m-list">
+                <div class="m-row">
+                  <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M10 4H6a2 2 0 0 0-2 2v3a2 2 0 0 1 0 4v3a2 2 0 0 0 2 2h3a2 2 0 0 1 4 0h3a2 2 0 0 0 2-2v-3a2 2 0 0 1 0-4V6a2 2 0 0 0-2-2h-4a2 2 0 0 1-4 0z"/></svg></div>
+                  <div class="meta"><div class="name">系统缓存</div><div class="path">~/Library/Caches</div></div>
+                  <div class="size">2.1 GB</div>
+                </div>
+                <div class="m-row">
+                  <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z"/><path d="M13 3v6h6"/></svg></div>
+                  <div class="meta"><div class="name">应用日志</div><div class="path">~/Library/Logs</div></div>
+                  <div class="size">820 MB</div>
+                </div>
+                <div class="m-row">
+                  <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3v11"/><path d="M8 10l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+                  <div class="meta"><div class="name">安装包残留</div><div class="path">~/Downloads</div></div>
+                  <div class="size">390 MB</div>
+                </div>
+              </div>
+            </div>
+            <nav class="m-tabbar" aria-label="底部标签栏">
+              <span class="m-tab active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg> 概览</span>
+              <span class="m-tab"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg> 磁盘</span>
+              <span class="m-tab"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg> 保护</span>
+              <span class="m-tab"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a8 8 0 0 0-1.7 1l-2.4-1-2 3.5L4.6 11a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 2.5h4l.4-2.5a8 8 0 0 0 1.7-1l2.4 1 2-3.5z"/></svg> 设置</span>
+            </nav>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+        <div class="phone-cap">App 首页 · 大主操作 + 结果流 + 底部标签栏</div>
+      </div>
+
+      <!-- 手机 2：详情/设置页（深色大图 header → sb-light） -->
+      <div>
+        <div class="dvc17 sb-light">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+            <div class="m-hero">
+              <img src="../../_assets/gen/abstract-wave.jpg" alt="薄荷青抽象波纹，磁盘清理详情页头图" loading="lazy">
+              <div class="scrim" aria-hidden="true"></div>
+              <div class="h-body"><h4>磁盘分析</h4><div class="s">Macintosh HD · 已用 330 / 500 GB</div></div>
+            </div>
+            <div class="m-stat-row">
+              <div class="m-stat"><div class="n">170 GB</div><div class="l">应用</div></div>
+              <div class="m-stat"><div class="n">110 GB</div><div class="l">文档</div></div>
+              <div class="m-stat"><div class="n">170 GB</div><div class="l">可用</div></div>
+            </div>
+            <div class="m-list" style="margin:0 var(--ds-space-3)">
+              <div class="m-toggle-row">
+                <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+                <div class="meta"><div class="name">每月自动清理</div><div class="sub">休息时静默扫描备好</div></div>
+                <div class="sw-track on" role="switch" aria-checked="true" aria-label="每月自动清理"><span class="knob"></span></div>
+              </div>
+              <div class="m-toggle-row">
+                <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></div>
+                <div class="meta"><div class="name">保护名单提醒</div><div class="sub">清理前再次确认</div></div>
+                <div class="sw-track on" role="switch" aria-checked="true" aria-label="保护名单提醒"><span class="knob"></span></div>
+              </div>
+              <div class="m-toggle-row">
+                <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></div>
+                <div class="meta"><div class="name">完成后通知</div><div class="sub">仅显示回收摘要</div></div>
+                <div class="sw-track" role="switch" aria-checked="false" aria-label="完成后通知"><span class="knob"></span></div>
+              </div>
+            </div>
+            <div style="padding:var(--ds-space-4) var(--ds-space-3) var(--ds-space-5)">
+              <button class="m-action"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4 10-11"/></svg> 保存设置</button>
+            </div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+        <div class="phone-cap">详情 / 设置页 · 大图 header + 开关项</div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ===== 提示条 ===== -->
   <section>
     <h2 class="sec-title">提示条 Alert（状态配图标 + 文案，不只靠色）</h2>
@@ -761,11 +1462,26 @@
 
   <!-- ===== 移动端 Mobile ===== -->
   <section>
-    <h2 class="sec-title">移动端 Mobile · 375px 手机框</h2>
-    <p class="sec-desc">窄屏下左侧栏收到顶部菜单按钮（抽屉入口）；顶栏 + 大主操作按钮（唯一焦点）+ 扫描结果列表竖向堆叠。同一套 var(--ds-*) 与软阴影语言。</p>
-    <div class="phone-frame">
-      <div class="phone-notch" aria-hidden="true"></div>
-      <div class="phone-screen">
+    <h2 class="sec-title">移动端 Mobile · iPhone 17 Pro Max 套壳（×2）</h2>
+    <p class="sec-desc">窄屏下左侧栏收到顶部菜单按钮（抽屉入口）；顶栏 + 大主操作按钮（唯一焦点）+ 扫描结果列表竖向堆叠。同一套 var(--ds-*) 与软阴影语言落进标准设备框。</p>
+    <div class="phone-row">
+
+    <!-- 手机：扫描首页 -->
+    <div>
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
         <div class="m-topbar">
           <button class="m-menu-btn" aria-label="打开导航抽屉"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
           <div class="m-title">哈哈清理</div>
@@ -793,7 +1509,75 @@
             </div>
           </div>
         </div>
+        </div>
+        <div class="home"></div>
       </div>
+    </div>
+    <div class="phone-cap">扫描首页 · 顶栏 + 大主操作 + 结果列表</div>
+    </div>
+
+    <!-- 手机：清理进行中 -->
+    <div>
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+        <div class="m-topbar">
+          <button class="m-menu-btn" aria-label="返回"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <div class="m-title">正在清理</div>
+          <div class="spacer"></div>
+          <span class="badge info">可恢复</span>
+        </div>
+        <div class="m-body">
+          <div class="scan-block" style="padding:var(--ds-space-6) 0 var(--ds-space-4)">
+            <div class="ring-wrap" style="width:148px;height:148px;margin-bottom:var(--ds-space-4)">
+              <svg width="148" height="148" viewBox="0 0 148 148" aria-hidden="true">
+                <circle cx="74" cy="74" r="62" fill="none" stroke="var(--ds-bg-sunken)" stroke-width="12"/>
+                <circle cx="74" cy="74" r="62" fill="none" stroke="var(--ds-primary)" stroke-width="12" stroke-linecap="round" stroke-dasharray="389.6" stroke-dashoffset="148"/>
+              </svg>
+              <div class="ring-val"><div class="ring-num">62%</div><div class="ring-unit">已处理</div></div>
+            </div>
+            <div class="lead" style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin-bottom:var(--ds-space-1)">正在回收 2.9 GB</div>
+            <div class="sub" style="margin-bottom:0">删除项进入废纸篓，随时可恢复</div>
+          </div>
+          <div class="m-list" style="margin-top:var(--ds-space-3)">
+            <div class="m-row">
+              <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></div>
+              <div class="meta"><div class="name">系统缓存</div><div class="path">已清理</div></div>
+              <div class="size">2.1 GB</div>
+            </div>
+            <div class="m-row">
+              <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></div>
+              <div class="meta"><div class="name">应用日志</div><div class="path">已清理</div></div>
+              <div class="size">820 MB</div>
+            </div>
+            <div class="m-row">
+              <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+              <div class="meta"><div class="name">安装包残留</div><div class="path">处理中…</div></div>
+              <div class="size">390 MB</div>
+            </div>
+          </div>
+          <div style="padding:var(--ds-space-4) 0 var(--ds-space-5)">
+            <button class="m-action" style="background:var(--ds-bg);color:var(--ds-fg);box-shadow:var(--ds-shadow-md)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="3.5" height="12" rx="1"/><rect x="13.5" y="6" width="3.5" height="12" rx="1"/></svg> 暂停清理</button>
+          </div>
+        </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+    <div class="phone-cap">清理进行中 · 进度环 + 逐项状态 + 可恢复</div>
+    </div>
+
     </div>
   </section>
 

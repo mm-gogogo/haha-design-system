@@ -123,6 +123,30 @@
 - **大字宽自适应**：Press Start 2P 字宽极大——窄屏下标题用 `overflow-wrap: anywhere` 允许折行，按钮/标签 `white-space: nowrap` 但字号已压到 9–11px，列间收一列后均不溢出。
 - **横向滚动**：仅表格用 `overflow-x:auto` 容器允许横滚，其余一律收窄不横滚。
 
+## 6.5 图片与图标用法（像素身份）
+
+像素风把照片也当成屏上精灵处理——`preview.html` 的【图片用法】【图标用法】区块给出可直接抄的范式：
+
+### 图片处理（核心三件套）
+- **`image-rendering: pixelated`**：所有 `<img>` 强制最近邻缩放，放大不糊、自带点阵质感。
+- **粗黑描边 + 硬实心偏移阴影 + 0 圆角**：图片框统一 2–3px `--ds-border-strong` 实线边 + `--ds-shadow-md/-sm`（`Npx Npx 0 0`），直角。把照片"贴"在屏上，与按钮/卡片同一种立体语言。
+- **统一宽高比**：用 `aspect-ratio` + `object-fit:cover` 锁 16:9 / 4:3 / 1:1 / 3:4，避免变形。
+- 覆盖范式：宽高比框、媒体卡（图在上 + 标题正文操作）、画廊等高网格（含 `wide`/`tall` 跨格）、图文混排 split、图上叠字 overlay（渐变 scrim + 硬黑 `text-shadow` 保 AA）、头像（24/32/40/48 尺寸阶 + 堆叠 `av-stack` + 用户行）、背景大图区（full-bleed + 半透明遮罩 + 像素扫描线叠层）。
+- **scrim 上的白字**：overlay / 背景带的文字用近白 `#fffdf5` + `text-shadow:Npx Npx 0 #000` 硬黑描影，在任意底图上保证 ≥4.5:1。
+- 所有图来自 `../../_assets/`（hero 用 `gen/pixel-hero.jpg`，另用 `photos/*`、`avatars/*`、`gen/{product-shoe,product-watch,food-bowl,abstract-wave}.jpg`），一律 `loading="lazy"` + 有意义 `alt`。
+
+### 图标处理（方块化）
+- 全部**内联 SVG**：`viewBox="0 0 24 24"`、`fill="currentColor"`、`shape-rendering="crispEdges"` + 容器 `image-rendering:pixelated`，路径用**整像素方块**拼出（无曲线、无斜线渐变），与字体/描边的硬边气质一致；零 emoji。
+- 颜色继承上下文（`currentColor`），状态图标走语义色 `--ds-success/-warning/-danger`。
+- 演示范式：图标集网格（≥12，带名，JS 注入统一图标库）、尺寸阶（16/20/24/32 基线对齐）、实心 vs 线性对比、在场景里（图标按钮带 `aria-label`、按钮内前/后置图标、输入框前置图标、列表前导 + 状态图标、带数字徽标）。
+
+### 桌面 / 移动布局小样
+- **桌面 ≥2 套**：仪表盘（侧边导航 + 顶栏 + KPI + CSS 柱状图 + 迷你表格）、列表-详情（左缩略图列表 + 右大图详情）。均置入带浏览器 chrome（红黄绿圆点 + 地址栏）的 `.frame`，全程硬边 / 硬实心偏移阴影 / 直角。
+- **移动 ≥2 套**：世界地图首页（卡片流 + 评分列表 + tabbar）、个人页（大图 header + 头像 + KPI + 关注）、收件箱（搜索框 + 头像消息行 + tabbar）。约 375–390px 手机框，触控目标 ≥44px，窄屏 `width:100%` 自适应。
+
+### 语义层级
+- preview 内联定义 `--ds-z-dropdown < -sticky < -modal-backdrop < -modal < -toast < -tooltip` 语义 z-index 尺度，杜绝 9999 魔法值。
+
 ## 7. 圆角 / 阴影 / 描边
 
 - **圆角**：`sm 0` / `md 0` / `lg 2px` / `full 0`。像素世界没有曲线——除 `lg` 给极轻的 2px 阶梯（用于大表面软化锯齿），其余一律直角。

@@ -235,6 +235,31 @@
 
 ---
 
+## 9c. 预览页 v2 富化（preview.html）
+
+preview.html 在组件清单之外，新增了**有图、有布局、信息饱满**的作品级展示区块，演示本风格如何落到真实页面——身份不变：暖纸 + 衬线正文 + 无衬线 UI + **适度留白是语言（别塞太满）** + 大行高。
+
+- **顶部 Hero（杂志感）**：满宽出血图 `gen/editorial-hero.jpg` + 暖色渐变 scrim（`rgba(26,20,12,…)`，保证叠字 AA）+ 衬线大标题（`clamp` 自适应）+ 导语 + 纸色/幽灵双 CTA + 关键信息条。`aspect-ratio:21/9`，移动端转 `4/5` 竖图。
+- **图片用法 Image Usage**：
+  - 宽高比框 16:9 / 4:3 / 1:1 / 3:4，统一 `aspect-ratio` + `object-fit:cover` + `radius-lg`。
+  - 全幅图 + 图注（`.figure-wide`，可加 `.bleed` 出血到布局区更宽，图注随容器居中）。
+  - 图文混排 `.feature-split`（大图 + 文字并排，`.reverse` 交替左右图位，行宽 ≤46ch）。
+  - 媒体卡 `.media-card`（图在上 + kicker/标题/正文 + 作者行，hover 图片轻微放大）。
+  - 画廊 `.gallery`（等高网格，首图 `g-tall g-wide` 跨格）。
+  - 图上叠字 `.overlay-card`（渐变 scrim + 衬线标题，文字保 AA）。
+  - 头像用法：尺寸阶 24/32/40/48（`.av-*`）、堆叠组 `.avatar-stack`（含 `+N`）、用户行 `.user-row`。
+- **图标用法 Icon Usage**：图标集（14 枚统一细线内联 SVG，`viewBox 0 0 24 24`、线宽 1.6、`currentColor`）、尺寸阶 16/20/24/32（基线对齐）、线性 vs 实心 / 单色 vs 语义色对比，以及在场景里的用法（图标按钮带 `aria-label`、按钮内前/后置图标、输入框前置图标、列表前导图标、带数字的徽标图标 `.badge-ico`）。零 emoji。
+- **桌面布局 ×2**（带浏览器 chrome 的 `.browser` frame）：
+  1. **杂志 / 博客首页**：顶栏导航 + 封面大图图文 + 三栏图文流。
+  2. **文章阅读页**：左目录侧栏（当前项 `--ds-primary` 高亮）+ 右正文（kicker/serif 标题/作者行/16:9 头图 + 图注/首字下沉正文，列宽 ≤60ch）。
+- **移动布局 ×2**（~320px `.phone-v2` 框，含听筒 notch + 状态栏意象）：
+  1. **杂志首页 Feed**：品牌行 + 标签 chips + 封面叠字卡 + 缩略图列表行 + 底部图标标签栏。
+  2. **文章阅读页**：大图 header + kicker/serif 标题/作者行 + 首字下沉正文 + 文内配图图注 + 底部操作条（赞/评/书签/分享，图标）。
+
+> 全部图片来自 `_assets/`（hero、photos、avatars、gen），一律 `loading="lazy"` + 有意义 `alt`；除 `_fonts/fonts.css` 与本地素材外无任何外链。`--ds-*` 契约名未改，亮/暗双主题与 WCAG AA 均沿用。
+
+---
+
 ## 10. 可访问性
 
 - **对比度**：正文 `--ds-fg` 对 `--ds-bg` 亮 12.6:1 / 暗 12.4:1；`--ds-fg-muted` ≥6.6:1；`--ds-fg-subtle` ≥4.5:1（可作正文）。primary 上文字 ≥5:1。全部满足 AA，正文接近 AAA。

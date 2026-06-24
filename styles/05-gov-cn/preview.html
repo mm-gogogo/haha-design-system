@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css">
 <title>中国政府风 · Gov-CN 设计系统预览</title>
 <style>
   /* ===== Tokens（内联，自包含；与 tokens.css 同步）===== */
@@ -421,15 +422,14 @@
   .toast .t-x { flex: none; background: none; border: none; cursor: pointer; color: var(--ds-fg-subtle); font-size: var(--ds-text-md); line-height: 1; padding: 0; }
   .toast .t-x:hover { color: var(--ds-fg); }
 
-  /* ===== 移动端 Mobile 手机框 ===== */
-  .phone-wrap { display: flex; gap: var(--ds-space-7); flex-wrap: wrap; align-items: flex-start; }
-  .phone {
-    width: 375px; max-width: 100%; flex: none; background: var(--ds-bg); border: 10px solid #1a1a1a;
-    border-radius: 36px; overflow: hidden; box-shadow: var(--ds-shadow-lg);
-  }
-  .phone-notch { height: 26px; background: #1a1a1a; position: relative; }
-  .phone-notch::after { content: ""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 120px; height: 6px; background: #2a2a2a; border-radius: var(--ds-radius-full); }
-  .phone-screen { height: 640px; overflow-y: auto; background: var(--ds-bg-subtle); }
+  /* ===== 移动端 Mobile（套 iPhone 17 Pro Max 壳，框样式见 _assets/device.css）===== */
+  .phone-wrap { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; align-items: flex-start; }
+  /* 屏内 .dvc-body 默认留 54px 状态栏空间；本 Kit 的彩色顶栏（红头/深色大图）上推到状态栏下，
+     让白色状态栏文字落在深色背景上、保持 AA。 */
+  .dvc17 .dvc-body { background: var(--ds-bg-subtle); }
+  .dvc17 .dvc-body > .m-banner:first-child,
+  .dvc17 .dvc-body > .m-detail-hero:first-child { margin-top: -54px; }
+  .dvc17 .dvc-body > .m-banner:first-child { padding-top: calc(54px + var(--ds-space-4)); }
   /* 红头标题栏 */
   .m-banner { background: var(--ds-primary); color: var(--ds-primary-fg); border-bottom: 3px solid var(--ds-gold); padding: var(--ds-space-4); display: flex; align-items: center; gap: var(--ds-space-3); }
   .m-banner .seal { width: 36px; height: 36px; border-radius: var(--ds-radius-full); border: 2px solid var(--ds-gold); display: grid; place-items: center; color: var(--ds-gold); flex: none; }
@@ -458,6 +458,252 @@
   .m-notice .dot { width: 5px; height: 5px; background: var(--ds-primary); flex: none; }
   .m-notice .txt { flex: 1; font-size: var(--ds-text-sm); color: var(--ds-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .m-notice .date { flex: none; font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); }
+
+  /* ===== Hero 首屏（红头标题栏 + hero 图）===== */
+  .gov-hero {
+    background: var(--ds-bg-elevated);
+    border-bottom: 1px solid var(--ds-border);
+  }
+  .gov-hero-inner {
+    max-width: 1120px; margin: 0 auto; padding: var(--ds-space-9) var(--ds-space-5);
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--ds-space-9); align-items: center;
+  }
+  .gov-hero .ribbon {
+    display: inline-flex; align-items: center; gap: var(--ds-space-2);
+    background: var(--ds-danger-bg); color: var(--ds-danger-fg);
+    border: 1px solid var(--ds-primary); border-radius: var(--ds-radius-sm);
+    padding: var(--ds-space-1) var(--ds-space-3); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium);
+    margin-bottom: var(--ds-space-4);
+  }
+  .gov-hero h2.hero-title {
+    font-size: var(--ds-text-3xl); line-height: 1.15; letter-spacing: -0.01em;
+    color: var(--ds-fg); margin-bottom: var(--ds-space-4);
+  }
+  .gov-hero p.hero-sub {
+    font-size: var(--ds-text-md); color: var(--ds-fg-muted); line-height: var(--ds-leading-normal);
+    max-width: 52ch; margin: 0 0 var(--ds-space-6);
+  }
+  .gov-hero .hero-cta { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); margin-bottom: var(--ds-space-7); }
+  .gov-hero .hero-stats { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; }
+  .gov-hero .hero-stats .stat b { display: block; font-family: var(--ds-font-mono); font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); color: var(--ds-primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .gov-hero .hero-stats .stat span { font-size: var(--ds-text-sm); color: var(--ds-fg-subtle); }
+  .gov-hero .hero-figure {
+    position: relative; border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-lg);
+    overflow: hidden; box-shadow: var(--ds-shadow-md); background: var(--ds-bg-sunken);
+  }
+  .gov-hero .hero-figure::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    border: 1px solid rgba(201,162,39,.45); border-radius: var(--ds-radius-lg); margin: var(--ds-space-2);
+  }
+  .gov-hero .hero-figure img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+  .gov-hero .hero-figure figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: var(--ds-space-5) var(--ds-space-4) var(--ds-space-3);
+    background: linear-gradient(to top, rgba(20,15,15,.82), rgba(20,15,15,0));
+    color: #fff; font-size: var(--ds-text-sm);
+  }
+  @media (max-width: 860px) { .gov-hero-inner { grid-template-columns: 1fr; gap: var(--ds-space-6); } }
+  @media (max-width: 640px) {
+    .gov-hero-inner { padding: var(--ds-space-6) var(--ds-space-4); }
+    .gov-hero h2.hero-title { font-size: var(--ds-text-2xl); }
+    .gov-hero .hero-stats { gap: var(--ds-space-5); }
+  }
+
+  /* ===== 图片用法 Image Usage ===== */
+  .ratio { border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-sunken); position: relative; }
+  .ratio img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ratio[data-r="16/9"] img { aspect-ratio: 16/9; }
+  .ratio[data-r="4/3"] img { aspect-ratio: 4/3; }
+  .ratio[data-r="1/1"] img { aspect-ratio: 1/1; }
+  .ratio[data-r="3/4"] img { aspect-ratio: 3/4; }
+  .ratio-tag { position: absolute; top: var(--ds-space-2); left: var(--ds-space-2); background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); color: var(--ds-fg-muted); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); padding: 1px var(--ds-space-2); border-radius: var(--ds-radius-sm); }
+
+  /* 媒体卡 */
+  .media-card { display: flex; flex-direction: column; overflow: hidden; }
+  .media-card .media-thumb { aspect-ratio: 16/9; overflow: hidden; border-bottom: 1px solid var(--ds-border); }
+  .media-card .media-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media-card .media-body { padding: var(--ds-space-4); display: flex; flex-direction: column; gap: var(--ds-space-2); flex: 1; }
+  .media-card .media-body h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); color: var(--ds-fg); }
+  .media-card .media-meta { display: flex; align-items: center; gap: var(--ds-space-2); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); }
+  .media-card .media-foot { margin-top: auto; padding-top: var(--ds-space-2); }
+
+  /* 图片网格 / 画廊 */
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-3); }
+  .gallery a { border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-md); overflow: hidden; display: block; aspect-ratio: 1/1; background: var(--ds-bg-sunken); }
+  .gallery a:hover { border-color: var(--ds-accent); }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--ds-dur-slow) var(--ds-ease); }
+  .gallery a:hover img { transform: scale(1.04); }
+  @media (max-width: 640px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+
+  /* 图文混排 */
+  .figtext { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--ds-space-7); align-items: center; }
+  .figtext .ft-img { border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-sm); }
+  .figtext .ft-img img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .figtext h3 { font-size: var(--ds-text-xl); margin-bottom: var(--ds-space-3); }
+  .figtext p { color: var(--ds-fg-muted); max-width: 62ch; margin: 0 0 var(--ds-space-3); }
+  @media (max-width: 860px) { .figtext { grid-template-columns: 1fr; gap: var(--ds-space-5); } }
+
+  /* 图上叠字 Overlay */
+  .overlay-card { position: relative; border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-lg); overflow: hidden; aspect-ratio: 21/9; }
+  .overlay-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .overlay-card .scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,15,15,.85) 0%, rgba(20,15,15,.55) 45%, rgba(20,15,15,.05) 100%); }
+  .overlay-card .ov-body { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: var(--ds-space-2); padding: var(--ds-space-7); color: #fff; max-width: 60%; }
+  .overlay-card .ov-body .ov-tag { display: inline-flex; align-self: flex-start; background: var(--ds-primary); color: #fff; font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium); padding: 2px var(--ds-space-2); border-radius: var(--ds-radius-sm); }
+  .overlay-card .ov-body h3 { color: #fff; font-size: var(--ds-text-2xl); line-height: 1.2; }
+  .overlay-card .ov-body p { color: rgba(255,255,255,.92); font-size: var(--ds-text-sm); margin: 0; max-width: 46ch; }
+  @media (max-width: 640px) { .overlay-card { aspect-ratio: 4/3; } .overlay-card .ov-body { max-width: 88%; padding: var(--ds-space-5); } .overlay-card .ov-body h3 { font-size: var(--ds-text-xl); } }
+
+  /* 头像用法 */
+  .avatar { border-radius: var(--ds-radius-full); object-fit: cover; border: 1px solid var(--ds-border-strong); display: block; flex: none; }
+  .avatar-row { display: flex; align-items: flex-end; gap: var(--ds-space-4); flex-wrap: wrap; }
+  .avatar-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-1); }
+  .avatar-cell span { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .avatar-stack { display: flex; }
+  .avatar-stack img, .avatar-stack .more { margin-left: -10px; border: 2px solid var(--ds-bg-elevated); border-radius: var(--ds-radius-full); }
+  .avatar-stack img:first-child { margin-left: 0; }
+  .avatar-stack .more { width: 40px; height: 40px; display: grid; place-items: center; background: var(--ds-bg-sunken); color: var(--ds-fg-muted); font-size: var(--ds-text-xs); font-family: var(--ds-font-mono); }
+  .user-line { display: flex; align-items: center; gap: var(--ds-space-3); }
+  .user-line .u-name { font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  .user-line .u-sign { font-size: var(--ds-text-sm); color: var(--ds-fg-subtle); }
+
+  /* 背景大图区 */
+  .bg-feature { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; border: 1px solid var(--ds-border-strong); }
+  .bg-feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bg-feature .bf-scrim { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(140,15,21,.92), rgba(28,77,140,.72)); }
+  .bg-feature .bf-body { position: relative; padding: var(--ds-space-10) var(--ds-space-8); color: #fff; }
+  .bg-feature .bf-body h3 { color: #fff; font-size: var(--ds-text-2xl); margin-bottom: var(--ds-space-3); letter-spacing: -0.01em; }
+  .bg-feature .bf-body p { color: rgba(255,255,255,.94); max-width: 58ch; margin: 0 0 var(--ds-space-6); }
+  .bg-feature .bf-stats { display: flex; gap: var(--ds-space-9); flex-wrap: wrap; }
+  .bg-feature .bf-stats .s b { display: block; font-family: var(--ds-font-mono); font-size: var(--ds-text-2xl); color: var(--ds-gold); font-variant-numeric: tabular-nums; }
+  .bg-feature .bf-stats .s span { font-size: var(--ds-text-sm); color: rgba(255,255,255,.85); }
+  @media (max-width: 640px) { .bg-feature .bf-body { padding: var(--ds-space-7) var(--ds-space-5); } }
+
+  /* ===== 图标用法 Icon Usage ===== */
+  .icon-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--ds-space-3); }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-4) var(--ds-space-2); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); color: var(--ds-fg); transition: all var(--ds-dur-fast) var(--ds-ease); }
+  .icon-cell:hover { border-color: var(--ds-accent); color: var(--ds-accent); }
+  .icon-cell .svg-ic { width: 24px; height: 24px; }
+  .icon-cell span { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); }
+  @media (max-width: 860px) { .icon-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px) { .icon-grid { grid-template-columns: repeat(3, 1fr); } }
+  .icon-sizes { display: flex; align-items: flex-end; gap: var(--ds-space-6); flex-wrap: wrap; }
+  .icon-sizes .isz { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-1); color: var(--ds-primary); }
+  .icon-sizes .isz span { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-scene { display: flex; align-items: center; gap: var(--ds-space-3); flex-wrap: wrap; }
+  .icon-btn { width: 40px; height: 40px; display: inline-grid; place-items: center; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); cursor: pointer; transition: all var(--ds-dur-fast) var(--ds-ease); }
+  .icon-btn:hover { border-color: var(--ds-accent); color: var(--ds-accent); background: var(--ds-info-bg); }
+  .icon-btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .input-icon { position: relative; }
+  .input-icon .lead, .input-icon .trail { position: absolute; top: 50%; transform: translateY(-50%); color: var(--ds-fg-subtle); width: 18px; height: 18px; }
+  .input-icon .lead { left: var(--ds-space-3); }
+  .input-icon .trail { right: var(--ds-space-3); }
+  .input-icon input { padding-left: var(--ds-space-8); }
+  .icon-list { list-style: none; margin: 0; padding: 0; }
+  .icon-list li { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); color: var(--ds-fg); }
+  .icon-list li:last-child { border-bottom: none; }
+  .icon-list li .li-ic { color: var(--ds-accent); width: 18px; height: 18px; flex: none; }
+  .icon-list li .li-ic.is-danger { color: var(--ds-danger); }
+  .icon-list li .li-ic.is-success { color: var(--ds-success); }
+  .icon-list li .li-ic.is-warning { color: var(--ds-warning); }
+  .icon-badge { position: relative; display: inline-grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); color: var(--ds-fg-muted); }
+  .icon-badge .count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 4px; background: var(--ds-primary); color: #fff; font-size: 10px; font-family: var(--ds-font-mono); border-radius: var(--ds-radius-full); display: grid; place-items: center; line-height: 1; }
+
+  /* ===== 桌面端布局小样 Browser Frame ===== */
+  .browser { border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-md); background: var(--ds-bg-elevated); }
+  .browser-bar { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-bg-subtle); border-bottom: 1px solid var(--ds-border); }
+  .browser-bar .dots { display: flex; gap: 6px; }
+  .browser-bar .dots i { width: 11px; height: 11px; border-radius: var(--ds-radius-full); background: var(--ds-border-strong); display: block; }
+  .browser-bar .url { flex: 1; background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); padding: 2px var(--ds-space-3); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); display: flex; align-items: center; gap: var(--ds-space-1); }
+  .browser-bar .url .lock { width: 12px; height: 12px; color: var(--ds-success); }
+  .browser-canvas { background: var(--ds-bg-subtle); }
+  .layout-cap { font-size: var(--ds-text-sm); color: var(--ds-fg-subtle); margin: var(--ds-space-2) 0 0; }
+
+  /* 政务门户首页小样 */
+  .portal { font-size: var(--ds-text-sm); }
+  .portal .p-banner { background: var(--ds-primary); color: #fff; border-bottom: 2px solid var(--ds-gold); padding: var(--ds-space-3) var(--ds-space-5); display: flex; align-items: center; gap: var(--ds-space-3); }
+  .portal .p-banner .seal { width: 28px; height: 28px; border-radius: var(--ds-radius-full); border: 1.5px solid var(--ds-gold); color: var(--ds-gold); display: grid; place-items: center; flex: none; }
+  .portal .p-banner b { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); letter-spacing: 1px; }
+  .portal .p-nav { display: flex; gap: var(--ds-space-4); padding: var(--ds-space-2) var(--ds-space-5); background: var(--ds-bg-elevated); border-bottom: 1px solid var(--ds-border-strong); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); flex-wrap: wrap; }
+  .portal .p-nav .on { color: var(--ds-primary); font-weight: var(--ds-weight-bold); border-bottom: 2px solid var(--ds-primary); padding-bottom: 2px; }
+  .portal .p-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--ds-space-4); padding: var(--ds-space-4) var(--ds-space-5); }
+  .portal .p-carousel { position: relative; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
+  .portal .p-carousel img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+  .portal .p-carousel .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--ds-space-4) var(--ds-space-3) var(--ds-space-2); background: linear-gradient(to top, rgba(20,15,15,.85), transparent); color: #fff; font-family: var(--ds-font-serif); font-size: var(--ds-text-sm); }
+  .portal .p-carousel .dots2 { position: absolute; bottom: var(--ds-space-2); right: var(--ds-space-3); display: flex; gap: 4px; }
+  .portal .p-carousel .dots2 i { width: 6px; height: 6px; border-radius: var(--ds-radius-full); background: rgba(255,255,255,.5); }
+  .portal .p-carousel .dots2 i.on { background: var(--ds-gold); }
+  .portal .p-panel { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+  .portal .p-panel-head { display: flex; justify-content: space-between; align-items: center; padding: var(--ds-space-2) var(--ds-space-3); border-bottom: 2px solid var(--ds-primary); background: var(--ds-bg-subtle); }
+  .portal .p-panel-head b { color: var(--ds-primary); }
+  .portal .p-panel-head a { font-size: var(--ds-text-xs); }
+  .portal .p-list { list-style: none; margin: 0; padding: 0; }
+  .portal .p-list li { display: flex; gap: var(--ds-space-2); align-items: center; padding: var(--ds-space-2) var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+  .portal .p-list li:last-child { border-bottom: none; }
+  .portal .p-list .d { width: 4px; height: 4px; background: var(--ds-primary); flex: none; }
+  .portal .p-list .t { flex: 1; color: var(--ds-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .portal .p-list .dt { color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); flex: none; }
+  .portal .p-entries { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-5) var(--ds-space-4); }
+  .portal .p-entry { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-1); padding: var(--ds-space-3) var(--ds-space-1); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); color: var(--ds-fg); }
+  .portal .p-entry .pe-ic { width: 30px; height: 30px; border-radius: var(--ds-radius-md); display: grid; place-items: center; background: var(--ds-info-bg); color: var(--ds-accent); }
+  .portal .p-entry:first-child .pe-ic { background: var(--ds-danger-bg); color: var(--ds-primary); }
+  .portal .p-entry span { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .portal .p-open-head { padding: var(--ds-space-2) var(--ds-space-5) 0; }
+  .portal .p-open-head .sec-mini { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); color: var(--ds-fg); border-left: 4px solid var(--ds-primary); padding-left: var(--ds-space-2); }
+  .portal .p-data { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-5) var(--ds-space-5); }
+  .portal .p-kpi { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-3); background: var(--ds-bg-elevated); }
+  .portal .p-kpi b { display: block; font-family: var(--ds-font-mono); font-size: var(--ds-text-xl); color: var(--ds-primary); font-variant-numeric: tabular-nums; }
+  .portal .p-kpi span { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  @media (max-width: 640px) { .portal .p-body { grid-template-columns: 1fr; } .portal .p-entries { grid-template-columns: repeat(3, 1fr); } .portal .p-data { grid-template-columns: repeat(2, 1fr); } }
+
+  /* 办事指南 列表-详情小样 */
+  .guide { display: grid; grid-template-columns: 300px 1fr; min-height: 380px; font-size: var(--ds-text-sm); }
+  .guide .g-list { border-right: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .guide .g-list .g-search { padding: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+  .guide .g-list ul { list-style: none; margin: 0; padding: 0; }
+  .guide .g-item { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); cursor: pointer; }
+  .guide .g-item:hover { background: var(--ds-bg-subtle); }
+  .guide .g-item.on { background: var(--ds-danger-bg); border-left: 3px solid var(--ds-primary); }
+  .guide .g-item .g-thumb { width: 56px; height: 56px; border-radius: var(--ds-radius-md); object-fit: cover; flex: none; border: 1px solid var(--ds-border); }
+  .guide .g-item .g-tt { font-weight: var(--ds-weight-medium); color: var(--ds-fg); margin-bottom: 2px; }
+  .guide .g-item .g-sub { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .guide .g-detail { padding: var(--ds-space-5); background: var(--ds-bg-subtle); overflow: auto; }
+  .guide .g-detail .g-hero { width: 100%; aspect-ratio: 16/7; object-fit: cover; border-radius: var(--ds-radius-md); border: 1px solid var(--ds-border-strong); margin-bottom: var(--ds-space-4); }
+  .guide .g-detail h3 { font-size: var(--ds-text-xl); margin-bottom: var(--ds-space-3); }
+  .guide .g-detail .g-meta { display: flex; gap: var(--ds-space-4); flex-wrap: wrap; font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); margin-bottom: var(--ds-space-4); padding-bottom: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+  .guide .g-detail p { color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-3); max-width: 66ch; }
+  @media (max-width: 640px) { .guide { grid-template-columns: 1fr; } .guide .g-list { border-right: none; border-bottom: 1px solid var(--ds-border); } }
+
+  /* ===== 移动端布局多屏 ===== */
+  /* App 详情/个人页 */
+  .m-detail-hero { position: relative; }
+  .m-detail-hero img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .m-detail-hero .scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,15,15,.78), transparent 55%); }
+  .m-detail-hero .h-body { position: absolute; left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-3); color: #fff; }
+  .m-detail-hero .h-body .tag { background: var(--ds-primary); font-size: 10px; padding: 1px 6px; border-radius: var(--ds-radius-sm); }
+  .m-detail-hero .h-body h4 { font-family: var(--ds-font-serif); color: #fff; font-size: var(--ds-text-md); margin: var(--ds-space-1) 0 0; }
+  .m-section { margin: var(--ds-space-3); background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-3) var(--ds-space-4); }
+  .m-section h5 { font-size: var(--ds-text-sm); color: var(--ds-primary); margin: 0 0 var(--ds-space-2); border-left: 3px solid var(--ds-primary); padding-left: var(--ds-space-2); }
+  .m-kv { display: flex; justify-content: space-between; padding: var(--ds-space-2) 0; border-bottom: 1px solid var(--ds-border); font-size: var(--ds-text-xs); }
+  .m-kv:last-child { border-bottom: none; }
+  .m-kv .k { color: var(--ds-fg-subtle); }
+  .m-kv .v { color: var(--ds-fg); font-family: var(--ds-font-mono); }
+  .m-action { padding: var(--ds-space-3) var(--ds-space-4); }
+  /* App 列表/收件箱（带头像） */
+  .m-inbox { list-style: none; margin: var(--ds-space-3); padding: 0; background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
+  .m-inbox li { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); align-items: flex-start; }
+  .m-inbox li:last-child { border-bottom: none; }
+  .m-inbox .av { width: 40px; height: 40px; border-radius: var(--ds-radius-full); object-fit: cover; flex: none; border: 1px solid var(--ds-border); }
+  .m-inbox .ib-body { flex: 1; min-width: 0; }
+  .m-inbox .ib-top { display: flex; justify-content: space-between; gap: var(--ds-space-2); }
+  .m-inbox .ib-name { font-weight: var(--ds-weight-medium); color: var(--ds-fg); font-size: var(--ds-text-sm); }
+  .m-inbox .ib-time { font-size: 10px; color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); flex: none; }
+  .m-inbox .ib-txt { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .m-inbox .ib-unread { width: 7px; height: 7px; background: var(--ds-primary); border-radius: var(--ds-radius-full); flex: none; margin-top: 6px; }
+  /* 底部标签栏 */
+  .m-tabbar { display: flex; background: var(--ds-bg-elevated); border-top: 1px solid var(--ds-border-strong); position: sticky; bottom: 0; }
+  .m-tabbar a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: var(--ds-space-2) 0; color: var(--ds-fg-subtle); font-size: 10px; }
+  .m-tabbar a.on { color: var(--ds-primary); }
+  .m-tabbar a .svg-ic { width: 20px; height: 20px; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; }
@@ -511,6 +757,33 @@
   <span class="cur">中国政府风设计系统</span>
 </div>
 
+<!-- Hero 首屏（红头标题栏 + hero 图）-->
+<section class="gov-hero" aria-label="设计系统首屏">
+  <div class="gov-hero-inner">
+    <div>
+      <span class="ribbon">
+        <svg class="svg-ic" data-size="sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.5 5 5.5.8-4 3.9.95 5.5L12 21.5l-4.9-2.6.95-5.5-4-3.9 5.5-.8z" fill="currentColor" stroke="none"/></svg>
+        政务设计系统 · v2 富化版
+      </span>
+      <h2 class="hero-title">Gov-CN 中国政府风<br />庄重 · 权威 · 规整可信</h2>
+      <p class="hero-sub">面向政务门户、政务公开、办事大厅与公共数据平台的设计系统。党政红横幅 + 政务蓝信息层级 + 方正小圆角 + 黑体正文/宋体标题，一眼建立官方信任感。</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg">进入政务服务</button>
+        <button class="btn btn-secondary btn-lg">查看设计规范</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>1,286</b><span>在线办事事项</span></div>
+        <div class="stat"><b>98.6%</b><span>网上办结率</span></div>
+        <div class="stat"><b>24h</b><span>不打烊服务</span></div>
+      </div>
+    </div>
+    <figure class="hero-figure" style="margin:0">
+      <img src="../../_assets/gen/gov-hero.jpg" alt="示范市政务服务中心庄重建筑外景" loading="lazy" width="640" height="480" />
+      <figcaption>示范市人民政府政务服务中心 · 一站式综合服务大厅</figcaption>
+    </figure>
+  </div>
+</section>
+
 <main>
 
   <!-- 概述 -->
@@ -522,6 +795,199 @@
         <b style="color:var(--ds-accent)">政务蓝 #1c4d8c</b> 承载链接与信息；暖中性纸感背景，小而方正的圆角，层级靠描边与分隔线表达。
         点缀 <b style="color:var(--ds-gold)">荣誉金 #c9a227</b> 于徽标描边。
       </p>
+    </div>
+  </section>
+
+  <!-- 图片用法 Image Usage -->
+  <section>
+    <h2 class="sec-title">图片用法 <small>Image Usage · 端正框 / 留白讲秩序</small></h2>
+
+    <!-- 宽高比框 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">统一宽高比框 <span class="subtle" style="font-family:var(--ds-font-mono);font-size:var(--ds-text-xs)">aspect-ratio + object-fit:cover · 方正小圆角</span></h3>
+    <div class="grid grid-4" style="margin-bottom:var(--ds-space-7)">
+      <div class="ratio" data-r="16/9"><span class="ratio-tag">16:9</span><img src="../../_assets/photos/city.jpg" alt="示范市城市天际线" loading="lazy" /></div>
+      <div class="ratio" data-r="4/3"><span class="ratio-tag">4:3</span><img src="../../_assets/photos/architecture.jpg" alt="政务建筑立面" loading="lazy" /></div>
+      <div class="ratio" data-r="1/1"><span class="ratio-tag">1:1</span><img src="../../_assets/photos/square1.jpg" alt="方形展示图" loading="lazy" /></div>
+      <div class="ratio" data-r="3/4"><span class="ratio-tag">3:4</span><img src="../../_assets/photos/portrait1.jpg" alt="纵向人物展示图" loading="lazy" /></div>
+    </div>
+
+    <!-- 媒体卡 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">媒体卡 Media Card <span class="subtle" style="font-size:var(--ds-text-xs)">图在上 + 标题正文操作</span></h3>
+    <div class="grid grid-3" style="margin-bottom:var(--ds-space-7)">
+      <article class="card media-card">
+        <div class="media-thumb"><img src="../../_assets/photos/architecture.jpg" alt="政务服务中心新址启用" loading="lazy" /></div>
+        <div class="media-body">
+          <div class="media-meta"><span class="badge b-primary">要闻</span><span>2026-06-20</span></div>
+          <h4>市政务服务中心新址正式启用，办事更便捷</h4>
+          <p class="muted" style="margin:0;font-size:var(--ds-text-sm)">集成 32 个部门 480 项业务，实现"一窗受理、集成服务"。</p>
+          <div class="media-foot"><button class="btn btn-tertiary btn-sm">阅读全文 &gt;</button></div>
+        </div>
+      </article>
+      <article class="card media-card">
+        <div class="media-thumb"><img src="../../_assets/photos/city.jpg" alt="智慧城市数据中心" loading="lazy" /></div>
+        <div class="media-body">
+          <div class="media-meta"><span class="badge b-info">政务公开</span><span>2026-06-18</span></div>
+          <h4>公共数据开放平台上线，首批开放 1.2 万项数据集</h4>
+          <p class="muted" style="margin:0;font-size:var(--ds-text-sm)">覆盖交通、医疗、教育、环境等 18 个重点领域。</p>
+          <div class="media-foot"><button class="btn btn-tertiary btn-sm">阅读全文 &gt;</button></div>
+        </div>
+      </article>
+      <article class="card media-card">
+        <div class="media-thumb"><img src="../../_assets/photos/street.jpg" alt="便民服务进社区" loading="lazy" /></div>
+        <div class="media-body">
+          <div class="media-meta"><span class="badge b-success">便民</span><span>2026-06-15</span></div>
+          <h4>"政务服务进社区"覆盖全市 96 个街道</h4>
+          <p class="muted" style="margin:0;font-size:var(--ds-text-sm)">高频事项就近办、马上办，群众少跑腿。</p>
+          <div class="media-foot"><button class="btn btn-tertiary btn-sm">阅读全文 &gt;</button></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- 图片网格 / 画廊 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">图片网格 / 政务影像 <span class="subtle" style="font-size:var(--ds-text-xs)">等高方格 · 统一圆角</span></h3>
+    <div class="gallery" style="margin-bottom:var(--ds-space-7)">
+      <a href="#"><img src="../../_assets/photos/architecture.jpg" alt="政务建筑外景" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/city.jpg" alt="城市夜景" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/street.jpg" alt="街道便民服务" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/mountain.jpg" alt="生态环境" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/tech.jpg" alt="政务信息化" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/workspace.jpg" alt="办公场景" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/square2.jpg" alt="方形影像一" loading="lazy" /></a>
+      <a href="#"><img src="../../_assets/photos/square3.jpg" alt="方形影像二" loading="lazy" /></a>
+    </div>
+
+    <!-- 图文混排 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">图文混排 <span class="subtle" style="font-size:var(--ds-text-xs)">大图 + 段落并排 · 政策解读感</span></h3>
+    <div class="card pad figtext" style="margin-bottom:var(--ds-space-7)">
+      <div class="ft-img"><img src="../../_assets/photos/architecture.jpg" alt="优化营商环境政策图解" loading="lazy" /></div>
+      <div>
+        <h3>一图读懂：优化营商环境实施意见</h3>
+        <p>聚焦企业全生命周期，推出 28 条硬措施：企业开办压缩至 0.5 个工作日，工程建设项目审批时限再压减 30%，涉企事项"一网通办"覆盖率达 95%。</p>
+        <p>对市场主体反映集中的堵点难点，建立"政企直通"反馈机制，做到接诉即办、限时办结，持续打造市场化、法治化、国际化营商环境。</p>
+        <div class="btn-row" style="margin-top:var(--ds-space-4)"><button class="btn btn-secondary btn-sm">下载政策原文</button><button class="btn btn-tertiary btn-sm">查看解读 &gt;</button></div>
+      </div>
+    </div>
+
+    <!-- 图上叠字 Overlay -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">图上叠字 Overlay <span class="subtle" style="font-size:var(--ds-text-xs)">渐变 scrim 保证文字 AA</span></h3>
+    <div class="overlay-card" style="margin-bottom:var(--ds-space-7)">
+      <img src="../../_assets/photos/city.jpg" alt="示范市城市发展全景" loading="lazy" />
+      <div class="scrim"></div>
+      <div class="ov-body">
+        <span class="ov-tag">专题</span>
+        <h3>数字政府建设三年行动</h3>
+        <p>以数据共享支撑高效协同，让数据多跑路、群众少跑腿，建设人民满意的服务型政府。</p>
+      </div>
+    </div>
+
+    <!-- 头像用法 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">头像用法 <span class="subtle" style="font-size:var(--ds-text-xs)">尺寸阶 / 头像组 / 用户行</span></h3>
+    <div class="grid grid-2" style="margin-bottom:var(--ds-space-7)">
+      <div class="card pad">
+        <div class="avatar-row" style="margin-bottom:var(--ds-space-5)">
+          <div class="avatar-cell"><img class="avatar" src="../../_assets/avatars/a1.jpg" alt="" width="24" height="24" style="width:24px;height:24px" loading="lazy" /><span>24</span></div>
+          <div class="avatar-cell"><img class="avatar" src="../../_assets/avatars/a5.jpg" alt="" width="32" height="32" style="width:32px;height:32px" loading="lazy" /><span>32</span></div>
+          <div class="avatar-cell"><img class="avatar" src="../../_assets/avatars/a8.jpg" alt="" width="40" height="40" style="width:40px;height:40px" loading="lazy" /><span>40</span></div>
+          <div class="avatar-cell"><img class="avatar" src="../../_assets/avatars/a12.jpg" alt="" width="48" height="48" style="width:48px;height:48px" loading="lazy" /><span>48</span></div>
+        </div>
+        <div class="avatar-stack" aria-label="经办人员 6 名">
+          <img class="avatar" src="../../_assets/avatars/a15.jpg" alt="" width="40" height="40" style="width:40px;height:40px" loading="lazy" />
+          <img class="avatar" src="../../_assets/avatars/a23.jpg" alt="" width="40" height="40" style="width:40px;height:40px" loading="lazy" />
+          <img class="avatar" src="../../_assets/avatars/a33.jpg" alt="" width="40" height="40" style="width:40px;height:40px" loading="lazy" />
+          <img class="avatar" src="../../_assets/avatars/a47.jpg" alt="" width="40" height="40" style="width:40px;height:40px" loading="lazy" />
+          <span class="more">+2</span>
+        </div>
+      </div>
+      <div class="card pad" style="display:flex;flex-direction:column;gap:var(--ds-space-4);justify-content:center">
+        <div class="user-line">
+          <img class="avatar" src="../../_assets/avatars/a8.jpg" alt="经办人陈志远头像" width="48" height="48" style="width:48px;height:48px" loading="lazy" />
+          <div><div class="u-name">陈志远 <span class="badge b-info" style="vertical-align:middle">受理岗</span></div><div class="u-sign">政务服务管理局 · 综合受理窗口 W-12</div></div>
+        </div>
+        <div class="user-line">
+          <img class="avatar" src="../../_assets/avatars/a15.jpg" alt="审核员林玥头像" width="48" height="48" style="width:48px;height:48px" loading="lazy" />
+          <div><div class="u-name">林　玥 <span class="badge b-gold" style="vertical-align:middle">业务骨干</span></div><div class="u-sign">不动产登记中心 · 审核岗</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 背景大图区 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">背景大图区 <span class="subtle" style="font-size:var(--ds-text-xs)">full-bleed 背景 + 红蓝遮罩 + 内容</span></h3>
+    <div class="bg-feature">
+      <img src="../../_assets/photos/architecture.jpg" alt="示范市政务大厅" loading="lazy" />
+      <div class="bf-scrim"></div>
+      <div class="bf-body">
+        <h3>政务服务"一网通办"</h3>
+        <p>统一身份认证、统一办事入口、统一数据共享，让企业和群众办事像网购一样方便，全程网办、就近能办、异地可办。</p>
+        <div class="bf-stats">
+          <div class="s"><b>1,286</b><span>可办事项</span></div>
+          <div class="s"><b>98.6%</b><span>网上办结率</span></div>
+          <div class="s"><b>0.5天</b><span>企业开办时限</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 图标用法 Icon Usage -->
+  <section>
+    <h2 class="sec-title">图标用法 <small>Icon Usage · 政务感线性 · 统一 currentColor</small></h2>
+
+    <!-- 图标集 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">图标集 <span class="subtle" style="font-size:var(--ds-text-xs)">内联 SVG · 24px · 线宽 1.8</span></h3>
+    <div class="icon-grid" style="margin-bottom:var(--ds-space-7)">
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span>home</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v5h5"/><path d="M14 3l5 5v12H5V3z"/><path d="M8 13h8M8 16h6"/></svg><span>doc</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>search</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span>shield</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg><span>user</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l9-6 9 6v11z"/><path d="M9 21v-6h6v6"/></svg><span>gov</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="1.5"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>calendar</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14l-1 5H6z"/><path d="M6 9l-1 7h14l-1-7"/><circle cx="9" cy="20" r="1"/><circle cx="15" cy="20" r="1"/></svg><span>service</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>chart</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>message</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16.5a17 17 0 0 1-14-14L9 2l2 5-2.5 1.5a12 12 0 0 0 5 5L15 11l5 2z"/></svg><span>phone</span></div>
+      <div class="icon-cell"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:var(--ds-space-7)">
+      <!-- 尺寸阶 + 线性 vs 实心 -->
+      <div class="card pad">
+        <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-4)">尺寸阶 · 基线对齐</h3>
+        <div class="icon-sizes" style="margin-bottom:var(--ds-space-6)">
+          <div class="isz"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span>16</span></div>
+          <div class="isz"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span>20</span></div>
+          <div class="isz"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span>24</span></div>
+          <div class="isz"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span>32</span></div>
+        </div>
+        <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">线性 vs 实心 · 单色 vs 双色</h3>
+        <div class="icon-scene">
+          <span class="tip" tabindex="0" style="color:var(--ds-fg-muted)"><svg class="svg-ic" data-size="lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span class="tip-bubble" role="tooltip">线性</span></span>
+          <span style="color:var(--ds-primary)"><svg class="svg-ic" data-size="lg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l8.5 4.2v5.4c0 5.2-3.6 8.6-8.5 9.6-4.9-1-8.5-4.4-8.5-9.6V6.2z"/></svg></span>
+          <span style="color:var(--ds-gold)"><svg class="svg-ic" data-size="lg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.6 5.3 5.9.85-4.25 4.15 1 5.85L12 16.9l-5.25 2.75 1-5.85L3.5 8.65l5.9-.85z"/></svg></span>
+          <span style="position:relative;color:var(--ds-accent)"><svg class="svg-ic" data-size="lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z" fill="var(--ds-info-bg)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L16 9.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="subtle" style="font-size:var(--ds-text-sm)">线性 / 实心 / 双色 / 描边+底</span>
+        </div>
+      </div>
+
+      <!-- 在场景里：图标按钮 / 输入框 / 徽标 -->
+      <div class="card pad">
+        <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">在场景里</h3>
+        <div class="icon-scene" style="margin-bottom:var(--ds-space-4)">
+          <button class="icon-btn" aria-label="搜索"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+          <button class="icon-btn" aria-label="打印"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="8" rx="1"/><path d="M7 17h10v4H7z"/></svg></button>
+          <span class="icon-badge" aria-label="3 条新通知"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="count">3</span></span>
+          <button class="btn btn-primary btn-sm"><svg class="svg-ic" data-size="sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> 新建申请</button>
+          <button class="btn btn-secondary btn-sm">下载回执 <svg class="svg-ic" data-size="sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5"/><path d="M5 20h14"/></svg></button>
+        </div>
+        <div class="field input-icon" style="margin-bottom:var(--ds-space-4)">
+          <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input class="input" placeholder="搜索办事指南、政策文件" aria-label="搜索" />
+        </div>
+        <ul class="icon-list">
+          <li><svg class="li-ic is-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg> 不动产登记 · <span class="badge b-success" style="margin-left:auto">已办结</span></li>
+          <li><svg class="li-ic is-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17h.01"/></svg> 营业执照变更 · <span class="badge b-warning" style="margin-left:auto">待审核</span></li>
+          <li><svg class="li-ic is-danger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> 危化品经营许可 · <span class="badge b-danger" style="margin-left:auto">暂停受理</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -793,14 +1259,118 @@
     </div>
   </section>
 
+  <!-- 桌面端布局小样 Desktop Layouts -->
+  <section>
+    <h2 class="sec-title">桌面端布局 <small>Desktop Layouts · 真实小样 ×2</small></h2>
+
+    <!-- 布局一：政务门户首页 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">布局一 · 政务门户首页 <span class="subtle" style="font-size:var(--ds-text-xs)">轮播 + 通知公告 + 办事入口 + 数据公开</span></h3>
+    <div class="browser" style="margin-bottom:var(--ds-space-7)">
+      <div class="browser-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url"><svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> www.xianfan.gov.cn</span>
+      </div>
+      <div class="browser-canvas">
+        <div class="portal">
+          <div class="p-banner">
+            <span class="seal"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 5.4l1.55 3.14 3.47.5-2.51 2.45.59 3.45L12 13.8l-3.1 1.64.59-3.45L6.98 9.54l3.47-.5z" fill="currentColor" stroke="none"/></svg></span>
+            <b>示范市人民政府门户网站</b>
+          </div>
+          <div class="p-nav"><span class="on">首页</span><span>政务公开</span><span>政务服务</span><span>互动交流</span><span>数据开放</span><span>走进示范</span></div>
+          <div class="p-body">
+            <div class="p-carousel">
+              <img src="../../_assets/photos/city.jpg" alt="示范市发展要闻轮播图" loading="lazy" />
+              <div class="cap">示范市政务服务中心新址正式启用，一窗受理更便捷</div>
+              <div class="dots2"><i class="on"></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="p-panel">
+              <div class="p-panel-head"><b>通知公告</b><a href="#">更多 &gt;</a></div>
+              <ul class="p-list">
+                <li><span class="d"></span><span class="t">政务公开第三方评估工作的通知</span><span class="dt">06-20</span></li>
+                <li><span class="d"></span><span class="t">优化营商环境实施意见公开征集</span><span class="dt">06-18</span></li>
+                <li><span class="d"></span><span class="t">行政许可事项清单（2026版）公告</span><span class="dt">06-15</span></li>
+                <li><span class="d"></span><span class="t">汛期防灾减灾工作紧急通知</span><span class="dt">06-12</span></li>
+                <li><span class="d"></span><span class="t">市级财政预算执行情况公开说明</span><span class="dt">06-09</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="p-entries">
+            <a class="p-entry" href="#"><span class="pe-ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg></span><span>个人办事</span></a>
+            <a class="p-entry" href="#"><span class="pe-ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13z"/><path d="M9 21v-6h6v6"/></svg></span><span>法人办事</span></a>
+            <a class="p-entry" href="#"><span class="pe-ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v5h5"/><path d="M14 3l5 5v12H5V3z"/></svg></span><span>办事指南</span></a>
+            <a class="p-entry" href="#"><span class="pe-ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><span>进度查询</span></a>
+            <a class="p-entry" href="#"><span class="pe-ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span><span>数据开放</span></a>
+            <a class="p-entry" href="#"><span class="pe-ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>互动交流</span></a>
+          </div>
+          <div class="p-open-head"><span class="sec-mini">数据公开 · 政务服务运行</span></div>
+          <div class="p-data">
+            <div class="p-kpi"><b>1,286</b><span>在线办事事项</span></div>
+            <div class="p-kpi"><b>98.6%</b><span>网上办结率</span></div>
+            <div class="p-kpi"><b>3.2万</b><span>本月办件量</span></div>
+            <div class="p-kpi"><b>4.9</b><span>群众满意度</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="layout-cap" style="margin-bottom:var(--ds-space-8)">三段式对称版式：要闻轮播 + 通知公告条目（日期右对齐）+ 办事入口宫格 + 数据公开 KPI。红头横幅 + 政务蓝栏目 + 方正小圆角，全程走 <code>var(--ds-*)</code>。</p>
+
+    <!-- 布局二：办事指南 列表-详情 -->
+    <h3 style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);font-weight:var(--ds-weight-medium);margin:0 0 var(--ds-space-3)">布局二 · 办事指南（列表-详情） <span class="subtle" style="font-size:var(--ds-text-xs)">左列表带缩略图 + 右详情大图正文</span></h3>
+    <div class="browser">
+      <div class="browser-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url"><svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> www.xianfan.gov.cn/guide/realty</span>
+      </div>
+      <div class="browser-canvas">
+        <div class="guide">
+          <div class="g-list">
+            <div class="g-search">
+              <div class="field input-icon" style="margin:0">
+                <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+                <input class="input" style="height:36px" placeholder="搜索办事指南" aria-label="搜索办事指南" />
+              </div>
+            </div>
+            <ul>
+              <li class="g-item on"><img class="g-thumb" src="../../_assets/photos/architecture.jpg" alt="" loading="lazy" /><div><div class="g-tt">不动产登记</div><div class="g-sub">自然资源和规划局 · 15 工作日</div></div></li>
+              <li class="g-item"><img class="g-thumb" src="../../_assets/photos/street.jpg" alt="" loading="lazy" /><div><div class="g-tt">食品经营许可</div><div class="g-sub">市场监督管理局 · 10 工作日</div></div></li>
+              <li class="g-item"><img class="g-thumb" src="../../_assets/photos/tech.jpg" alt="" loading="lazy" /><div><div class="g-tt">企业开办登记</div><div class="g-sub">市场监督管理局 · 0.5 工作日</div></div></li>
+              <li class="g-item"><img class="g-thumb" src="../../_assets/photos/workspace.jpg" alt="" loading="lazy" /><div><div class="g-tt">社保关系转移</div><div class="g-sub">人力资源社会保障局 · 即时办</div></div></li>
+            </ul>
+          </div>
+          <div class="g-detail">
+            <img class="g-hero" src="../../_assets/photos/architecture.jpg" alt="不动产登记办事大厅" loading="lazy" />
+            <h3>不动产登记（转移登记）</h3>
+            <div class="g-meta"><span>事项编码 XK-001</span><span>实施部门 自然资源和规划局</span><span>办结时限 15 工作日</span><span>办件量 1,284</span></div>
+            <p>适用于因买卖、互换、赠与等导致不动产权利转移，需要办理转移登记的情形。申请人可通过"一网通办"在线提交申请，或前往政务服务中心不动产登记窗口办理。</p>
+            <p>所需材料：不动产登记申请书、申请人身份证明、不动产权属证书、转移合同及完税凭证。材料齐全且符合法定形式的，自受理之日起 15 个工作日内办结。</p>
+            <div class="btn-row" style="margin-top:var(--ds-space-4)"><button class="btn btn-primary btn-sm">在线申请</button><button class="btn btn-secondary btn-sm">下载材料清单</button><button class="btn btn-tertiary btn-sm">咨询 12345 &gt;</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="layout-cap">列表-详情：左列带缩略图与摘要、当前项红色标识；右详情大图 + 元信息（数字 tabular-nums）+ 正文段落 + 操作区。分隔线表达结构，克制阴影。</p>
+  </section>
+
   <!-- 移动端 Mobile -->
   <section>
-    <h2 class="sec-title">移动端 Mobile <small>375px 手机框 · 红头 + 面包屑 + 办事入口 + 公告</small></h2>
+    <h2 class="sec-title">移动端布局 <small>Mobile Layouts · 真实小样 ×3</small></h2>
     <div class="card pad">
       <div class="phone-wrap">
-        <div class="phone">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
+        <!-- 手机一：App 首页（红头标题栏 + 宫格 + 通知）-->
+        <div class="dvc17 sb-light">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
             <!-- 红头标题栏 -->
             <div class="m-banner">
               <div class="seal" aria-hidden="true">
@@ -839,14 +1409,120 @@
                 <li><span class="dot"></span><span class="txt">做好汛期防灾减灾工作的紧急通知</span><span class="date">06-12</span></li>
               </ul>
             </div>
+            </div>
+            <div class="home"></div>
           </div>
         </div>
+
+        <!-- 手机二：详情/个人办事页（深色大图 header）-->
+        <div class="dvc17 sb-light">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+            <div class="m-detail-hero">
+              <img src="../../_assets/photos/architecture.jpg" alt="不动产登记办事大厅" loading="lazy" />
+              <div class="scrim"></div>
+              <div class="h-body"><span class="tag">个人办事</span><h4>不动产登记 · 转移登记</h4></div>
+            </div>
+            <div class="m-section">
+              <h5>事项信息</h5>
+              <div class="m-kv"><span class="k">事项编码</span><span class="v">XK-001</span></div>
+              <div class="m-kv"><span class="k">实施部门</span><span class="v">自然资源和规划局</span></div>
+              <div class="m-kv"><span class="k">办结时限</span><span class="v">15 工作日</span></div>
+              <div class="m-kv"><span class="k">办理方式</span><span class="v">网上办 / 窗口办</span></div>
+            </div>
+            <div class="m-section">
+              <h5>办理进度</h5>
+              <div class="m-kv"><span class="k">在线申请</span><span class="v" style="color:var(--ds-success)">已完成</span></div>
+              <div class="m-kv"><span class="k">材料预审</span><span class="v" style="color:var(--ds-success)">已完成</span></div>
+              <div class="m-kv"><span class="k">受理审核</span><span class="v" style="color:var(--ds-primary)">进行中</span></div>
+            </div>
+            <div class="m-action">
+              <button class="btn btn-primary" style="width:100%">在线申请办理</button>
+            </div>
+            <div class="m-tabbar">
+              <a href="#" class="on"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg>首页</a>
+              <a href="#"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v5h5"/><path d="M14 3l5 5v12H5V3z"/></svg>办事</a>
+              <a href="#"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>互动</a>
+              <a href="#"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>我的</a>
+            </div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+
+        <!-- 手机三：列表/收件箱（红头 + 带头像列表）-->
+        <div class="dvc17 sb-light">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+            <div class="m-banner">
+              <div class="seal" aria-hidden="true">
+                <svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div><h4>消息中心</h4><div class="sub">办理通知 · 政务提醒</div></div>
+            </div>
+            <ul class="m-inbox">
+              <li>
+                <img class="av" src="../../_assets/avatars/a8.jpg" alt="" loading="lazy" />
+                <div class="ib-body"><div class="ib-top"><span class="ib-name">不动产登记中心</span><span class="ib-time">10:24</span></div><div class="ib-txt">您的转移登记申请已受理，编号 SF-2026-0612。</div></div>
+                <span class="ib-unread"></span>
+              </li>
+              <li>
+                <img class="av" src="../../_assets/avatars/a15.jpg" alt="" loading="lazy" />
+                <div class="ib-body"><div class="ib-top"><span class="ib-name">市场监督管理局</span><span class="ib-time">昨天</span></div><div class="ib-txt">营业执照变更需补充材料，请于 3 日内提交。</div></div>
+                <span class="ib-unread"></span>
+              </li>
+              <li>
+                <img class="av" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy" />
+                <div class="ib-body"><div class="ib-top"><span class="ib-name">12345 热线</span><span class="ib-time">06-20</span></div><div class="ib-txt">您的咨询工单已办结，感谢您的评价与监督。</div></div>
+              </li>
+              <li>
+                <img class="av" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy" />
+                <div class="ib-body"><div class="ib-top"><span class="ib-name">人社局社保中心</span><span class="ib-time">06-18</span></div><div class="ib-txt">社保关系转移已完成，可在"我的"中查看缴费记录。</div></div>
+              </li>
+              <li>
+                <img class="av" src="../../_assets/avatars/a47.jpg" alt="" loading="lazy" />
+                <div class="ib-body"><div class="ib-top"><span class="ib-name">政务服务管理局</span><span class="ib-time">06-15</span></div><div class="ib-txt">行政许可事项清单（2026版）已发布，欢迎查阅。</div></div>
+              </li>
+            </ul>
+            <div class="m-tabbar">
+              <a href="#"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg>首页</a>
+              <a href="#"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v5h5"/><path d="M14 3l5 5v12H5V3z"/></svg>办事</a>
+              <a href="#" class="on"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>互动</a>
+              <a href="#"><svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>我的</a>
+            </div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+
         <div style="flex:1;min-width:240px">
-          <p class="muted" style="margin-top:0">约 375px 宽的手机框，复用同一套 <code>var(--ds-*)</code> token：红头标题栏（红底白字 + 金线）、面包屑、办事入口宫格、通知公告列表。配合 <code>≤640px</code> 断点，桌面栅格收一列、banner 与导航折叠为可滚动单行。</p>
+          <p class="muted" style="margin-top:0">三个手机框复用同一套 <code>var(--ds-*)</code> token，权威气质在小屏完全保持。配合 <code>≤640px</code> 断点，桌面栅格收一列、banner 与导航折叠为可滚动单行。</p>
           <ul class="muted" style="margin:0;padding-left:var(--ds-space-5);line-height:var(--ds-leading-relaxed)">
-            <li>红头标题栏：<code>--ds-primary</code> + <code>--ds-gold</code> 描边线，与桌面 banner 同语言。</li>
-            <li>办事入口：宫格触控目标 ≥ 44px，图标用语义浅底（首项红、其余蓝）。</li>
-            <li>列表条目：分隔线 + 日期右对齐，沿用政务"通知公告"版式。</li>
+            <li><b>App 首页</b>：红头标题栏（红底白字 + 金线）+ 面包屑 + 办事入口宫格（触控目标 ≥ 44px）+ 通知公告列表（分隔线 + 日期右对齐）。</li>
+            <li><b>详情/个人页</b>：大图 header + 渐变叠字 + 事项信息/进度键值组 + 主操作 + 底部标签栏（图标 + 文字）。</li>
+            <li><b>消息中心/收件箱</b>：带头像的列表行 + 未读红点 + 时间右对齐 + 底部标签栏，沿用政务版式。</li>
           </ul>
         </div>
       </div>

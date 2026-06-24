@@ -2,6 +2,7 @@
 <html lang="zh-CN" data-theme="light">
 <head>
 <link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Editorial · 极简 editorial 风 · 预览</title>
@@ -372,11 +373,7 @@
   .toast .toast-close { border: none; background: none; color: var(--ds-fg-subtle); cursor: pointer; font-size: var(--ds-text-md); line-height: 1; padding: 0; }
   .toast .toast-close:hover { color: var(--ds-fg); }
 
-  /* ---------- 移动端框 Mobile frame ---------- */
-  .phone {
-    width: 375px; max-width: 100%; margin: 0 auto; border: 1px solid var(--ds-border-strong);
-    border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg); box-shadow: var(--ds-shadow-lg);
-  }
+  /* ---------- 屏内顶栏 / 内容（套 .dvc17 设备壳，见 _assets/device.css） ---------- */
   .phone-bar {
     display: flex; align-items: center; gap: var(--ds-space-3); height: 52px; padding: 0 var(--ds-space-4);
     border-bottom: 1px solid var(--ds-border); background: color-mix(in srgb, var(--ds-bg) 88%, transparent);
@@ -398,6 +395,261 @@
   .phone-toc li.active { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
   .phone-toc li.active::before { color: var(--ds-primary); }
 
+  /* ============================================================
+     v2 富化：Hero / 图片用法 / 图标用法 / 桌面布局 / 移动布局
+     —— 身份不变：暖纸 + 衬线正文 + 无衬线 UI + 适度留白 + 大行高
+        图片 radius-lg、可 full-bleed、必带图注；阴影极轻、靠线与留白分层。
+     ============================================================ */
+
+  /* ---------- 顶部 Hero（杂志感：满宽出血图 + scrim + 标题/导语/CTA） ---------- */
+  .hero {
+    position: relative; margin-bottom: var(--ds-space-11);
+    border-bottom: 1px solid var(--ds-border);
+  }
+  .hero-figure { position: relative; aspect-ratio: 21 / 9; overflow: hidden; }
+  .hero-figure img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92); }
+  /* 暖色出血渐变，让叠字保证 AA；顶部稍亮、底部沉墨 */
+  .hero-figure::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(26,20,12,.10) 0%, rgba(26,20,12,.28) 46%, rgba(26,20,12,.74) 100%);
+  }
+  .hero-inner {
+    position: absolute; inset: auto 0 0 0; z-index: 1;
+    max-width: 1080px; margin: 0 auto; width: 100%;
+    padding: var(--ds-space-10) var(--ds-space-8) var(--ds-space-9);
+    color: #fdf6ef;
+  }
+  .hero-kicker {
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase;
+    letter-spacing: .14em; color: #fdf6ef; opacity: .92; margin: 0 0 var(--ds-space-3);
+    display: inline-flex; align-items: center; gap: var(--ds-space-2);
+  }
+  .hero-kicker .rule { width: 28px; height: 1px; background: currentColor; opacity: .7; }
+  .hero h1.hero-title {
+    font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold);
+    font-size: clamp(34px, 5.4vw, var(--ds-text-3xl)); line-height: var(--ds-leading-tight);
+    letter-spacing: var(--ds-tracking-tight); text-wrap: balance; margin: 0 0 var(--ds-space-4);
+    max-width: 18ch; text-shadow: 0 1px 24px rgba(0,0,0,.28);
+  }
+  .hero-lede {
+    font-family: var(--ds-font-serif); font-size: var(--ds-text-md); line-height: var(--ds-leading-normal);
+    color: #f4ece0; max-width: 56ch; margin: 0 0 var(--ds-space-6); text-wrap: pretty;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; }
+  .hero .btn-paper { background: #fdf6ef; color: #2b2722; }
+  .hero .btn-paper:hover { background: #fff; }
+  .hero .btn-ghost { background: rgba(253,246,239,.10); color: #fdf6ef; border: 1px solid rgba(253,246,239,.55); }
+  .hero .btn-ghost:hover { background: rgba(253,246,239,.18); }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: var(--ds-space-6); margin-top: var(--ds-space-7);
+    padding-top: var(--ds-space-5); border-top: 1px solid rgba(253,246,239,.22);
+    font-family: var(--ds-font-sans);
+  }
+  .hero-meta .item .k { display: block; font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: #f4ece0; opacity: .82; }
+  .hero-meta .item .v { display: block; font-size: var(--ds-text-md); font-weight: var(--ds-weight-medium); color: #fdf6ef; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+  /* ---------- 通用图片处理（编辑气质：radius-lg、极轻阴影、sans 图注） ---------- */
+  figure { margin: 0; }
+  .ed-cap { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); line-height: var(--ds-leading-normal); margin-top: var(--ds-space-3); text-wrap: pretty; }
+  .ed-cap .src { color: var(--ds-fg-subtle); }
+  .frame-img { border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg-sunken); }
+  .frame-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* 宽高比框 */
+  .ratio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap: var(--ds-space-5); }
+  .ratio { display: flex; flex-direction: column; }
+  .ratio .box { border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg-sunken); border: 1px solid var(--ds-border); }
+  .ratio .box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ratio .tag { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin-top: var(--ds-space-2); }
+  .r-16-9 { aspect-ratio: 16/9; } .r-4-3 { aspect-ratio: 4/3; } .r-1-1 { aspect-ratio: 1/1; } .r-3-4 { aspect-ratio: 3/4; }
+
+  /* 全幅图 + 图注（full-bleed 优雅） */
+  .figure-wide { margin: var(--ds-space-8) 0; }
+  .figure-wide .frame-img { aspect-ratio: 21/9; }
+  .figure-wide.bleed { width: min(100vw, 1280px); margin-left: 50%; transform: translateX(-50%); }
+  .figure-wide.bleed .frame-img { border-radius: 0; }
+  .figure-wide.bleed .ed-cap { max-width: 1080px; margin-left: auto; margin-right: auto; padding: 0 var(--ds-space-8); }
+
+  /* 图文混排（大图 + 文字并排） */
+  .feature-split { display: grid; grid-template-columns: 1.05fr .95fr; gap: var(--ds-space-9); align-items: center; }
+  .feature-split.reverse .fs-media { order: 2; }
+  .feature-split .fs-media .frame-img { aspect-ratio: 4/3; }
+  .feature-split .kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .12em; color: var(--ds-primary); margin: 0 0 var(--ds-space-3); }
+  .feature-split h3 { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); margin: 0 0 var(--ds-space-4); text-wrap: balance; }
+  .feature-split p { margin: 0 0 var(--ds-space-4); color: var(--ds-fg-muted); line-height: var(--ds-leading-relaxed); max-width: 46ch; }
+
+  /* 媒体卡（图在上 + 标题正文） */
+  .media-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: var(--ds-space-6); }
+  .media-card { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-sm); transition: border-color var(--ds-dur-base) var(--ds-ease), box-shadow var(--ds-dur-base) var(--ds-ease); }
+  .media-card:hover { border-color: var(--ds-border-strong); box-shadow: var(--ds-shadow-md); }
+  .media-card .mc-img { aspect-ratio: 16/10; overflow: hidden; background: var(--ds-bg-sunken); }
+  .media-card .mc-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--ds-dur-slow) var(--ds-ease); }
+  .media-card:hover .mc-img img { transform: scale(1.03); }
+  .media-card .mc-body { padding: var(--ds-space-5); }
+  .media-card .mc-kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-primary); margin: 0 0 var(--ds-space-2); }
+  .media-card h3 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-2); line-height: var(--ds-leading-tight); }
+  .media-card p { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); line-height: var(--ds-leading-normal); margin: 0 0 var(--ds-space-3); }
+  .media-card .mc-foot { display: flex; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+
+  /* 画廊（等高网格，第一张跨两格） */
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 132px; gap: var(--ds-space-3); }
+  .gallery a { border-radius: var(--ds-radius-md); overflow: hidden; display: block; background: var(--ds-bg-sunken); position: relative; }
+  .gallery a img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--ds-dur-slow) var(--ds-ease), filter var(--ds-dur-base) var(--ds-ease); filter: saturate(.92); }
+  .gallery a:hover img { transform: scale(1.04); filter: saturate(1); }
+  .gallery a:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .gallery .g-tall { grid-row: span 2; }
+  .gallery .g-wide { grid-column: span 2; }
+
+  /* 图上叠字 Overlay */
+  .overlay-card { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; aspect-ratio: 16/9; }
+  .overlay-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .overlay-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,20,12,.05), rgba(26,20,12,.7)); }
+  .overlay-card .oc-body { position: absolute; inset: auto 0 0 0; z-index: 1; padding: var(--ds-space-6); color: #fdf6ef; }
+  .overlay-card .oc-kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .12em; opacity: .9; margin: 0 0 var(--ds-space-2); }
+  .overlay-card h3 { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0; line-height: var(--ds-leading-tight); text-wrap: balance; text-shadow: 0 1px 18px rgba(0,0,0,.3); }
+
+  /* 头像用法 */
+  .avatar { border-radius: var(--ds-radius-full); object-fit: cover; display: block; background: var(--ds-bg-sunken); border: 1px solid var(--ds-border); }
+  .av-24 { width: 24px; height: 24px; } .av-32 { width: 32px; height: 32px; } .av-40 { width: 40px; height: 40px; } .av-48 { width: 48px; height: 48px; }
+  .av-row { display: flex; align-items: flex-end; gap: var(--ds-space-4); flex-wrap: wrap; }
+  .av-cap { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); text-align: center; display: block; margin-top: var(--ds-space-2); }
+  .avatar-stack { display: inline-flex; }
+  .avatar-stack img { border: 2px solid var(--ds-bg); margin-left: -10px; }
+  .avatar-stack img:first-child { margin-left: 0; }
+  .avatar-stack .more { width: 40px; height: 40px; border-radius: var(--ds-radius-full); background: var(--ds-bg-subtle); border: 2px solid var(--ds-bg); display: inline-flex; align-items: center; justify-content: center; font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin-left: -10px; }
+  .user-row { display: flex; align-items: center; gap: var(--ds-space-3); }
+  .user-row .u-name { font-family: var(--ds-font-serif); font-size: var(--ds-text-base); font-weight: var(--ds-weight-medium); color: var(--ds-fg); line-height: 1.2; }
+  .user-row .u-sub { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+
+  /* 图标用法 */
+  .icon-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(108px,1fr)); gap: var(--ds-space-3); }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-4) var(--ds-space-2); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); color: var(--ds-fg); transition: border-color var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease); }
+  .icon-cell:hover { border-color: var(--ds-border-strong); color: var(--ds-primary); }
+  .icon-cell svg { width: 24px; height: 24px; }
+  .icon-cell .nm { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-sizes { display: flex; align-items: flex-end; gap: var(--ds-space-6); flex-wrap: wrap; }
+  .icon-sizes .s { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); color: var(--ds-fg); }
+  .icon-sizes .s .lbl { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-scene { display: flex; flex-wrap: wrap; gap: var(--ds-space-4); align-items: center; }
+  .icon-btn { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-sm); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); cursor: pointer; transition: color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease); }
+  .icon-btn:hover { color: var(--ds-primary); border-color: var(--ds-border-strong); }
+  .icon-btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .input-icon { position: relative; }
+  .input-icon svg { position: absolute; top: 50%; left: 12px; transform: translateY(-50%); width: 18px; height: 18px; color: var(--ds-fg-subtle); pointer-events: none; }
+  .input-icon input { padding-left: 38px; }
+  .icon-list { list-style: none; margin: 0; padding: 0; max-width: 360px; }
+  .icon-list li { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg); }
+  .icon-list li svg { width: 18px; height: 18px; color: var(--ds-fg-muted); flex: none; }
+  .icon-list li .end { margin-left: auto; color: var(--ds-fg-subtle); }
+  .badge-ico { position: relative; display: inline-flex; }
+  .badge-ico .dot { position: absolute; top: -4px; right: -6px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--ds-radius-full); background: var(--ds-primary); color: var(--ds-primary-fg); font-family: var(--ds-font-sans); font-size: 10px; font-weight: var(--ds-weight-bold); display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--ds-bg); }
+
+  /* ---------- 桌面布局小样（带浏览器 chrome 的 frame） ---------- */
+  .layout-name { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-3); display: flex; align-items: center; gap: var(--ds-space-2); }
+  .layout-name .pill { font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--ds-fg-subtle); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-full); padding: 1px 10px; }
+  .browser { border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg-elevated); box-shadow: var(--ds-shadow-md); margin-bottom: var(--ds-space-9); }
+  .browser-bar { display: flex; align-items: center; gap: var(--ds-space-3); height: 44px; padding: 0 var(--ds-space-4); border-bottom: 1px solid var(--ds-border); background: var(--ds-bg-subtle); }
+  .browser-bar .dots { display: flex; gap: 7px; flex: none; }
+  .browser-bar .dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--ds-border-strong); display: block; }
+  .browser-bar .addr { flex: 1; height: 26px; border-radius: var(--ds-radius-full); background: var(--ds-bg); border: 1px solid var(--ds-border); display: flex; align-items: center; gap: var(--ds-space-2); padding: 0 var(--ds-space-3); font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .browser-bar .addr svg { width: 12px; height: 12px; color: var(--ds-success); }
+  .browser-view { background: var(--ds-bg); }
+
+  /* 杂志首页小样 */
+  .mag { padding: 0; }
+  .mag-nav { display: flex; align-items: center; gap: var(--ds-space-6); padding: var(--ds-space-4) var(--ds-space-6); border-bottom: 1px solid var(--ds-border); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+  .mag-nav .mag-brand { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); }
+  .mag-nav .mag-brand .dot { color: var(--ds-primary); }
+  .mag-nav a { color: var(--ds-fg-muted); text-decoration: none; }
+  .mag-nav a.on { color: var(--ds-fg); }
+  .mag-nav .sp { flex: 1; }
+  .mag-lead { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--ds-space-7); padding: var(--ds-space-8) var(--ds-space-6); border-bottom: 1px solid var(--ds-border); }
+  .mag-lead .lead-img { aspect-ratio: 3/2; border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg-sunken); }
+  .mag-lead .lead-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .mag-lead .lead-kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .12em; color: var(--ds-primary); margin: 0 0 var(--ds-space-3); }
+  .mag-lead h2 { font-family: var(--ds-font-serif); font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); margin: 0 0 var(--ds-space-4); text-wrap: balance; }
+  .mag-lead p { color: var(--ds-fg-muted); line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-4); }
+  .mag-lead .byline { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-subtle); }
+  .mag-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-6); padding: var(--ds-space-8) var(--ds-space-6); }
+  .mag-row .m-item .m-img { aspect-ratio: 16/10; border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-sunken); margin-bottom: var(--ds-space-3); }
+  .mag-row .m-item .m-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .mag-row .m-item .m-cat { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-primary); margin: 0 0 var(--ds-space-2); }
+  .mag-row .m-item h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); margin: 0 0 var(--ds-space-2); }
+  .mag-row .m-item .m-meta { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+
+  /* 文章阅读页小样 */
+  .reader { display: grid; grid-template-columns: 200px 1fr; gap: 0; }
+  .reader-aside { border-right: 1px solid var(--ds-border); padding: var(--ds-space-7) var(--ds-space-5); background: var(--ds-bg-subtle); }
+  .reader-aside .a-label { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-4); }
+  .reader-aside ol { list-style: none; margin: 0 0 var(--ds-space-6); padding: 0; counter-reset: r; }
+  .reader-aside li { counter-increment: r; font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); padding: var(--ds-space-2) 0; display: flex; gap: var(--ds-space-2); }
+  .reader-aside li::before { content: counter(r,decimal-leading-zero); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .reader-aside li.on { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .reader-aside li.on::before { color: var(--ds-primary); }
+  .reader-main { padding: var(--ds-space-8) var(--ds-space-9); }
+  .reader-main .kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-primary); margin: 0 0 var(--ds-space-3); }
+  .reader-main h2 { font-family: var(--ds-font-serif); font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); margin: 0 0 var(--ds-space-4); text-wrap: balance; }
+  .reader-main .r-byline { display: flex; align-items: center; gap: var(--ds-space-3); margin: 0 0 var(--ds-space-6); }
+  .reader-main .r-byline .nm { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+  .reader-main .r-hero { aspect-ratio: 16/9; border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg-sunken); margin: 0 0 var(--ds-space-3); }
+  .reader-main .r-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .reader-main .r-text { max-width: 60ch; }
+  .reader-main .r-text p { line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-5); color: var(--ds-fg); }
+  .reader-main .r-text p.first::first-letter { float: left; font-size: 3.2em; line-height: .82; padding: 6px 10px 0 0; color: var(--ds-primary); font-weight: var(--ds-weight-bold); }
+
+  /* ---------- 移动布局小样（套 .dvc17 设备壳并排，见 _assets/device.css） ---------- */
+  .phones { display: flex; gap: var(--ds-space-9); flex-wrap: wrap; align-items: flex-start; }
+
+  /* 移动·杂志首页 */
+  .pm-feed { padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-3); }
+  .pm-hd { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) 0 var(--ds-space-4); }
+  .pm-hd .pm-brand { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); }
+  .pm-hd .pm-brand .dot { color: var(--ds-primary); }
+  .pm-hd .sp { flex: 1; }
+  .pm-chips { display: flex; gap: var(--ds-space-2); overflow: hidden; margin-bottom: var(--ds-space-4); }
+  .pm-chip { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); padding: 4px 12px; border-radius: var(--ds-radius-full); border: 1px solid var(--ds-border); color: var(--ds-fg-muted); white-space: nowrap; }
+  .pm-chip.on { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); }
+  .pm-feature { border-radius: var(--ds-radius-lg); overflow: hidden; aspect-ratio: 4/3; position: relative; margin-bottom: var(--ds-space-4); }
+  .pm-feature img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pm-feature::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(26,20,12,.72)); }
+  .pm-feature .ov { position: absolute; inset: auto 0 0 0; padding: var(--ds-space-4); color: #fdf6ef; z-index: 1; }
+  .pm-feature .ov .c { font-family: var(--ds-font-sans); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; opacity: .9; }
+  .pm-feature .ov h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); margin: 4px 0 0; line-height: var(--ds-leading-tight); text-shadow: 0 1px 14px rgba(0,0,0,.3); }
+  .pm-item { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .pm-item .pi-img { width: 76px; height: 76px; flex: none; border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-sunken); }
+  .pm-item .pi-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pm-item .c { font-family: var(--ds-font-sans); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ds-primary); }
+  .pm-item h5 { font-family: var(--ds-font-serif); font-size: var(--ds-text-base); font-weight: var(--ds-weight-medium); margin: 3px 0 4px; line-height: var(--ds-leading-tight); }
+  .pm-item .m { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .pm-tabbar { display: flex; border-top: 1px solid var(--ds-border); background: var(--ds-bg-subtle); }
+  .pm-tabbar .tb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--ds-space-3) 0 var(--ds-space-4); color: var(--ds-fg-subtle); }
+  .pm-tabbar .tb svg { width: 20px; height: 20px; }
+  .pm-tabbar .tb span { font-family: var(--ds-font-sans); font-size: 10px; }
+  .pm-tabbar .tb.on { color: var(--ds-primary); }
+
+  /* 移动·文章阅读页 */
+  .pm-art-hero { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--ds-bg-sunken); }
+  .pm-art-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* 顶部大图在 sb-light 设备里：加顶部墨色 scrim，保证白色状态栏文字达 AA */
+  .dvc17.sb-light .pm-art-hero::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 64px; z-index: 1;
+    background: linear-gradient(180deg, rgba(26,20,12,.55) 0%, rgba(26,20,12,0) 100%); pointer-events: none;
+  }
+  .pm-art { padding: var(--ds-space-5) var(--ds-space-5) var(--ds-space-3); }
+  .pm-art .c { font-family: var(--ds-font-sans); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ds-primary); margin: 0 0 var(--ds-space-2); }
+  .pm-art h3 { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); letter-spacing: var(--ds-tracking-tight); margin: 0 0 var(--ds-space-3); text-wrap: balance; }
+  .pm-art .pa-by { display: flex; align-items: center; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-4); padding-bottom: var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  .pm-art .pa-by .nm { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+  .pm-art p { font-size: var(--ds-text-base); line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-4); }
+  .pm-art p.first::first-letter { float: left; font-size: 3em; line-height: .82; padding: 5px 8px 0 0; color: var(--ds-primary); font-weight: var(--ds-weight-bold); }
+  .pm-art figure .frame-img { aspect-ratio: 16/10; margin-bottom: var(--ds-space-2); }
+  .pm-actionbar { display: flex; align-items: center; gap: var(--ds-space-5); padding: var(--ds-space-4) var(--ds-space-5); border-top: 1px solid var(--ds-border); background: var(--ds-bg-subtle); color: var(--ds-fg-muted); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+  .pm-actionbar .ab { display: inline-flex; align-items: center; gap: 5px; }
+  .pm-actionbar .ab svg { width: 18px; height: 18px; }
+  .pm-actionbar .sp { flex: 1; }
+  .pm-actionbar .ab.primary { color: var(--ds-primary); }
+
   /* ---------- 响应式断点 ---------- */
   @media (max-width: 640px) {
     .page { padding: var(--ds-space-7) var(--ds-space-5) var(--ds-space-10); }
@@ -406,6 +658,21 @@
     /* 多列栅格收成一列 */
     .swatches, .state-row, .cards, .form { grid-template-columns: 1fr; }
     .pager-article { grid-template-columns: 1fr; }
+    /* v2 新区块的桌面栅格在窄屏收敛 */
+    .feature-split, .feature-split.reverse { grid-template-columns: 1fr; gap: var(--ds-space-6); }
+    .feature-split.reverse .fs-media { order: 0; }
+    .media-cards { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
+    .mag-lead { grid-template-columns: 1fr; gap: var(--ds-space-6); padding: var(--ds-space-6) var(--ds-space-5); }
+    .mag-row { grid-template-columns: 1fr; padding: var(--ds-space-6) var(--ds-space-5); }
+    .mag-nav { gap: var(--ds-space-4); padding: var(--ds-space-4) var(--ds-space-5); flex-wrap: wrap; }
+    .reader { grid-template-columns: 1fr; }
+    .reader-aside { border-right: none; border-bottom: 1px solid var(--ds-border); }
+    .reader-main { padding: var(--ds-space-6) var(--ds-space-5); }
+    .hero-figure { aspect-ratio: 4/5; }
+    .hero-inner { padding: var(--ds-space-7) var(--ds-space-5) var(--ds-space-6); }
+    .figure-wide.bleed { width: 100%; margin-left: 0; transform: none; }
+    .figure-wide.bleed .ed-cap { padding: 0; }
     /* 阅读容器满宽留边 */
     .article, .lede { max-width: 100%; }
     .article h1 { font-size: var(--ds-text-xl); }
@@ -439,16 +706,41 @@
     </div>
   </header>
 
+  <!-- ===== 顶部 Hero（杂志感：满宽出血图 + scrim + 标题/导语/CTA + 关键信息） ===== -->
+  <section class="hero" aria-label="封面">
+    <figure class="hero-figure">
+      <img src="../../_assets/gen/editorial-hero.jpg" alt="洒满自然光的阅读案头，摊开的书页与一杯茶" loading="lazy" width="2100" height="900">
+    </figure>
+    <div class="hero-inner">
+      <p class="hero-kicker"><span class="rule"></span>Design System · 阅读优先</p>
+      <h1 class="hero-title">极简 editorial 风：让长文读起来舒服</h1>
+      <p class="hero-lede">排版优先、衬线为骨、暖纸为底，大留白与大行高构成一套安静的阅读系统。给阅读站、博客、文档、内容社区与长文专栏——界面退到背景里，文字与留白才是主角。</p>
+      <div class="hero-cta">
+        <button class="btn btn-lg btn-paper">开始阅读</button>
+        <button class="btn btn-lg btn-ghost" onclick="toggleTheme()" style="gap:6px;">
+          <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          切换夜读模式
+        </button>
+      </div>
+      <div class="hero-meta">
+        <span class="item"><span class="k">正文字号</span><span class="v">17px 起 · 1.85 行高</span></span>
+        <span class="item"><span class="k">阅读容器</span><span class="v">≤ 680px</span></span>
+        <span class="item"><span class="k">对比轴</span><span class="v">衬线正文 / 无衬线 UI</span></span>
+        <span class="item"><span class="k">主题</span><span class="v">日间 · 夜读</span></span>
+      </div>
+    </div>
+  </section>
+
   <div class="page">
 
-    <!-- 标题区 -->
+    <!-- 标题区（Kit 简介，承接 hero） -->
     <section>
       <p class="sec-label">Design System Kit</p>
-      <h1 style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight);line-height:var(--ds-leading-tight);margin:0 0 var(--ds-space-4);text-wrap:balance;display:flex;align-items:center;gap:var(--ds-space-4);">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--ds-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v12"/></svg>
-        极简 editorial 风
-      </h1>
-      <p class="lede">排版优先、衬线为骨、暖纸为底、大留白大行高的阅读系统。给阅读站、博客、文档、内容社区、长文——让长文读起来舒服。点右上角切换 <b>夜读模式</b> 与正文字号。</p>
+      <h2 style="font-family:var(--ds-font-serif);font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight);line-height:var(--ds-leading-tight);margin:0 0 var(--ds-space-4);text-wrap:balance;display:flex;align-items:center;gap:var(--ds-space-3);">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--ds-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v12"/></svg>
+        克制、优雅、安静
+      </h2>
+      <p class="lede">单一赭橙强调，一年只出场几次；分隔靠线与空白而非阴影。下面依次是色板、字体、组件，以及图片、图标与桌面/移动布局小样。点右上角切换 <b>夜读模式</b> 与正文字号。</p>
     </section>
 
     <!-- 色板 -->
@@ -666,28 +958,46 @@
 
     <!-- 移动端 -->
     <section>
-      <p class="sec-label">移动端 Mobile · ~375px 阅读视图</p>
-      <p class="lede" style="margin-bottom:var(--ds-space-6);">手机框含阅读顶栏、文章排版与目录。栅格在 ≤640px 收为单列，阅读容器满宽留边。</p>
-      <div class="phone">
-        <div class="phone-bar">
-          <span class="ico" aria-label="目录"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>
-          <span class="ttl">纸页<span style="color:var(--ds-primary);">.</span></span>
-          <span class="ico" aria-label="字号" style="font-family:var(--ds-font-sans);">A</span>
-          <span class="ico" aria-label="夜读"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></span>
-        </div>
-        <div class="phone-body">
-          <p class="kicker">随笔</p>
-          <h2>论安静的版面</h2>
-          <p class="byline">林木 · 6 月 18 日 · 8 分钟</p>
-          <p>一个好的阅读界面，应当让人忘记界面本身。它把自己退到背景里，只留下文字、空白，与读者之间安静的对话。</p>
-          <p>移动端正文容器满宽，左右各留 20px 边距；字号与桌面一致（17px 起），行高仍是 1.85。</p>
-          <div class="phone-toc">
-            <p class="toc-label">目录</p>
-            <ol>
-              <li class="active">论安静的版面</li>
-              <li>衬线，与一种缓慢的引导</li>
-              <li>暖纸，而非冷白</li>
-            </ol>
+      <p class="sec-label">移动端 Mobile · iPhone 17 Pro Max 阅读视图</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">套标准设备壳：灵动岛 + 状态栏 + Home 条。屏内含阅读顶栏、文章排版与目录；正文字号与桌面一致（17px 起、行高 1.85）。</p>
+      <div class="phones">
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+          <span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb">
+              <span>9:41</span>
+              <span class="ico">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="dvc-body">
+              <div class="phone-bar">
+                <span class="ico" aria-label="目录"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>
+                <span class="ttl">纸页<span style="color:var(--ds-primary);">.</span></span>
+                <span class="ico" aria-label="字号" style="font-family:var(--ds-font-sans);">A</span>
+                <span class="ico" aria-label="夜读"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></span>
+              </div>
+              <div class="phone-body">
+                <p class="kicker">随笔</p>
+                <h2>论安静的版面</h2>
+                <p class="byline">林木 · 6 月 18 日 · 8 分钟</p>
+                <p>一个好的阅读界面，应当让人忘记界面本身。它把自己退到背景里，只留下文字、空白，与读者之间安静的对话。</p>
+                <p>移动端正文容器满宽，左右各留 20px 边距；字号与桌面一致（17px 起），行高仍是 1.85。</p>
+                <div class="phone-toc">
+                  <p class="toc-label">目录</p>
+                  <ol>
+                    <li class="active">论安静的版面</li>
+                    <li>衬线，与一种缓慢的引导</li>
+                    <li>暖纸，而非冷白</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="home"></div>
           </div>
         </div>
       </div>
@@ -755,6 +1065,393 @@
 
         <p class="footnote">¹ 本文为设计系统预览中的示例排版，所有取值均来自 <code style="font-family:var(--ds-font-mono);">tokens.css</code> 的 <code style="font-family:var(--ds-font-mono);">--ds-*</code> 变量。切换主题与字号时，整页随之流动。</p>
       </article>
+    </section>
+
+    <!-- ============================================================
+         图片用法 Image Usage
+         ============================================================ -->
+    <section>
+      <p class="sec-label">图片用法 · Image Usage</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-7);">编辑气质的图片处理：统一 <code style="font-family:var(--ds-font-mono);">radius-lg</code> 圆角、极轻阴影、暖色出血渐变保叠字 AA，图注一律无衬线 muted。素材取自共享图库，全部 <code style="font-family:var(--ds-font-mono);">loading=lazy</code> + 有意义 alt。</p>
+
+      <!-- 宽高比框 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">宽高比框（aspect-ratio + object-fit:cover）</h3>
+      <div class="ratio-grid" style="margin-bottom:var(--ds-space-9);">
+        <div class="ratio"><div class="box r-16-9"><img src="../../_assets/photos/mountain.jpg" alt="远山在晨雾中起伏" loading="lazy"></div><span class="tag">16 : 9 · 宽幅头图</span></div>
+        <div class="ratio"><div class="box r-4-3"><img src="../../_assets/photos/coffee.jpg" alt="桌上的手冲咖啡与笔记本" loading="lazy"></div><span class="tag">4 : 3 · 文章配图</span></div>
+        <div class="ratio"><div class="box r-1-1"><img src="../../_assets/photos/forest.jpg" alt="逆光下的森林树冠" loading="lazy"></div><span class="tag">1 : 1 · 方图/封面</span></div>
+        <div class="ratio"><div class="box r-3-4"><img src="../../_assets/photos/portrait1.jpg" alt="自然光下的人物侧写" loading="lazy"></div><span class="tag">3 : 4 · 人物竖图</span></div>
+      </div>
+
+      <!-- 全幅图 + 图注 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">全幅图 + 图注（full-bleed 优雅）</h3>
+      <figure class="figure-wide">
+        <div class="frame-img"><img src="../../_assets/photos/ocean.jpg" alt="海平线被晨光分成两层颜色" loading="lazy"></div>
+        <figcaption class="ed-cap">海与天之间那条线，是版面里最安静的分隔。<span class="src">摄影 · 共享图库 / ocean.jpg</span></figcaption>
+      </figure>
+
+      <!-- 图文混排 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:var(--ds-space-9) 0 var(--ds-space-4);">图文混排（大图 + 文字并排）</h3>
+      <div class="feature-split" style="margin-bottom:var(--ds-space-8);">
+        <figure class="fs-media"><div class="frame-img"><img src="../../_assets/photos/desk.jpg" alt="整洁的写作案头，键盘、稿纸与一杯茶" loading="lazy"></div></figure>
+        <div>
+          <p class="kicker">关于工作台</p>
+          <h3>把界面退到背景里，留出书写的余地</h3>
+          <p>图文混排时，图与字应当并肩而非堆叠。左图右文、对齐到同一基线，行宽控制在 46 个字符以内，读起来像翻开一本设计良好的杂志内页。</p>
+          <p>图片继承 <code style="font-family:var(--ds-font-mono);">radius-lg</code> 与暖纸基底；正文走衬线、行高 1.85；元信息与说明走无衬线，建立内容与界面的对比轴。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">了解排版规范 →</button>
+        </div>
+      </div>
+      <div class="feature-split reverse">
+        <figure class="fs-media"><div class="frame-img"><img src="../../_assets/gen/food-bowl.jpg" alt="俯拍的一碗谷物餐，色彩温润" loading="lazy"></div></figure>
+        <div>
+          <p class="kicker">关于专栏</p>
+          <h3>反向布局，让长卷有呼吸的节奏</h3>
+          <p>同一组件交替左右图位，长页面便有了起伏。每一屏都保持适度留白——别塞太满，这是 editorial 的语言。</p>
+          <p>图注用 <code style="font-family:var(--ds-font-mono);">--ds-fg-muted</code>，与正文拉开但仍达 AA；图片可在容器内对齐，也可出血到更宽的布局区。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">浏览美食专栏 →</button>
+        </div>
+      </div>
+
+      <!-- 媒体卡 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:var(--ds-space-9) 0 var(--ds-space-4);">媒体卡 Media Card（图在上 + 标题正文操作）</h3>
+      <div class="media-cards" style="margin-bottom:var(--ds-space-9);">
+        <article class="media-card">
+          <div class="mc-img"><img src="../../_assets/photos/city.jpg" alt="黄昏中的城市天际线" loading="lazy"></div>
+          <div class="mc-body">
+            <p class="mc-kicker">城市</p>
+            <h3>步行尺度的回归</h3>
+            <p>当一座城市重新为行人设计街道，它的节奏会慢下来，也会更耐读。</p>
+            <div class="mc-foot"><img class="avatar av-24" src="../../_assets/avatars/a5.jpg" alt="作者头像" loading="lazy"><span>苏白 · 6 分钟</span></div>
+          </div>
+        </article>
+        <article class="media-card">
+          <div class="mc-img"><img src="../../_assets/photos/architecture.jpg" alt="清水混凝土建筑的几何立面" loading="lazy"></div>
+          <div class="mc-body">
+            <p class="mc-kicker">建筑</p>
+            <h3>留白也是一种结构</h3>
+            <p>立面上的空，与版面上的空一样：不是缺席，而是被刻意安排的停顿。</p>
+            <div class="mc-foot"><img class="avatar av-24" src="../../_assets/avatars/a12.jpg" alt="作者头像" loading="lazy"><span>林木 · 8 分钟</span></div>
+          </div>
+        </article>
+        <article class="media-card">
+          <div class="mc-img"><img src="../../_assets/photos/travel.jpg" alt="旅途中的小镇街角" loading="lazy"></div>
+          <div class="mc-body">
+            <p class="mc-kicker">游记</p>
+            <h3>慢行三百里</h3>
+            <p>把行程留白，给意外让出空间——最好的段落往往写在计划之外。</p>
+            <div class="mc-foot"><img class="avatar av-24" src="../../_assets/avatars/a23.jpg" alt="作者头像" loading="lazy"><span>青禾 · 5 分钟</span></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- 画廊 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">图片画廊（等高网格，首图跨格）</h3>
+      <div class="gallery" style="margin-bottom:var(--ds-space-9);">
+        <a href="#" class="g-tall g-wide" aria-label="海洋"><img src="../../_assets/photos/ocean.jpg" alt="开阔的海面" loading="lazy"></a>
+        <a href="#" aria-label="街道"><img src="../../_assets/photos/street.jpg" alt="雨后的街道" loading="lazy"></a>
+        <a href="#" aria-label="森林"><img src="../../_assets/photos/forest.jpg" alt="清晨的森林" loading="lazy"></a>
+        <a href="#" aria-label="咖啡"><img src="../../_assets/photos/coffee.jpg" alt="一杯手冲" loading="lazy"></a>
+        <a href="#" aria-label="科技"><img src="../../_assets/photos/tech.jpg" alt="桌面上的器材" loading="lazy"></a>
+        <a href="#" class="g-wide" aria-label="山景"><img src="../../_assets/photos/mountain.jpg" alt="连绵的山脉" loading="lazy"></a>
+        <a href="#" aria-label="工作室"><img src="../../_assets/photos/workspace.jpg" alt="明亮的工作室" loading="lazy"></a>
+      </div>
+
+      <!-- 图上叠字 Overlay + 背景大图 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">图上叠字 Overlay（渐变 scrim 保 AA）</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--ds-space-5);">
+        <figure class="overlay-card">
+          <img src="../../_assets/photos/hero-summit.jpg" alt="登顶时俯瞰云海" loading="lazy">
+          <div class="oc-body"><p class="oc-kicker">封面故事</p><h3>抵达，与回望的那一刻</h3></div>
+        </figure>
+        <figure class="overlay-card">
+          <img src="../../_assets/photos/hero-gallery.jpg" alt="美术馆的展厅长廊" loading="lazy">
+          <div class="oc-body"><p class="oc-kicker">专题</p><h3>把空白挂在墙上</h3></div>
+        </figure>
+      </div>
+
+      <!-- 头像用法 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:var(--ds-space-9) 0 var(--ds-space-4);">头像用法（尺寸阶 · 堆叠组 · 用户行）</h3>
+      <div style="display:flex;gap:var(--ds-space-10);flex-wrap:wrap;align-items:flex-start;">
+        <div>
+          <div class="av-row">
+            <span><img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="用户 a1" loading="lazy"><span class="av-cap">24</span></span>
+            <span><img class="avatar av-32" src="../../_assets/avatars/a8.jpg" alt="用户 a8" loading="lazy"><span class="av-cap">32</span></span>
+            <span><img class="avatar av-40" src="../../_assets/avatars/a15.jpg" alt="用户 a15" loading="lazy"><span class="av-cap">40</span></span>
+            <span><img class="avatar av-48" src="../../_assets/avatars/a33.jpg" alt="用户 a33" loading="lazy"><span class="av-cap">48</span></span>
+          </div>
+        </div>
+        <div>
+          <p style="font-family:var(--ds-font-sans);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin:0 0 var(--ds-space-3);">堆叠 avatar-stack</p>
+          <span class="avatar-stack">
+            <img class="avatar av-40" src="../../_assets/avatars/a1.jpg" alt="参与者" loading="lazy">
+            <img class="avatar av-40" src="../../_assets/avatars/a5.jpg" alt="参与者" loading="lazy">
+            <img class="avatar av-40" src="../../_assets/avatars/a12.jpg" alt="参与者" loading="lazy">
+            <img class="avatar av-40" src="../../_assets/avatars/a23.jpg" alt="参与者" loading="lazy">
+            <span class="more">+8</span>
+          </span>
+        </div>
+        <div>
+          <p style="font-family:var(--ds-font-sans);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin:0 0 var(--ds-space-3);">用户行</p>
+          <div class="user-row">
+            <img class="avatar av-48" src="../../_assets/avatars/a47.jpg" alt="林木的头像" loading="lazy">
+            <div><div class="u-name">林木</div><div class="u-sub">专栏作者 · 随笔与考据</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         图标用法 Icon Usage
+         ============================================================ -->
+    <section>
+      <p class="sec-label">图标用法 · Icon Usage</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-7);">统一细线内联 SVG：<code style="font-family:var(--ds-font-mono);">viewBox="0 0 24 24"</code>、线宽 1.6、<code style="font-family:var(--ds-font-mono);">stroke="currentColor"</code> 继承上下文颜色。线性为主，状态走语义色，零 emoji。</p>
+
+      <!-- 图标集 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">图标集（统一 24px · currentColor）</h3>
+      <div class="icon-board" style="margin-bottom:var(--ds-space-9);">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v12"/></svg><span class="nm">book</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v15"/><path d="M6 4v16"/><path d="M9 8h6M9 12h6"/></svg><span class="nm">feather</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="nm">search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="m5 16 4-4 3 3 4-5 3 4"/><circle cx="9" cy="9" r="1.4"/></svg><span class="nm">image</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.3 4.9 5.4.6-4 3.7 1.1 5.3L12 16l-4.8 2.5 1.1-5.3-4-3.7 5.4-.6Z"/></svg><span class="nm">star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.3-9.2-8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.4C19 15.7 12 20 12 20Z"/></svg><span class="nm">heart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M15 4v3h3"/><path d="M6 4v0"/><path d="m8 8-2 2 2 2"/></svg><span class="nm">bookmark</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-3.2L6 20z"/></svg><span class="nm">flag</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z"/></svg><span class="nm">comment</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="m8 8 4-4 4 4"/><path d="M12 4v12"/></svg><span class="nm">share</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.4"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1l-.3-2.5h-4l-.3 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.5h4l.3-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6c.1-.3.1-.6.1-1Z"/></svg><span class="nm">settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span class="nm">user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span class="nm">clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10"/></svg><span class="nm">menu</span></div>
+      </div>
+
+      <!-- 尺寸阶 + 线性vs实心 -->
+      <div style="display:flex;gap:var(--ds-space-10);flex-wrap:wrap;align-items:flex-start;margin-bottom:var(--ds-space-9);">
+        <div>
+          <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">尺寸阶（基线对齐）</h3>
+          <div class="icon-sizes">
+            <span class="s"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.3 4.9 5.4.6-4 3.7 1.1 5.3L12 16l-4.8 2.5 1.1-5.3-4-3.7 5.4-.6Z"/></svg><span class="lbl">16</span></span>
+            <span class="s"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.3 4.9 5.4.6-4 3.7 1.1 5.3L12 16l-4.8 2.5 1.1-5.3-4-3.7 5.4-.6Z"/></svg><span class="lbl">20</span></span>
+            <span class="s"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.3 4.9 5.4.6-4 3.7 1.1 5.3L12 16l-4.8 2.5 1.1-5.3-4-3.7 5.4-.6Z"/></svg><span class="lbl">24</span></span>
+            <span class="s"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.3 4.9 5.4.6-4 3.7 1.1 5.3L12 16l-4.8 2.5 1.1-5.3-4-3.7 5.4-.6Z"/></svg><span class="lbl">32</span></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">线性 vs 实心 · 单色 vs 语义色</h3>
+          <div class="icon-sizes">
+            <span class="s"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.3-9.2-8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.4C19 15.7 12 20 12 20Z"/></svg><span class="lbl">线性</span></span>
+            <span class="s" style="color:var(--ds-primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 20s-7-4.3-9.2-8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.4C19 15.7 12 20 12 20Z"/></svg><span class="lbl" style="color:var(--ds-fg-subtle);">实心·主色</span></span>
+            <span class="s" style="color:var(--ds-success);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg><span class="lbl" style="color:var(--ds-fg-subtle);">success</span></span>
+            <span class="s" style="color:var(--ds-danger);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg><span class="lbl" style="color:var(--ds-fg-subtle);">danger</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 场景中的图标 -->
+      <h3 style="font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);">在场景里（按钮 · 输入框 · 列表 · 徽标）</h3>
+      <div class="icon-scene" style="margin-bottom:var(--ds-space-6);">
+        <button class="icon-btn" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.3-9.2-8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.4C19 15.7 12 20 12 20Z"/></svg></button>
+        <button class="icon-btn" aria-label="书签"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-3.2L6 20z"/></svg></button>
+        <button class="icon-btn" aria-label="分享"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="m8 8 4-4 4 4"/><path d="M12 4v12"/></svg></button>
+        <button class="btn btn-primary" style="gap:6px;"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="m9 13 2 2 4-4"/></svg>保存草稿</button>
+        <button class="btn btn-secondary" style="gap:6px;">继续阅读 <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+        <span class="badge-ico"><button class="icon-btn" aria-label="通知，3 条未读"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></button><span class="dot">3</span></span>
+      </div>
+      <div style="display:flex;gap:var(--ds-space-9);flex-wrap:wrap;align-items:flex-start;">
+        <div class="input-icon" style="width:280px;max-width:100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" class="sans" placeholder="搜索文章、作者或栏目">
+        </div>
+        <ul class="icon-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v12"/></svg>本周精选 <span class="end">12</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-3.2L6 20z"/></svg>我的书签 <span class="end">28</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>稍后再读 <span class="end">6</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         桌面布局 Desktop Layouts（×2：杂志首页 + 文章阅读页）
+         ============================================================ -->
+    <section>
+      <p class="sec-label">桌面布局 · Desktop Layouts</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-7);">用本风格 token 与真实图片做成可信小样：暖纸基底、衬线标题、无衬线导航与元信息，分隔靠线与留白。</p>
+
+      <!-- 布局一：杂志 / 博客首页 -->
+      <p class="layout-name"><span class="pill">布局 01</span> 杂志 / 博客首页</p>
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>zhiye.reading/今日</span>
+        </div>
+        <div class="browser-view">
+          <div class="mag">
+            <nav class="mag-nav">
+              <span class="mag-brand">纸页<span class="dot">.</span></span>
+              <a href="#" class="on">今日</a><a href="#">随笔</a><a href="#">考据</a><a href="#">书摘</a>
+              <span class="sp"></span>
+              <button class="icon-btn" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+              <img class="avatar av-32" src="../../_assets/avatars/a47.jpg" alt="我的头像" loading="lazy">
+            </nav>
+            <div class="mag-lead">
+              <div class="lead-img"><img src="../../_assets/photos/hero-studio.jpg" alt="洒满自然光的写作工作室" loading="lazy"></div>
+              <div>
+                <p class="lead-kicker">封面 · 随笔</p>
+                <h2>论安静的版面：留白、衬线与一页好读的纸</h2>
+                <p>一个好的阅读界面，应当让人忘记界面本身。它把自己退到背景里，只留下文字、空白，与读者之间安静的对话。</p>
+                <div class="user-row" style="margin-bottom:var(--ds-space-4);"><img class="avatar av-32" src="../../_assets/avatars/a12.jpg" alt="林木的头像" loading="lazy"><div><div class="u-name" style="font-size:var(--ds-text-sm);">林木</div><div class="u-sub" style="font-size:var(--ds-text-xs);">6 月 18 日 · 8 分钟</div></div></div>
+                <button class="btn btn-primary">阅读全文</button>
+              </div>
+            </div>
+            <div class="mag-row">
+              <article class="m-item"><div class="m-img"><img src="../../_assets/photos/coffee.jpg" alt="一杯手冲咖啡" loading="lazy"></div><p class="m-cat">考据</p><h4>衬线为什么耐读</h4><p class="m-meta">苏白 · 5 分钟</p></article>
+              <article class="m-item"><div class="m-img"><img src="../../_assets/photos/forest.jpg" alt="清晨森林" loading="lazy"></div><p class="m-cat">评论</p><h4>暖纸色的心理学</h4><p class="m-meta">青禾 · 6 分钟</p></article>
+              <article class="m-item"><div class="m-img"><img src="../../_assets/photos/architecture.jpg" alt="混凝土建筑立面" loading="lazy"></div><p class="m-cat">随笔</p><h4>留白也是一种结构</h4><p class="m-meta">林木 · 7 分钟</p></article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 布局二：文章阅读页 -->
+      <p class="layout-name"><span class="pill">布局 02</span> 文章阅读页</p>
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>zhiye.reading/随笔/论安静的版面</span>
+        </div>
+        <div class="browser-view">
+          <div class="reader">
+            <aside class="reader-aside">
+              <p class="a-label">目录</p>
+              <ol>
+                <li class="on">论安静的版面</li>
+                <li>衬线的引导</li>
+                <li>暖纸而非冷白</li>
+                <li>把强调留给重要的事</li>
+              </ol>
+              <p class="a-label">作者</p>
+              <div class="user-row"><img class="avatar av-40" src="../../_assets/avatars/a12.jpg" alt="林木的头像" loading="lazy"><div><div class="u-name" style="font-size:var(--ds-text-sm);">林木</div><div class="u-sub" style="font-size:var(--ds-text-xs);">关注 2.3k</div></div></div>
+            </aside>
+            <main class="reader-main">
+              <p class="kicker">随笔</p>
+              <h2>论安静的版面</h2>
+              <div class="r-byline"><img class="avatar av-32" src="../../_assets/avatars/a12.jpg" alt="林木的头像" loading="lazy"><span class="nm">林木 · 2026 年 6 月 18 日 · 约 8 分钟</span></div>
+              <figure class="r-hero"><img src="../../_assets/photos/desk.jpg" alt="整洁的写作案头" loading="lazy"></figure>
+              <figcaption class="ed-cap" style="margin-bottom:var(--ds-space-6);">案头的留白，是给下一句话的余地。</figcaption>
+              <div class="r-text">
+                <p class="first">我们常误以为「设计」意味着添加——更多色彩、更多阴影、更多动效。但在阅读的语境里，真正困难的是克制：知道哪些东西不该出现。</p>
+                <p>排版优先意味着，正文不是装饰，而是产品本身。于是字号要够大、行高要够松、每行的字数要控制在三十多个汉字之内——超过这个宽度，眼睛回到行首时就容易迷路。</p>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         移动布局 Mobile Layouts（×2：杂志首页 + 文章阅读页）
+         ============================================================ -->
+    <section>
+      <p class="sec-label">移动布局 · Mobile Layouts</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-7);">iPhone 17 Pro Max 套壳并排：灵动岛 + 状态栏 + Home 条。内容真实饱满，正文字号与桌面一致（17px 起、行高 1.85）。</p>
+      <div class="phones">
+
+        <!-- 移动布局一：杂志首页 feed -->
+        <div>
+          <p class="layout-name"><span class="pill">移动 01</span> 杂志首页 · Feed + 标签栏</p>
+          <div class="dvc17">
+            <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+            <span class="k k-cam"></span><span class="k k-pwr"></span>
+            <div class="scr">
+              <div class="island"></div>
+              <div class="sb">
+                <span>9:41</span>
+                <span class="ico">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                  <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                  <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+                </span>
+              </div>
+              <div class="dvc-body" style="display:flex;flex-direction:column;padding-bottom:0;">
+                <div class="pm-feed" style="flex:1;">
+                  <div class="pm-hd">
+                    <span class="pm-brand">纸页<span class="dot">.</span></span>
+                    <span class="sp"></span>
+                    <button class="icon-btn" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+                  </div>
+                  <div class="pm-chips">
+                    <span class="pm-chip on">今日</span><span class="pm-chip">随笔</span><span class="pm-chip">考据</span><span class="pm-chip">书摘</span>
+                  </div>
+                  <figure class="pm-feature">
+                    <img src="../../_assets/photos/hero-summit.jpg" alt="登顶俯瞰云海" loading="lazy">
+                    <div class="ov"><p class="c">封面故事</p><h4>抵达，与回望的那一刻</h4></div>
+                  </figure>
+                  <article class="pm-item">
+                    <div class="pi-img"><img src="../../_assets/photos/coffee.jpg" alt="一杯手冲" loading="lazy"></div>
+                    <div><p class="c">考据</p><h5>衬线为什么耐读</h5><p class="m">苏白 · 5 分钟</p></div>
+                  </article>
+                  <article class="pm-item">
+                    <div class="pi-img"><img src="../../_assets/photos/forest.jpg" alt="清晨森林" loading="lazy"></div>
+                    <div><p class="c">评论</p><h5>暖纸色的心理学</h5><p class="m">青禾 · 6 分钟</p></div>
+                  </article>
+                </div>
+                <nav class="pm-tabbar" style="padding-bottom:var(--ds-space-7);">
+                  <span class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/></svg><span>首页</span></span>
+                  <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>发现</span></span>
+                  <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-3.2L6 20z"/></svg><span>书签</span></span>
+                  <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span>我的</span></span>
+                </nav>
+              </div>
+              <div class="home"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 移动布局二：文章阅读页（顶部深色大图 → sb-light） -->
+        <div>
+          <p class="layout-name"><span class="pill">移动 02</span> 文章阅读页 · 大图 header</p>
+          <div class="dvc17 sb-light">
+            <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+            <span class="k k-cam"></span><span class="k k-pwr"></span>
+            <div class="scr">
+              <div class="island"></div>
+              <div class="sb">
+                <span>9:41</span>
+                <span class="ico">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                  <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                  <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+                </span>
+              </div>
+              <div class="dvc-body" style="padding-top:0;">
+                <figure class="pm-art-hero" style="aspect-ratio:3/4;"><img src="../../_assets/gen/editorial-hero.jpg" alt="洒满自然光的阅读案头" loading="lazy"></figure>
+                <div class="pm-art">
+                  <p class="c">随笔</p>
+                  <h3>论安静的版面</h3>
+                  <div class="pa-by"><img class="avatar av-32" src="../../_assets/avatars/a12.jpg" alt="林木的头像" loading="lazy"><span class="nm">林木 · 6 月 18 日 · 8 分钟</span></div>
+                  <p class="first">一个好的阅读界面，应当让人忘记界面本身。它把自己退到背景里，只留下文字与空白。</p>
+                  <figure>
+                    <div class="frame-img"><img src="../../_assets/photos/ocean.jpg" alt="海平线被晨光分层" loading="lazy"></div>
+                    <figcaption class="ed-cap">海与天之间那条线，是版面里最安静的分隔。</figcaption>
+                  </figure>
+                  <p style="margin-top:var(--ds-space-4);">排版优先意味着，正文不是装饰，而是产品本身——字号够大、行高够松、每行字数克制。</p>
+                </div>
+                <div class="pm-actionbar" style="padding-bottom:var(--ds-space-7);">
+                  <span class="ab primary"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 20s-7-4.3-9.2-8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.4C19 15.7 12 20 12 20Z"/></svg>248</span>
+                  <span class="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z"/></svg>32</span>
+                  <span class="sp"></span>
+                  <span class="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-3.2L6 20z"/></svg></span>
+                  <span class="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="m8 8 4-4 4 4"/><path d="M12 4v12"/></svg></span>
+                </div>
+              </div>
+              <div class="home"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <footer class="sans" style="border-top:1px solid var(--ds-border);padding-top:var(--ds-space-5);color:var(--ds-fg-subtle);font-size:var(--ds-text-sm);">

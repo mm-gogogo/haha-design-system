@@ -1,0 +1,118 @@
+/* ============================================================
+   国潮 / 新中式 Guochao · 设计系统 Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"]（并加 .dark 兼容）。
+   气质：宣纸为底、朱红为魂、靛蓝为骨、金线点缀；衬线标题、水墨留白、克制阴影。
+   全部色值满足 WCAG AA（正文 ≥4.5:1，大字/UI ≥3:1）。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（宣纸色系） ---- */
+  --ds-bg: #f5efe2;            /* 宣纸 · 主背景 */
+  --ds-bg-subtle: #efe7d6;     /* 次背景 · 区块/分组底 */
+  --ds-bg-elevated: #fffdf7;   /* 浮层/卡片 · 略亮于纸 */
+  --ds-bg-sunken: #e8dfc9;     /* 凹陷 · 输入槽/代码块 */
+  --ds-fg: #2b2620;            /* 墨 · 主文字（对纸 AA 11.9:1） */
+  --ds-fg-muted: #6b6253;      /* 次要文字（对纸 AA 5.0:1） */
+  --ds-fg-subtle: #6f6657;     /* 占位/弱文字（达标正文 ≥4.5:1） */
+  --ds-fg-on-accent: #fbf5e9;  /* 落在强调色上的文字（暖宣纸白） */
+  --ds-border: #e0d8c5;        /* 常规描边/分隔线 */
+  --ds-border-strong: #c9bea6; /* 强描边/分隔 */
+
+  /* ---- 品牌与强调（朱红为主，靛蓝次强调，金仅描边/印章点缀） ---- */
+  --ds-primary: #c8341f;       /* 朱红主操作色（对宣纸 AA 5.0:1） */
+  --ds-primary-hover: #aa2817;
+  --ds-primary-active: #8f1f10;
+  --ds-primary-fg: #fbf5e9;    /* 朱红上的暖白字（AA 5.1:1） */
+  --ds-accent: #1b3b6f;        /* 靛蓝次强调/链接（AA 9.6:1） */
+  --ds-accent-fg: #fbf5e9;     /* accent 上的文字 */
+  --ds-gold: #b8893a;          /* 金 · 仅描边/印章/分隔点缀（非通用文字色） */
+
+  /* ---- 语义状态（低饱和、暖底，呼应宣纸 · 主色 + 浅底 + 底上深字） ---- */
+  --ds-success: #4f7a3f; --ds-success-bg: #e8eedc; --ds-success-fg: #2a4421;
+  --ds-warning: #b0791a; --ds-warning-bg: #f6ecd3; --ds-warning-fg: #5a3d05;
+  --ds-danger:  #b3271a; --ds-danger-bg:  #f7e3df; --ds-danger-fg:  #5e150d;
+  --ds-info:    #1b3b6f; --ds-info-bg:    #e2e8f1; --ds-info-fg:    #142a4d;
+
+  /* ---- 焦点（朱红焦点环） ---- */
+  --ds-focus: #c8341f;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（小而雅） ---- */
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 12px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基，新中式偏疏朗有留白） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（衬线标题：思源宋/Songti 回退；正文：Inter/系统黑体） ---- */
+  --ds-font-serif: "Noto Serif", "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+  --ds-font-sans: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* 字号：标题比例尺拉开，正文舒适可读 */
+  --ds-text-xs: 12px; --ds-text-sm: 14px; --ds-text-base: 16px; --ds-text-md: 18px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 38px; --ds-text-3xl: 52px;
+  /* 行高：中文方块字阅读舒适 */
+  --ds-leading-tight: 1.22; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.8;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 700;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影（克制 · 新中式靠留白与分隔线，非堆叠投影） ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(43,38,32,.05);
+  --ds-shadow-md: 0 1px 2px rgba(43,38,32,.04), 0 6px 16px -8px rgba(43,38,32,.12);
+  --ds-shadow-lg: 0 2px 4px rgba(43,38,32,.05), 0 16px 32px -12px rgba(43,38,32,.16);
+
+  /* ---- 动效（温润 ease-out，如笔墨晕开，无弹跳） ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 140ms; --ds-dur-base: 220ms; --ds-dur-slow: 320ms;
+
+  /* ---- 语义层级（替代魔法 z-index） ---- */
+  --ds-z-dropdown: 30; --ds-z-sticky: 20; --ds-z-modal-backdrop: 50;
+  --ds-z-modal: 51; --ds-z-toast: 60; --ds-z-tooltip: 70;
+}
+
+/* ============================================================
+   暗色 · 夜墨模式：深墨底，朱红提亮，金线更含蓄
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #1a1714;            /* 深墨 · 主背景 */
+  --ds-bg-subtle: #221d18;     /* 次背景 */
+  --ds-bg-elevated: #2a241e;   /* 浮层/卡片 */
+  --ds-bg-sunken: #15110d;     /* 凹陷 */
+  --ds-fg: #efe7d6;            /* 暖宣纸白文字（AA 12.8:1） */
+  --ds-fg-muted: #b9ad97;      /* 次要文字（AA 7.2:1） */
+  --ds-fg-subtle: #94886f;     /* 弱文字（AA 4.6:1） */
+  --ds-fg-on-accent: #1a1714;  /* 落在亮强调上的深字 */
+  --ds-border: #3a332a;        /* 描边/分隔线 */
+  --ds-border-strong: #534938; /* 强描边 */
+
+  /* ---- 品牌与强调（朱红提亮，靛蓝提亮，金更亮以在暗底可见） ---- */
+  --ds-primary: #e0533a;       /* 提亮朱红（对深墨 AA 5.4:1） */
+  --ds-primary-hover: #ea6850;
+  --ds-primary-active: #cf4730;
+  --ds-primary-fg: #1a1714;    /* 深字（AA 6.6:1） */
+  --ds-accent: #7ea3d6;        /* 提亮靛蓝（AA 7.1:1） */
+  --ds-accent-fg: #131c2b;
+  --ds-gold: #d3a85a;          /* 提亮金（描边/印章点缀） */
+
+  /* ---- 语义状态（深底浅彩） ---- */
+  --ds-success: #8db877; --ds-success-bg: #1e2a16; --ds-success-fg: #dcecca;
+  --ds-warning: #d8aa4a; --ds-warning-bg: #2c2208; --ds-warning-fg: #f6e7c4;
+  --ds-danger:  #e87a68; --ds-danger-bg:  #321410; --ds-danger-fg:  #f7ddd6;
+  --ds-info:    #7ea3d6; --ds-info-bg:    #121d2e; --ds-info-fg:    #d8e3f1;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #e0533a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（暗底更深沉，依旧克制） ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --ds-shadow-md: 0 2px 6px -2px rgba(0,0,0,.5), 0 10px 24px -10px rgba(0,0,0,.62);
+  --ds-shadow-lg: 0 4px 10px -2px rgba(0,0,0,.55), 0 18px 36px -12px rgba(0,0,0,.72);
+}

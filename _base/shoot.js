@@ -18,8 +18,9 @@ for (const sub of ['styles', 'projects']) {
 
 (async () => {
   let browser;
-  try { browser = await chromium.launch({ channel: 'chrome' }); }
-  catch (e) { console.log('chrome channel failed -> bundled chromium:', e.message); browser = await chromium.launch(); }
+  // 优先用 Playwright 自带隔离 chromium（不碰用户主 Chrome 的 profile/登录态）
+  try { browser = await chromium.launch(); }
+  catch (e) { console.log('bundled chromium failed -> chrome channel:', e.message); browser = await chromium.launch({ channel: 'chrome' }); }
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 1 });
   const page = await ctx.newPage();
   for (const k of kits) {

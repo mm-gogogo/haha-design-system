@@ -1,0 +1,107 @@
+/* ============================================================================
+   Brutalism / 粗野主义 Design System — tokens.css
+   ----------------------------------------------------------------------------
+   Token 契约 100% 遵守（--ds-* 全量）。亮色 :root + 暗色 [data-theme="dark"]
+   与 .dark 兼容。气质：高对比 / 粗黑边 2-3px / 0 圆角 / 硬实心偏移阴影 /
+   等宽特大粗标题 / 暴露栅格。身份红线：粗黑边·硬阴影·0圆角不可被抹平。
+   ============================================================================ */
+
+:root {
+  /* ---- 表面与文字（亮：纸灰白 + 近黑） ------------------------------------ */
+  --ds-bg:           #f4f4f0;   /* 主背景：偏冷的纸灰白 */
+  --ds-bg-subtle:    #e9e9e2;   /* 次背景：区块/分组底 */
+  --ds-bg-elevated:  #ffffff;   /* 抬起表面：纯白卡片（靠粗边+硬阴影抬起，非渐变） */
+  --ds-bg-sunken:    #e2e2da;   /* 凹陷：输入槽/代码块 */
+  --ds-fg:           #0a0a0a;   /* 主文字：近黑 */
+  --ds-fg-muted:     #303030;   /* 次要文字 (≈12:1 on bg) */
+  --ds-fg-subtle:    #525250;   /* 弱/占位 (≈7:1 on bg，AA 安全) */
+  --ds-fg-on-accent: #0a0a0a;   /* 落在荧光黄等亮强调上的近黑文字 */
+  --ds-border:       #0a0a0a;   /* 常规描边：默认即粗黑（2px） */
+  --ds-border-strong:#000000;   /* 强描边：纯黑（3px 用） */
+
+  /* ---- 品牌与强调（电光蓝主色 + 荧光黄强调） ----------------------------- */
+  --ds-primary:        #1a1aff; /* 电光蓝 */
+  --ds-primary-hover:  #1414d6;
+  --ds-primary-active: #0f0fae;
+  --ds-primary-fg:     #ffffff; /* 蓝上白字 (≈6.4:1 AA) */
+  --ds-accent:         #ffe600; /* 荧光黄（块/高亮；文本用黑字保 AA） */
+  --ds-accent-fg:      #0a0a0a; /* 黄上近黑字 (≈17:1) */
+
+  /* ---- 语义状态（主 / -bg 浅底 / -fg 底上文字；全部 AA） ------------------ */
+  --ds-success:    #008a3c; --ds-success-bg: #d6f7e2; --ds-success-fg: #003215;
+  --ds-warning:    #9a6a00; --ds-warning-bg: #fff0c2; --ds-warning-fg: #3a2700;
+  --ds-danger:     #ff2222; --ds-danger-bg:  #ffdcdc; --ds-danger-fg:  #5e0000;
+  --ds-info:       #1a1aff; --ds-info-bg:    #dcdcff; --ds-info-fg:    #0a0a5e;
+
+  /* ---- 焦点（硬方环：双层硬偏移，无模糊） --------------------------------- */
+  --ds-focus: #1a1aff;
+  --ds-focus-ring: 0 0 0 3px var(--ds-bg), 0 0 0 6px var(--ds-focus);
+
+  /* ---- 圆角（粗野主义：全 0，绝不软化） --------------------------------- */
+  --ds-radius-sm: 0px;
+  --ds-radius-md: 0px;
+  --ds-radius-lg: 0px;
+  --ds-radius-full: 0px;
+
+  /* ---- 间距比例（4px 基；粗野偏紧凑硬节奏） ----------------------------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（等宽 JetBrains Mono 做标题/强调 + 粗 Inter 做正文） -------- */
+  --ds-font-sans: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* 字号大：base 16，标题层级猛拉 */
+  --ds-text-xs: 12px; --ds-text-sm: 14px; --ds-text-base: 16px; --ds-text-md: 19px;
+  --ds-text-lg: 24px; --ds-text-xl: 34px; --ds-text-2xl: 52px; --ds-text-3xl: 76px;
+  --ds-leading-tight: 1.02; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 600; --ds-weight-bold: 800;
+  /* 字距紧但守住 -0.04em 下限（POLISH 红线） */
+  --ds-tracking-tight: -0.04em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影（硬实心偏移，绝不模糊；用 currentColor → 跟随元素描边色） ---- */
+  --ds-shadow-sm: 3px 3px 0 0 currentColor;
+  --ds-shadow-md: 6px 6px 0 0 currentColor;
+  --ds-shadow-lg: 10px 10px 0 0 currentColor;
+
+  /* ---- 动效（硬朗、短、近线性；无花哨缓动） ----------------------------- */
+  --ds-ease: cubic-bezier(.2,0,0,1);
+  --ds-dur-fast: 80ms; --ds-dur-base: 140ms; --ds-dur-slow: 240ms;
+}
+
+/* ============================================================================
+   暗色主题：纯黑底 + 荧光黄主色 / 电光蓝强调（反转能量）
+   ============================================================================ */
+[data-theme="dark"], .dark {
+  --ds-bg:           #0a0a0a;   /* 纯黑底 */
+  --ds-bg-subtle:    #141414;
+  --ds-bg-elevated:  #1a1a1a;
+  --ds-bg-sunken:    #050505;
+  --ds-fg:           #f4f4f0;   /* 主文字：纸灰白 */
+  --ds-fg-muted:     #c4c4c0;   /* (≈11:1 on bg) */
+  --ds-fg-subtle:    #9a9a96;   /* (≈6:1 on bg) */
+  --ds-fg-on-accent: #0a0a0a;   /* 荧光色上的近黑 */
+  --ds-border:       #f4f4f0;   /* 暗底上描边翻成亮色（仍是粗硬边身份） */
+  --ds-border-strong:#ffffff;
+
+  --ds-primary:        #ffe600; /* 荧光黄主色 */
+  --ds-primary-hover:  #ffec40;
+  --ds-primary-active: #e6cf00;
+  --ds-primary-fg:     #0a0a0a; /* 黄上近黑 (≈17:1) */
+  --ds-accent:         #6e6eff; /* 电光蓝（暗底提亮以保链接 AA ≈5:1） */
+  --ds-accent-fg:      #0a0a0a; /* 蓝块上近黑字 (≈5:1)；蓝块在暗底用近黑前景 */
+
+  --ds-success:    #2fd472; --ds-success-bg: #06301a; --ds-success-fg: #c8ffdd;
+  --ds-warning:    #ffcb1f; --ds-warning-bg: #2e2200; --ds-warning-fg: #fff1c2;
+  --ds-danger:     #ff5252; --ds-danger-bg:  #340606; --ds-danger-fg:  #ffd6d6;
+  --ds-info:       #6a6aff; --ds-info-bg:    #0c0c40; --ds-info-fg:    #dcdcff;
+
+  --ds-focus: #ffe600;
+  --ds-focus-ring: 0 0 0 3px var(--ds-bg), 0 0 0 6px var(--ds-focus);
+
+  /* 暗色硬阴影同样 currentColor（亮描边元素投亮影，强对比立体） */
+  --ds-shadow-sm: 3px 3px 0 0 currentColor;
+  --ds-shadow-md: 6px 6px 0 0 currentColor;
+  --ds-shadow-lg: 10px 10px 0 0 currentColor;
+}

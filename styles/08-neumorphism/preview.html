@@ -2,6 +2,7 @@
 <html lang="zh-CN" data-theme="light">
 <head>
 <link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Neumorphism · 新拟物风 — Design Kit Preview</title>
@@ -317,20 +318,18 @@
   .breadcrumb .sep { color:var(--ds-fg-subtle); }
   .breadcrumb .current { color:var(--ds-fg); font-weight:var(--ds-weight-medium); padding:var(--ds-space-1) var(--ds-space-2); }
 
-  /* ===== Mobile frame（约 375px 手机框） ===== */
-  .phone {
-    width:375px; max-width:100%; margin:0 auto; background:var(--ds-bg); border-radius:32px;
-    box-shadow:var(--ds-shadow-lg); padding:var(--ds-space-3); overflow:hidden;
-  }
-  .phone-screen { background:var(--ds-bg); border-radius:24px; box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-4); }
-  .phone-top { display:flex; align-items:center; justify-content:space-between; padding:var(--ds-space-2) var(--ds-space-2) var(--ds-space-4); }
-  .phone-top .ph-title { font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md); color:var(--ds-fg); }
-  .phone-top .ph-btn { width:38px; height:38px; border-radius:var(--ds-radius-full); border:none; cursor:pointer; background:var(--ds-bg); color:var(--ds-fg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; }
-  .phone-top .ph-btn svg { width:18px; height:18px; }
+  /* ===== Mobile（屏内内容：卡片 / 列表 / 标签栏；外框统一用 _assets/device.css 的 .dvc17） ===== */
+  /* 屏内顶部小标题栏（取代旧 .phone-top） */
+  .scr-head { display:flex; align-items:center; justify-content:space-between; padding:var(--ds-space-3) var(--ds-space-4) var(--ds-space-4); }
+  .scr-head .sh-title { font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md); color:var(--ds-fg); }
+  .scr-head .ph-btn { width:38px; height:38px; border-radius:var(--ds-radius-full); border:none; cursor:pointer; background:var(--ds-bg); color:var(--ds-fg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; }
+  .scr-head .ph-btn svg { width:18px; height:18px; }
+  /* 屏内内容区内边距 */
+  .scr-pad { padding:0 var(--ds-space-4) var(--ds-space-5); }
   .phone-card { background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5); margin-bottom:var(--ds-space-4); }
   .phone-card .pc-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
   .phone-card .pc-v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); color:var(--ds-fg); letter-spacing:var(--ds-tracking-tight); }
-  .phone .btn-block { width:100%; height:52px; font-size:var(--ds-text-md); margin-bottom:var(--ds-space-4); }
+  .btn-block { width:100%; height:52px; font-size:var(--ds-text-md); margin-bottom:var(--ds-space-4); }
   .phone-list { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); }
   .phone-list .pl-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-3); border-radius:var(--ds-radius-sm); }
   .phone-list .pl-item + .pl-item { margin-top:var(--ds-space-1); }
@@ -341,7 +340,227 @@
   .phone-list .pl-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
   .phone-list .pl-val { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
 
+  /* ===== Hero（凸起大卡 + inset 图槽） ===== */
+  .hero {
+    margin:var(--ds-space-6) auto 0; max-width:1040px;
+    display:grid; grid-template-columns:1.05fr .95fr; gap:var(--ds-space-8);
+    align-items:center; background:var(--ds-bg); border-radius:var(--ds-radius-lg);
+    box-shadow:var(--ds-shadow-lg); padding:var(--ds-space-9) var(--ds-space-8);
+  }
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:var(--ds-space-2); padding:6px var(--ds-space-4);
+    border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm);
+    font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); color:var(--ds-fg-muted); letter-spacing:.02em; }
+  .hero-eyebrow svg { width:14px; height:14px; color:var(--ds-primary); }
+  .hero h1 { font-size:var(--ds-text-3xl); line-height:1.05; letter-spacing:-0.04em; margin:var(--ds-space-5) 0 0; }
+  .hero .lead { font-size:var(--ds-text-md); max-width:46ch; margin-top:var(--ds-space-4); line-height:var(--ds-leading-relaxed); }
+  .hero-cta { display:flex; flex-wrap:wrap; gap:var(--ds-space-4); margin-top:var(--ds-space-7); }
+  .hero-stats { display:flex; gap:var(--ds-space-7); margin-top:var(--ds-space-8); flex-wrap:wrap; }
+  .hero-stat .hs-v { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); color:var(--ds-fg); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+  .hero-stat .hs-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); margin-top:2px; }
+  .hero-figure { /* inset 图槽：图片嵌进凹陷 */
+    background:var(--ds-bg-sunken); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-inset);
+    padding:var(--ds-space-4); position:relative;
+  }
+  .hero-figure img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); display:block; }
+  .hero-figure .float-card { position:absolute; left:var(--ds-space-7); bottom:var(--ds-space-7); display:flex; align-items:center; gap:var(--ds-space-3);
+    background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-3) var(--ds-space-4); }
+  .hero-figure .fc-ico { width:36px; height:36px; flex:none; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm); display:grid; place-items:center; color:var(--ds-success); }
+  .hero-figure .fc-ico svg { width:18px; height:18px; }
+  .hero-figure .fc-v { font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); color:var(--ds-fg); font-variant-numeric:tabular-nums; }
+  .hero-figure .fc-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+
+  /* ===== 区块小标题（带英文副标） ===== */
+  .sec-head { margin-bottom:var(--ds-space-6); }
+  .sec-head h2 { margin:0; }
+  .sec-head .en { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); letter-spacing:.06em; text-transform:uppercase; margin-bottom:var(--ds-space-2); display:block; }
+  .sec-head p { margin:var(--ds-space-2) 0 0; color:var(--ds-fg-muted); font-size:var(--ds-text-sm); max-width:70ch; }
+
+  /* ===== 图片用法 ===== */
+  .ratio-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--ds-space-5); }
+  .ratio-cell { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-3); }
+  .ratio-cell img { width:100%; object-fit:cover; border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-sm); display:block; }
+  .ratio-cell .rc-tag { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); text-align:center; margin-top:var(--ds-space-3); }
+  .r-16x9 { aspect-ratio:16/9; } .r-4x3 { aspect-ratio:4/3; } .r-1x1 { aspect-ratio:1/1; } .r-3x4 { aspect-ratio:3/4; }
+
+  .media-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-6); }
+  .media-card { background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-3) var(--ds-space-3) var(--ds-space-5); }
+  .media-card .mc-img { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); margin-bottom:var(--ds-space-4); }
+  .media-card .mc-img img { width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:8px; box-shadow:var(--ds-shadow-sm); display:block; }
+  .media-card .mc-body { padding:0 var(--ds-space-3); }
+  .media-card h3 { margin:0 0 var(--ds-space-1); font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .media-card p { margin:0 0 var(--ds-space-4); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-normal); }
+  .media-card .mc-meta { display:flex; align-items:center; gap:var(--ds-space-3); }
+
+  .gallery { display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:96px; gap:var(--ds-space-4); }
+  .gallery .g-cell { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); overflow:hidden; }
+  .gallery .g-cell img { width:100%; height:100%; object-fit:cover; border-radius:10px; box-shadow:var(--ds-shadow-sm); display:block; }
+  .gallery .g-tall { grid-row:span 2; } .gallery .g-wide { grid-column:span 2; }
+
+  .feature-split { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-8); align-items:center; }
+  .feature-split .fs-fig { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-4); }
+  .feature-split .fs-fig img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); display:block; }
+  .feature-split h3 { margin:0 0 var(--ds-space-3); font-size:var(--ds-text-xl); letter-spacing:-0.02em; }
+  .feature-split p { margin:0 0 var(--ds-space-4); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-relaxed); }
+  .feature-list { list-style:none; margin:0 0 var(--ds-space-6); padding:0; display:grid; gap:var(--ds-space-3); }
+  .feature-list li { display:flex; align-items:center; gap:var(--ds-space-3); font-size:var(--ds-text-sm); color:var(--ds-fg); }
+  .feature-list .fl-ic { width:26px; height:26px; flex:none; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; color:var(--ds-primary); }
+  .feature-list .fl-ic svg { width:15px; height:15px; }
+
+  .overlay-row { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-6); }
+  .overlay { position:relative; border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-md); overflow:hidden; background:var(--ds-bg-sunken); padding:var(--ds-space-3); }
+  .overlay .ov-inner { position:relative; border-radius:var(--ds-radius-md); overflow:hidden; box-shadow:var(--ds-shadow-inset-sm); }
+  .overlay img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+  .overlay .scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(20,24,34,.82) 0%, rgba(20,24,34,.35) 45%, rgba(20,24,34,0) 75%); }
+  .overlay .ov-txt { position:absolute; left:var(--ds-space-5); right:var(--ds-space-5); bottom:var(--ds-space-5); color:#fff; }
+  .overlay .ov-txt .ov-ey { font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); opacity:.92; letter-spacing:.04em; text-transform:uppercase; }
+  .overlay .ov-txt h3 { margin:var(--ds-space-1) 0 0; font-size:var(--ds-text-lg); color:#fff; letter-spacing:-0.02em; }
+
+  .avatar-panel { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-6); }
+  .av-block { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5); }
+  .av-block .ab-lab { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-bottom:var(--ds-space-4); }
+  .avatar { border-radius:var(--ds-radius-full); object-fit:cover; background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); padding:3px; flex:none; }
+  .av-24 { width:24px; height:24px; } .av-32 { width:32px; height:32px; } .av-40 { width:40px; height:40px; } .av-48 { width:48px; height:48px; }
+  .av-sizes { display:flex; align-items:flex-end; gap:var(--ds-space-4); }
+  .av-stack { display:flex; }
+  .av-stack .avatar { margin-left:-12px; box-shadow:var(--ds-shadow-md); }
+  .av-stack .avatar:first-child { margin-left:0; }
+  .av-stack .more { width:40px; height:40px; margin-left:-12px; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-md); display:grid; place-items:center; font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); color:var(--ds-fg-muted); }
+  .user-row { display:flex; align-items:center; gap:var(--ds-space-4); }
+  .user-row .ur-txt b { display:block; font-size:var(--ds-text-sm); color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .user-row .ur-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+
+  .bg-hero { position:relative; border-radius:var(--ds-radius-lg); overflow:hidden; box-shadow:var(--ds-shadow-md); margin-top:var(--ds-space-6); }
+  .bg-hero > img { width:100%; height:260px; object-fit:cover; display:block; }
+  .bg-hero .bg-scrim { position:absolute; inset:0; background:linear-gradient(110deg, rgba(18,22,32,.86) 0%, rgba(18,22,32,.55) 50%, rgba(18,22,32,.2) 100%); }
+  .bg-hero .bg-content { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; padding:var(--ds-space-8) var(--ds-space-9); color:#fff; max-width:560px; }
+  .bg-hero .bg-content h3 { margin:0 0 var(--ds-space-2); font-size:var(--ds-text-2xl); color:#fff; letter-spacing:-0.03em; }
+  .bg-hero .bg-content p { margin:0 0 var(--ds-space-5); font-size:var(--ds-text-sm); color:rgba(255,255,255,.9); line-height:var(--ds-leading-relaxed); }
+  .btn--on-img { background:rgba(255,255,255,.16); color:#fff; box-shadow:none; backdrop-filter:blur(4px); }
+  .btn--on-img:hover { background:rgba(255,255,255,.26); box-shadow:none; }
+
+  /* ===== 图标用法 ===== */
+  .icon-set { display:grid; grid-template-columns:repeat(6,1fr); gap:var(--ds-space-4); }
+  .icon-cell { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); padding:var(--ds-space-4) var(--ds-space-3); text-align:center; }
+  .icon-cell .ic-box { width:44px; height:44px; margin:0 auto var(--ds-space-3); border-radius:var(--ds-radius-md); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm); display:grid; place-items:center; color:var(--ds-fg); }
+  .icon-cell .ic-box svg { width:22px; height:22px; }
+  .icon-cell .ic-name { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
+  .icon-sizes { display:flex; align-items:flex-end; gap:var(--ds-space-6); }
+  .icon-sizes .is-item { display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-2); color:var(--ds-fg); }
+  .icon-sizes .is-item .is-tag { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .icon-pair { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-6); }
+  .ip-cell { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-5); text-align:center; }
+  .ip-cell .ip-icons { display:flex; justify-content:center; gap:var(--ds-space-6); margin-bottom:var(--ds-space-3); color:var(--ds-primary); }
+  .ip-cell .ip-icons svg { width:28px; height:28px; }
+  .ip-cell .ip-lab { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .input-affix { position:relative; }
+  .input-affix .af-ico { position:absolute; top:50%; transform:translateY(-50%); color:var(--ds-fg-subtle); display:grid; place-items:center; }
+  .input-affix .af-ico svg { width:18px; height:18px; }
+  .input-affix .af-left { left:var(--ds-space-4); } .input-affix .af-right { right:var(--ds-space-4); }
+  .input-affix .input { padding-left:42px; }
+  .icon-badge { position:relative; width:44px; height:44px; }
+  .icon-badge .ib-count { position:absolute; top:-4px; right:-4px; min-width:20px; height:20px; padding:0 5px; border-radius:var(--ds-radius-full); background:var(--ds-danger); color:#fff; font-size:11px; font-weight:var(--ds-weight-bold); display:grid; place-items:center; box-shadow:var(--ds-shadow-sm); }
+
+  /* ===== 桌面布局 frame ===== */
+  .frame { background:var(--ds-bg); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg); padding:var(--ds-space-3); }
+  .frame-bar { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); }
+  .frame-bar .dots { display:flex; gap:7px; }
+  .frame-bar .dots i { width:11px; height:11px; border-radius:50%; box-shadow:var(--ds-shadow-inset-sm); display:block; }
+  .frame-bar .url { flex:1; height:30px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); display:flex; align-items:center; padding:0 var(--ds-space-4); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); gap:var(--ds-space-2); }
+  .frame-bar .url svg { width:13px; height:13px; flex:none; color:var(--ds-success); }
+  .frame-body { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-5); margin-top:var(--ds-space-2); }
+  .lay-name { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-bottom:var(--ds-space-4); display:flex; align-items:center; gap:var(--ds-space-2); }
+
+  /* dashboard layout */
+  .dash { display:grid; grid-template-columns:188px 1fr; gap:var(--ds-space-5); }
+  .dash-side { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4); display:flex; flex-direction:column; gap:var(--ds-space-4); }
+  .dash-brand { display:flex; align-items:center; gap:var(--ds-space-3); font-weight:var(--ds-weight-bold); font-size:var(--ds-text-sm); }
+  .dash-brand .db-logo { width:30px; height:30px; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; color:var(--ds-primary); }
+  .dash-brand .db-logo svg { width:16px; height:16px; }
+  .dash-nav { display:flex; flex-direction:column; gap:var(--ds-space-1); }
+  .dash-nav a { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3); border-radius:var(--ds-radius-sm); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); text-decoration:none; }
+  .dash-nav a svg { width:17px; height:17px; flex:none; }
+  .dash-nav a.on { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .dash-nav a:not(.on):hover { box-shadow:var(--ds-shadow-sm); color:var(--ds-fg); }
+  .dash-main { display:flex; flex-direction:column; gap:var(--ds-space-5); min-width:0; }
+  .dash-top { display:flex; align-items:center; justify-content:space-between; gap:var(--ds-space-4); }
+  .dash-top h3 { margin:0; font-size:var(--ds-text-lg); letter-spacing:-0.02em; }
+  .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-4); }
+  .kpi { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4); }
+  .kpi .kpi-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); display:flex; align-items:center; gap:var(--ds-space-2); }
+  .kpi .kpi-k svg { width:14px; height:14px; }
+  .kpi .kpi-v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.03em; margin-top:var(--ds-space-2); font-variant-numeric:tabular-nums; }
+  .kpi .kpi-d { font-size:var(--ds-text-xs); margin-top:2px; }
+  .chart-box { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-5); }
+  .chart-box .cb-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-5); }
+  .chart-box .cb-head b { font-size:var(--ds-text-sm); }
+  .bars { display:flex; align-items:flex-end; gap:var(--ds-space-3); height:120px; }
+  .bars .bar { flex:1; border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 6px 6px; background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); }
+  .bars .bar.hi { background:var(--ds-primary); }
+  .bars-x { display:flex; gap:var(--ds-space-3); margin-top:var(--ds-space-2); }
+  .bars-x span { flex:1; text-align:center; font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+
+  /* music / player layout */
+  .music { display:grid; grid-template-columns:1.1fr 1fr; gap:var(--ds-space-6); }
+  .music-now { background:var(--ds-bg); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5); }
+  .music-now .mn-cover { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-3); margin-bottom:var(--ds-space-5); }
+  .music-now .mn-cover img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-sm); display:block; }
+  .music-now h3 { margin:0; font-size:var(--ds-text-lg); letter-spacing:-0.02em; }
+  .music-now .mn-art { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); margin:2px 0 var(--ds-space-5); }
+  .music-now .mn-prog { height:8px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); position:relative; margin-bottom:var(--ds-space-2); }
+  .music-now .mn-prog i { position:absolute; left:0; top:0; bottom:0; width:42%; border-radius:var(--ds-radius-full); background:var(--ds-primary); }
+  .music-now .mn-time { display:flex; justify-content:space-between; font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-bottom:var(--ds-space-5); }
+  .music-now .mn-ctrl { display:flex; align-items:center; justify-content:center; gap:var(--ds-space-5); }
+  .music-list { display:flex; flex-direction:column; gap:var(--ds-space-3); }
+  .music-list .ml-head { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-bold); }
+  .ml-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3); border-radius:var(--ds-radius-md); }
+  .ml-item.on { box-shadow:var(--ds-shadow-inset-sm); }
+  .ml-item:not(.on):hover { box-shadow:var(--ds-shadow-sm); }
+  .ml-item .ml-thumb { width:44px; height:44px; flex:none; border-radius:var(--ds-radius-sm); object-fit:cover; box-shadow:var(--ds-shadow-sm); background:var(--ds-bg); padding:2px; }
+  .ml-item .ml-txt { flex:1; min-width:0; }
+  .ml-item .ml-txt b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ml-item .ml-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .ml-item .ml-dur { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
+
+  /* settings layout */
+  .settings { display:grid; grid-template-columns:200px 1fr; gap:var(--ds-space-6); }
+  .set-nav { display:flex; flex-direction:column; gap:var(--ds-space-1); }
+  .set-nav a { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); border-radius:var(--ds-radius-sm); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); text-decoration:none; }
+  .set-nav a svg { width:17px; height:17px; flex:none; }
+  .set-nav a.on { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .set-nav a:not(.on):hover { box-shadow:var(--ds-shadow-sm); color:var(--ds-fg); }
+  .set-panel { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-6); }
+  .set-user { display:flex; align-items:center; gap:var(--ds-space-4); padding-bottom:var(--ds-space-5); margin-bottom:var(--ds-space-5); border-bottom:1px solid var(--ds-border); }
+  .set-user .su-txt b { display:block; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .set-user .su-txt span { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); }
+  .set-row { display:flex; align-items:center; justify-content:space-between; gap:var(--ds-space-4); padding:var(--ds-space-4) 0; }
+  .set-row + .set-row { border-top:1px solid var(--ds-border); }
+  .set-row .sr-txt b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  .set-row .sr-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+
+  /* ===== 屏内：播放器封面 / 标签栏 / 进度（音乐播放器屏） ===== */
+  .phone-fig { background:var(--ds-bg-sunken); border-radius:24px; box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-2); margin-bottom:var(--ds-space-4); }
+  .phone-fig img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:18px; box-shadow:var(--ds-shadow-sm); display:block; }
+  .phone-tabbar { display:flex; justify-content:space-around; align-items:center; margin-top:var(--ds-space-4); padding:var(--ds-space-3); background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); }
+  .phone-tabbar a { display:grid; place-items:center; width:42px; height:42px; border-radius:var(--ds-radius-full); color:var(--ds-fg-muted); text-decoration:none; }
+  .phone-tabbar a svg { width:20px; height:20px; }
+  .phone-tabbar a.on { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); }
+  .mini-prog { height:6px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); position:relative; margin:var(--ds-space-4) 0 var(--ds-space-2); }
+  .mini-prog i { position:absolute; left:0; top:0; bottom:0; width:58%; border-radius:var(--ds-radius-full); background:var(--ds-primary); }
+  .mini-ctrl { display:flex; align-items:center; justify-content:center; gap:var(--ds-space-5); margin-top:var(--ds-space-3); }
+  /* 两台 .dvc17 并排展示 */
+  .phones-2 { display:flex; gap:var(--ds-space-8); justify-content:center; flex-wrap:wrap; }
+
   /* ===== 响应式断点 ===== */
+  @media (max-width: 960px) {
+    .hero { grid-template-columns:1fr; gap:var(--ds-space-7); }
+    .ratio-grid { grid-template-columns:repeat(2,1fr); }
+    .media-grid, .kpi-row { grid-template-columns:1fr 1fr; }
+    .gallery { grid-template-columns:repeat(3,1fr); }
+    .music, .feature-split, .overlay-row, .icon-pair { grid-template-columns:1fr; }
+    .icon-set { grid-template-columns:repeat(4,1fr); }
+    .dash, .settings { grid-template-columns:1fr; }
+    .avatar-panel { grid-template-columns:1fr; }
+  }
   @media (max-width: 640px) {
     .wrap { padding:var(--ds-space-6) var(--ds-space-4) var(--ds-space-8); }
     /* 栅格收成一列 */
@@ -354,6 +573,13 @@
     .step { flex:0 0 calc(50% - var(--ds-space-3)); }
     .step .line { display:none; }
     .modal .modal-foot { flex-wrap:wrap; }
+    .hero { padding:var(--ds-space-7) var(--ds-space-5); }
+    .hero h1 { font-size:var(--ds-text-2xl); }
+    .ratio-grid, .media-grid, .gallery, .kpi-row, .icon-pair { grid-template-columns:1fr; }
+    .icon-set { grid-template-columns:repeat(3,1fr); }
+    .gallery .g-wide, .gallery .g-tall { grid-column:auto; grid-row:auto; }
+    .bg-hero .bg-content { padding:var(--ds-space-6); }
+    .icon-sizes { flex-wrap:wrap; gap:var(--ds-space-4); }
   }
 
   /* ===== 减弱动效 ===== */
@@ -376,9 +602,38 @@
     </button>
   </header>
 
+  <!-- Hero 首屏 -->
+  <header class="hero">
+    <div class="hero-text">
+      <span class="hero-eyebrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3.4"/></svg>
+        新拟物 · Neumorphism Kit
+      </span>
+      <h1>软塑料的<br>凸起与凹陷</h1>
+      <p class="lead">同色基底 + 双向软阴影（左上白高光 / 右下深暗影）造出可触摸的软质表面。平静、柔和、克制——专为桌面工具、音乐健康、控制面板与单窗应用打造。</p>
+      <div class="hero-cta">
+        <button class="btn btn--primary btn--lg">开始使用</button>
+        <button class="btn btn--lg">浏览组件</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hs-v">19</div><div class="hs-k">核心组件</div></div>
+        <div class="hero-stat"><div class="hs-v">2</div><div class="hs-k">亮 / 暗主题</div></div>
+        <div class="hero-stat"><div class="hs-v">4.6:1</div><div class="hs-k">最低对比 AA</div></div>
+        <div class="hero-stat"><div class="hs-v">100%</div><div class="hs-k">var(--ds-*) 驱动</div></div>
+      </div>
+    </div>
+    <div class="hero-figure">
+      <img src="../../_assets/gen/neumorph-hero.jpg" alt="新拟物风格的软质控件特写，柔和凸起与凹陷质感" loading="lazy" width="640" height="480">
+      <div class="float-card">
+        <span class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <div><div class="fc-v">8.2 : 1</div><div class="fc-k">主文字对比度</div></div>
+      </div>
+    </div>
+  </header>
+
   <div class="wrap">
 
-    <section style="margin-top:var(--ds-space-7)">
+    <section style="margin-top:var(--ds-space-8)">
       <h1>软塑料的凸与凹</h1>
       <p class="lead">同色基底 + 双向软阴影（左上白高光 / 右下深暗影），平静、柔和、有手感。给桌面工具、音乐健康、控制面板、单窗应用。</p>
     </section>
@@ -656,40 +911,491 @@
       </div>
     </section>
 
+    <!-- ============ 图片用法 ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Image Usage</span>
+        <h2>图片用法</h2>
+        <p>新拟物里图片不裸放——要么嵌进 <span class="mono">inset</span> 凹槽（像被压进软材质），要么托在大圆角凸起卡上。统一宽高比、统一大圆角、统一柔影。</p>
+      </div>
+
+      <div class="panel grid" style="gap:var(--ds-space-8)">
+        <div>
+          <div class="label">宽高比框 · 16:9 / 4:3 / 1:1 / 3:4（嵌入 inset 凹槽）</div>
+          <div class="ratio-grid">
+            <div class="ratio-cell"><img class="r-16x9" src="../../_assets/photos/workspace.jpg" alt="整洁的办公桌面工作区" loading="lazy"><div class="rc-tag">16 : 9</div></div>
+            <div class="ratio-cell"><img class="r-4x3" src="../../_assets/photos/mountain.jpg" alt="清晨的山脉远景" loading="lazy"><div class="rc-tag">4 : 3</div></div>
+            <div class="ratio-cell"><img class="r-1x1" src="../../_assets/photos/coffee.jpg" alt="一杯拿铁咖啡俯拍" loading="lazy"><div class="rc-tag">1 : 1</div></div>
+            <div class="ratio-cell"><img class="r-3x4" src="../../_assets/photos/portrait1.jpg" alt="人物竖向肖像" loading="lazy"><div class="rc-tag">3 : 4</div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">媒体卡 Media Card（凸起卡 + inset 图槽 + 操作）</div>
+          <div class="media-grid">
+            <div class="media-card">
+              <div class="mc-img"><img src="../../_assets/photos/ocean.jpg" alt="平静的海面与天空" loading="lazy"></div>
+              <div class="mc-body">
+                <h3>海岸冥想</h3>
+                <p>20 分钟海浪白噪音，帮助放松与入睡。</p>
+                <div class="mc-meta"><button class="btn btn--primary btn--sm">播放</button><span class="badge badge--info">音频</span></div>
+              </div>
+            </div>
+            <div class="media-card">
+              <div class="mc-img"><img src="../../_assets/photos/forest.jpg" alt="阳光穿过森林树冠" loading="lazy"></div>
+              <div class="mc-body">
+                <h3>森林步道</h3>
+                <p>记录今晨的 3.2 公里林间慢跑路线。</p>
+                <div class="mc-meta"><button class="btn btn--primary btn--sm">查看</button><span class="badge badge--success">已完成</span></div>
+              </div>
+            </div>
+            <div class="media-card">
+              <div class="mc-img"><img src="../../_assets/gen/product-watch.jpg" alt="一只智能手表的产品照" loading="lazy"></div>
+              <div class="mc-body">
+                <h3>设备配对</h3>
+                <p>Soft Watch 2 已连接，电量 86%，固件最新。</p>
+                <div class="mc-meta"><button class="btn btn--sm">管理</button><span class="badge badge--success">在线</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">图片网格 / 画廊 Gallery（等高凹槽网格，≥6 图）</div>
+          <div class="gallery">
+            <div class="g-cell g-wide g-tall"><img src="../../_assets/photos/city.jpg" alt="夜晚的城市天际线" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/desk.jpg" alt="桌面与笔记本电脑" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/street.jpg" alt="安静的城市街道" loading="lazy"></div>
+            <div class="g-cell g-tall"><img src="../../_assets/photos/architecture.jpg" alt="现代建筑的几何线条" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/travel.jpg" alt="旅行途中的风景" loading="lazy"></div>
+            <div class="g-cell g-wide"><img src="../../_assets/gen/abstract-wave.jpg" alt="柔和的抽象波纹图形" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/tech.jpg" alt="科技感的电路细节" loading="lazy"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">图文混排 Feature Split（大图 + 段落并排）</div>
+          <div class="feature-split">
+            <div class="fs-fig"><img src="../../_assets/gen/product-watch.jpg" alt="智能手表佩戴在手腕上的产品照" loading="lazy"></div>
+            <div>
+              <h3>把健康捧在手心</h3>
+              <p>Soft Watch 2 全天追踪心率、睡眠与活动量，所有数据落进同色软质卡片，安静不打扰。柔和的凸起表面让信息层级一目了然，却不喧宾夺主。</p>
+              <ul class="feature-list">
+                <li><span class="fl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> 连续心率与血氧监测</li>
+                <li><span class="fl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> 14 天超长续航</li>
+                <li><span class="fl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> 50 米防水，泳池可戴</li>
+              </ul>
+              <button class="btn btn--primary">了解更多</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">图上叠字 Overlay（渐变 scrim 保证文字 AA）</div>
+          <div class="overlay-row">
+            <div class="overlay">
+              <div class="ov-inner">
+                <img src="../../_assets/photos/hero-summit.jpg" alt="登顶后的群山日出全景" loading="lazy">
+                <div class="scrim"></div>
+                <div class="ov-txt"><div class="ov-ey">户外 · 精选</div><h3>晨光山脊徒步路线</h3></div>
+              </div>
+            </div>
+            <div class="overlay">
+              <div class="ov-inner">
+                <img src="../../_assets/photos/hero-studio.jpg" alt="明亮的创作工作室空间" loading="lazy">
+                <div class="scrim"></div>
+                <div class="ov-txt"><div class="ov-ey">专注 · 工作</div><h3>安静工作室白噪音</h3></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">头像用法 Avatars（尺寸阶 / 堆叠组 / 用户行）</div>
+          <div class="avatar-panel">
+            <div class="av-block">
+              <div class="ab-lab">尺寸阶 24 / 32 / 40 / 48</div>
+              <div class="av-sizes">
+                <img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="用户头像" loading="lazy">
+                <img class="avatar av-32" src="../../_assets/avatars/a5.jpg" alt="用户头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="用户头像" loading="lazy">
+                <img class="avatar av-48" src="../../_assets/avatars/a12.jpg" alt="用户头像" loading="lazy">
+              </div>
+            </div>
+            <div class="av-block">
+              <div class="ab-lab">堆叠头像组 Avatar Stack</div>
+              <div class="av-stack">
+                <img class="avatar av-40" src="../../_assets/avatars/a15.jpg" alt="团队成员头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a23.jpg" alt="团队成员头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a33.jpg" alt="团队成员头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a47.jpg" alt="团队成员头像" loading="lazy">
+                <span class="more">+6</span>
+              </div>
+            </div>
+            <div class="av-block">
+              <div class="ab-lab">用户行 User Row</div>
+              <div class="user-row">
+                <img class="avatar av-48" src="../../_assets/avatars/a1.jpg" alt="陈思远的头像" loading="lazy">
+                <div class="ur-txt"><b>陈思远</b><span>产品设计师 · 在线</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">背景大图区 Full-bleed（遮罩 + 内容）</div>
+          <div class="bg-hero">
+            <img src="../../_assets/photos/hero-gallery.jpg" alt="开阔的展厅空间背景" loading="lazy">
+            <div class="bg-scrim"></div>
+            <div class="bg-content">
+              <h3>为安静的产品而生</h3>
+              <p>从控制面板到健康仪表盘，同一套软质语言贯穿桌面与移动。无描边、无硬投影，只有柔和的凸起与凹陷。</p>
+              <div class="row"><button class="btn btn--on-img btn--lg">查看案例</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 图标用法 ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Icon Usage</span>
+        <h2>图标用法</h2>
+        <p>统一 24×24 viewBox、1.8 线宽、圆角端点的线性图标。在新拟物里图标常坐在 <span class="mono">inset</span> 小坑或凸起圆钮中，颜色用 <span class="mono">currentColor</span> 继承上下文，确保 ≥4.5:1。</p>
+      </div>
+
+      <div class="panel grid" style="gap:var(--ds-space-8)">
+        <div>
+          <div class="label">图标集 Icon Set（≥12 个，inset 坑承载）</div>
+          <div class="icon-set">
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span><div class="ic-name">home</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span><div class="ic-name">search</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span><div class="ic-name">bell</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span><div class="ic-name">user</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div class="ic-name">chat</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg></span><div class="ic-name">save</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><div class="ic-name">edit</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span><div class="ic-name">trash</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg></span><div class="ic-name">download</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span><div class="ic-name">heart</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z"/></svg></span><div class="ic-name">star</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><div class="ic-name">settings</div></div>
+          </div>
+        </div>
+
+        <div class="cards" style="grid-template-columns:1fr 1fr">
+          <div>
+            <div class="label">尺寸阶 16 / 20 / 24 / 32（基线对齐）</div>
+            <div class="card">
+              <div class="icon-sizes">
+                <div class="is-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">16</span></div>
+                <div class="is-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">20</span></div>
+                <div class="is-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">24</span></div>
+                <div class="is-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">32</span></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="label">线性 vs 实心 · 单色 vs 双色</div>
+            <div class="icon-pair">
+              <div class="ip-cell"><div class="ip-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div><div class="ip-lab">线性 / 实心</div></div>
+              <div class="ip-cell"><div class="ip-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z"/></svg><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z" fill="var(--ds-warning-bg)" stroke="var(--ds-warning)" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="ip-lab">单色 / 双色</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">在场景里 In Context（按钮 / 输入 / 状态 / 徽标）</div>
+          <div class="cards" style="grid-template-columns:1fr 1fr">
+            <div class="card">
+              <div class="grid" style="gap:var(--ds-space-5)">
+                <div class="row">
+                  <button class="btn btn--icon" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z"/></svg></button>
+                  <button class="btn btn--primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg> 前置图标</button>
+                  <button class="btn">后置图标 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                  <span class="icon-badge">
+                    <button class="btn btn--icon" aria-label="通知，3 条未读"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+                    <span class="ib-count" aria-hidden="true">3</span>
+                  </span>
+                </div>
+                <div class="row">
+                  <span class="badge badge--success"><svg class="dot-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="11" height="11" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> 已通过</span>
+                  <span class="badge badge--warning"><svg class="dot-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="11" height="11" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg> 待复核</span>
+                  <span class="badge badge--danger"><svg class="dot-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="11" height="11" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> 已拒绝</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="field" style="margin-bottom:var(--ds-space-5)">
+                <label for="ia1">搜索（前置图标）</label>
+                <div class="input-affix">
+                  <span class="af-ico af-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+                  <input id="ia1" class="input" placeholder="搜索设备…">
+                </div>
+              </div>
+              <div class="field" style="margin-bottom:0">
+                <label for="ia2">金额（后置图标）</label>
+                <div class="input-affix">
+                  <input id="ia2" class="input" value="128.00" style="padding-right:42px">
+                  <span class="af-ico af-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 桌面布局 ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Desktop Layouts</span>
+        <h2>桌面布局</h2>
+        <p>三个用本风格 token 拼出的可信小样：设备控制面板（仪表盘）、音乐播放器、账户设置页。侧栏选中项被「按入」凹陷，KPI 与封面是凸起卡，图表区是 inset 大面。</p>
+      </div>
+
+      <!-- 布局 1：控制面板 / 仪表盘 -->
+      <div class="frame" style="margin-bottom:var(--ds-space-7)">
+        <div class="frame-bar">
+          <span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> console.softkit.app/dashboard</span>
+        </div>
+        <div class="frame-body">
+          <div class="lay-name"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg> 设备控制面板 · Control Dashboard</div>
+          <div class="dash">
+            <aside class="dash-side">
+              <div class="dash-brand"><span class="db-logo"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/></svg></span> SoftKit</div>
+              <nav class="dash-nav">
+                <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> 概览</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg> 设备</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 3-3 3 3 5-6"/></svg> 监控</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg> 日志</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83 1.65 1.65 0 0 0-2.82 1.18V21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-2.82-1.18 2 2 0 1 1-2.83-2.83A1.65 1.65 0 0 0 4.6 13a2 2 0 0 1 0-4 1.65 1.65 0 0 0 1.18-2.82 2 2 0 1 1 2.83-2.83A1.65 1.65 0 0 0 11 4.6a2 2 0 0 1 4 0 1.65 1.65 0 0 0 2.82 1.18 2 2 0 1 1 2.83 2.83A1.65 1.65 0 0 0 19.4 11a2 2 0 0 1 0 4z"/></svg> 设置</a>
+              </nav>
+            </aside>
+            <div class="dash-main">
+              <div class="dash-top">
+                <h3>机房 A · 总览</h3>
+                <div class="row" style="gap:var(--ds-space-3)">
+                  <button class="btn btn--sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg> 刷新</button>
+                  <button class="btn btn--primary btn--sm">导出报告</button>
+                </div>
+              </div>
+              <div class="kpi-row">
+                <div class="kpi"><div class="kpi-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg> 在线设备</div><div class="kpi-v">128</div><div class="kpi-d" style="color:var(--ds-success-fg)">↑ 较昨日 +6</div></div>
+                <div class="kpi"><div class="kpi-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> 平均负载</div><div class="kpi-v">42%</div><div class="kpi-d muted">健康区间</div></div>
+                <div class="kpi"><div class="kpi-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg> 告警</div><div class="kpi-v">3</div><div class="kpi-d" style="color:var(--ds-warning-fg)">需关注</div></div>
+              </div>
+              <div class="chart-box">
+                <div class="cb-head"><b>近 7 日吞吐量</b><span class="badge badge--info">GB/s</span></div>
+                <div class="bars">
+                  <div class="bar" style="height:48%"></div><div class="bar" style="height:62%"></div><div class="bar" style="height:54%"></div>
+                  <div class="bar hi" style="height:88%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:76%"></div>
+                </div>
+                <div class="bars-x"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 布局 2：音乐播放器 -->
+      <div class="frame" style="margin-bottom:var(--ds-space-7)">
+        <div class="frame-bar">
+          <span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> play.softkit.app/now</span>
+        </div>
+        <div class="frame-body">
+          <div class="lay-name"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> 音乐播放器 · Music Player</div>
+          <div class="music">
+            <div class="music-now">
+              <div class="mn-cover"><img src="../../_assets/gen/abstract-wave.jpg" alt="抽象波纹专辑封面" loading="lazy"></div>
+              <h3>Ambient Focus</h3>
+              <div class="mn-art">Lo-fi 合集 · Soft Sounds</div>
+              <div class="mn-prog"><i></i></div>
+              <div class="mn-time"><span>1:48</span><span>4:12</span></div>
+              <div class="mn-ctrl">
+                <button class="btn btn--icon" aria-label="上一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6v12h2V6zm3 6 8 6V6z"/></svg></button>
+                <button class="btn btn--icon btn--primary btn--lg" aria-label="暂停"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg></button>
+                <button class="btn btn--icon" aria-label="下一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6v12h2V6zM6 6v12l8-6z"/></svg></button>
+              </div>
+            </div>
+            <div class="music-list">
+              <div class="ml-head">播放列表 · 专注</div>
+              <div class="ml-item on">
+                <img class="ml-thumb" src="../../_assets/gen/abstract-wave.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Ambient Focus</b><span>Soft Sounds</span></span>
+                <span class="ml-dur">4:12</span>
+              </div>
+              <div class="ml-item">
+                <img class="ml-thumb" src="../../_assets/photos/ocean.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Ocean Drift</b><span>Calm Waves</span></span>
+                <span class="ml-dur">3:48</span>
+              </div>
+              <div class="ml-item">
+                <img class="ml-thumb" src="../../_assets/photos/forest.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Forest Rain</b><span>Nature Lab</span></span>
+                <span class="ml-dur">5:06</span>
+              </div>
+              <div class="ml-item">
+                <img class="ml-thumb" src="../../_assets/photos/mountain.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Summit Air</b><span>High Notes</span></span>
+                <span class="ml-dur">4:33</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 布局 3：设置页 -->
+      <div class="frame">
+        <div class="frame-bar">
+          <span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> console.softkit.app/settings</span>
+        </div>
+        <div class="frame-body">
+          <div class="lay-name"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83 1.65 1.65 0 0 0-2.82 1.18V21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-2.82-1.18 2 2 0 1 1-2.83-2.83A1.65 1.65 0 0 0 4.6 13a2 2 0 0 1 0-4 1.65 1.65 0 0 0 1.18-2.82 2 2 0 1 1 2.83-2.83A1.65 1.65 0 0 0 11 4.6a2 2 0 0 1 4 0 1.65 1.65 0 0 0 2.82 1.18 2 2 0 1 1 2.83 2.83A1.65 1.65 0 0 0 19.4 11a2 2 0 0 1 0 4z"/></svg> 账户设置 · Settings</div>
+          <div class="settings">
+            <nav class="set-nav">
+              <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg> 个人资料</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> 安全</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> 通知</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> 账单</a>
+            </nav>
+            <div class="set-panel">
+              <div class="set-user">
+                <img class="avatar av-48" src="../../_assets/avatars/a8.jpg" alt="林悦的头像" loading="lazy">
+                <div class="su-txt"><b>林悦</b><span>linyue@softkit.app · 管理员</span></div>
+                <button class="btn btn--sm" style="margin-left:auto">更换头像</button>
+              </div>
+              <div class="set-row">
+                <div class="sr-txt"><b>暗色主题</b><span>跟随系统或手动切换</span></div>
+                <label class="switch"><input type="checkbox"><span class="track"></span><span class="knob"></span></label>
+              </div>
+              <div class="set-row">
+                <div class="sr-txt"><b>桌面通知</b><span>有新告警时弹出提醒</span></div>
+                <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+              </div>
+              <div class="set-row">
+                <div class="sr-txt"><b>双重验证</b><span>登录时需要短信验证码</span></div>
+                <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+              </div>
+              <div class="set-row" style="border-top:1px solid var(--ds-border)">
+                <div class="sr-txt"><b>语言</b><span>界面显示语言</span></div>
+                <select class="select" style="width:160px;height:38px"><option>简体中文</option><option>English</option><option>日本語</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 移动端 -->
     <section>
-      <h2>移动端 · Mobile（约 375px 手机框）</h2>
-      <div class="phone">
-        <div class="phone-top">
-          <button class="ph-btn" aria-label="菜单"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg></button>
-          <span class="ph-title">健康概览</span>
-          <button class="ph-btn" aria-label="设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-        </div>
-        <div class="phone-screen">
-          <div class="phone-card">
-            <div class="pc-k">今日步数</div>
-            <div class="pc-v">8,420</div>
-            <div class="muted" style="font-size:var(--ds-text-xs)">目标 10,000 · 已完成 84%</div>
+      <div class="sec-head">
+        <span class="en">Mobile Layouts</span>
+        <h2>移动布局</h2>
+        <p>两台 iPhone 17 Pro Max 套壳并排：健康概览（数据卡 + 满宽主按钮 + 凹槽列表 + 底部标签栏）与音乐播放器（凸起封面 + inset 进度条）。窄屏下软阴影强度不缩，凸凹更要靠明暗差辨识。</p>
+      </div>
+      <div class="phones-2">
+
+      <!-- 移动端 1：健康概览 -->
+      <div class="dvc17">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
           </div>
-          <button class="btn btn--primary btn-block">开始锻炼</button>
-          <div class="phone-list">
-            <div class="pl-item">
-              <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="13" cy="4.5" r="1.6"/><path d="M5 21l3-5 3.5-2-1.5-5"/><path d="M10 9.5 7 7l4-2 3 3 3 .5"/><path d="m12.5 11 2 4 3.5 1"/></svg></span>
-              <span class="pl-txt"><b>跑步</b><span>晨间 · 28 分钟</span></span>
-              <span class="pl-val">3.2 km</span>
+          <div class="dvc-body">
+            <div class="scr-head">
+              <button class="ph-btn" aria-label="菜单"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg></button>
+              <span class="sh-title">健康概览</span>
+              <button class="ph-btn" aria-label="设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
             </div>
-            <div class="pl-item">
-              <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></span>
-              <span class="pl-txt"><b>睡眠</b><span>昨夜 · 深睡 2h</span></span>
-              <span class="pl-val">7h 12m</span>
-            </div>
-            <div class="pl-item">
-              <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
-              <span class="pl-txt"><b>心率</b><span>静息</span></span>
-              <span class="pl-val">62 bpm</span>
+            <div class="scr-pad">
+              <div class="phone-card">
+                <div class="pc-k">今日步数</div>
+                <div class="pc-v">8,420</div>
+                <div class="muted" style="font-size:var(--ds-text-xs)">目标 10,000 · 已完成 84%</div>
+              </div>
+              <button class="btn btn--primary btn-block">开始锻炼</button>
+              <div class="phone-list">
+                <div class="pl-item">
+                  <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="13" cy="4.5" r="1.6"/><path d="M5 21l3-5 3.5-2-1.5-5"/><path d="M10 9.5 7 7l4-2 3 3 3 .5"/><path d="m12.5 11 2 4 3.5 1"/></svg></span>
+                  <span class="pl-txt"><b>跑步</b><span>晨间 · 28 分钟</span></span>
+                  <span class="pl-val">3.2 km</span>
+                </div>
+                <div class="pl-item">
+                  <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></span>
+                  <span class="pl-txt"><b>睡眠</b><span>昨夜 · 深睡 2h</span></span>
+                  <span class="pl-val">7h 12m</span>
+                </div>
+                <div class="pl-item">
+                  <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
+                  <span class="pl-txt"><b>心率</b><span>静息</span></span>
+                  <span class="pl-val">62 bpm</span>
+                </div>
+              </div>
+              <nav class="phone-tabbar" aria-label="底部导航">
+                <a href="#" class="on" aria-label="首页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
+                <a href="#" aria-label="活动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></a>
+                <a href="#" aria-label="发现"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></a>
+                <a href="#" aria-label="我的"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></a>
+              </nav>
             </div>
           </div>
+          <div class="home"></div>
         </div>
+      </div>
+
+      <!-- 移动端 2：音乐播放器 -->
+      <div class="dvc17">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="scr-head">
+              <button class="ph-btn" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+              <span class="sh-title">正在播放</span>
+              <button class="ph-btn" aria-label="更多"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></button>
+            </div>
+            <div class="scr-pad">
+              <div class="phone-fig"><img src="../../_assets/gen/abstract-wave.jpg" alt="抽象波纹专辑封面" loading="lazy"></div>
+              <div style="text-align:center;margin-bottom:var(--ds-space-2)">
+                <div style="font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);letter-spacing:-0.02em">Ambient Focus</div>
+                <div class="muted" style="font-size:var(--ds-text-sm)">Lo-fi 合集 · Soft Sounds</div>
+              </div>
+              <div class="mini-prog"><i></i></div>
+              <div class="mn-time" style="display:flex;justify-content:space-between;font-size:11px;color:var(--ds-fg-subtle);font-family:var(--ds-font-mono)"><span>2:26</span><span>4:12</span></div>
+              <div class="mini-ctrl">
+                <button class="btn btn--icon" aria-label="随机"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16 3h5v5M21 3l-7 7M8 21H3v-5M3 21l7-7M16 21h5v-5M21 21 14 14M3 3l7 7"/></svg></button>
+                <button class="btn btn--icon" aria-label="上一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6v12h2V6zm3 6 8 6V6z"/></svg></button>
+                <button class="btn btn--icon btn--primary btn--lg" aria-label="暂停"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg></button>
+                <button class="btn btn--icon" aria-label="下一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6v12h2V6zM6 6v12l8-6z"/></svg></button>
+                <button class="btn btn--icon" aria-label="单曲循环"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
       </div>
     </section>
 

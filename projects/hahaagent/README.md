@@ -384,3 +384,51 @@ function toggleTheme() {
   root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
 }
 ```
+
+---
+
+## 13. 作品级展示（Showcase v2）
+
+`preview.html` 在原有「色板 / 字体 / 组件清单」之上升级为**有图、有布局、信息饱满**的作品级展示页。新增区块全部走 `var(--ds-*)`、保持暗色优先 + 霓虹辉光 + JetBrains Mono 身份，除 `../../_fonts/fonts.css` 与 `../../_assets/**` 外无任何外链；图片一律 `loading="lazy"` + 有意义 `alt`。
+
+### 13.1 Hero 首屏
+
+顶部分栏 hero：左侧文案（mono 大标题、电光青强调词 + 辉光、副标题、双 CTA、三段统计），右侧 `gen/darktech-hero.jpg` 全幅图（`object-fit:cover`）叠斜向渐变 scrim + 双色径向 glow。≤820px 收为单栏、图在下。消灭首屏大留白。
+
+### 13.2 图片用法 Image Usage
+
+- **宽高比框**：16:9 / 4:3 / 1:1 / 3:4，统一 `aspect-ratio` + `object-fit:cover` + md 圆角 + 角标。
+- **媒体卡 Media Card**（≥3）：16:9 图 + mono 标题 + 正文 + 状态徽章/操作；hover 图片轻微放大（reduced-motion 关闭）。
+- **图文混排**：4:3 大图 + 段落 + 按钮组并排。
+- **图上叠字 Overlay**：21:9 图 + 横向暗渐变 scrim，文字用 `--ds-fg`/`--ds-fg-muted` 保证 AA。
+- **头像用法**：尺寸阶 24/32/40/48、堆叠组（`av-stack` 负边距 + `+N`）、用户行（头像 + mono 名 + 签名）。
+- **背景大图区 full-bleed**：`darktech-hero.jpg` 铺满 + 径向暗罩 + 居中文案/按钮。
+- 图片处理符合暗黑科技身份：md/lg 圆角 + `--ds-border` 描边 + 暗罩/青光，而非随手装饰。
+
+### 13.3 图标用法 Icon Usage
+
+- **图标集**（16 个）：统一霓虹线性 SVG（`viewBox 0 0 24 24`、`stroke=currentColor`、线宽 2），网格带名，hover 转主色 + 辉光。
+- **尺寸阶**：16 / 20 / 24 / 32 基线对齐。
+- **线性 vs 实心 · 单色 vs 双色**对比（双色用 `--ds-primary` 低透明填充 + 描边）。
+- **在场景里**：图标按钮（仅图标 + `aria-label`）、按钮内前/后置图标、输入框前/后置图标（`input-icon`）、列表项前导图标（语义色）、带数字徽标（铃铛 + 红点计数）。
+
+### 13.4 桌面布局 Desktop Layouts（×2）
+
+每个布局包在带浏览器 chrome 的 `frame`（红/黄/绿圆点 + mono 地址栏 + 锁图标）里：
+
+- **布局 ① Agent 控制台**：三栏「会话侧栏（200px，选中左 3px 青条）+ 聊天主区（顶栏 + 气泡 + 工具调用卡 + 吸底输入）+ 右侧面板（迷你日志 ANSI + token 用量条 + 阶段灯）」。
+- **布局 ② 落地页 / 产品**：hero（mono 标题 + 青光 + CTA + 4:3 配图）+ 特性三栏（图标 + 标题 + 说明）+ 价格 CTA 条。
+- ≤820px 均收为单栏（控制台隐藏侧栏 / 右栏，落地页特性竖排）。
+
+### 13.5 移动布局 Mobile Layouts（×2，约 375px 手机框）
+
+两套手机框并排，均含听筒 notch + 顶栏意象：
+
+- **布局 ① 聊天 + 输入**：顶栏（mono 品牌 + 汉堡）+ 聊天气泡 + 工具调用卡 + 吸底输入（input + 纸飞机发送）。
+- **布局 ② App 首页 feed**：顶栏（标题 + 搜索）+ 卡片流（封面图 + 标题 + 说明 + 状态行）+ 底部标签栏（4 个 SVG 图标，选中态青色 + 辉光）。
+
+### 13.6 素材与红线
+
+- **素材来源**：`gen/darktech-hero.jpg`、`gen/abstract-wave.jpg`、`photos/{tech,desk,workspace,architecture,city}.jpg`、`avatars/{a1,a5,a8,a12,a15,a23,a33,a47}.jpg`，路径统一 `../../_assets/...`。
+- **身份保持**：暗色优先（`:root` 暗）、霓虹辉光（hero / 状态灯 / focus 环，非 ghost-card）、JetBrains Mono 一等公民；`prefers-reduced-motion` 关闭辉光呼吸 / 光标闪烁 / hero 文字 glow / 媒体卡放大。
+- **未改契约**：`--ds-*` token 全部沿用未改名；`fonts.css`、原 7 组件、Agent/终端专属组件（聊天 / 工具卡 / 状态灯 / ANSI 日志）、移动端块与响应式断点均保留；暗 / 亮双态文字与图标对比 ≥ AA。

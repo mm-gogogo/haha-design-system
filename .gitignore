@@ -18,3 +18,7 @@ npm-debug.log*
 .cf-creds
 .env
 .env.*
+
+# 生成中间产物
+_assets/_raw/
+_assets/_gen.log

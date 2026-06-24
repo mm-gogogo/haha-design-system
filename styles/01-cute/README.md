@@ -276,3 +276,23 @@ document.documentElement.dataset.theme = 'dark'; // 或移除回到亮色
 module.exports = { presets: [require('./styles/01-cute/tailwind.preset.js')] };
 // className 即可用：bg-primary text-primary-fg rounded-full shadow-md font-sans
 ```
+
+---
+
+## 13. preview.html 展示页（v2 富化）
+
+`preview.html` 是这套可爱风的**作品级展示页**，除 `../../_fonts/fonts.css` 与 `../../_assets/**` 本地素材外不引任何外网资源；全部图片 `loading="lazy"` + 有意义 `alt`。除色板 / 字体 / 26 组件外，新增以下饱满区块：
+
+- **有图 Hero 首屏**：风格主视觉 `../../_assets/gen/cute-hero.jpg` 分栏图 + 标题 / 副标题 / 双 CTA + 关键指标 + 头像组贴纸，消灭首屏大留白。
+- **图片用法 Image Usage**：宽高比框（16:9 / 4:3 / 1:1 / 3:4，统一 `aspect-ratio` + `object-fit:cover`）、媒体卡网格、画廊网格、图文混排、图上叠字 Overlay（渐变 scrim 保 AA）、头像用法（24/32/40/48 尺寸阶 + 堆叠 avatar-stack + 用户行）、full-bleed 背景大图区。
+- **图标用法 Icon Usage**：图标集网格（16 个内联 SVG 带名）、尺寸阶（16/20/24/32 基线对齐）、线性/实心/双色对比、在场景里（图标按钮、按钮内前后置图标、输入框前后置图标、状态语义图标、带数字徽标）。
+- **桌面端布局 ×2**：① 应用外壳 / 仪表盘（侧导航 + 顶栏 + KPI 卡 + 柱状图 + 表格）；② 落地页 / 营销（hero + 特性三栏 + CTA）。均带浏览器 chrome（圆点 + 地址栏 + 布局名）。
+- **移动端布局 ×2**：① App 首页 feed + 底部标签栏；② 个人页大图 header + 统计 + 操作 + 列表。另保留原「移动端组件」手机框示意。
+
+### 本风格图片 / 图标处理（保持身份）
+
+- **图片**：统一 **大圆角（`--ds-radius-md`/`lg`）+ 柔和彩色阴影 + 3px 同底色"贴纸边"**（外加 1px 糖粉描边），延续"软糯贴纸"质感；Overlay / full-bleed 用渐变遮罩保证白字 ≥4.5:1。
+- **图标**：统一**圆头圆角内联 SVG**（`viewBox 0 0 24 24`、`stroke=currentColor`、线宽 2、`stroke-linecap/linejoin:round`），颜色继承上下文或走 `var(--ds-*)`，与可爱风圆润气质一致；零 emoji。
+- **语义 z-index**：preview 内联定义 `--ds-z-base/dropdown/sticky/modal-backdrop/modal/toast/tooltip`，顶栏 sticky 用 `--ds-z-sticky`，不用 9999 魔法值。
+
+> 红线：`--ds-*` 契约名不变、亮暗双主题、全程 WCAG AA、保留 fonts.css 与全部组件 / 响应式。

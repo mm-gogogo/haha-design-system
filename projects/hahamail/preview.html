@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
 <title>hahamail · 邮件管理后台设计系统 · Preview</title>
 <style>
 /* ============================================================
@@ -323,31 +324,221 @@ tbody tr:hover{background:var(--ds-bg-subtle)}
 .toast.s-danger  .ti{background:var(--ds-danger)}
 .toast.s-info    .ti{background:var(--ds-info)}
 
-/* 移动端手机框 Mobile */
-.phones{display:flex; flex-wrap:wrap; gap:var(--ds-space-6); align-items:flex-start}
-.phone{width:375px; max-width:100%; border:1px solid var(--ds-border-strong); border-radius:22px; overflow:hidden; background:var(--ds-bg); box-shadow:var(--ds-shadow-lg)}
-.phone .pnotch{height:26px; background:var(--ds-bg-sunken); display:grid; place-items:center; position:relative}
-.phone .pnotch::after{content:""; width:96px; height:6px; background:var(--ds-border-strong); border-radius:var(--ds-radius-full)}
-.phone .ptop{display:flex; align-items:center; gap:var(--ds-space-2); height:48px; padding:0 var(--ds-space-3); border-bottom:1px solid var(--ds-border); background:var(--ds-bg)}
-.phone .ptop .pmark{width:24px; height:24px; flex:none; border-radius:var(--ds-radius-md); background:var(--ds-primary); color:var(--ds-primary-fg); display:grid; place-items:center; font-size:13px}
-.phone .ptop .pname{font-weight:var(--ds-weight-bold); font-size:var(--ds-text-base)}
-.phone .ptop .pic{margin-left:auto; width:28px; height:28px; display:grid; place-items:center; border-radius:var(--ds-radius-sm); color:var(--ds-fg-muted); cursor:pointer}
-.phone .ptop .pic:hover{background:var(--ds-bg-subtle)}
-.phone .pmail{display:flex; gap:var(--ds-space-2); padding:var(--ds-space-3); border-bottom:1px solid var(--ds-border)}
-.phone .pmail .pun{width:8px; flex:none; padding-top:4px}
-.phone .pmail .pb{flex:1; min-width:0}
-.phone .pmail .pfrom{font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-.phone .pmail .psubj{font-size:var(--ds-text-sm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
-.phone .pmail.unr .psubj{font-weight:var(--ds-weight-medium); color:var(--ds-fg)}
-.phone .pmail.read .psubj{color:var(--ds-fg-muted)}
-.phone .pmail .pprev{font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
-.phone .pmail .ptime{flex:none; font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric)}
-.phone .pauth{padding:var(--ds-space-3); display:flex; flex-wrap:wrap; gap:var(--ds-space-1); border-bottom:1px solid var(--ds-border); background:var(--ds-bg-subtle)}
-.phone .pauth .palabel{width:100%; font-size:11px; color:var(--ds-fg-subtle); margin-bottom:2px; font-family:var(--ds-font-mono)}
-.phone .pbar{display:flex; height:52px; border-top:1px solid var(--ds-border)}
-.phone .pbar .pt{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:10px; color:var(--ds-fg-subtle); cursor:pointer}
-.phone .pbar .pt .pi{font-size:16px}
-.phone .pbar .pt.on{color:var(--ds-primary); font-weight:var(--ds-weight-medium)}
+/* 移动端：iPhone 17 Pro Max 套壳内容（屏内布局，套壳件见 _assets/device.css） */
+.phones{display:flex; flex-wrap:wrap; gap:var(--ds-space-7); align-items:flex-start}
+/* 屏内 App 顶栏 */
+.dvc-body .ptop{display:flex; align-items:center; gap:var(--ds-space-2); height:48px; padding:0 var(--ds-space-4); border-bottom:1px solid var(--ds-border); background:var(--ds-bg)}
+.dvc-body .ptop.dark{background:var(--ds-primary); color:var(--ds-primary-fg); border-bottom-color:transparent}
+.dvc-body .ptop .pmark{width:26px; height:26px; flex:none; border-radius:var(--ds-radius-md); background:var(--ds-primary); color:var(--ds-primary-fg); display:grid; place-items:center; font-size:13px}
+.dvc-body .ptop .pname{font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md)}
+.dvc-body .ptop .pic{width:32px; height:32px; display:grid; place-items:center; border-radius:var(--ds-radius-sm); color:inherit; cursor:pointer}
+.dvc-body .ptop.dark .pic:hover{background:rgba(255,255,255,.14)}
+.dvc-body .ptop:not(.dark) .pic{color:var(--ds-fg-muted)}
+.dvc-body .ptop:not(.dark) .pic:hover{background:var(--ds-bg-subtle)}
+/* 屏内邮件行 */
+.dvc-body .pmail{display:flex; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); border-bottom:1px solid var(--ds-border); min-height:44px; align-items:center}
+.dvc-body .pmail .pav{width:38px; height:38px; flex:none; border-radius:var(--ds-radius-full); object-fit:cover; border:1px solid var(--ds-border)}
+.dvc-body .pmail .pun{position:absolute; left:6px; top:50%; transform:translateY(-50%)}
+.dvc-body .pmail{position:relative}
+.dvc-body .pmail .pb{flex:1; min-width:0}
+.dvc-body .pmail .pfrom{font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.dvc-body .pmail .psubj{font-size:var(--ds-text-sm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
+.dvc-body .pmail.unr .psubj{font-weight:var(--ds-weight-medium); color:var(--ds-fg)}
+.dvc-body .pmail.read .psubj{color:var(--ds-fg-muted)}
+.dvc-body .pmail.read .pav{opacity:.78}
+.dvc-body .pmail .pprev{font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
+.dvc-body .pmail .ptime{flex:none; align-self:flex-start; font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric)}
+.dvc-body .pauth{padding:var(--ds-space-3) var(--ds-space-4); display:flex; flex-wrap:wrap; gap:var(--ds-space-1); border-bottom:1px solid var(--ds-border); background:var(--ds-bg-subtle)}
+.dvc-body .pauth .palabel{width:100%; font-size:11px; color:var(--ds-fg-subtle); margin-bottom:2px; font-family:var(--ds-font-mono)}
+/* 屏内底部标签栏（贴底） */
+.dvc-body .pbar{position:sticky; bottom:0; display:flex; height:56px; border-top:1px solid var(--ds-border); background:var(--ds-bg); padding-bottom:env(safe-area-inset-bottom)}
+.dvc-body .pbar .pt{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:10px; color:var(--ds-fg-subtle); cursor:pointer}
+.dvc-body .pbar .pt .pi{font-size:16px}
+.dvc-body .pbar .pt.on{color:var(--ds-primary); font-weight:var(--ds-weight-medium)}
+
+/* ============================================================
+   Showcase v2：Hero / 图片用法 / 图标用法 / 桌面布局
+   ============================================================ */
+
+/* Hero 首屏：靛蓝分栏 + 实图 + 关键信息 */
+.hero{display:grid; grid-template-columns:1.05fr .95fr; gap:0; border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg-elevated); margin:var(--ds-space-6) 0 var(--ds-space-7)}
+.hero .hl{padding:var(--ds-space-8) var(--ds-space-8) var(--ds-space-7); display:flex; flex-direction:column; justify-content:center; gap:var(--ds-space-4); min-width:0}
+.hero .eyebrow{display:inline-flex; align-items:center; gap:var(--ds-space-2); align-self:flex-start; height:24px; padding:0 var(--ds-space-2); border-radius:var(--ds-radius-sm); background:var(--ds-info-bg); color:var(--ds-info-fg); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); font-family:var(--ds-font-mono)}
+.hero h1{margin:0; font-size:var(--ds-text-3xl); line-height:1.15; letter-spacing:-0.04em; font-weight:var(--ds-weight-bold)}
+.hero h1 .accent{color:var(--ds-primary)}
+.hero .lead{margin:0; color:var(--ds-fg-muted); font-size:var(--ds-text-md); line-height:var(--ds-leading-normal); max-width:46ch}
+.hero .hmeta{display:flex; flex-wrap:wrap; gap:var(--ds-space-6); margin-top:var(--ds-space-2)}
+.hero .hmeta .m .v{font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); line-height:1.1}
+.hero .hmeta .m .k{font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-top:2px}
+.hero .hcta{display:flex; flex-wrap:wrap; gap:var(--ds-space-3); margin-top:var(--ds-space-2)}
+.hero .himg{position:relative; min-height:340px; background:var(--ds-bg-sunken)}
+.hero .himg img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
+.hero .himg .scrim2{position:absolute; inset:0; background:linear-gradient(105deg,rgba(15,18,46,.62) 0%,rgba(15,18,46,.18) 46%,rgba(15,18,46,0) 70%)}
+.hero .himg .ov{position:absolute; left:var(--ds-space-5); bottom:var(--ds-space-5); right:var(--ds-space-5); display:flex; flex-direction:column; gap:var(--ds-space-2)}
+.hero .himg .ovcard{background:rgba(20,21,28,.78); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.14); border-radius:var(--ds-radius-md); padding:var(--ds-space-3); color:#fff}
+.hero .himg .ovcard .ot{font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); display:flex; align-items:center; gap:var(--ds-space-2)}
+.hero .himg .ovcard .od{font-size:var(--ds-text-xs); color:rgba(255,255,255,.74); margin-top:2px; font-family:var(--ds-font-mono)}
+.hero .himg .otag{display:inline-flex; align-items:center; gap:4px; align-self:flex-start; height:22px; padding:0 var(--ds-space-2); border-radius:var(--ds-radius-sm); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); background:rgba(52,196,122,.92); color:#06301b}
+@media(max-width:780px){.hero{grid-template-columns:1fr}.hero .himg{min-height:240px; order:-1}.hero .hl{padding:var(--ds-space-6)}}
+
+/* 图片用法 Image Usage */
+.subhead{font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg-muted); margin:var(--ds-space-5) 0 var(--ds-space-3)}
+.subhead:first-child{margin-top:0}
+.ratios{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--ds-space-3)}
+@media(max-width:640px){.ratios{grid-template-columns:repeat(2,1fr)}}
+.ratio figure{margin:0}
+.ratio .box{border-radius:var(--ds-radius-md); overflow:hidden; border:1px solid var(--ds-border); background:var(--ds-bg-sunken)}
+.ratio .box img{width:100%; height:100%; object-fit:cover; display:block}
+.ar-169{aspect-ratio:16/9} .ar-43{aspect-ratio:4/3} .ar-11{aspect-ratio:1/1} .ar-34{aspect-ratio:3/4}
+.ratio figcaption{font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-top:var(--ds-space-1)}
+
+.mediagrid{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-4)}
+@media(max-width:780px){.mediagrid{grid-template-columns:1fr}}
+.mediacard{border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg-elevated); display:flex; flex-direction:column}
+.mediacard .mc-img{aspect-ratio:16/9; background:var(--ds-bg-sunken); position:relative}
+.mediacard .mc-img img{width:100%; height:100%; object-fit:cover; display:block}
+.mediacard .mc-img .mc-clip{position:absolute; left:var(--ds-space-2); bottom:var(--ds-space-2); display:inline-flex; align-items:center; gap:4px; height:20px; padding:0 var(--ds-space-2); border-radius:var(--ds-radius-sm); background:rgba(20,21,28,.8); color:#fff; font-size:11px; font-family:var(--ds-font-mono)}
+.mediacard .mc-bd{padding:var(--ds-space-4); display:flex; flex-direction:column; gap:var(--ds-space-2); flex:1}
+.mediacard .mc-t{font-weight:var(--ds-weight-medium); font-size:var(--ds-text-md)}
+.mediacard .mc-d{color:var(--ds-fg-muted); font-size:var(--ds-text-sm); flex:1}
+.mediacard .mc-ft{display:flex; align-items:center; gap:var(--ds-space-2); color:var(--ds-fg-subtle); font-size:var(--ds-text-xs); font-family:var(--ds-font-mono)}
+
+/* 附件缩略图网格 */
+.attachgrid{display:grid; grid-template-columns:repeat(6,1fr); gap:var(--ds-space-3)}
+@media(max-width:780px){.attachgrid{grid-template-columns:repeat(3,1fr)}}
+.attach{border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-elevated)}
+.attach .at-img{aspect-ratio:1/1; background:var(--ds-bg-sunken); position:relative}
+.attach .at-img img{width:100%; height:100%; object-fit:cover; display:block; image-rendering:auto}
+.attach .at-doc{aspect-ratio:1/1; display:grid; place-items:center; background:var(--ds-bg-sunken); color:var(--ds-fg-subtle)}
+.attach .at-meta{padding:var(--ds-space-1) var(--ds-space-2); border-top:1px solid var(--ds-border)}
+.attach .at-nm{font-size:11px; font-family:var(--ds-font-mono); color:var(--ds-fg); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.attach .at-sz{font-size:10px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric)}
+
+/* 图文混排 */
+.feature{display:grid; grid-template-columns:1.1fr 1fr; gap:var(--ds-space-6); align-items:center; border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg-elevated)}
+@media(max-width:780px){.feature{grid-template-columns:1fr}}
+.feature .ft-img{aspect-ratio:4/3; background:var(--ds-bg-sunken)}
+.feature .ft-img img{width:100%; height:100%; object-fit:cover; display:block}
+.feature .ft-bd{padding:var(--ds-space-6) var(--ds-space-7) var(--ds-space-6) 0}
+@media(max-width:780px){.feature .ft-bd{padding:0 var(--ds-space-5) var(--ds-space-5)}}
+.feature .ft-bd ul{margin:var(--ds-space-3) 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--ds-space-2)}
+.feature .ft-bd li{display:flex; gap:var(--ds-space-2); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); align-items:flex-start}
+.feature .ft-bd li svg{flex:none; color:var(--ds-success); margin-top:2px; width:16px; height:16px}
+
+/* 头像用法 */
+.avatar{border-radius:var(--ds-radius-full); object-fit:cover; display:block; border:1px solid var(--ds-border)}
+.av-24{width:24px;height:24px} .av-32{width:32px;height:32px} .av-40{width:40px;height:40px} .av-48{width:48px;height:48px}
+.avstack{display:flex}
+.avstack img{border:2px solid var(--ds-bg-elevated); border-radius:var(--ds-radius-full); width:32px; height:32px; object-fit:cover; margin-left:-10px}
+.avstack img:first-child{margin-left:0}
+.avstack .more{width:32px; height:32px; border-radius:var(--ds-radius-full); border:2px solid var(--ds-bg-elevated); background:var(--ds-bg-subtle); color:var(--ds-fg-muted); display:grid; place-items:center; font-size:11px; font-weight:var(--ds-weight-medium); margin-left:-10px; font-variant-numeric:var(--ds-numeric)}
+.userrow{display:flex; align-items:center; gap:var(--ds-space-3)}
+.userrow .un{font-weight:var(--ds-weight-medium); font-size:var(--ds-text-sm)}
+.userrow .ue{font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono)}
+
+/* 图标用法 Icon Usage */
+.iconset{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:var(--ds-space-2)}
+.iconcell{display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-3) var(--ds-space-2); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); background:var(--ds-bg-elevated); transition:border-color var(--ds-dur-fast) var(--ds-ease)}
+.iconcell:hover{border-color:var(--ds-primary)}
+.iconcell svg{width:24px; height:24px; color:var(--ds-fg)}
+.iconcell .inm{font-size:11px; font-family:var(--ds-font-mono); color:var(--ds-fg-subtle)}
+.icon-sizes{display:flex; align-items:flex-end; gap:var(--ds-space-5); flex-wrap:wrap}
+.icon-sizes .isz{display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-1); color:var(--ds-fg)}
+.icon-sizes .isz .il{font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono)}
+.iconbtn{width:var(--ds-control-md); height:var(--ds-control-md); display:inline-grid; place-items:center; border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-md); background:var(--ds-bg); color:var(--ds-fg-muted); cursor:pointer; transition:border-color var(--ds-dur-fast) var(--ds-ease),color var(--ds-dur-fast) var(--ds-ease)}
+.iconbtn:hover{border-color:var(--ds-primary); color:var(--ds-primary)}
+.iconbtn:focus-visible{outline:none; box-shadow:var(--ds-focus-ring)}
+.iconbtn svg{width:18px; height:18px}
+.inputicon{position:relative; max-width:280px}
+.inputicon svg{position:absolute; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--ds-fg-subtle); pointer-events:none}
+.inputicon svg.lead{left:var(--ds-space-3)}
+.inputicon .input{padding-left:32px}
+.icon-list{border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden}
+.icon-list .ili{display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-2) var(--ds-space-3); border-bottom:1px solid var(--ds-border); font-size:var(--ds-text-sm)}
+.icon-list .ili:last-child{border-bottom:none}
+.icon-list .ili svg{width:18px; height:18px; flex:none}
+.icon-list .ili .ic-cnt{margin-left:auto; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric); font-size:var(--ds-text-xs)}
+.badge-icon{position:relative; display:inline-grid; place-items:center; width:var(--ds-control-md); height:var(--ds-control-md); color:var(--ds-fg-muted)}
+.badge-icon svg{width:20px; height:20px}
+.badge-icon .bn{position:absolute; top:-2px; right:-2px; min-width:16px; height:16px; padding:0 4px; border-radius:var(--ds-radius-full); background:var(--ds-danger); color:#fff; font-size:10px; display:grid; place-items:center; font-variant-numeric:var(--ds-numeric); border:1.5px solid var(--ds-bg)}
+
+/* 桌面布局 Desktop Layouts：浏览器 chrome frame */
+.browser{border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg-elevated); box-shadow:var(--ds-shadow-md)}
+.browser .chrome{display:flex; align-items:center; gap:var(--ds-space-2); height:36px; padding:0 var(--ds-space-3); background:var(--ds-bg-subtle); border-bottom:1px solid var(--ds-border)}
+.browser .dots{display:flex; gap:6px}
+.browser .dots i{width:10px; height:10px; border-radius:var(--ds-radius-full); background:var(--ds-border-strong); display:block}
+.browser .addr{flex:1; height:22px; background:var(--ds-bg); border:1px solid var(--ds-border); border-radius:var(--ds-radius-full); display:flex; align-items:center; gap:6px; padding:0 var(--ds-space-3); font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); max-width:360px; margin:0 auto}
+.browser .addr svg{width:11px; height:11px; flex:none; color:var(--ds-success)}
+.browser .scr{overflow:hidden}
+
+/* 三栏邮件布局 */
+.maillayout{display:grid; grid-template-columns:172px 240px 1fr; height:420px; font-size:var(--ds-text-sm)}
+.maillayout .ml-folders{border-right:1px solid var(--ds-border); background:var(--ds-bg-subtle); padding:var(--ds-space-2); overflow:auto}
+.maillayout .ml-fi{display:flex; align-items:center; gap:var(--ds-space-2); height:30px; padding:0 var(--ds-space-2); border-radius:var(--ds-radius-sm); color:var(--ds-fg-muted); cursor:pointer; font-size:13px}
+.maillayout .ml-fi svg{width:16px; height:16px; flex:none}
+.maillayout .ml-fi .fc{margin-left:auto; font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric)}
+.maillayout .ml-fi.on{background:var(--ds-info-bg); color:var(--ds-primary); font-weight:var(--ds-weight-medium)}
+.maillayout .ml-fi.on .fc{color:var(--ds-primary)}
+.maillayout .ml-flabel{font-size:11px; color:var(--ds-fg-subtle); text-transform:uppercase; letter-spacing:.04em; padding:var(--ds-space-2) var(--ds-space-2) var(--ds-space-1); font-family:var(--ds-font-mono)}
+.maillayout .ml-list{border-right:1px solid var(--ds-border); overflow:auto}
+.maillayout .ml-li{display:flex; gap:var(--ds-space-2); padding:var(--ds-space-2) var(--ds-space-3); border-bottom:1px solid var(--ds-border); cursor:pointer}
+.maillayout .ml-li.on{background:var(--ds-info-bg)}
+.maillayout .ml-li .ml-av{width:32px; height:32px; border-radius:var(--ds-radius-full); flex:none; object-fit:cover}
+.maillayout .ml-li .ml-b{min-width:0; flex:1}
+.maillayout .ml-li .ml-from{display:flex; align-items:baseline; gap:var(--ds-space-2)}
+.maillayout .ml-li .ml-nm{font-size:13px; font-weight:var(--ds-weight-medium); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.maillayout .ml-li.unr .ml-nm{color:var(--ds-fg)} .maillayout .ml-li.read .ml-nm{color:var(--ds-fg-muted); font-weight:var(--ds-weight-normal)}
+.maillayout .ml-li .ml-tm{margin-left:auto; font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric); flex:none}
+.maillayout .ml-li .ml-sj{font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
+.maillayout .ml-li .ml-pv{font-size:11px; color:var(--ds-fg-subtle); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.maillayout .ml-read{overflow:auto; padding:var(--ds-space-5)}
+.maillayout .ml-rt{font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); letter-spacing:-0.01em}
+.maillayout .ml-rh{display:flex; align-items:center; gap:var(--ds-space-3); margin:var(--ds-space-3) 0; padding-bottom:var(--ds-space-3); border-bottom:1px solid var(--ds-border)}
+.maillayout .ml-rh .ml-rav{width:40px; height:40px; border-radius:var(--ds-radius-full); object-fit:cover; flex:none}
+.maillayout .ml-rh .rn{font-weight:var(--ds-weight-medium); font-size:13px}
+.maillayout .ml-rh .re{font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono)}
+.maillayout .ml-body{color:var(--ds-fg-muted); font-size:13px; line-height:var(--ds-leading-relaxed); max-width:62ch}
+.maillayout .ml-body p{margin:0 0 var(--ds-space-3)}
+@media(max-width:780px){.maillayout{grid-template-columns:1fr; height:auto}.maillayout .ml-folders,.maillayout .ml-list{display:none}}
+
+/* 管理后台布局 */
+.adminlayout{display:grid; grid-template-columns:188px 1fr; min-height:440px; font-size:var(--ds-text-sm)}
+.adminlayout .ad-side{border-right:1px solid var(--ds-border); background:var(--ds-bg-subtle); padding:var(--ds-space-3) var(--ds-space-2); display:flex; flex-direction:column; gap:2px}
+.adminlayout .ad-brand{display:flex; align-items:center; gap:var(--ds-space-2); padding:0 var(--ds-space-2) var(--ds-space-3); font-weight:var(--ds-weight-bold)}
+.adminlayout .ad-brand .m{width:22px;height:22px;border-radius:var(--ds-radius-sm);background:var(--ds-primary);color:#fff;display:grid;place-items:center}
+.adminlayout .ad-brand .m svg{width:13px;height:13px}
+.adminlayout .ad-ni{display:flex; align-items:center; gap:var(--ds-space-2); height:32px; padding:0 var(--ds-space-2); border-radius:var(--ds-radius-sm); color:var(--ds-fg-muted); font-size:13px; cursor:pointer; border-left:3px solid transparent}
+.adminlayout .ad-ni svg{width:16px;height:16px;flex:none}
+.adminlayout .ad-ni.on{background:var(--ds-info-bg); color:var(--ds-primary); font-weight:var(--ds-weight-medium); border-left-color:var(--ds-primary)}
+.adminlayout .ad-main{padding:var(--ds-space-5); overflow:auto}
+.adminlayout .ad-h{display:flex; align-items:center; gap:var(--ds-space-3); margin-bottom:var(--ds-space-4)}
+.adminlayout .ad-h .ad-t{font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); letter-spacing:-0.01em}
+.adminlayout .ad-kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--ds-space-3); margin-bottom:var(--ds-space-4)}
+@media(max-width:640px){.adminlayout .ad-kpis{grid-template-columns:repeat(2,1fr)}}
+.adminlayout .ad-kpi{border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:var(--ds-space-3); background:var(--ds-bg-elevated)}
+.adminlayout .ad-kpi .k{font-size:11px; color:var(--ds-fg-muted)}
+.adminlayout .ad-kpi .v{font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); line-height:1.15; margin-top:2px}
+.adminlayout .ad-kpi .t{font-size:11px; margin-top:1px}
+.adminlayout table{font-size:12px}
+.adminlayout thead th{padding:var(--ds-space-1) var(--ds-space-2)}
+.adminlayout tbody td{padding:var(--ds-space-1) var(--ds-space-2)}
+@media(max-width:780px){.adminlayout{grid-template-columns:1fr}.adminlayout .ad-side{flex-direction:row; flex-wrap:wrap; border-right:none; border-bottom:1px solid var(--ds-border)}.adminlayout .ad-brand{width:100%}}
+
+/* 第二个套壳：阅读视图（屏内内容） */
+.dvc-body .pread{padding:var(--ds-space-4); border-bottom:1px solid var(--ds-border)}
+.dvc-body .pread .prt{font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); line-height:1.25; letter-spacing:-0.01em}
+.dvc-body .pread .prfrom{display:flex; align-items:center; gap:var(--ds-space-2); margin:var(--ds-space-3) 0; padding-bottom:var(--ds-space-3); border-bottom:1px solid var(--ds-border)}
+.dvc-body .pread .prfrom img{width:40px; height:40px; border-radius:var(--ds-radius-full); object-fit:cover; flex:none; border:1px solid var(--ds-border)}
+.dvc-body .pread .prfrom .prn{font-size:13px; font-weight:var(--ds-weight-medium)}
+.dvc-body .pread .prfrom .pre{font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono)}
+.dvc-body .pread .prbody{font-size:13px; color:var(--ds-fg-muted); line-height:var(--ds-leading-relaxed)}
+.dvc-body .pread .prbody p{margin:0 0 var(--ds-space-2)}
+.dvc-body .pattach{padding:var(--ds-space-4); display:flex; gap:var(--ds-space-2); border-bottom:1px solid var(--ds-border)}
+.dvc-body .pattach .pa{flex:1; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-elevated)}
+.dvc-body .pattach .pa img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+.dvc-body .pattach .pa .pan{font-size:10px; font-family:var(--ds-font-mono); color:var(--ds-fg-subtle); padding:3px var(--ds-space-2); border-top:1px solid var(--ds-border); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.dvc-body .pactions{display:flex; gap:var(--ds-space-2); padding:var(--ds-space-4)}
+.dvc-body .pactions .btn{flex:1}
 
 /* ============================================================
    响应式断点：≤640 收一列；规则表横向滚动
@@ -394,6 +585,22 @@ tbody tr:hover{background:var(--ds-bg-subtle)}
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-trend-up" viewBox="0 0 24 24"><path d="M12 6l6 8H6z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="M12 18l-6-8h12z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h3l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 4L3 11l7 3 3 7z"/><path d="M10 14l11-10"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M9 7L4 12l5 5"/><path d="M4 12h9a7 7 0 0 1 7 7v0"/></symbol>
+  <symbol id="i-forward" viewBox="0 0 24 24"><path d="M15 7l5 5-5 5"/><path d="M20 12h-9a7 7 0 0 0-7 7v0"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="4" rx="1"/><path d="M5 9v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9"/><path d="M10 13h4"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 4l2.4 5 5.6.7-4 3.9 1 5.5-5-2.8-5 2.8 1-5.5-4-3.9 5.6-.7z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M5 5l1.5 1.5M17.5 17.5L19 19M3 12h2M19 12h2M5 19l1.5-1.5M17.5 6.5L19 5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 19a6 6 0 0 1 12 0"/><path d="M16 6a3 3 0 0 1 0 6"/><path d="M18 13a6 6 0 0 1 3 6"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="8" r="4"/><path d="M11 11l9 9M17 17l2-2M14 14l2-2"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M8 11l4 4 4-4"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M5 18l5-5 3 3 2-2 4 4"/></symbol>
 </svg>
 
 <div class="topbar">
@@ -411,6 +618,35 @@ tbody tr:hover{background:var(--ds-bg-subtle)}
   <p style="color:var(--ds-fg-muted); font-size:var(--ds-text-sm); margin-top:0">
     基于「B 端风」+ hahamail 定制 · 沉稳靛蓝 <span class="mono">#3d4eea</span> · 高密度 · 描边分隔 · tabular 数字 · 完整暗色。所有色值满足 WCAG AA。
   </p>
+
+  <!-- ===== Hero 首屏 ===== -->
+  <div class="hero">
+    <div class="hl">
+      <span class="eyebrow"><svg class="ic-svg" style="width:13px;height:13px;vertical-align:0"><use href="#i-server"/></svg> self-hosted · SMTP / IMAP</span>
+      <h1>盯着<span class="accent">队列深度</span>与退信率<br>过日子的邮件后台</h1>
+      <p class="lead">hahamail 是轻量自托管邮件服务器的内嵌 Web UI。收件箱、路由规则、可观测指标、SPF / DKIM / DMARC 认证结果——一屏塞满仍可扫读。密度优先、描边分隔、tabular 数字、暗色优先。</p>
+      <div class="hmeta">
+        <div class="m"><div class="v num">12,840</div><div class="k">今日收信</div></div>
+        <div class="m"><div class="v num">486</div><div class="k">活跃邮箱</div></div>
+        <div class="m"><div class="v num">99.6%</div><div class="k">可投递性</div></div>
+      </div>
+      <div class="hcta">
+        <button class="btn btn-primary btn-lg"><svg class="ic-svg"><use href="#i-pencil"/></svg>添加域名</button>
+        <button class="btn btn-secondary btn-lg"><svg class="ic-svg"><use href="#i-chart"/></svg>打开大盘</button>
+      </div>
+    </div>
+    <div class="himg">
+      <img src="../../_assets/gen/bside-hero.jpg" alt="hahamail 自托管邮件服务器机房与控制台示意图" loading="lazy">
+      <div class="scrim2"></div>
+      <div class="ov">
+        <span class="otag"><svg class="ic-svg" style="width:13px;height:13px;vertical-align:0;stroke-width:2.2"><use href="#i-check"/></svg> 全部认证通过</span>
+        <div class="ovcard">
+          <div class="ot"><svg class="ic-svg" style="width:15px;height:15px;vertical-align:0"><use href="#i-shield"/></svg> mail.example.com · 在线</div>
+          <div class="od">SPF pass · DKIM pass · DMARC p=reject</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== 可观测指标卡 ===== -->
   <h2 class="sec">可观测指标卡 <span class="sec-note">收发计数 / 队列深度 / 邮箱数（tabular 大数）</span></h2>
@@ -738,60 +974,419 @@ _dmarc.example.com.     IN  TXT  "v=DMARC1; p=reject; rua=mailto:dmarc@example.c
     </div>
   </div>
 
-  <!-- ===== 移动端 Mobile ===== -->
-  <h2 class="sec">移动端 Mobile <span class="sec-note">≈375px 手机框 · 顶栏 + 收件箱列表 + 认证徽章</span></h2>
-  <div class="phones">
-    <div class="phone">
-      <div class="pnotch"></div>
-      <div class="ptop">
-        <span class="pmark"><svg class="ic-svg" style="width:14px;height:14px;vertical-align:0"><use href="#i-mail"/></svg></span>
-        <span class="pname">hahamail</span>
-        <span class="pic" aria-label="搜索"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-search"/></svg></span>
-        <span class="pic" aria-label="写信"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-pencil"/></svg></span>
+  <!-- ===== 图片用法 Image Usage ===== -->
+  <h2 class="sec">图片用法 <span class="sec-note">收件人头像 / 附件缩略图 / 媒体卡 · 统一宽高比与小圆角</span></h2>
+
+  <div class="subhead">宽高比框 <span class="sec-note">aspect-ratio + object-fit:cover · radius-md 小圆角</span></div>
+  <div class="ratios">
+    <div class="ratio"><figure><div class="box ar-169"><img src="../../_assets/photos/workspace.jpg" alt="运维工作台" loading="lazy"></div><figcaption>16 : 9</figcaption></figure></div>
+    <div class="ratio"><figure><div class="box ar-43"><img src="../../_assets/photos/desk.jpg" alt="办公桌面" loading="lazy"></div><figcaption>4 : 3</figcaption></figure></div>
+    <div class="ratio"><figure><div class="box ar-11"><img src="../../_assets/photos/tech.jpg" alt="服务器机架" loading="lazy"></div><figcaption>1 : 1</figcaption></figure></div>
+    <div class="ratio"><figure><div class="box ar-34"><img src="../../_assets/photos/architecture.jpg" alt="数据中心建筑" loading="lazy"></div><figcaption>3 : 4</figcaption></figure></div>
+  </div>
+
+  <div class="subhead">收件人头像 <span class="sec-note">尺寸阶 24 / 32 / 40 / 48 · 堆叠组 · 用户行</span></div>
+  <div class="card">
+    <div class="row" style="align-items:center; gap:var(--ds-space-5)">
+      <img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="收件人 a1 头像" loading="lazy">
+      <img class="avatar av-32" src="../../_assets/avatars/a5.jpg" alt="收件人 a5 头像" loading="lazy">
+      <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="收件人 a8 头像" loading="lazy">
+      <img class="avatar av-48" src="../../_assets/avatars/a12.jpg" alt="收件人 a12 头像" loading="lazy">
+      <span class="sec-note" style="margin:0">24 · 32 · 40 · 48</span>
+    </div>
+    <div class="row" style="margin-top:var(--ds-space-4); gap:var(--ds-space-6); align-items:center">
+      <div class="avstack" aria-label="6 位收件人">
+        <img src="../../_assets/avatars/a15.jpg" alt="收件人 a15" loading="lazy">
+        <img src="../../_assets/avatars/a23.jpg" alt="收件人 a23" loading="lazy">
+        <img src="../../_assets/avatars/a33.jpg" alt="收件人 a33" loading="lazy">
+        <img src="../../_assets/avatars/a47.jpg" alt="收件人 a47" loading="lazy">
+        <span class="more">+2</span>
       </div>
-      <div class="pmail unr">
-        <span class="pun"><span class="dot dot-info"></span></span>
-        <span class="pb">
-          <span class="pfrom">stripe@stripe.com</span>
-          <span class="psubj">[Invoice] 你的 6 月账单已生成</span>
-          <span class="pprev">本期合计 $42.00，自动续费…</span>
-        </span>
-        <span class="ptime">09:24</span>
-      </div>
-      <div class="pmail unr">
-        <span class="pun"><span class="dot dot-info"></span></span>
-        <span class="pb">
-          <span class="pfrom">noreply@github.com</span>
-          <span class="psubj">[hahamail] CI passed on main</span>
-          <span class="pprev">16 packages, race detector ok…</span>
-        </span>
-        <span class="ptime">08:51</span>
-      </div>
-      <div class="pmail read">
-        <span class="pun"></span>
-        <span class="pb">
-          <span class="pfrom">postmaster@gmail.com</span>
-          <span class="psubj">Delivery Status Notification (Failure)</span>
-          <span class="pprev">550 5.1.1 user unknown…</span>
-        </span>
-        <span class="ptime">周一</span>
-      </div>
-      <div class="pauth">
-        <span class="palabel">来自 stripe@stripe.com 的认证</span>
-        <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
-        <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
-        <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
-        <span class="tag tag-info">spam 0.4</span>
-      </div>
-      <div class="pbar">
-        <span class="pt on"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-inbox"/></svg></span>收件箱</span>
-        <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-route"/></svg></span>路由</span>
-        <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-outbox"/></svg></span>队列</span>
-        <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-chart"/></svg></span>指标</span>
+      <div class="userrow">
+        <img class="avatar av-40" src="../../_assets/avatars/a1.jpg" alt="发件人 Stripe Billing" loading="lazy">
+        <div><div class="un">Stripe Billing</div><div class="ue">billing@stripe.com</div></div>
       </div>
     </div>
+  </div>
+
+  <div class="subhead">媒体卡 <span class="sec-note">图在上 + 标题正文操作 · 16:9 缩略图 + 回形针标</span></div>
+  <div class="mediagrid">
+    <div class="mediacard">
+      <div class="mc-img"><img src="../../_assets/photos/city.jpg" alt="月度报告封面：城市夜景" loading="lazy"><span class="mc-clip"><svg class="ic-svg" style="width:11px;height:11px;vertical-align:0"><use href="#i-clip"/></svg> 3</span></div>
+      <div class="mc-bd"><div class="mc-t">6 月可投递性月报</div><div class="mc-d">退信率降至 2.4%，DKIM 轮换完成，新增 3 条转发规则。</div><div class="mc-ft"><svg class="ic-svg" style="width:13px;height:13px"><use href="#i-mail"/></svg>reports@example.com</div></div>
+    </div>
+    <div class="mediacard">
+      <div class="mc-img"><img src="../../_assets/photos/coffee.jpg" alt="团队周会附件预览" loading="lazy"><span class="mc-clip"><svg class="ic-svg" style="width:11px;height:11px;vertical-align:0"><use href="#i-clip"/></svg> 1</span></div>
+      <div class="mc-bd"><div class="mc-t">团队周会纪要</div><div class="mc-d">下周一切换主 MX，提前公告。包含值班排期表与回滚预案。</div><div class="mc-ft"><svg class="ic-svg" style="width:13px;height:13px"><use href="#i-mail"/></svg>ops@example.com</div></div>
+    </div>
+    <div class="mediacard">
+      <div class="mc-img"><img src="../../_assets/photos/forest.jpg" alt="季度续费提醒附件" loading="lazy"><span class="mc-clip"><svg class="ic-svg" style="width:11px;height:11px;vertical-align:0"><use href="#i-clip"/></svg> 2</span></div>
+      <div class="mc-bd"><div class="mc-t">域名续费提醒</div><div class="mc-d">example.com 将于 90 天后到期，自动续费已开启，附发票 PDF。</div><div class="mc-ft"><svg class="ic-svg" style="width:13px;height:13px"><use href="#i-mail"/></svg>noreply@registrar.com</div></div>
+    </div>
+  </div>
+
+  <div class="subhead">附件缩略图 <span class="sec-note">1:1 图片缩略 + 文档占位 · mono 文件名 + tabular 大小</span></div>
+  <div class="attachgrid">
+    <div class="attach"><div class="at-img"><img src="../../_assets/photos/square1.jpg" alt="附件 cover.jpg 缩略图" loading="lazy"></div><div class="at-meta"><div class="at-nm">cover.jpg</div><div class="at-sz">1.2 MB</div></div></div>
+    <div class="attach"><div class="at-img"><img src="../../_assets/photos/square2.jpg" alt="附件 chart.png 缩略图" loading="lazy"></div><div class="at-meta"><div class="at-nm">chart.png</div><div class="at-sz">486 KB</div></div></div>
+    <div class="attach"><div class="at-img"><img src="../../_assets/photos/square3.jpg" alt="附件 banner.jpg 缩略图" loading="lazy"></div><div class="at-meta"><div class="at-nm">banner.jpg</div><div class="at-sz">912 KB</div></div></div>
+    <div class="attach"><div class="at-doc"><svg class="ic-svg" style="width:28px;height:28px"><use href="#i-clip"/></svg></div><div class="at-meta"><div class="at-nm">report.pdf</div><div class="at-sz">240 KB</div></div></div>
+    <div class="attach"><div class="at-doc"><svg class="ic-svg" style="width:28px;height:28px"><use href="#i-server"/></svg></div><div class="at-meta"><div class="at-nm">logs.zip</div><div class="at-sz">3.4 MB</div></div></div>
+    <div class="attach"><div class="at-doc"><svg class="ic-svg" style="width:28px;height:28px"><use href="#i-key"/></svg></div><div class="at-meta"><div class="at-nm">dkim.pem</div><div class="at-sz">1.6 KB</div></div></div>
+  </div>
+
+  <div class="subhead">图文混排 <span class="sec-note">大图 + 文字段落并排 · 产品/能力介绍</span></div>
+  <div class="feature">
+    <div class="ft-img"><img src="../../_assets/photos/tech.jpg" alt="hahamail 路由与队列引擎示意" loading="lazy"></div>
+    <div class="ft-bd">
+      <div style="font-weight:var(--ds-weight-bold); font-size:var(--ds-text-xl); letter-spacing:-0.01em">一台机器，跑完整条邮件链路</div>
+      <p style="color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-relaxed); margin:var(--ds-space-2) 0 0; max-width:52ch">入站 MX 收信、规则路由、出站签名、队列重试、可观测指标，全部内置于单二进制。无需外部依赖即可自托管。</p>
+      <ul>
+        <li><svg class="ic-svg"><use href="#i-check"/></svg>规则引擎：forward / store / drop / webhook 四类动作</li>
+        <li><svg class="ic-svg"><use href="#i-check"/></svg>出站自动 DKIM 签名 + 退避重试队列</li>
+        <li><svg class="ic-svg"><use href="#i-check"/></svg>SPF / DKIM / DMARC 实时校验与一键 DNS</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="subhead" style="margin-top:var(--ds-space-5)">图上叠字 Overlay <span class="sec-note">渐变 scrim 保证文字 AA</span></div>
+  <div class="hero" style="grid-template-columns:1fr; margin:0">
+    <div class="himg" style="min-height:220px">
+      <img src="../../_assets/photos/architecture.jpg" alt="数据中心外景 banner" loading="lazy">
+      <div class="scrim2" style="background:linear-gradient(0deg,rgba(15,18,46,.78) 0%,rgba(15,18,46,.28) 55%,rgba(15,18,46,.05) 100%)"></div>
+      <div class="ov" style="bottom:var(--ds-space-6); left:var(--ds-space-6); right:var(--ds-space-6)">
+        <span class="otag" style="background:rgba(84,98,236,.92); color:#fff"><svg class="ic-svg" style="width:13px;height:13px;vertical-align:0"><use href="#i-server"/></svg> infra</span>
+        <div style="color:#fff; font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.02em; line-height:1.2; max-width:34ch; margin-top:var(--ds-space-2)">自己的域名，自己的邮件主权</div>
+        <div style="color:rgba(255,255,255,.82); font-size:var(--ds-text-sm); margin-top:var(--ds-space-1)">数据不出机房 · 全链路可审计</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 图标用法 Icon Usage ===== -->
+  <h2 class="sec">图标用法 <span class="sec-note">统一紧凑线性内联 SVG · viewBox 24 · stroke=currentColor</span></h2>
+
+  <div class="subhead">图标集 <span class="sec-note">全站 SVG 精灵（节选）· 单色继承上下文</span></div>
+  <div class="iconset">
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-mail"/></svg><span class="inm">mail</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-inbox"/></svg><span class="inm">inbox</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-outbox"/></svg><span class="inm">outbox</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-send"/></svg><span class="inm">send</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-reply"/></svg><span class="inm">reply</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-forward"/></svg><span class="inm">forward</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-folder"/></svg><span class="inm">folder</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-archive"/></svg><span class="inm">archive</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-route"/></svg><span class="inm">route</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-globe"/></svg><span class="inm">globe</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-server"/></svg><span class="inm">server</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-shield"/></svg><span class="inm">shield</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-key"/></svg><span class="inm">key</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-clip"/></svg><span class="inm">clip</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-search"/></svg><span class="inm">search</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-filter"/></svg><span class="inm">filter</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-star"/></svg><span class="inm">star</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-bell"/></svg><span class="inm">bell</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-settings"/></svg><span class="inm">settings</span></div>
+    <div class="iconcell"><svg class="ic-svg"><use href="#i-chart"/></svg><span class="inm">chart</span></div>
+  </div>
+
+  <div class="grid2" style="margin-top:var(--ds-space-5)">
+    <div class="card">
+      <div class="subhead" style="margin-top:0">尺寸阶 · 线性 vs 实心</div>
+      <div class="icon-sizes">
+        <span class="isz"><svg class="ic-svg" style="width:16px;height:16px"><use href="#i-mail"/></svg><span class="il">16</span></span>
+        <span class="isz"><svg class="ic-svg" style="width:20px;height:20px"><use href="#i-mail"/></svg><span class="il">20</span></span>
+        <span class="isz"><svg class="ic-svg" style="width:24px;height:24px"><use href="#i-mail"/></svg><span class="il">24</span></span>
+        <span class="isz"><svg class="ic-svg" style="width:32px;height:32px"><use href="#i-mail"/></svg><span class="il">32</span></span>
+      </div>
+      <div class="row" style="margin-top:var(--ds-space-4); gap:var(--ds-space-5); align-items:center">
+        <span class="statecell" style="color:var(--ds-success)"><svg class="ic-svg" style="width:20px;height:20px;stroke-width:2"><use href="#i-check"/></svg><span style="color:var(--ds-fg-muted); font-size:var(--ds-text-sm)">线性</span></span>
+        <span class="statecell" style="color:var(--ds-success)"><svg class="ic-svg" style="width:20px;height:20px"><use href="#i-trend-up"/></svg><span style="color:var(--ds-fg-muted); font-size:var(--ds-text-sm)">实心（趋势）</span></span>
+        <span class="statecell"><svg class="ic-svg" style="width:20px;height:20px; color:var(--ds-success)"><use href="#i-check"/></svg><svg class="ic-svg" style="width:20px;height:20px; color:var(--ds-danger)"><use href="#i-x"/></svg><span style="color:var(--ds-fg-muted); font-size:var(--ds-text-sm)">语义双色</span></span>
+      </div>
+      <div class="subhead">图标按钮 · 带数字徽标</div>
+      <div class="row" style="align-items:center; gap:var(--ds-space-3)">
+        <button class="iconbtn" aria-label="回复"><svg class="ic-svg"><use href="#i-reply"/></svg></button>
+        <button class="iconbtn" aria-label="转发"><svg class="ic-svg"><use href="#i-forward"/></svg></button>
+        <button class="iconbtn" aria-label="归档"><svg class="ic-svg"><use href="#i-archive"/></svg></button>
+        <button class="iconbtn" aria-label="删除" style="color:var(--ds-danger); border-color:var(--ds-border-strong)"><svg class="ic-svg"><use href="#i-trash"/></svg></button>
+        <span style="width:1px; height:24px; background:var(--ds-border)"></span>
+        <span class="badge-icon"><svg class="ic-svg"><use href="#i-bell"/></svg><span class="bn">5</span></span>
+        <span class="badge-icon"><svg class="ic-svg"><use href="#i-inbox"/></svg><span class="bn">12</span></span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="subhead" style="margin-top:0">按钮内前/后置图标 · 输入框图标</div>
+      <div class="row">
+        <button class="btn btn-primary"><svg class="ic-svg"><use href="#i-send"/></svg>发送</button>
+        <button class="btn btn-secondary"><svg class="ic-svg"><use href="#i-download"/></svg>导出 CSV</button>
+        <button class="btn btn-tertiary">下一步<svg class="ic-svg"><use href="#i-forward"/></svg></button>
+      </div>
+      <div class="inputicon" style="margin-top:var(--ds-space-3)">
+        <svg class="ic-svg lead"><use href="#i-search"/></svg>
+        <input class="input mono" placeholder="搜索地址 / 主题…">
+      </div>
+      <div class="subhead">列表项前导图标 · 状态图标（语义色）</div>
+      <div class="icon-list">
+        <div class="ili"><svg class="ic-svg" style="color:var(--ds-fg-muted)"><use href="#i-inbox"/></svg>收件箱<span class="ic-cnt">2 未读</span></div>
+        <div class="ili"><svg class="ic-svg" style="color:var(--ds-fg-muted)"><use href="#i-route"/></svg>路由规则<span class="ic-cnt">14 条</span></div>
+        <div class="ili"><svg class="ic-svg" style="color:var(--ds-success)"><use href="#i-check"/></svg>认证健康<span class="ic-cnt" style="color:var(--ds-success)">全部通过</span></div>
+        <div class="ili"><svg class="ic-svg" style="color:var(--ds-warning)"><use href="#i-alert"/></svg>队列积压<span class="ic-cnt" style="color:var(--ds-warning)">1,284</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 桌面布局 Desktop Layouts ===== -->
+  <h2 class="sec">桌面布局 <span class="sec-note">真实小样 · 浏览器 chrome · 本风格 token + 实图</span></h2>
+
+  <div class="subhead">邮件三栏 <span class="sec-note">文件夹 + 收件箱 + 阅读</span></div>
+  <div class="browser">
+    <div class="chrome">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="addr"><svg class="ic-svg"><use href="#i-shield"/></svg>mail.example.com/inbox</span>
+    </div>
+    <div class="scr">
+      <div class="maillayout">
+        <div class="ml-folders">
+          <div class="ml-flabel">邮箱</div>
+          <div class="ml-fi on"><svg class="ic-svg"><use href="#i-inbox"/></svg>收件箱<span class="fc">2</span></div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-star"/></svg>星标</div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-send"/></svg>已发送</div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-outbox"/></svg>出站队列<span class="fc">1.2k</span></div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-archive"/></svg>归档</div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-trash"/></svg>已删除</div>
+          <div class="ml-flabel">规则路由</div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-route"/></svg>路由规则</div>
+          <div class="ml-fi"><svg class="ic-svg"><use href="#i-globe"/></svg>域名 &amp; DNS</div>
+        </div>
+        <div class="ml-list">
+          <div class="ml-li unr on">
+            <img class="ml-av" src="../../_assets/avatars/a1.jpg" alt="Stripe 头像" loading="lazy">
+            <div class="ml-b"><div class="ml-from"><span class="ml-nm">Stripe Billing</span><span class="ml-tm">09:24</span></div><div class="ml-sj">[Invoice] 你的 6 月账单已生成</div><div class="ml-pv">本期合计 $42.00，自动续费…</div></div>
+          </div>
+          <div class="ml-li unr">
+            <img class="ml-av" src="../../_assets/avatars/a5.jpg" alt="GitHub 头像" loading="lazy">
+            <div class="ml-b"><div class="ml-from"><span class="ml-nm">GitHub</span><span class="ml-tm">08:51</span></div><div class="ml-sj">[hahamail] CI passed on main</div><div class="ml-pv">16 packages, race detector ok…</div></div>
+          </div>
+          <div class="ml-li read">
+            <img class="ml-av" src="../../_assets/avatars/a8.jpg" alt="Vercel 头像" loading="lazy">
+            <div class="ml-b"><div class="ml-from"><span class="ml-nm">Vercel</span><span class="ml-tm">昨天</span></div><div class="ml-sj">Deployment ready</div><div class="ml-pv">mail.example.com is live…</div></div>
+          </div>
+          <div class="ml-li read">
+            <img class="ml-av" src="../../_assets/avatars/a12.jpg" alt="Postmaster 头像" loading="lazy">
+            <div class="ml-b"><div class="ml-from"><span class="ml-nm">Mailer Daemon</span><span class="ml-tm">周一</span></div><div class="ml-sj">Delivery Status Notification</div><div class="ml-pv">550 5.1.1 user unknown…</div></div>
+          </div>
+        </div>
+        <div class="ml-read">
+          <div class="ml-rt">[Invoice] 你的 6 月账单已生成</div>
+          <div class="ml-rh">
+            <img class="ml-rav" src="../../_assets/avatars/a1.jpg" alt="Stripe Billing 头像" loading="lazy">
+            <div style="flex:1; min-width:0"><div class="rn">Stripe Billing</div><div class="re">billing@stripe.com → me@example.com</div></div>
+            <button class="iconbtn" aria-label="回复"><svg class="ic-svg"><use href="#i-reply"/></svg></button>
+            <button class="iconbtn" aria-label="归档"><svg class="ic-svg"><use href="#i-archive"/></svg></button>
+          </div>
+          <div class="authbar" style="margin-bottom:var(--ds-space-4)">
+            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
+            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
+            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
+            <span class="tag tag-info">spam 0.4 / 5</span>
+            <span class="tag tag-neutral"><svg class="ic-svg"><use href="#i-clip"/></svg>3 附件</span>
+          </div>
+          <div class="ml-body">
+            <p>你好，</p>
+            <p>感谢使用我们的服务。本期（2026 年 6 月）账单已生成，合计 <span class="mono">$42.00</span>，将于 6 月 28 日自动从绑定卡扣款。明细见所附 PDF 发票。</p>
+            <p>如需调整套餐或导出对账单，可登录控制台操作。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subhead" style="margin-top:var(--ds-space-6)">管理后台 <span class="sec-note">侧导航 + 指标 + 路由规则表</span></div>
+  <div class="browser">
+    <div class="chrome">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="addr"><svg class="ic-svg"><use href="#i-shield"/></svg>mail.example.com/admin/routing</span>
+    </div>
+    <div class="scr">
+      <div class="adminlayout">
+        <div class="ad-side">
+          <div class="ad-brand"><span class="m"><svg class="ic-svg"><use href="#i-mail"/></svg></span>hahamail</div>
+          <div class="ad-ni"><svg class="ic-svg"><use href="#i-inbox"/></svg>收件箱</div>
+          <div class="ad-ni on"><svg class="ic-svg"><use href="#i-route"/></svg>路由规则</div>
+          <div class="ad-ni"><svg class="ic-svg"><use href="#i-globe"/></svg>域名 &amp; DNS</div>
+          <div class="ad-ni"><svg class="ic-svg"><use href="#i-outbox"/></svg>出站队列</div>
+          <div class="ad-ni"><svg class="ic-svg"><use href="#i-shield"/></svg>认证健康</div>
+          <div class="ad-ni"><svg class="ic-svg"><use href="#i-chart"/></svg>指标大盘</div>
+          <div class="ad-ni"><svg class="ic-svg"><use href="#i-settings"/></svg>设置</div>
+        </div>
+        <div class="ad-main">
+          <div class="ad-h">
+            <span class="ad-t">路由规则</span>
+            <span class="tag tag-neutral">14 条 · 3 停用</span>
+            <span class="spacer"></span>
+            <button class="btn btn-primary btn-sm"><svg class="ic-svg"><use href="#i-plus"/></svg>新建规则</button>
+          </div>
+          <div class="ad-kpis">
+            <div class="ad-kpi"><div class="k">今日命中</div><div class="v num">11,332</div><div class="t up"><svg class="ic-svg" style="width:10px;height:10px;vertical-align:0"><use href="#i-trend-up"/></svg> 4.1%</div></div>
+            <div class="ad-kpi"><div class="k">队列深度</div><div class="v num" style="color:var(--ds-warning)">1,284</div><div class="t" style="color:var(--ds-warning)">重试中</div></div>
+            <div class="ad-kpi"><div class="k">webhook 失败</div><div class="v num" style="color:var(--ds-danger)">3</div><div class="t down">需排查</div></div>
+            <div class="ad-kpi"><div class="k">退信率 24h</div><div class="v num">2.4%</div><div class="t neu">阈值 5%</div></div>
+          </div>
+          <div class="tablecard scrollx">
+            <table>
+              <thead><tr><th>匹配地址</th><th>动作</th><th>目标</th><th>状态</th><th class="num-col">命中</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">*@example.com</td><td><span class="tag tag-success">forward</span></td><td class="mono">me@gmail.com</td><td><span class="statecell"><span class="dot dot-success"></span>生效中</span></td><td class="num-col">9,402</td></tr>
+                <tr><td class="mono">hook@example.com</td><td><span class="tag tag-warning">webhook</span></td><td class="mono">api.example.com/inbound</td><td><span class="statecell"><span class="dot dot-danger"></span>失败</span></td><td class="num-col">1,288</td></tr>
+                <tr><td class="mono">support@example.com</td><td><span class="tag tag-info">store</span></td><td class="mono" style="color:var(--ds-fg-subtle)">—</td><td><span class="statecell"><span class="dot dot-success"></span>生效中</span></td><td class="num-col">642</td></tr>
+                <tr><td class="mono">noreply@example.com</td><td><span class="tag tag-neutral">drop</span></td><td class="mono" style="color:var(--ds-fg-subtle)">—</td><td><span class="statecell"><span class="dot dot-muted"></span>已停用</span></td><td class="num-col">0</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 移动端 Mobile（iPhone 17 Pro Max 套壳）===== -->
+  <h2 class="sec">移动端 Mobile <span class="sec-note">iPhone 17 Pro Max 套壳 · 收件箱 + 阅读 两屏并排</span></h2>
+  <div class="phones">
+
+    <!-- 套壳①：收件箱（浅色顶栏） -->
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="ptop">
+            <span class="pmark"><svg class="ic-svg" style="width:14px;height:14px;vertical-align:0"><use href="#i-mail"/></svg></span>
+            <span class="pname">hahamail</span>
+            <span class="pic" style="margin-left:auto" aria-label="搜索"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-search"/></svg></span>
+            <span class="pic" aria-label="写信"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-pencil"/></svg></span>
+          </div>
+          <div class="pmail unr">
+            <span class="pun"><span class="dot dot-info"></span></span>
+            <img class="pav" src="../../_assets/avatars/a1.jpg" alt="Stripe 发件人头像" loading="lazy">
+            <span class="pb">
+              <span class="pfrom">stripe@stripe.com</span>
+              <span class="psubj">[Invoice] 你的 6 月账单已生成</span>
+              <span class="pprev">本期合计 $42.00，自动续费…</span>
+            </span>
+            <span class="ptime">09:24</span>
+          </div>
+          <div class="pmail unr">
+            <span class="pun"><span class="dot dot-info"></span></span>
+            <img class="pav" src="../../_assets/avatars/a8.jpg" alt="GitHub 发件人头像" loading="lazy">
+            <span class="pb">
+              <span class="pfrom">noreply@github.com</span>
+              <span class="psubj">[hahamail] CI passed on main</span>
+              <span class="pprev">16 packages, race detector ok…</span>
+            </span>
+            <span class="ptime">08:51</span>
+          </div>
+          <div class="pmail read">
+            <span class="pun"></span>
+            <img class="pav" src="../../_assets/avatars/a23.jpg" alt="Postmaster 发件人头像" loading="lazy">
+            <span class="pb">
+              <span class="pfrom">postmaster@gmail.com</span>
+              <span class="psubj">Delivery Status Notification (Failure)</span>
+              <span class="pprev">550 5.1.1 user unknown…</span>
+            </span>
+            <span class="ptime">周一</span>
+          </div>
+          <div class="pmail read">
+            <span class="pun"></span>
+            <img class="pav" src="../../_assets/avatars/a15.jpg" alt="Linear 发件人头像" loading="lazy">
+            <span class="pb">
+              <span class="pfrom">notify@linear.app</span>
+              <span class="psubj">3 issues assigned to you</span>
+              <span class="pprev">DELIV-204, DELIV-211, OPS-88…</span>
+            </span>
+            <span class="ptime">周日</span>
+          </div>
+          <div class="pauth">
+            <span class="palabel">来自 stripe@stripe.com 的认证</span>
+            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
+            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
+            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
+            <span class="tag tag-info">spam 0.4</span>
+          </div>
+          <div class="pbar">
+            <span class="pt on"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-inbox"/></svg></span>收件箱</span>
+            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-route"/></svg></span>路由</span>
+            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-outbox"/></svg></span>队列</span>
+            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-chart"/></svg></span>指标</span>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+
+    <!-- 套壳②：邮件阅读视图（深色顶栏，加 sb-light） -->
+    <div class="dvc17 sb-light">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="ptop dark">
+            <span class="pic" aria-label="返回"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-reply"/></svg></span>
+            <span class="pname" style="font-size:var(--ds-text-base); margin-left:var(--ds-space-1)">阅读</span>
+            <span class="pic" style="margin-left:auto" aria-label="星标"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-star"/></svg></span>
+            <span class="pic" aria-label="归档"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-archive"/></svg></span>
+          </div>
+          <div class="pread">
+            <div class="prt">[Invoice] 你的 6 月账单已生成</div>
+            <div class="prfrom">
+              <img src="../../_assets/avatars/a1.jpg" alt="Stripe Billing 头像" loading="lazy">
+              <div style="flex:1; min-width:0"><div class="prn">Stripe Billing</div><div class="pre">billing@stripe.com</div></div>
+              <span class="ptime">09:24</span>
+            </div>
+            <div class="pauth" style="border:none; padding:0 0 var(--ds-space-3); background:transparent">
+              <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
+              <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
+              <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
+              <span class="tag tag-info">spam 0.4</span>
+            </div>
+            <div class="prbody">
+              <p>你好，</p>
+              <p>本期合计 <span class="mono">$42.00</span>，将于 6 月 28 日自动扣款。明细见所附 PDF 发票。</p>
+              <p>如需调整套餐或下载历史账单，可在控制台「账单」页查看。</p>
+            </div>
+          </div>
+          <div class="pattach">
+            <div class="pa"><img src="../../_assets/photos/square1.jpg" alt="附件 invoice 缩略图" loading="lazy"><div class="pan">invoice-jun.pdf</div></div>
+            <div class="pa"><img src="../../_assets/photos/square2.jpg" alt="附件 usage 缩略图" loading="lazy"><div class="pan">usage.png</div></div>
+          </div>
+          <div class="pactions">
+            <button class="btn btn-primary btn-sm"><svg class="ic-svg"><use href="#i-reply"/></svg>回复</button>
+            <button class="btn btn-secondary btn-sm"><svg class="ic-svg"><use href="#i-forward"/></svg>转发</button>
+            <button class="btn btn-tertiary btn-sm"><svg class="ic-svg"><use href="#i-download"/></svg>下载</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+
     <p style="flex:1; min-width:200px; color:var(--ds-fg-muted); font-size:var(--ds-text-sm); margin:0; align-self:center">
-      移动端在 ≤640px 断点下，栅格收为一列、规则表横向滚动；顶栏压缩、搜索框自适应。手机框沿用同一套 <span class="mono">--ds-*</span> 变量、AA 对比与亮暗主题。
+      两屏（收件箱 / 阅读）统一套用 iPhone 17 Pro Max 钛金壳，沿用同一套 <span class="mono">--ds-*</span> 变量、AA 对比与亮暗主题；阅读屏顶栏为深色，故该机加 <span class="mono">sb-light</span> 让状态栏 / home 条转白。触控目标 ≥44px。
     </p>
   </div>
 
