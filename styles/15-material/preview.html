@@ -456,43 +456,85 @@
 
   /* mobile frames — iPhone 17 Pro Max 套壳并排展示 */
   .phones { display: flex; gap: var(--ds-space-9); flex-wrap: wrap; justify-content: center; }
-  .phone-body { background: var(--ds-bg); min-height: 100%; display: flex; flex-direction: column; }
-  .pm-top { display: flex; align-items: center; justify-content: space-between; padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-3); }
-  .pm-top h4 { font-size: var(--ds-text-lg); }
-  .pm-search { margin: 0 var(--ds-space-4) var(--ds-space-4); height: 40px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); border: 1px solid var(--ds-border); display: flex; align-items: center; gap: var(--ds-space-2); padding: 0 var(--ds-space-4); color: var(--ds-fg-subtle); font-size: var(--ds-text-sm); }
-  .pm-search .ico { font-size: 18px; }
-  .pm-chips { display: flex; gap: var(--ds-space-2); padding: 0 var(--ds-space-4) var(--ds-space-4); overflow: hidden; }
-  .pm-feed { padding: 0 var(--ds-space-4) var(--ds-space-4); display: grid; gap: var(--ds-space-3); align-content: start; flex: 1; }
-  .pm-card { border-radius: var(--ds-radius-md); overflow: hidden; box-shadow: var(--ds-shadow-sm); background: var(--ds-bg-elevated); }
+  /* phone-body 精确填满 812-54=758 的可视区，flex 纵列，主区滚动，tabbar 贴底 */
+  .phone-body { background: var(--ds-bg); height: 100%; display: flex; flex-direction: column; }
+  /* M3 top app bar：状态栏(54px)之下，扁平高架表面 */
+  .pm-top { flex: none; display: flex; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-2) var(--ds-space-3) var(--ds-space-4); }
+  .pm-top h4 { font-size: var(--ds-text-xl); letter-spacing: -0.02em; flex: 1; }
+  .pm-top .icon-btn { width: 44px; height: 44px; }
+  .pm-top .icon-btn .ico { font-size: 22px; }
+  .pm-search { margin: 0 var(--ds-space-4) var(--ds-space-3); height: 48px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); border: 1px solid var(--ds-border); display: flex; align-items: center; gap: var(--ds-space-2); padding: 0 var(--ds-space-4); color: var(--ds-fg-subtle); font-size: var(--ds-text-base); }
+  .pm-search .ico { font-size: 20px; }
+  .pm-chips { flex: none; display: flex; gap: var(--ds-space-2); padding: 0 var(--ds-space-4) var(--ds-space-3); overflow: hidden; }
+  .pm-chips .chip { height: 36px; }
+  /* 快捷入口：M3 tonal 圆形动作 */
+  .pm-quick { flex: none; display: flex; justify-content: space-between; gap: var(--ds-space-2); padding: 0 var(--ds-space-4) var(--ds-space-4); }
+  .pm-quick .q { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; }
+  .pm-quick .q .ic { width: 56px; height: 56px; border-radius: var(--ds-radius-lg); background: var(--ds-info-bg); color: var(--ds-primary); display: grid; place-items: center; }
+  .pm-quick .q .ic .ico { font-size: 24px; }
+  .pm-quick .q .lb { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); font-weight: var(--ds-weight-medium); }
+  /* 滚动主区：flex:1 + min-height:0 让 feed 内部滚动，不撑破 812 */
+  .pm-feed { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--ds-space-4) var(--ds-space-6); display: grid; gap: var(--ds-space-4); align-content: start; }
+  .pm-feed::-webkit-scrollbar { width: 0; }
+  .pm-sec { display: flex; align-items: baseline; justify-content: space-between; }
+  .pm-sec h5 { font-size: var(--ds-text-md); }
+  .pm-sec a { font-size: var(--ds-text-xs); color: var(--ds-primary); text-decoration: none; font-weight: var(--ds-weight-medium); }
+  .pm-card { border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-sm); background: var(--ds-bg-elevated); }
   .pm-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-  .pm-card .p { padding: var(--ds-space-3) var(--ds-space-4); }
-  .pm-card .p h5 { font-size: var(--ds-text-base); }
+  .pm-card .p { padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4); }
+  .pm-card .p h5 { font-size: var(--ds-text-md); }
   .pm-card .p .meta { display: flex; align-items: center; gap: var(--ds-space-2); margin-top: var(--ds-space-2); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
-  .pm-fab { position: absolute; right: 16px; bottom: 86px; }
-  .tabbar { display: flex; justify-content: space-around; padding: var(--ds-space-2) 0 calc(var(--ds-space-3) + 10px); margin-top: auto; background: var(--ds-bg-elevated); border-top: 1px solid var(--ds-border); }
-  .tabbar .t { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ds-fg-muted); font-size: 10px; font-weight: var(--ds-weight-medium); }
-  .tabbar .t .pill { padding: 3px var(--ds-space-4); border-radius: var(--ds-radius-full); }
+  .pm-card .p .meta .sp { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; }
+  .pm-card .p .meta .sp .ico { font-size: 14px; }
+  /* 紧凑列表行（list item，触控 ≥56px） */
+  .pm-rows { display: grid; gap: var(--ds-space-1); }
+  .pm-row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-2); border-radius: var(--ds-radius-md); min-height: 56px; }
+  .pm-row img { width: 44px; height: 44px; border-radius: var(--ds-radius-md); object-fit: cover; flex: none; }
+  .pm-row .tx { flex: 1; min-width: 0; }
+  .pm-row .tx .t { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pm-row .tx .s { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .pm-row .badge { flex: none; }
+  /* FAB：贴在 tabbar 之上，相对 .scr 定位（不随 feed 滚动） */
+  .pm-fab { position: absolute; right: 16px; bottom: 84px; z-index: 5; }
+  /* M3 底部导航栏 */
+  .tabbar { flex: none; display: flex; justify-content: space-around; padding: var(--ds-space-2) 0 calc(var(--ds-space-3) + 12px); background: var(--ds-bg-elevated); border-top: 1px solid var(--ds-border); }
+  .tabbar .t { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--ds-fg-muted); font-size: 11px; font-weight: var(--ds-weight-medium); min-width: 56px; }
+  .tabbar .t .pill { padding: 4px var(--ds-space-5); border-radius: var(--ds-radius-full); }
   .tabbar .t.active { color: var(--ds-primary); }
   .tabbar .t.active .pill { background: var(--ds-info-bg); }
-  .tabbar .t .ico { font-size: 20px; }
+  .tabbar .t .ico { font-size: 22px; }
 
   /* profile phone */
+  .pp-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+  .pp-scroll::-webkit-scrollbar { width: 0; }
   .pp-hero { position: relative; }
-  .pp-hero img { width: 100%; height: 150px; object-fit: cover; }
-  .pp-av { position: absolute; left: var(--ds-space-4); bottom: -28px; width: 72px; height: 72px; border-radius: var(--ds-radius-full); object-fit: cover; box-shadow: 0 0 0 4px var(--ds-bg); }
+  .pp-hero img { width: 100%; height: 168px; object-fit: cover; }
+  .pp-hero .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,18,24,.32) 0%, rgba(20,18,24,0) 45%); }
+  .pp-back { position: absolute; left: var(--ds-space-3); top: var(--ds-space-3); width: 40px; height: 40px; border-radius: var(--ds-radius-full); background: rgba(20,18,24,.42); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff; display: grid; place-items: center; border: 0; cursor: pointer; }
+  .pp-back .ico { font-size: 22px; }
+  .pp-av { position: absolute; left: var(--ds-space-4); bottom: -32px; width: 80px; height: 80px; border-radius: var(--ds-radius-full); object-fit: cover; box-shadow: 0 0 0 4px var(--ds-bg); }
   .pp-info { padding: var(--ds-space-7) var(--ds-space-4) var(--ds-space-4); }
-  .pp-info h4 { font-size: var(--ds-text-lg); }
-  .pp-info .by { color: var(--ds-fg-muted); font-size: var(--ds-text-sm); margin-top: 2px; }
-  .pp-stats { display: flex; gap: var(--ds-space-6); margin-top: var(--ds-space-4); }
-  .pp-stats .s .n { font-weight: var(--ds-weight-bold); }
-  .pp-stats .s .l { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .pp-info h4 { font-size: var(--ds-text-xl); display: flex; align-items: center; gap: var(--ds-space-2); }
+  .pp-info h4 .verify { color: var(--ds-primary); font-size: 18px; }
+  .pp-info .by { color: var(--ds-fg-muted); font-size: var(--ds-text-sm); margin-top: 4px; }
+  .pp-stats { display: flex; gap: var(--ds-space-7); margin-top: var(--ds-space-5); }
+  .pp-stats .s .n { font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
+  .pp-stats .s .l { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin-top: 1px; }
   .pp-actions { display: flex; gap: var(--ds-space-3); padding: 0 var(--ds-space-4) var(--ds-space-5); }
-  .pp-list { padding: 0 var(--ds-space-4) var(--ds-space-5); display: grid; gap: var(--ds-space-2); align-content: start; flex: 1; }
-  .pp-list .row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3); border-radius: var(--ds-radius-md); }
+  .pp-actions .btn { height: 44px; }
+  .pp-actions .btn.icon-only { flex: none; width: 44px; padding: 0; }
+  .pp-tabs { display: flex; gap: var(--ds-space-1); padding: 0 var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+  .pp-tabs .pt { flex: 1; text-align: center; padding: var(--ds-space-3) 0; font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); color: var(--ds-fg-muted); position: relative; cursor: pointer; }
+  .pp-tabs .pt.active { color: var(--ds-primary); }
+  .pp-tabs .pt.active::after { content: ""; position: absolute; left: 20%; right: 20%; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0; background: var(--ds-primary); }
+  .pp-list { padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-5); display: grid; gap: var(--ds-space-1); align-content: start; }
+  .pp-list .row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-2); border-radius: var(--ds-radius-md); min-height: 56px; }
   .pp-list .row:hover { background: var(--ds-bg-subtle); }
-  .pp-list .row img { width: 40px; height: 40px; border-radius: var(--ds-radius-md); object-fit: cover; }
+  .pp-list .row img { width: 52px; height: 52px; border-radius: var(--ds-radius-md); object-fit: cover; flex: none; }
+  .pp-list .row .tx { flex: 1; min-width: 0; }
   .pp-list .row .t { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); }
-  .pp-list .row .s { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .pp-list .row .s { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin-top: 1px; }
+  .pp-list .row .chev { color: var(--ds-fg-subtle); font-size: 18px; flex: none; }
 
   /* footer */
   footer { padding: var(--ds-space-9) 0; color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
@@ -1084,6 +1126,7 @@
         <div class="phone-body">
           <div class="pm-top">
             <h4>发现</h4>
+            <button class="icon-btn" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
             <button class="icon-btn" aria-label="通知"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M13.7 21a2 2 0 0 1-3.4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
           <div class="pm-search"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>搜索灵感…</div>
@@ -1091,10 +1134,24 @@
             <span class="chip selected">全部</span>
             <span class="chip">设计</span>
             <span class="chip">旅行</span>
+            <span class="chip">美食</span>
+          </div>
+          <div class="pm-quick">
+            <a class="q" href="#"><span class="ic"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="lb">精选</span></a>
+            <a class="q" href="#"><span class="ic"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 7h7v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lb">热门</span></a>
+            <a class="q" href="#"><span class="ic"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M12 21c5-5 7-8.5 7-11a7 7 0 1 0-14 0c0 2.5 2 6 7 11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="lb">附近</span></a>
+            <a class="q" href="#"><span class="ic"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M3 9h18M8 4v16" stroke="currentColor" stroke-width="1.6"/></svg></span><span class="lb">收藏夹</span></a>
           </div>
           <div class="pm-feed">
-            <article class="pm-card"><img src="../../_assets/photos/ocean.jpg" alt="海岸风景" loading="lazy" /><div class="p"><h5>静谧海岸线</h5><div class="meta"><img class="avatar av-24" src="../../_assets/avatars/a5.jpg" alt="" loading="lazy" />Lena · 收藏 248</div></div></article>
-            <article class="pm-card"><img src="../../_assets/photos/coffee.jpg" alt="咖啡与桌面" loading="lazy" /><div class="p"><h5>晨间仪式</h5><div class="meta"><img class="avatar av-24" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy" />Marco · 收藏 132</div></div></article>
+            <div class="pm-sec"><h5>为你推荐</h5><a href="#">查看全部</a></div>
+            <article class="pm-card"><img src="../../_assets/photos/ocean.jpg" alt="海岸风景" loading="lazy" /><div class="p"><h5>静谧海岸线</h5><div class="meta"><img class="avatar av-24" src="../../_assets/avatars/a5.jpg" alt="" loading="lazy" />Lena<span class="sp"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>248</span></div></div></article>
+            <article class="pm-card"><img src="../../_assets/photos/coffee.jpg" alt="咖啡与桌面" loading="lazy" /><div class="p"><h5>晨间仪式</h5><div class="meta"><img class="avatar av-24" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy" />Marco<span class="sp"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>132</span></div></div></article>
+            <div class="pm-sec"><h5>近期收藏</h5><a href="#">更多</a></div>
+            <div class="pm-rows">
+              <div class="pm-row"><img src="../../_assets/photos/forest.jpg" alt="森林" loading="lazy" /><div class="tx"><div class="t">晨雾松林步道</div><div class="s">自然 · 收藏 86</div></div><span class="badge b-success">新</span></div>
+              <div class="pm-row"><img src="../../_assets/photos/city.jpg" alt="城市" loading="lazy" /><div class="tx"><div class="t">霓虹都市夜景</div><div class="s">城市 · 收藏 174</div></div></div>
+              <div class="pm-row"><img src="../../_assets/photos/food.jpg" alt="美食" loading="lazy" /><div class="tx"><div class="t">周末早午餐桌</div><div class="s">美食 · 收藏 59</div></div></div>
+            </div>
           </div>
           <button class="fab fab-primary pm-fab" aria-label="发布"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
           <nav class="tabbar">
@@ -1125,12 +1182,15 @@
         </div>
         <div class="dvc-body">
         <div class="phone-body">
+          <div class="pp-scroll">
           <div class="pp-hero">
             <img src="../../_assets/photos/mountain.jpg" alt="山脉背景" loading="lazy" />
+            <div class="scrim"></div>
+            <button class="pp-back" aria-label="返回"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <img class="pp-av" src="../../_assets/avatars/a15.jpg" alt="Aïsha 的头像" loading="lazy" />
           </div>
           <div class="pp-info">
-            <h4>Aïsha Rahman</h4>
+            <h4>Aïsha Rahman<svg class="verify ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3l2.4 1.7 2.9-.2 1 2.7 2.4 1.6-.8 2.8.8 2.8-2.4 1.6-1 2.7-2.9-.2L12 21l-2.4-1.7-2.9.2-1-2.7L3.3 15l.8-2.8-.8-2.8L5.7 7.8l1-2.7 2.9.2L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></h4>
             <div class="by">产品设计师 · 阿姆斯特丹</div>
             <div class="pp-stats tnum">
               <div class="s"><div class="n">248</div><div class="l">作品</div></div>
@@ -1140,12 +1200,20 @@
           </div>
           <div class="pp-actions">
             <button class="btn btn-filled" style="flex:1">关注</button>
-            <button class="btn btn-outlined"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>消息</button>
+            <button class="btn btn-tonal" style="flex:1"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>消息</button>
+            <button class="btn btn-outlined icon-only" aria-label="更多"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg></button>
+          </div>
+          <div class="pp-tabs">
+            <span class="pt active">作品</span>
+            <span class="pt">收藏</span>
+            <span class="pt">关于</span>
           </div>
           <div class="pp-list">
-            <div class="row"><img src="../../_assets/photos/architecture.jpg" alt="建筑作品" loading="lazy" /><div><div class="t">M3 仪表盘改版</div><div class="s">更新于 2 天前</div></div></div>
-            <div class="row"><img src="../../_assets/photos/desk.jpg" alt="桌面作品" loading="lazy" /><div><div class="t">Token 工作流</div><div class="s">更新于 1 周前</div></div></div>
-            <div class="row"><img src="../../_assets/photos/tech.jpg" alt="硬件作品" loading="lazy" /><div><div class="t">硬件配套界面</div><div class="s">更新于 3 周前</div></div></div>
+            <div class="row"><img src="../../_assets/photos/architecture.jpg" alt="建筑作品" loading="lazy" /><div class="tx"><div class="t">M3 仪表盘改版</div><div class="s">更新于 2 天前 · 收藏 41</div></div><svg class="chev ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="row"><img src="../../_assets/photos/desk.jpg" alt="桌面作品" loading="lazy" /><div class="tx"><div class="t">Token 工作流</div><div class="s">更新于 1 周前 · 收藏 27</div></div><svg class="chev ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="row"><img src="../../_assets/photos/tech.jpg" alt="硬件作品" loading="lazy" /><div class="tx"><div class="t">硬件配套界面</div><div class="s">更新于 3 周前 · 收藏 63</div></div><svg class="chev ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="row"><img src="../../_assets/photos/workspace.jpg" alt="工作空间作品" loading="lazy" /><div class="tx"><div class="t">组件库工作区</div><div class="s">更新于 1 个月前 · 收藏 38</div></div><svg class="chev ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
           </div>
           <nav class="tabbar">
             <span class="t"><span class="pill"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5 10v9h14v-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>首页</span>

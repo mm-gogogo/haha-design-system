@@ -561,6 +561,31 @@
   /* ===== 移动布局：两台手机并排 ===== */
   .phone-row { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; justify-content: center; align-items: flex-start; }
   .phone-cap { text-align: center; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-top: var(--ds-space-3); }
+
+  /* ===== 移动屏：填满 812px、消除底部留白 =====
+     .dvc-body 做成纵向 flex 列：顶栏在 54px 状态栏下，主区 flex:1 撑满，
+     底部 tab / 主操作用 margin-top:auto 贴底。本块仅在 preview 内覆写，device.css 外壳不动。 */
+  .dvc17 .dvc-body { display: flex; flex-direction: column; }
+  .dvc17 .dvc-body > .m-topbar { flex: none; }
+  .dvc17 .dvc-body > .m-body { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+  .dvc17 .dvc-body > .m-tabbar { margin-top: auto; flex: none; }
+  /* 详情/设置屏：hero + 统计 在上，开关列表占中段，保存按钮贴底 */
+  .dvc17 .dvc-body > .m-hero, .dvc17 .dvc-body > .m-stat-row { flex: none; }
+  .dvc17 .dvc-body > .m-list { flex: none; }
+  .dvc17 .dvc-body > .m-foot { margin-top: auto; flex: none; }
+  /* 主区内：让结果列表/概览之间的填充块吸收剩余高度 */
+  .m-body > .m-fill { flex: 1 1 auto; min-height: 0; }
+  /* 移动屏内的薄荷青小结卡（可回收总量 / 磁盘环），用来填满中段、不留白 */
+  .m-summary { display: flex; align-items: center; gap: var(--ds-space-4); padding: var(--ds-space-4); margin-top: var(--ds-space-4); background: var(--ds-bg-elevated); border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-md); }
+  .m-summary .ring-wrap { width: 78px; height: 78px; margin: 0; flex: none; }
+  .m-summary .ring-num { font-size: var(--ds-text-lg); }
+  .m-summary .ring-unit { font-size: 10px; }
+  .m-summary .meta { flex: 1; min-width: 0; }
+  .m-summary .meta .big { font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .m-summary .meta .lbl { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin-top: 2px; }
+  .m-summary .disk-track { margin-top: var(--ds-space-2); height: 14px; }
+  .m-summary .legend { margin-top: var(--ds-space-2); font-size: 11px; gap: var(--ds-space-3); }
+  .m-foot { padding: var(--ds-space-4) var(--ds-space-3) var(--ds-space-5); }
   .phone-status { display: flex; align-items: center; justify-content: space-between; padding: var(--ds-space-2) var(--ds-space-5) 0; font-size: 11px; color: var(--ds-fg-muted); font-weight: var(--ds-weight-medium); }
   .phone-status .dots { display: flex; gap: 3px; align-items: center; }
   .phone-status .dots .icon { width: 13px; height: 13px; }
@@ -1211,6 +1236,24 @@
             <div class="m-body">
               <button class="m-action"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 扫描可回收空间</button>
               <div class="m-sub">先扫描预览，再决定清理 · 可恢复</div>
+              <div class="m-summary">
+                <div class="ring-wrap" aria-hidden="true">
+                  <svg width="78" height="78" viewBox="0 0 78 78">
+                    <circle cx="39" cy="39" r="31" fill="none" stroke="var(--ds-bg-sunken)" stroke-width="8"/>
+                    <circle cx="39" cy="39" r="31" fill="none" stroke="var(--ds-primary)" stroke-width="8" stroke-linecap="round" stroke-dasharray="194.8" stroke-dashoffset="62"/>
+                  </svg>
+                  <div class="ring-val"><div class="ring-num">82</div><div class="ring-unit">健康分</div></div>
+                </div>
+                <div class="meta">
+                  <div class="big">4.7 GB</div>
+                  <div class="lbl">本次可回收 · 跨 3 类</div>
+                  <div class="disk-track" aria-hidden="true">
+                    <span class="disk-seg" style="width:46%;background:var(--ds-primary)"></span>
+                    <span class="disk-seg" style="width:18%;background:var(--ds-accent)"></span>
+                    <span class="disk-seg" style="width:8%;background:var(--ds-warning)"></span>
+                  </div>
+                </div>
+              </div>
               <div class="m-list">
                 <div class="m-row">
                   <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M10 4H6a2 2 0 0 0-2 2v3a2 2 0 0 1 0 4v3a2 2 0 0 0 2 2h3a2 2 0 0 1 4 0h3a2 2 0 0 0 2-2v-3a2 2 0 0 1 0-4V6a2 2 0 0 0-2-2h-4a2 2 0 0 1-4 0z"/></svg></div>
@@ -1228,6 +1271,7 @@
                   <div class="size">390 MB</div>
                 </div>
               </div>
+              <div class="m-fill" aria-hidden="true"></div>
             </div>
             <nav class="m-tabbar" aria-label="底部标签栏">
               <span class="m-tab active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg> 概览</span>
@@ -1284,8 +1328,13 @@
                 <div class="meta"><div class="name">完成后通知</div><div class="sub">仅显示回收摘要</div></div>
                 <div class="sw-track" role="switch" aria-checked="false" aria-label="完成后通知"><span class="knob"></span></div>
               </div>
+              <div class="m-toggle-row">
+                <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M3 7h18M3 12h18M3 17h12"/></svg></div>
+                <div class="meta"><div class="name">深色外观跟随系统</div><div class="sub">日落自动切换</div></div>
+                <div class="sw-track on" role="switch" aria-checked="true" aria-label="深色外观跟随系统"><span class="knob"></span></div>
+              </div>
             </div>
-            <div style="padding:var(--ds-space-4) var(--ds-space-3) var(--ds-space-5)">
+            <div class="m-foot">
               <button class="m-action"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4 10-11"/></svg> 保存设置</button>
             </div>
             </div>
@@ -1492,6 +1541,24 @@
         <div class="m-body">
           <button class="m-action"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4l-9 9"/><path d="M13.5 8.5l2 2"/><path d="M4 20c0-3.5 1.5-5 4-7l3 3c-2 2.5-3.5 4-7 4z"/></svg> 扫描可回收空间</button>
           <div class="m-sub">先扫描预览，再决定清理 · 可恢复</div>
+          <div class="m-summary">
+            <div class="ring-wrap" aria-hidden="true">
+              <svg width="78" height="78" viewBox="0 0 78 78">
+                <circle cx="39" cy="39" r="31" fill="none" stroke="var(--ds-bg-sunken)" stroke-width="8"/>
+                <circle cx="39" cy="39" r="31" fill="none" stroke="var(--ds-accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="194.8" stroke-dashoffset="66"/>
+              </svg>
+              <div class="ring-val"><div class="ring-num">66%</div><div class="ring-unit">已用</div></div>
+            </div>
+            <div class="meta">
+              <div class="big">170 GB</div>
+              <div class="lbl">可用空间 · 共 500 GB</div>
+              <div class="disk-track" aria-hidden="true">
+                <span class="disk-seg" style="width:34%;background:var(--ds-primary)"></span>
+                <span class="disk-seg" style="width:22%;background:var(--ds-accent)"></span>
+                <span class="disk-seg" style="width:10%;background:var(--ds-warning)"></span>
+              </div>
+            </div>
+          </div>
           <div class="m-list">
             <div class="m-row">
               <div class="ic" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M10 4H6a2 2 0 0 0-2 2v3a2 2 0 0 1 0 4v3a2 2 0 0 0 2 2h3a2 2 0 0 1 4 0h3a2 2 0 0 0 2-2v-3a2 2 0 0 1 0-4V6a2 2 0 0 0-2-2h-4a2 2 0 0 1-4 0z"/></svg></div>
@@ -1509,7 +1576,14 @@
               <div class="size">390 MB</div>
             </div>
           </div>
+          <div class="m-fill" aria-hidden="true"></div>
         </div>
+        <nav class="m-tabbar" aria-label="底部标签栏">
+          <span class="m-tab active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" class="fill"/></svg> 概览</span>
+          <span class="m-tab"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="12" cy="12" r="3.2"/></svg> 磁盘</span>
+          <span class="m-tab"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg> 保护</span>
+          <span class="m-tab"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a8 8 0 0 0-1.7 1l-2.4-1-2 3.5L4.6 11a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 2.5h4l.4-2.5a8 8 0 0 0 1.7-1l2.4 1 2-3.5z"/></svg> 设置</span>
+        </nav>
         </div>
         <div class="home"></div>
       </div>
@@ -1568,6 +1642,7 @@
               <div class="size">390 MB</div>
             </div>
           </div>
+          <div class="m-fill" aria-hidden="true"></div>
           <div style="padding:var(--ds-space-4) 0 var(--ds-space-5)">
             <button class="m-action" style="background:var(--ds-bg);color:var(--ds-fg);box-shadow:var(--ds-shadow-md)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="3.5" height="12" rx="1"/><rect x="13.5" y="6" width="3.5" height="12" rx="1"/></svg> 暂停清理</button>
           </div>

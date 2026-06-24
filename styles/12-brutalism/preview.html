@@ -391,14 +391,19 @@ td.num,th.num{text-align:right}
 
 /* ---- MOBILE（iPhone 17 Pro Max 套壳：外壳走 device.css，屏内沿用粗野身份） ---- */
 .phone-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-9);align-items:flex-start}
-/* 屏内布局占满设备屏，最小高度撑满 .scr，tabbar 落底 */
+/* 屏内布局占满设备屏：纵列 flex，主区 flex:1 撑满，消除底部留白，tabbar margin-top:auto 贴底 */
 .dvc-body .ph-screen{display:flex;flex-direction:column;min-height:100%}
-.dvc-body .ph-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border-bottom:3px solid var(--ds-border-strong);padding:12px 14px}
+.dvc-body .ph-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border-bottom:3px solid var(--ds-border-strong);padding:10px 14px;min-height:54px}
 .dvc-body .ph-top .ph-title{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);letter-spacing:var(--ds-tracking-tight)}
-.dvc-body .ph-burger{width:34px;height:34px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ds-fg)}
-.dvc-body .ph-burger .ico{width:18px;height:18px}
-.dvc-body .ph-body{padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-4)}
-.dvc-body .ph-hero{aspect-ratio:16/9;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);overflow:hidden}
+.dvc-body .ph-burger{width:44px;height:44px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ds-fg)}
+.dvc-body .ph-burger .ico{width:20px;height:20px}
+.dvc-body .ph-burger:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+/* 主内容区撑满剩余高度，消除底部留白 */
+.dvc-body .ph-body{flex:1 1 auto;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-4)}
+/* 屏内触控目标 ≥44px：本地化 btn-sm 高度，不影响桌面区 */
+.dvc-body .btn{height:44px}
+.dvc-body .btn-sm{height:44px;font-size:var(--ds-text-sm)}
+.dvc-body .ph-hero{aspect-ratio:2/1;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);overflow:hidden}
 .dvc-body .ph-hero img{width:100%;height:100%;object-fit:cover;filter:grayscale(.8) contrast(1.2)}
 .dvc-body .ph-card{background:var(--ds-bg-elevated);border:2px solid var(--ds-border);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-2)}
 .dvc-body .ph-card h4{font-family:var(--ds-font-mono);font-size:var(--ds-text-base)}
@@ -410,14 +415,16 @@ td.num,th.num{text-align:right}
 .dvc-body .ph-list .li-meta{flex:1}
 .dvc-body .ph-list .li-name{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold)}
 .dvc-body .ph-list .li-sub{color:var(--ds-fg-muted);font-size:var(--ds-text-xs)}
-.dvc-body .ph-tabbar{display:flex;border-top:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);margin-top:auto;padding-bottom:18px}
-.dvc-body .ph-tabbar button{flex:1;font-family:var(--ds-font-mono);font-size:11px;font-weight:var(--ds-weight-bold);text-transform:uppercase;border:none;border-right:2px solid var(--ds-border);background:transparent;color:var(--ds-fg-muted);padding:10px 4px;cursor:pointer;min-height:48px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.dvc-body .ph-tabbar{display:flex;border-top:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);margin-top:auto;padding-bottom:20px}
+.dvc-body .ph-tabbar button{flex:1;font-family:var(--ds-font-mono);font-size:11px;font-weight:var(--ds-weight-bold);text-transform:uppercase;border:none;border-right:2px solid var(--ds-border);background:transparent;color:var(--ds-fg-muted);padding:10px 4px;cursor:pointer;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;letter-spacing:0}
 .dvc-body .ph-tabbar button .ico{width:18px;height:18px}
 .dvc-body .ph-tabbar button:last-child{border-right:none}
 .dvc-body .ph-tabbar button[aria-current="page"]{background:var(--ds-primary);color:var(--ds-primary-fg)}
 .dvc-body .ph-tabbar button:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);position:relative;z-index:1}
 .dvc-body .ph-prof-hero{position:relative;aspect-ratio:3/2;border-bottom:3px solid var(--ds-border-strong);overflow:hidden;color:var(--ds-fg)}
 .dvc-body .ph-prof-hero img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) contrast(1.2)}
+/* 顶部深色 scrim：保证 sb-light 白色状态栏文字/图标在任意亮图上 ≥AA 对比 */
+.dvc-body .ph-prof-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:96px;background:linear-gradient(180deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.34) 52%,transparent 100%);pointer-events:none;z-index:1}
 .dvc-body .ph-prof-av{position:absolute;left:var(--ds-space-4);bottom:-26px;width:72px;height:72px;border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);overflow:hidden;background:var(--ds-bg-elevated);z-index:1}
 .dvc-body .ph-prof-av img{width:100%;height:100%;object-fit:cover;filter:grayscale(.4) contrast(1.1)}
 .dvc-body .ph-prof-body{padding:var(--ds-space-7) var(--ds-space-4) var(--ds-space-4)}

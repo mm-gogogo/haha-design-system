@@ -325,25 +325,46 @@ img.ds-img{display:block;width:100%;object-fit:cover;border-radius:var(--ds-radi
 
 /* 移动小样：并排手机 */
 .phones{display:flex;flex-wrap:wrap;gap:var(--ds-space-7);}
-.tabbar{display:flex;justify-content:space-around;align-items:center;padding:10px 0 18px;margin-top:var(--ds-space-4);
-  border-top:1px solid var(--ds-border);position:sticky;bottom:0;background:var(--ds-bg);}
-.tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--ds-fg-subtle);text-decoration:none;}
-.tabbar a svg{width:22px;height:22px;}
+/* 底部 tab bar：贴底（在 dvc-body flex 列里随 margin-top:auto 顶到底部），含 home 指示条留白 */
+.tabbar{display:flex;justify-content:space-around;align-items:center;padding:12px 0 calc(8px + var(--ds-space-5));
+  margin-top:auto;border-top:1px solid var(--ds-border);
+  background:color-mix(in srgb,var(--ds-bg-elevated) 88%,transparent);
+  -webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);}
+.dvc17 .dvc-body > .tabbar{margin-left:calc(-1*var(--ds-space-4));margin-right:calc(-1*var(--ds-space-4));}
+.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:56px;min-height:44px;
+  font-size:10px;color:var(--ds-fg-subtle);text-decoration:none;font-weight:var(--ds-weight-medium);}
+.tabbar a svg{width:23px;height:23px;}
 .tabbar a.on{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+.tabbar a.tab-fab{margin-top:-14px;}
+.tabbar a.tab-fab .fab{width:48px;height:48px;border-radius:var(--ds-radius-full);background:var(--ds-primary);
+  color:var(--ds-primary-fg);display:grid;place-items:center;box-shadow:var(--ds-shadow-md);margin-bottom:1px;}
+.tabbar a.tab-fab .fab svg{width:24px;height:24px;}
+/* 底部主操作条（贴底，含 home 指示条留白） */
+.dvc17 .mbar{margin-top:auto;margin-left:calc(-1*var(--ds-space-4));margin-right:calc(-1*var(--ds-space-4));
+  padding:var(--ds-space-3) var(--ds-space-4) calc(8px + var(--ds-space-5));
+  border-top:1px solid var(--ds-border);
+  background:color-mix(in srgb,var(--ds-bg-elevated) 88%,transparent);
+  -webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);}
 .p-feed-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--ds-radius-md);
   border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm),0 0 0 1px var(--ds-border);margin-bottom:var(--ds-space-3);}
 .p-profile-hero{position:relative;border-radius:var(--ds-radius-lg);overflow:hidden;margin-bottom:var(--ds-space-4);
   border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);}
 .p-profile-hero img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;}
-.p-profile-hero .pp-av{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);
-  width:64px;height:64px;border-radius:var(--ds-radius-full);border:3px solid var(--ds-bg);box-shadow:var(--ds-shadow-md);}
-.p-profile-meta{text-align:center;margin:34px 0 var(--ds-space-4);}
-.p-profile-meta .ppm-name{font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
-.p-profile-meta .ppm-sub{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
-.p-stats{display:flex;justify-content:center;gap:var(--ds-space-6);margin-bottom:var(--ds-space-4);}
-.p-stats .ps-n{font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;}
-.p-stats .ps-l{font-size:10px;color:var(--ds-fg-subtle);}
-.p-list-ava{width:42px;height:42px;border-radius:var(--ds-radius-full);flex:none;}
+.p-profile-hero .pp-av{position:absolute;left:50%;bottom:-38px;transform:translateX(-50%);
+  width:78px;height:78px;border-radius:var(--ds-radius-full);border:4px solid var(--ds-bg);box-shadow:var(--ds-shadow-md);
+  object-fit:cover;z-index:1;}
+.dvc17 .dvc-body.flush-top .p-profile-hero{margin-bottom:var(--ds-space-9);}
+.p-profile-meta{text-align:center;margin:0 0 var(--ds-space-5);}
+.p-profile-meta .ppm-name{font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);letter-spacing:-0.02em;}
+.p-profile-meta .ppm-sub{font-size:var(--ds-text-xs);color:var(--ds-fg-muted);margin-top:2px;}
+.p-stats{display:flex;justify-content:space-around;gap:var(--ds-space-3);margin-bottom:var(--ds-space-5);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-4) var(--ds-space-2);}
+.p-stats .ps-n{font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;}
+.p-stats .ps-l{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:2px;}
+.p-list-ava{width:44px;height:44px;border-radius:var(--ds-radius-full);flex:none;object-fit:cover;}
+/* 板块外的次级标题（个人页内复用） */
+.psec-h.in-flush{margin-top:var(--ds-space-2);}
 
 .hero h1,.land-hero h3{text-wrap:balance;}
 
@@ -579,35 +600,93 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
 /* ====================== 移动端示意 Mobile ====================== */
 /* 手机外框统一走共享 _assets/device.css 的 .dvc17；以下仅为屏内内容样式。 */
 /* .dvc-body 已含 padding-top:54px 状态栏留白，这里补充左右/底部内边距与底部安全区。 */
-.dvc17 .dvc-body{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);padding-bottom:var(--ds-space-5);}
+/* 精致移动 App 屏：dvc-body 撑满 812px 屏高（弹性纵向布局），消除底部留白。 */
+.dvc17 .dvc-body{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);padding-bottom:0;
+  display:flex;flex-direction:column;min-height:100%;}
+/* 内容主区填充剩余高度（grow 不 shrink，避免挤压子项），底部 tab/主操作贴底 */
+.dvc17 .dvc-scroll{flex:1 0 auto;display:block;}
+.dvc17 .dvc-scroll.pad-b{padding-bottom:var(--ds-space-5);}
 /* 个人页：顶图作沉浸式深色 header，铺到状态栏下方（配 .sb-light 让状态栏转白） */
 .dvc17 .dvc-body.flush-top{padding-top:0;padding-left:0;padding-right:0;}
-.dvc17 .dvc-body.flush-top > :not(.p-profile-hero){margin-left:var(--ds-space-4);margin-right:var(--ds-space-4);}
-.dvc17 .dvc-body.flush-top .p-profile-hero{border-radius:0;border:none;margin-bottom:var(--ds-space-6);}
-.dvc17 .dvc-body.flush-top .p-profile-hero img{aspect-ratio:auto;height:220px;}
+/* 滚动区内：除全宽顶图外，其余内容左右内缩 */
+.dvc17 .dvc-body.flush-top .dvc-scroll > :not(.p-profile-hero){margin-left:var(--ds-space-4);margin-right:var(--ds-space-4);}
+.dvc17 .dvc-body.flush-top .p-profile-hero{border-radius:0;border:none;margin-bottom:var(--ds-space-7);}
+.dvc17 .dvc-body.flush-top .p-profile-hero img{aspect-ratio:auto;height:228px;}
+/* flush-top 下 tabbar 仍全宽贴底 */
+.dvc17 .dvc-body.flush-top > .tabbar{margin-left:0;margin-right:0;}
+/* 顶图深色 header：在 54px 状态栏下方加渐变压暗，文字/返回不被灵动岛压住 */
+.p-profile-hero .pp-scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,10,16,.42) 0%,rgba(20,10,16,0) 34%,rgba(20,10,16,0) 60%,rgba(20,10,16,.30) 100%);}
+.p-profile-hero .pp-bar{position:absolute;top:58px;left:0;right:0;display:flex;align-items:center;
+  justify-content:space-between;padding:0 var(--ds-space-4);color:#fff;z-index:1;}
+.p-profile-hero .pp-bar .pp-ic{width:38px;height:38px;border-radius:var(--ds-radius-full);
+  background:rgba(255,255,255,.20);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.28);display:grid;place-items:center;cursor:pointer;}
+.p-profile-hero .pp-bar .pp-ic svg{width:19px;height:19px;color:#fff;}
 .ptop{display:flex;align-items:center;gap:var(--ds-space-3);margin:var(--ds-space-3) 0 var(--ds-space-4);}
-.ptop .pburger{width:38px;height:38px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
-  background:var(--ds-bg-elevated);display:grid;place-items:center;gap:3px;cursor:pointer;}
+.ptop .pburger{width:44px;height:44px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
+  background:var(--ds-bg-elevated);display:grid;place-items:center;gap:3px;cursor:pointer;flex:none;box-shadow:var(--ds-shadow-sm);}
 .ptop .pburger span{display:block;width:16px;height:2px;background:var(--ds-fg);border-radius:2px;}
-.ptop .ptitle{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);flex:1;}
-.ptop .pava{width:38px;height:38px;border-radius:var(--ds-radius-full);
+.ptop .ptitle{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-lg);flex:1;letter-spacing:-0.02em;}
+.ptop .ptitle small{display:block;font-size:var(--ds-text-xs);font-weight:var(--ds-weight-normal);color:var(--ds-fg-muted);letter-spacing:0;}
+.ptop .pava{width:44px;height:44px;border-radius:var(--ds-radius-full);flex:none;object-fit:cover;
   background:radial-gradient(circle at 34% 30%,#fff 0 18%,var(--ds-primary) 20% 100%);box-shadow:var(--ds-shadow-sm);}
+.ptop .pico-btn{width:44px;height:44px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
+  background:var(--ds-bg-elevated);display:grid;place-items:center;cursor:pointer;flex:none;box-shadow:var(--ds-shadow-sm);
+  position:relative;color:var(--ds-fg);}
+.ptop .pico-btn svg{width:20px;height:20px;}
+.ptop .pico-btn .ndot{position:absolute;top:7px;right:8px;width:9px;height:9px;border-radius:var(--ds-radius-full);
+  background:var(--ds-danger);border:2px solid var(--ds-bg-elevated);}
+/* 搜索胶囊（首页 app bar 下方） */
+.psearch{display:flex;align-items:center;gap:var(--ds-space-2);height:44px;padding:0 var(--ds-space-4);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);
+  box-shadow:var(--ds-shadow-sm);color:var(--ds-fg-subtle);font-size:var(--ds-text-sm);margin-bottom:var(--ds-space-4);}
+.psearch svg{width:18px;height:18px;flex:none;}
+/* 横向快捷分类胶囊 */
+.pchips{display:flex;gap:var(--ds-space-2);overflow-x:auto;margin-bottom:var(--ds-space-4);padding-bottom:2px;
+  scrollbar-width:none;}
+.pchips::-webkit-scrollbar{display:none;}
+.pchip{flex:none;height:34px;padding:0 16px;display:inline-flex;align-items:center;gap:6px;border-radius:var(--ds-radius-full);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);color:var(--ds-fg-muted);
+  font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);white-space:nowrap;}
+.pchip.on{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:transparent;box-shadow:var(--ds-shadow-sm);}
+.pchip svg{width:15px;height:15px;}
+/* 小标题行（板块标题 + 更多） */
+.psec-h{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 var(--ds-space-3);}
+.psec-h b{font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);letter-spacing:-0.02em;}
+.psec-h a{font-size:var(--ds-text-xs);color:var(--ds-primary-active);text-decoration:none;font-weight:var(--ds-weight-medium);}
 .pcard{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
   box-shadow:var(--ds-shadow-md);padding:var(--ds-space-4);margin-bottom:var(--ds-space-4);}
 .pcard .pthumb{height:108px;border-radius:var(--ds-radius-sm);margin-bottom:var(--ds-space-3);
   background:linear-gradient(135deg,var(--ds-primary),var(--ds-accent));}
 .pcard h4{margin:0 0 4px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
 .pcard p{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);}
+.pcard .pcard-meta{display:flex;align-items:center;gap:var(--ds-space-2);margin:0 0 var(--ds-space-3);
+  font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.pcard .pcard-meta .pm-tag{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+.pcard .pcard-meta .pm-dot{width:3px;height:3px;border-radius:var(--ds-radius-full);background:var(--ds-fg-subtle);}
+/* 横滑商品小卡（2.x 露出，暗示可滑动） */
+.prow{display:flex;gap:var(--ds-space-3);overflow-x:auto;margin:0 calc(-1*var(--ds-space-4)) var(--ds-space-5);
+  padding:0 var(--ds-space-4) 4px;scrollbar-width:none;}
+.prow::-webkit-scrollbar{display:none;}
+.pmini{flex:none;width:138px;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);
+  border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);overflow:hidden;}
+.pmini img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.pmini .pmini-b{padding:8px 10px 10px;}
+.pmini .pmini-t{font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pmini .pmini-p{font-size:var(--ds-text-xs);color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);margin-top:2px;}
 .plist{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
   box-shadow:var(--ds-shadow-sm);overflow:hidden;}
 .pli{display:flex;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-4);
-  border-bottom:1px solid var(--ds-border);font-size:var(--ds-text-sm);}
+  min-height:60px;border-bottom:1px solid var(--ds-border);font-size:var(--ds-text-sm);}
 .pli:last-child{border-bottom:none;}
-.pli .pico{width:30px;height:30px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
+.pli .pico{width:38px;height:38px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
   display:grid;place-items:center;flex:none;color:var(--ds-primary-active);}
-.pli .pico svg{width:17px;height:17px;display:block;}
-.pli .ptxt{flex:1;}
-.pli .pmeta{color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);}
+.pli .pico svg{width:19px;height:19px;display:block;}
+.pli .ptxt{flex:1;min-width:0;}
+.pli .ptxt > div:first-child{font-weight:var(--ds-weight-medium);}
+.pli .pmeta{color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);margin-top:1px;}
+.pli .p-list-ava{width:44px;height:44px;}
 
 .foot{margin-top:var(--ds-space-10);padding-top:var(--ds-space-6);border-top:1px dashed var(--ds-border);
   color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);text-align:center;}
@@ -1264,25 +1343,44 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
             </span>
           </div>
           <div class="dvc-body">
-            <div class="ptop">
-              <button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button>
-              <div class="ptitle">发现</div>
-              <img class="pava p-list-ava" style="width:38px;height:38px" src="../../_assets/avatars/a5.jpg" alt="我的头像" loading="lazy">
-            </div>
-            <div class="pcard">
-              <img class="p-feed-img" src="../../_assets/gen/food-bowl.jpg" alt="缤纷沙拉碗" loading="lazy">
-              <h4>今日限定 · 彩虹谷物碗</h4>
-              <p>低卡高纤，配色超治愈～</p>
-              <button class="btn btn-primary" style="width:100%">立即下单</button>
-            </div>
-            <div class="plist">
-              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a8.jpg" alt="桃桃头像" loading="lazy"><div class="ptxt"><div>桃桃 点赞了你的动态</div><div class="pmeta">2 分钟前</div></div><span class="badge b-suc">新</span></div>
-              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a12.jpg" alt="奶糖头像" loading="lazy"><div class="ptxt"><div>奶糖 关注了你</div><div class="pmeta">15 分钟前</div></div></div>
-              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a23.jpg" alt="布丁头像" loading="lazy"><div class="ptxt"><div>布丁 回复了评论</div><div class="pmeta">1 小时前</div></div></div>
+            <div class="dvc-scroll pad-b">
+              <div class="ptop">
+                <div class="ptitle">早安，桃桃<small>今天也要元气满满～</small></div>
+                <button class="pico-btn" aria-label="通知 3 条"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="ndot"></span></button>
+                <img class="pava" src="../../_assets/avatars/a5.jpg" alt="我的头像" loading="lazy">
+              </div>
+              <div class="psearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> 搜索可爱周边…</div>
+              <div class="pchips">
+                <span class="pchip on">推荐</span>
+                <span class="pchip">美食</span>
+                <span class="pchip">穿搭</span>
+                <span class="pchip">盲盒</span>
+                <span class="pchip">手作</span>
+              </div>
+              <div class="pcard">
+                <img class="p-feed-img" src="../../_assets/gen/food-bowl.jpg" alt="缤纷沙拉碗" loading="lazy">
+                <div class="pcard-meta"><span class="pm-tag">今日限定</span><span class="pm-dot"></span><span>剩 12 份</span></div>
+                <h4>彩虹谷物碗</h4>
+                <p>低卡高纤、配色超治愈，10 分钟搞定元气早餐。</p>
+                <button class="btn btn-primary" style="width:100%">立即下单 · ¥29</button>
+              </div>
+              <div class="psec-h"><b>为你精选</b><a href="#">查看全部</a></div>
+              <div class="prow">
+                <article class="pmini"><img src="../../_assets/gen/product-shoe.jpg" alt="蜜桃跑鞋" loading="lazy"><div class="pmini-b"><div class="pmini-t">云朵跑鞋</div><div class="pmini-p">¥299</div></div></article>
+                <article class="pmini"><img src="../../_assets/gen/product-watch.jpg" alt="糖果腕表" loading="lazy"><div class="pmini-b"><div class="pmini-t">糖果腕表</div><div class="pmini-p">¥459</div></div></article>
+                <article class="pmini"><img src="../../_assets/photos/coffee.jpg" alt="拉花咖啡" loading="lazy"><div class="pmini-b"><div class="pmini-t">每日拿铁</div><div class="pmini-p">¥18</div></div></article>
+              </div>
+              <div class="psec-h"><b>最新动态</b><a href="#">更多</a></div>
+              <div class="plist">
+                <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a8.jpg" alt="桃桃头像" loading="lazy"><div class="ptxt"><div>桃桃 点赞了你的动态</div><div class="pmeta">2 分钟前</div></div><span class="badge b-suc">新</span></div>
+                <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a12.jpg" alt="奶糖头像" loading="lazy"><div class="ptxt"><div>奶糖 关注了你</div><div class="pmeta">15 分钟前</div></div></div>
+                <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a23.jpg" alt="布丁头像" loading="lazy"><div class="ptxt"><div>布丁 回复了你的评论</div><div class="pmeta">1 小时前</div></div></div>
+              </div>
             </div>
             <nav class="tabbar">
               <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg> 首页</a>
               <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> 发现</a>
+              <a href="#" class="tab-fab" aria-label="发布"><span class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></a>
               <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg> 消息</a>
               <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> 我的</a>
             </nav>
@@ -1306,28 +1404,42 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
             </span>
           </div>
           <div class="dvc-body flush-top">
-            <div class="p-profile-hero">
-              <img src="../../_assets/gen/abstract-wave.jpg" alt="个人页背景图" loading="lazy">
-              <img class="pp-av" src="../../_assets/avatars/a33.jpg" alt="团子的头像" loading="lazy">
+            <div class="dvc-scroll pad-b">
+              <div class="p-profile-hero">
+                <img src="../../_assets/gen/abstract-wave.jpg" alt="个人页背景图" loading="lazy">
+                <div class="pp-scrim"></div>
+                <div class="pp-bar">
+                  <button class="pp-ic" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button class="pp-ic" aria-label="更多"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/></svg></button>
+                </div>
+                <img class="pp-av" src="../../_assets/avatars/a33.jpg" alt="团子的头像" loading="lazy">
+              </div>
+              <div class="p-profile-meta">
+                <div class="ppm-name">团子</div>
+                <div class="ppm-sub">软糖会员 · 连续打卡 42 天</div>
+              </div>
+              <div class="p-stats">
+                <div style="text-align:center"><div class="ps-n">128</div><div class="ps-l">动态</div></div>
+                <div style="text-align:center"><div class="ps-n">2.4k</div><div class="ps-l">关注</div></div>
+                <div style="text-align:center"><div class="ps-n">980</div><div class="ps-l">粉丝</div></div>
+              </div>
+              <div style="display:flex;gap:var(--ds-space-3);margin-bottom:var(--ds-space-5)">
+                <button class="btn btn-primary" style="flex:1">关注</button>
+                <button class="btn btn-secondary" style="flex:1">私信</button>
+              </div>
+              <div class="plist">
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg></span><div class="ptxt"><div>我的收藏</div><div class="pmeta">36 件好物</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/></svg></span><div class="ptxt"><div>我的订单</div><div class="pmeta">2 份待收货</div></div><span class="badge b-war">待收</span></div>
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg></span><div class="ptxt"><div>我的喜欢</div><div class="pmeta">214 条内容</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+              </div>
             </div>
-            <div class="p-profile-meta">
-              <div class="ppm-name">团子</div>
-              <div class="ppm-sub">软糖会员 · 连续打卡 42 天</div>
-            </div>
-            <div class="p-stats">
-              <div style="text-align:center"><div class="ps-n">128</div><div class="ps-l">动态</div></div>
-              <div style="text-align:center"><div class="ps-n">2.4k</div><div class="ps-l">关注</div></div>
-              <div style="text-align:center"><div class="ps-n">980</div><div class="ps-l">粉丝</div></div>
-            </div>
-            <div style="display:flex;gap:var(--ds-space-3);margin-bottom:var(--ds-space-4)">
-              <button class="btn btn-primary" style="flex:1">关注</button>
-              <button class="btn btn-secondary" style="flex:1">私信</button>
-            </div>
-            <div class="plist">
-              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg></span><div class="ptxt"><div>我的收藏</div><div class="pmeta">36 件好物</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
-              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/></svg></span><div class="ptxt"><div>我的订单</div><div class="pmeta">2 份待收货</div></div><span class="badge b-war">待收</span></div>
-              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
-            </div>
+            <nav class="tabbar">
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg> 首页</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> 发现</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg> 消息</a>
+              <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> 我的</a>
+            </nav>
           </div>
           <div class="home"></div>
         </div>
@@ -1354,22 +1466,35 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
           </span>
         </div>
         <div class="dvc-body">
-          <div class="ptop">
-            <button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button>
-            <div class="ptitle">发现</div>
-            <div class="pava"></div>
+          <div class="dvc-scroll pad-b">
+            <div class="ptop">
+              <button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button>
+              <div class="ptitle">发现</div>
+              <button class="pico-btn" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg></button>
+              <img class="pava" src="../../_assets/avatars/a12.jpg" alt="我的头像" loading="lazy">
+            </div>
+            <div class="pcard">
+              <div class="pthumb"></div>
+              <div class="pcard-meta"><span class="pm-tag">限时</span><span class="pm-dot"></span><span>今日 23:59 截止</span></div>
+              <h4>今日限定盲盒</h4>
+              <p>多巴胺周边上新，集齐一套有惊喜。</p>
+              <button class="btn btn-primary" style="width:100%">立即逛逛</button>
+            </div>
+            <div class="psec-h"><b>我的快捷</b><a href="#">管理</a></div>
+            <div class="plist">
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5 11 14l4.5-5"/><path d="M19 8.5v9A1.5 1.5 0 0 1 17.5 19h-11A1.5 1.5 0 0 1 5 17.5v-11A1.5 1.5 0 0 1 6.5 5H15Z"/></svg></span><div class="ptxt"><div>每日打卡</div><div class="pmeta">连续 7 天 · 领徽章</div></div><span class="badge b-suc">+10</span></div>
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5A1.5 1.5 0 0 1 6.5 6h11A1.5 1.5 0 0 1 19 7.5v7A1.5 1.5 0 0 1 17.5 16H10l-4 3v-3H6.5A1.5 1.5 0 0 1 5 14.5Z"/></svg></span><div class="ptxt"><div>好友动态</div><div class="pmeta">3 条新更新</div></div><span class="badge b-pri">新</span></div>
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="15" height="10.5" rx="1.5"/><path d="M4.5 9h15M12 9v10.5"/><path d="M12 9C10.5 6 7 5.5 7 7.5S10 9 12 9Zm0 0c1.5-3 5-3.5 5-1.5S14 9 12 9Z"/></svg></span><div class="ptxt"><div>我的礼包</div><div class="pmeta">2 份待领取</div></div><span class="badge b-war">待领</span></div>
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+            </div>
+            <div class="psec-h" style="margin-top:var(--ds-space-5)"><b>好友在线</b><a href="#">全部</a></div>
+            <div class="plist">
+              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a8.jpg" alt="桃桃头像" loading="lazy"><div class="ptxt"><div>桃桃</div><div class="pmeta">刚刚更新了动态</div></div><span class="badge b-suc">在线</span></div>
+              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a23.jpg" alt="奶糖头像" loading="lazy"><div class="ptxt"><div>奶糖</div><div class="pmeta">3 分钟前活跃</div></div></div>
+            </div>
           </div>
-          <div class="pcard">
-            <div class="pthumb"></div>
-            <h4>今日限定盲盒</h4>
-            <p>多巴胺周边上新，集齐一套有惊喜。</p>
-            <button class="btn btn-primary" style="width:100%">立即逛逛</button>
-          </div>
-          <div class="plist">
-            <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5 11 14l4.5-5"/><path d="M19 8.5v9A1.5 1.5 0 0 1 17.5 19h-11A1.5 1.5 0 0 1 5 17.5v-11A1.5 1.5 0 0 1 6.5 5H15Z"/></svg></span><div class="ptxt"><div>每日打卡</div><div class="pmeta">连续 7 天 · 领徽章</div></div><span class="badge b-suc">+10</span></div>
-            <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5A1.5 1.5 0 0 1 6.5 6h11A1.5 1.5 0 0 1 19 7.5v7A1.5 1.5 0 0 1 17.5 16H10l-4 3v-3H6.5A1.5 1.5 0 0 1 5 14.5Z"/></svg></span><div class="ptxt"><div>好友动态</div><div class="pmeta">3 条新更新</div></div><span class="badge b-pri">新</span></div>
-            <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="15" height="10.5" rx="1.5"/><path d="M4.5 9h15M12 9v10.5"/><path d="M12 9C10.5 6 7 5.5 7 7.5S10 9 12 9Zm0 0c1.5-3 5-3.5 5-1.5S14 9 12 9Z"/></svg></span><div class="ptxt"><div>我的礼包</div><div class="pmeta">2 份待领取</div></div><span class="badge b-war">待领</span></div>
-            <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div></div>
+          <div class="mbar">
+            <button class="btn btn-primary btn-lg" style="width:100%">发布新动态</button>
           </div>
         </div>
         <div class="home"></div>

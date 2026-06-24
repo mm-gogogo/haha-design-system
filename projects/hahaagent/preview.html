@@ -342,18 +342,32 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
 .crumbs .current{color:var(--ds-primary);font-weight:var(--ds-weight-medium)}
 
 /* ---------- 移动端 Mobile 屏内布局（套 iPhone 17 Pro Max 标准壳 .dvc17） ---------- */
-/* .phone-screen 充满 .dvc-body：顶栏吸顶 + 中部滚动 + 底栏吸底 */
-.phone-screen{min-height:100%;display:flex;flex-direction:column;background:var(--ds-bg)}
+/* sb-light = 暗色屏的白状态栏；亮色主题下顶部 header 变浅 → 把状态栏字 / Home 条转深，避免白底白字 */
+[data-theme="light"] .dvc17.sb-light .sb,.light .dvc17.sb-light .sb{color:var(--ds-fg)}
+[data-theme="light"] .dvc17.sb-light .home,.light .dvc17.sb-light .home{background:var(--ds-fg)}
+/* .phone-screen 精确填满 .dvc-body 可视区（=812-54 状态栏）：顶栏吸顶 + 中部 flex:1 内部滚动 + 底栏吸底；
+   用 height:100% + overflow:hidden 约束高度，让 feed / chat 在中段滚动，底部 tab / 输入框恒贴底、不被顶出屏幕 */
+.phone-screen{height:100%;min-height:100%;overflow:hidden;display:flex;flex-direction:column;background:var(--ds-bg)}
 .phone-top{display:flex;align-items:center;justify-content:space-between;padding:var(--ds-space-3) var(--ds-space-4);background:var(--ds-bg-subtle);border-bottom:1px solid var(--ds-border)}
 .phone-top .p-brand{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);display:flex;align-items:center;gap:var(--ds-space-2)}
-.phone-top .p-menu{background:transparent;border:1px solid var(--ds-border);color:var(--ds-fg-muted);border-radius:var(--ds-radius-sm);width:30px;height:30px;cursor:pointer;display:grid;place-items:center;font-family:var(--ds-font-mono)}
+.phone-top .p-menu{background:transparent;border:1px solid var(--ds-border);color:var(--ds-fg-muted);border-radius:var(--ds-radius-sm);width:36px;height:36px;cursor:pointer;display:grid;place-items:center;font-family:var(--ds-font-mono);transition:all var(--ds-dur-fast) var(--ds-ease)}
+.phone-top .p-menu:hover{color:var(--ds-primary);border-color:var(--ds-primary);box-shadow:0 0 14px -4px var(--ds-primary)}
+.phone-top .p-menu:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
 .phone-top .p-menu .ic{width:16px;height:16px}
-.phone-chat{flex:1;overflow:auto;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-3);background:var(--ds-bg)}
+.phone-chat{flex:1;min-height:0;overflow:auto;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-3);background:var(--ds-bg)}
 .phone-chat .bubble{max-width:88%;font-size:var(--ds-text-sm)}
 .phone-chat .toolcard{max-width:100%;font-size:var(--ds-text-xs)}
-.phone-input{display:flex;gap:var(--ds-space-2);padding:var(--ds-space-3);background:var(--ds-bg-subtle);border-top:1px solid var(--ds-border)}
-.phone-input input{height:38px;font-size:var(--ds-text-sm)}
-.phone-input .p-send{flex:none;width:44px;height:38px;border:none;border-radius:var(--ds-radius-sm);background:var(--ds-primary);color:var(--ds-primary-fg);cursor:pointer;display:grid;place-items:center;box-shadow:0 0 16px -4px var(--ds-primary)}
+.chat-day{align-self:center;font-family:var(--ds-font-mono);font-size:11px;letter-spacing:.03em;color:var(--ds-fg-subtle);background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);padding:3px 12px}
+.chat-typing{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-2) var(--ds-space-3)}
+.chat-typing .tp-dots{display:inline-flex;gap:3px}
+.chat-typing .tp-dots i{width:5px;height:5px;border-radius:50%;background:var(--ds-primary);box-shadow:0 0 6px 0 var(--ds-primary);animation:tp 1.2s var(--ds-ease) infinite}
+.chat-typing .tp-dots i:nth-child(2){animation-delay:.18s}
+.chat-typing .tp-dots i:nth-child(3){animation-delay:.36s}
+@keyframes tp{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-2px)}}
+/* 底部吸底栏：留出 Home 指示条安全区（壳内 Home 条占底部 ~16px），避免被压住 */
+.phone-input{display:flex;gap:var(--ds-space-2);padding:var(--ds-space-3) var(--ds-space-3) calc(var(--ds-space-3) + 14px);background:var(--ds-bg-subtle);border-top:1px solid var(--ds-border)}
+.phone-input input{height:44px;font-size:var(--ds-text-sm)}
+.phone-input .p-send{flex:none;width:46px;height:44px;border:none;border-radius:var(--ds-radius-sm);background:var(--ds-primary);color:var(--ds-primary-fg);cursor:pointer;display:grid;place-items:center;box-shadow:0 0 16px -4px var(--ds-primary)}
 .phone-input .p-send .ic{width:17px;height:17px}
 .phone-input .p-send:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
 
@@ -553,7 +567,11 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
 .phone-row{display:flex;gap:var(--ds-space-6);flex-wrap:wrap;align-items:flex-start}
 .phone-cap{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted);text-align:center;margin-top:var(--ds-space-2)}
 /* 移动·App 首页 feed */
-.phone-feed{flex:1;overflow:auto;background:var(--ds-bg);display:flex;flex-direction:column;gap:var(--ds-space-3);padding:var(--ds-space-3)}
+.phone-feed{flex:1;min-height:0;overflow:auto;background:var(--ds-bg);display:flex;flex-direction:column;gap:var(--ds-space-3);padding:var(--ds-space-3)}
+.feed-chips{display:flex;gap:var(--ds-space-2);overflow-x:auto;padding-bottom:2px}
+.feed-chips::-webkit-scrollbar{display:none}
+.feed-chips .fchip{flex:none;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted);background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);padding:6px 14px;min-height:28px;display:inline-flex;align-items:center}
+.feed-chips .fchip.on{color:var(--ds-primary-fg);background:var(--ds-primary);border-color:var(--ds-primary);box-shadow:0 0 14px -4px var(--ds-primary)}
 .feed-card{border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);overflow:hidden}
 .feed-card .fc-img{aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--ds-border)}
 .feed-card .fc-img img{width:100%;height:100%;object-fit:cover;display:block}
@@ -561,8 +579,8 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
 .feed-card .fc-body h4{margin:0;font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);color:var(--ds-fg)}
 .feed-card .fc-body p{margin:0;font-size:var(--ds-text-xs);color:var(--ds-fg-muted);line-height:var(--ds-leading-normal)}
 .feed-card .fc-foot{display:flex;align-items:center;gap:var(--ds-space-2);font-family:var(--ds-font-mono);font-size:11px;color:var(--ds-fg-muted)}
-.phone-tabs{display:flex;border-top:1px solid var(--ds-border);background:var(--ds-bg-subtle)}
-.phone-tabs .tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:var(--ds-space-2) 0;color:var(--ds-fg-subtle);cursor:pointer}
+.phone-tabs{display:flex;border-top:1px solid var(--ds-border);background:var(--ds-bg-subtle);padding-bottom:14px}
+.phone-tabs .tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:var(--ds-space-2) 0;color:var(--ds-fg-subtle);cursor:pointer;min-height:44px;justify-content:center}
 .phone-tabs .tb .ic{width:18px;height:18px}
 .phone-tabs .tb .lb{font-family:var(--ds-font-mono);font-size:10px}
 .phone-tabs .tb.on{color:var(--ds-primary)}
@@ -575,6 +593,10 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
   .cursor{animation:none}
   .media-card:hover .mc-img img{transform:none}
   .hero h1 .accent,.hero-eyebrow .dot{text-shadow:none}
+  /* 移动端：关辉光 / 流式打字呼吸，状态点恒亮可读 */
+  .chat-typing .tp-dots i{animation:none;opacity:1}
+  .phone-input .p-send,.feed-chips .fchip.on{box-shadow:none}
+  .phone-tabs .tb.on .ic{filter:none}
 }
 </style>
 </head>
@@ -1218,12 +1240,15 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
                   <button class="p-menu" aria-label="菜单"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
                 </div>
                 <div class="phone-chat">
+                  <div class="chat-day">project-banana-7 · 今天 9:41</div>
                   <div class="bubble b-user"><div class="role">User</div>算 (12+8)*3 并写入 result.txt</div>
-                  <div class="bubble b-agent"><div class="role"><span class="dot dot-primary"></span> Agent · running</div>好的，先调计算工具<span class="cursor"></span></div>
+                  <div class="bubble b-agent"><div class="role"><span class="dot dot-primary"></span> Agent · running</div>好的，先调计算工具，再写入文件。</div>
                   <div class="toolcard">
                     <div class="tc-head"><span class="tc-name"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17l3 3 5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.2-.4-.4-2.2 2.6-2.6Z"/></svg> calculator</span><span class="badge badge-success"><span class="dot dot-success"></span>ok</span></div>
-                    <div class="tc-body"><div class="kv"><span class="label">Result</span><div class="code"><span class="k">"result"</span>: <span class="v">60</span></div></div></div>
+                    <div class="tc-body"><div class="kv"><span class="label">Args</span><div class="code">{ <span class="k">"expression"</span>: <span class="v">"(12+8)*3"</span> }</div></div><div class="kv"><span class="label">Result</span><div class="code"><span class="k">"result"</span>: <span class="v">60</span> <span class="c">// 0.4s</span></div></div></div>
                   </div>
+                  <div class="bubble b-agent"><div class="role"><span class="dot dot-primary"></span> Agent · running</div>已算出 <b style="color:var(--ds-primary)">60</b>，正在写入 result.txt<span class="cursor"></span></div>
+                  <div class="chat-typing"><span class="dot dot-primary"></span><span class="tp-dots"><i></i><i></i><i></i></span>write_file 运行中…</div>
                 </div>
                 <div class="phone-input">
                   <input placeholder="给 Agent 下指令…" />
@@ -1259,6 +1284,13 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
                   <button class="p-menu" aria-label="搜索"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
                 </div>
                 <div class="phone-feed">
+                  <div class="feed-chips">
+                    <span class="fchip on">全部</span>
+                    <span class="fchip">数据</span>
+                    <span class="fchip">部署</span>
+                    <span class="fchip">生图</span>
+                    <span class="fchip">RAG</span>
+                  </div>
                   <article class="feed-card">
                     <div class="fc-img"><img src="../../_assets/gen/abstract-wave.jpg" alt="数据流分析模板封面" loading="lazy" /></div>
                     <div class="fc-body"><h4>数据流分析模板</h4><p>一键摄入日志，让 Agent 总结异常并出图。</p><div class="fc-foot"><span class="dot dot-success"></span>已发布 · 1.2k 次运行</div></div>
@@ -1266,6 +1298,10 @@ td.num{font-family:var(--ds-font-mono);text-align:right}
                   <article class="feed-card">
                     <div class="fc-img"><img src="../../_assets/photos/city.jpg" alt="多站点部署模板封面" loading="lazy" /></div>
                     <div class="fc-body"><h4>多站点部署</h4><p>从 git 到 docker，编排多站点并监控状态。</p><div class="fc-foot"><span class="dot dot-primary"></span>热门 · 890 次运行</div></div>
+                  </article>
+                  <article class="feed-card">
+                    <div class="fc-img"><img src="../../_assets/photos/architecture.jpg" alt="知识图谱构建模板封面" loading="lazy" /></div>
+                    <div class="fc-body"><h4>知识图谱构建</h4><p>把文档摄入图谱，命中即秒回 0 token。</p><div class="fc-foot"><span class="dot dot-muted"></span>草稿 · 312 次运行</div></div>
                   </article>
                 </div>
                 <nav class="phone-tabs">

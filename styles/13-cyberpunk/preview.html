@@ -527,31 +527,95 @@ td.num { font-family: var(--ds-font-mono); text-align: right; font-variant-numer
 .ld .detail .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: var(--ds-space-3) 0; }
 
 /* 移动端框：套用共享 .dvc17（iPhone 17 Pro Max），见 _assets/device.css */
-.phones { display: flex; gap: var(--ds-space-7); flex-wrap: wrap; justify-content: center; }
-.m-top { display: flex; align-items: center; gap: var(--ds-space-3); height: 46px; padding: 0 var(--ds-space-4); background: var(--ds-bg-subtle); border-bottom: 1px solid var(--ds-border); }
+.phones { display: flex; gap: var(--ds-space-8) var(--ds-space-7); flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+
+/* sb-light 修正：壳默认把状态栏字转白(暗屏顶部用)。亮色主题下屏顶是浅底，
+   白字会白底白字 —— 改回深色，保证可读。home 指示条同理。 */
+[data-theme="light"] .dvc17.sb-light .sb { color: var(--ds-fg); }
+[data-theme="light"] .dvc17.sb-light .home { background: var(--ds-fg); }
+
+/* 屏内纵向布局：填满 812px，消除底部留白。
+   .dvc-body 本身 inset:0 + padding-top:54px(状态栏)，这里令其纵向 flex；
+   主区 flex:1 撑开，tab bar margin-top:auto 贴底。 */
+.dvc17 .dvc-body { display: flex; flex-direction: column; background: var(--ds-bg); }
+/* 屏内霓虹底纹 + 扫描线（与全局氛围一致，被 .scr 圆角裁切） */
+.dvc17 .dvc-body::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(420px 280px at 12% 6%, rgba(255,43,214,.12), transparent 62%),
+    radial-gradient(420px 300px at 92% 2%, rgba(0,240,255,.12), transparent 62%),
+    repeating-linear-gradient(to bottom, rgba(0,240,255,.04) 0 1px, transparent 1px 3px);
+  opacity: .85;
+}
+[data-theme="light"] .dvc17 .dvc-body::before {
+  background:
+    radial-gradient(420px 280px at 12% 6%, rgba(196,13,158,.10), transparent 62%),
+    radial-gradient(420px 300px at 92% 2%, rgba(0,112,138,.10), transparent 62%),
+    repeating-linear-gradient(to bottom, rgba(26,16,38,.02) 0 1px, transparent 1px 3px);
+}
+.dvc17 .dvc-body > * { position: relative; z-index: 1; }
+
+.m-top { display: flex; align-items: center; gap: var(--ds-space-3); height: 48px; flex: none; padding: 0 var(--ds-space-4); background: color-mix(in srgb, var(--ds-bg-subtle) 86%, transparent); border-bottom: 1px solid var(--ds-border-strong); box-shadow: 0 1px 0 rgba(0,240,255,.12); }
+[data-theme="light"] .m-top { box-shadow: 0 1px 0 rgba(0,112,138,.10); }
 .m-top .logo { display: inline-flex; align-items: center; gap: 6px; font-family: var(--ds-font-mono); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); }
+.m-top .logo .logo-mark { color: var(--ds-primary); }
 .m-top .spacer { flex: 1; }
+
+/* 滚动主区：占满剩余高度，内容超出则在屏内滚动，绝不溢出设备 */
+.m-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.m-scroll::-webkit-scrollbar { width: 0; height: 0; }
 .m-body { padding: var(--ds-space-3); display: flex; flex-direction: column; gap: var(--ds-space-3); }
 .m-hero { border-radius: var(--ds-radius-md); overflow: hidden; }
+.m-section-label { font-family: var(--ds-font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ds-fg-subtle); display: flex; align-items: center; gap: 6px; margin: 2px 2px 0; }
+.m-section-label::before { content: ""; width: 8px; height: 1px; background: var(--ds-primary); box-shadow: 0 0 6px var(--ds-primary); }
+[data-theme="light"] .m-section-label::before { box-shadow: none; }
 .m-feed-card { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
 .m-feed-card .body { padding: var(--ds-space-3); }
-.m-feed-card .t { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg); margin-bottom: 4px; }
+.m-feed-card .t { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg); margin-bottom: 4px; line-height: 1.35; }
 .m-feed-card .meta { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--ds-fg-muted); }
-.m-tabbar { display: flex; justify-content: space-around; padding: 8px 0 10px; border-top: 1px solid var(--ds-border); background: var(--ds-bg-subtle); }
-.m-tabbar .tb { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ds-fg-muted); font-family: var(--ds-font-mono); font-size: 9px; }
-.m-tabbar .tb .icon { width: 20px; height: 20px; }
+.m-feed-card .meta .av { box-shadow: 0 0 0 1px rgba(0,240,255,.25); }
+.m-feed-card .feed-actions { display: flex; gap: var(--ds-space-4); margin-top: var(--ds-space-2); padding-top: var(--ds-space-2); border-top: 1px solid var(--ds-border); }
+.m-feed-card .feed-actions .fa { display: inline-flex; align-items: center; gap: 5px; min-height: 28px; font-family: var(--ds-font-mono); font-size: 10px; color: var(--ds-fg-muted); }
+.m-feed-card .feed-actions .fa .icon { width: 14px; height: 14px; }
+
+/* tab bar 贴底（margin-top:auto），底部留 home 指示条安全区 */
+.m-tabbar { display: flex; justify-content: space-around; margin-top: auto; flex: none; padding: 8px 0 22px; border-top: 1px solid var(--ds-border-strong); background: color-mix(in srgb, var(--ds-bg-subtle) 92%, transparent); box-shadow: 0 -1px 0 rgba(0,240,255,.12); }
+[data-theme="light"] .m-tabbar { box-shadow: 0 -1px 0 rgba(0,112,138,.10); }
+.m-tabbar .tb { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 56px; min-height: 44px; color: var(--ds-fg-muted); font-family: var(--ds-font-mono); font-size: 9px; letter-spacing: .04em; }
+.m-tabbar .tb .icon { width: 21px; height: 21px; }
 .m-tabbar .tb.active { color: var(--ds-accent); }
+.m-tabbar .tb.active .icon { filter: drop-shadow(0 0 5px currentColor); }
+[data-theme="light"] .m-tabbar .tb.active .icon { filter: none; }
+
 .m-list { display: flex; flex-direction: column; }
-.m-list .row { display: flex; align-items: center; gap: var(--ds-space-3); padding: 10px var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+.m-list .row { display: flex; align-items: center; gap: var(--ds-space-3); min-height: 48px; padding: 11px var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+.m-list .row .av { box-shadow: 0 0 0 1px rgba(0,240,255,.22); }
 .m-list .row .meta { flex: 1; min-width: 0; }
 .m-list .row .meta .t { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg); }
-.m-list .row .meta .s { font-size: 10px; color: var(--ds-fg-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.m-list .row .meta .s { font-size: 10px; color: var(--ds-fg-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.m-list .row .meta .s .tm { color: var(--ds-fg-subtle); }
 .m-list .row .badge { flex: none; }
-.m-prof-hero { position: relative; height: 120px; }
-.m-prof-hero img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.5) contrast(1.1); }
-.m-prof-hero::before { content: ""; position: absolute; inset: 0; mix-blend-mode: screen; background: linear-gradient(120deg, rgba(255,43,214,.4), transparent 55%, rgba(0,240,255,.4)); }
-.m-prof-hero .av { position: absolute; left: var(--ds-space-3); bottom: -22px; width: 56px; height: 56px; border: 2px solid var(--ds-bg); }
-.m-prof-body { padding: var(--ds-space-5) var(--ds-space-3) var(--ds-space-3); }
+
+.m-prof-hero { position: relative; height: 132px; flex: none; overflow: hidden; }
+.m-prof-hero img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.5) contrast(1.12); }
+.m-prof-hero::before { content: ""; position: absolute; inset: 0; mix-blend-mode: screen; background: linear-gradient(120deg, rgba(255,43,214,.42), transparent 52%, rgba(0,240,255,.42)); }
+.m-prof-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(0,0,0,.16) 0 1px, transparent 1px 4px), linear-gradient(0deg, var(--ds-bg) 2%, transparent 42%); }
+[data-theme="light"] .m-prof-hero img { filter: saturate(.85) contrast(1.02); }
+[data-theme="light"] .m-prof-hero::before { mix-blend-mode: multiply; background: linear-gradient(120deg, rgba(196,13,158,.18), transparent 55%, rgba(0,112,138,.18)); }
+.m-prof-hero .av { position: absolute; left: var(--ds-space-3); bottom: -24px; width: 60px; height: 60px; border: 2px solid var(--ds-bg); box-shadow: 0 0 14px -3px var(--ds-primary); z-index: 2; }
+.m-prof-body { padding: var(--ds-space-6) var(--ds-space-3) var(--ds-space-3); display: flex; flex-direction: column; gap: var(--ds-space-3); }
+.m-prof-body .btn { min-height: 44px; }
+.m-prof-body .btn:active { filter: brightness(.95); }
+.m-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-2); }
+.m-stat-grid .st { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); padding: var(--ds-space-3) var(--ds-space-2); text-align: center; }
+.m-stat-grid .st .v { font-family: var(--ds-font-mono); font-size: var(--ds-text-md); font-weight: var(--ds-weight-bold); color: var(--ds-accent); font-variant-numeric: tabular-nums; }
+.m-stat-grid .st .k { font-family: var(--ds-font-mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ds-fg-subtle); margin-top: 2px; }
+.m-act-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+.m-act-list .ai { display: flex; align-items: center; gap: var(--ds-space-3); min-height: 44px; padding: 10px var(--ds-space-3); border-bottom: 1px solid var(--ds-border); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+.m-act-list .ai:last-child { border-bottom: 0; }
+.m-act-list .ai .icon { width: 16px; height: 16px; color: var(--ds-accent); flex: none; }
+.m-act-list .ai .lbl-t { flex: 1; color: var(--ds-fg); }
+.m-act-list .ai .chev { color: var(--ds-fg-subtle); width: 14px; height: 14px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
@@ -1158,15 +1222,34 @@ td.num { font-family: var(--ds-font-mono); text-align: right; font-variant-numer
               <span class="spacer"></span>
               <span class="badge success"><span class="dot success"></span> live</span>
             </div>
-            <div class="m-body">
-              <div class="m-hero media ar-16-9"><img src="../../_assets/photos/city.jpg" alt="夜城头图" loading="lazy" /></div>
-              <div class="m-feed-card">
-                <div class="media ar-16-9"><img src="../../_assets/photos/tech.jpg" alt="动态图 1" loading="lazy" /></div>
-                <div class="body"><div class="t">新义体上架：Cyberdeck Mk.7</div><div class="meta"><img class="av av-24" src="../../_assets/avatars/a1.jpg" alt="" loading="lazy" /> Vex · 2m</div></div>
-              </div>
-              <div class="m-feed-card">
-                <div class="media ar-16-9"><img src="../../_assets/photos/street.jpg" alt="动态图 2" loading="lazy" /></div>
-                <div class="body"><div class="t">夜市开张：第 6 区霓虹大道</div><div class="meta"><img class="av av-24" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy" /> Riza · 14m</div></div>
+            <div class="m-scroll">
+              <div class="m-body">
+                <div class="m-section-label">feed · neo-tokyo-01</div>
+                <div class="m-hero media ar-16-9 glow"><img src="../../_assets/photos/city.jpg" alt="夜城头图" loading="lazy" /></div>
+                <div class="m-feed-card">
+                  <div class="media ar-16-9"><img src="../../_assets/photos/tech.jpg" alt="动态图 1" loading="lazy" /></div>
+                  <div class="body">
+                    <div class="t">新义体上架：Cyberdeck Mk.7</div>
+                    <div class="meta"><img class="av av-24" src="../../_assets/avatars/a1.jpg" alt="" loading="lazy" /> Vex · 2m</div>
+                    <div class="feed-actions">
+                      <span class="fa"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21l-1.5-1.4C5 14.6 2 11.9 2 8.5 2 6 4 4 6.5 4 8 4 9.4 4.7 12 7c2.6-2.3 4-3 5.5-3C20 4 22 6 22 8.5c0 3.4-3 6.1-8.5 11.1z"/></svg> 248</span>
+                      <span class="fa"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-11.5 7.8L4 21l1.7-5.3A8.4 8.4 0 1 1 21 11.5z"/></svg> 36</span>
+                      <span class="fa"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8h16v-8M16 6l-4-4-4 4M12 2v13"/></svg></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="m-feed-card">
+                  <div class="media ar-16-9"><img src="../../_assets/photos/street.jpg" alt="动态图 2" loading="lazy" /></div>
+                  <div class="body">
+                    <div class="t">夜市开张：第 6 区霓虹大道</div>
+                    <div class="meta"><img class="av av-24" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy" /> Riza · 14m</div>
+                    <div class="feed-actions">
+                      <span class="fa"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21l-1.5-1.4C5 14.6 2 11.9 2 8.5 2 6 4 4 6.5 4 8 4 9.4 4.7 12 7c2.6-2.3 4-3 5.5-3C20 4 22 6 22 8.5c0 3.4-3 6.1-8.5 11.1z"/></svg> 119</span>
+                      <span class="fa"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-11.5 7.8L4 21l1.7-5.3A8.4 8.4 0 1 1 21 11.5z"/></svg> 22</span>
+                      <span class="fa"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8h16v-8M16 6l-4-4-4 4M12 2v13"/></svg></span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="m-tabbar">
@@ -1195,22 +1278,38 @@ td.num { font-family: var(--ds-font-mono); text-align: right; font-variant-numer
             </span>
           </div>
           <div class="dvc-body">
-            <div class="m-prof-hero">
-              <img src="../../_assets/photos/architecture.jpg" alt="个人主页头图" loading="lazy" />
-              <img class="av" src="../../_assets/avatars/a5.jpg" alt="Nyx 头像" loading="lazy" />
+            <div class="m-scroll">
+              <div class="m-prof-hero">
+                <img src="../../_assets/photos/architecture.jpg" alt="个人主页头图" loading="lazy" />
+                <img class="av" src="../../_assets/avatars/a5.jpg" alt="Nyx 头像" loading="lazy" />
+              </div>
+              <div class="m-prof-body">
+                <div>
+                  <div class="nm mono" style="font-size:var(--ds-text-md)">Nyx_Runner</div>
+                  <div class="hd" style="color:var(--ds-fg-muted);font-size:var(--ds-text-xs);margin-top:2px">边缘行者 · 信誉 4.9 · neo-tokyo-01</div>
+                </div>
+                <div class="m-stat-grid">
+                  <div class="st"><div class="v tnum">142</div><div class="k">jobs</div></div>
+                  <div class="st"><div class="v tnum">98%</div><div class="k">success</div></div>
+                  <div class="st"><div class="v tnum">7</div><div class="k">crew</div></div>
+                </div>
+                <button class="btn btn-primary" style="width:100%;justify-content:center">发起连接</button>
+                <div class="btn-row">
+                  <span class="badge info">netrunner</span><span class="badge success">verified</span><span class="badge">solo</span>
+                </div>
+                <div class="m-section-label">recent activity</div>
+                <div class="m-act-list">
+                  <div class="ai"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2l8.5 4.9v9.8L12 21.8 3.5 16.9V7.1z"/><path d="M9 12l2 2 4-4"/></svg><span class="lbl-t">完成合约 · Arasaka 数据港</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div>
+                  <div class="ai"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.9H21l-5.3 4 2 7L12 16.4 6.3 19.9l2-7L3 8.9h6.6z"/></svg><span class="lbl-t">信誉升至 4.9 · +0.3</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div>
+                  <div class="ai"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span class="lbl-t">加入 crew · Vex 的小队</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div>
+                </div>
+              </div>
             </div>
-            <div class="m-prof-body">
-              <div class="nm mono" style="font-size:var(--ds-text-md)">Nyx_Runner</div>
-              <div class="hd" style="color:var(--ds-fg-muted);font-size:var(--ds-text-xs);margin-bottom:var(--ds-space-3)">边缘行者 · 信誉 4.9 · neo-tokyo-01</div>
-              <div class="status-row" style="gap:var(--ds-space-4);margin-bottom:var(--ds-space-3)">
-                <span class="status-item"><strong class="mono tnum">142</strong>&nbsp;jobs</span>
-                <span class="status-item"><strong class="mono tnum">98%</strong>&nbsp;success</span>
-                <span class="status-item"><strong class="mono tnum">7</strong>&nbsp;crew</span>
-              </div>
-              <button class="btn btn-primary" style="width:100%;justify-content:center">发起连接</button>
-              <div style="margin-top:var(--ds-space-3)" class="btn-row">
-                <span class="badge info">netrunner</span><span class="badge success">verified</span>
-              </div>
+            <div class="m-tabbar">
+              <span class="tb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>Home</span>
+              <span class="tb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Inbox</span>
+              <span class="tb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/></svg>Alerts</span>
+              <span class="tb active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>Me</span>
             </div>
           </div>
           <div class="home"></div>
@@ -1234,13 +1333,19 @@ td.num { font-family: var(--ds-font-mono); text-align: right; font-variant-numer
           <div class="dvc-body">
             <div class="m-top">
               <span class="logo">收件箱</span><span class="spacer"></span>
-              <button class="icon-btn" style="width:32px;height:32px;border:none" aria-label="新建"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+              <span class="badge danger" style="margin-right:8px">3</span>
+              <button class="icon-btn" style="width:44px;height:44px;border:none" aria-label="新建"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
             </div>
-            <div class="m-list">
-              <div class="row"><img class="av av-40" src="../../_assets/avatars/a8.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Fixer_Kade</div><div class="s">Arasaka 任务已确认，今晚行动</div></div><span class="badge danger">1</span></div>
-              <div class="row"><img class="av av-40" src="../../_assets/avatars/a15.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Doc_Riza</div><div class="s">义体维护预约到下周二</div></div><span class="badge info">2</span></div>
-              <div class="row"><img class="av av-40" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Crew_Channel</div><div class="s">Vex: 撤离点改到第 6 区天桥</div></div></div>
-              <div class="row"><img class="av av-40" src="../../_assets/avatars/a47.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">市场提醒</div><div class="s">你关注的 Mk.7 已到货</div></div></div>
+            <div class="m-scroll">
+              <div class="m-list">
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a8.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Fixer_Kade</div><div class="s">Arasaka 任务已确认，今晚行动 <span class="tm">· 2m</span></div></div><span class="badge danger">1</span></div>
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a15.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Doc_Riza</div><div class="s">义体维护预约到下周二 <span class="tm">· 18m</span></div></div><span class="badge info">2</span></div>
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Crew_Channel</div><div class="s">Vex: 撤离点改到第 6 区天桥 <span class="tm">· 1h</span></div></div></div>
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a47.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">市场提醒</div><div class="s">你关注的 Mk.7 已到货 <span class="tm">· 3h</span></div></div></div>
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a1.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Vex</div><div class="s">分成已转账，查收钱包 <span class="tm">· 5h</span></div></div></div>
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a23.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Riza</div><div class="s">夜市新货图我发你了 <span class="tm">· 8h</span></div></div></div>
+                <div class="row"><img class="av av-40" src="../../_assets/avatars/a5.jpg" alt="" loading="lazy" /><div class="meta"><div class="t">Nyx_Runner</div><div class="s">明早 7 点同步，别迟到 <span class="tm">· 昨天</span></div></div></div>
+              </div>
             </div>
             <div class="m-tabbar">
               <span class="tb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>Home</span>

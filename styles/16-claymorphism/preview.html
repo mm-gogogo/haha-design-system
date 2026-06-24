@@ -509,44 +509,76 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
 .ld .ldet p{color:var(--ds-fg-muted);font-size:var(--ds-text-sm);max-width:60ch;}
 
 /* ====================== 移动端（统一 .dvc17 套壳，见 _assets/device.css） ====================== */
-.phones{display:flex;flex-wrap:wrap;gap:var(--ds-space-8);align-items:flex-start;}
-/* 屏内内容内边距（device.css 已为状态栏留 54px 顶部空间） */
-.dvc17 .pbody{padding:var(--ds-space-4) var(--ds-space-4) var(--ds-space-5);}
+/* 精致黏土 3D 移动屏：屏内统一 --ds-* 契约，纵向 flex 填满 812px，底部 tab 贴底消除留白 */
+.phones{display:flex;flex-wrap:wrap;gap:var(--ds-space-9) var(--ds-space-8);align-items:flex-start;}
+/* dvc-body 拉成纵向 flex：让 .pbody 主区 flex:1 填满 812px（device.css 已留 54px 顶部状态栏空间） */
+.dvc17 .dvc-body{display:flex;flex-direction:column;}
+/* 屏内主区：纵向 flex，自身 flex:1 撑满，底部 tab 用 margin-top:auto 贴底，彻底消除底部留白 */
+.dvc17 .pbody{flex:1;min-height:0;display:flex;flex-direction:column;
+  padding:var(--ds-space-4) var(--ds-space-4) calc(var(--ds-space-4) + 12px);}
+/* 可滚动/可生长内容区 */
+.pmain{flex:1;min-height:0;display:flex;flex-direction:column;}
 /* app home */
 .ptop{display:flex;align-items:center;gap:var(--ds-space-3);margin-bottom:var(--ds-space-4);}
 .ptop .pgreet{flex:1;}
 .ptop .pgreet .ph{font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
 .ptop .pgreet .ps{font-size:var(--ds-text-xs);color:var(--ds-fg-muted);}
-.ptop img{width:44px;height:44px;border-radius:var(--ds-radius-full);object-fit:cover;box-shadow:var(--ds-clay-raised);}
+.ptop img{width:46px;height:46px;border-radius:var(--ds-radius-full);object-fit:cover;box-shadow:var(--ds-clay-raised);flex:none;}
 .pbanner{border-radius:var(--ds-radius-lg);overflow:hidden;box-shadow:var(--ds-clay-raised);margin-bottom:var(--ds-space-4);position:relative;aspect-ratio:16/9;}
 .pbanner img{width:100%;height:100%;object-fit:cover;}
-.pbanner .pbt{position:absolute;left:14px;bottom:14px;color:#fff;font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);text-shadow:0 1px 6px rgba(0,0,0,.5);}
-.pchips{display:flex;gap:8px;margin-bottom:var(--ds-space-4);overflow:auto;}
-.pchip{flex:none;padding:8px 16px;border-radius:var(--ds-radius-full);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-medium);
+.pbanner::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 3px 8px rgba(255,255,255,.4),inset 0 -10px 22px rgba(86,80,158,.22);}
+[data-theme="dark"] .pbanner::after,.dark .pbanner::after{box-shadow:inset 0 3px 8px rgba(255,255,255,.08),inset 0 -10px 22px rgba(0,0,0,.4);}
+.pbanner .pbt{position:absolute;left:14px;bottom:13px;right:14px;z-index:2;color:#fff;font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);text-shadow:0 1px 8px rgba(0,0,0,.6);}
+.pbanner .pbscrim{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(20,16,50,.62) 0%,rgba(20,16,50,.12) 46%,transparent 72%);}
+.pchips{display:flex;gap:8px;margin-bottom:var(--ds-space-4);overflow-x:auto;padding-bottom:2px;}
+.pchip{flex:none;padding:9px 17px;border-radius:var(--ds-radius-full);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);
   background:var(--ds-bg-elevated);color:var(--ds-fg-muted);box-shadow:var(--ds-clay-raised);}
 .pchip.on{background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-clay-accent);}
+.psec{font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-3);display:flex;align-items:center;justify-content:space-between;}
+.psec a{font-size:var(--ds-text-xs);color:var(--ds-info-fg);text-decoration:none;font-weight:var(--ds-weight-bold);}
 .pfeed{display:grid;gap:var(--ds-space-3);}
-.pfcard{background:var(--ds-bg-elevated);border-radius:var(--ds-radius-md);padding:var(--ds-space-3);box-shadow:var(--ds-clay-raised);display:flex;gap:11px;align-items:center;}
+.pfcard{background:var(--ds-bg-elevated);border-radius:var(--ds-radius-md);padding:11px;box-shadow:var(--ds-clay-raised);display:flex;gap:12px;align-items:center;}
 .pfcard img{width:60px;height:60px;border-radius:var(--ds-radius-sm);object-fit:cover;flex:none;box-shadow:var(--ds-shadow-sm);}
 .pfcard .pt{font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
 .pfcard .pm{font-size:var(--ds-text-xs);color:var(--ds-fg-muted);}
-.ptab{display:flex;justify-content:space-around;align-items:center;padding:12px 8px;margin-top:var(--ds-space-4);
-  position:sticky;bottom:0;
+.pfcard .plike{width:44px;height:44px;flex:none;border:none;border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);
+  color:var(--ds-danger);box-shadow:var(--ds-clay-raised);display:grid;place-items:center;cursor:pointer;}
+.pfcard .plike svg{width:19px;height:19px;}
+.pfcard .plike:active{box-shadow:var(--ds-clay-pressed);}
+/* 底部 tab：贴底（margin-top:auto 吸收上方剩余空间），≥44px 触控 */
+.ptab{flex:none;margin-top:auto;display:flex;justify-content:space-around;align-items:center;padding:11px 8px;
   background:var(--ds-bg-elevated);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-clay-raised);}
-.ptab .tb{display:grid;place-items:center;gap:3px;color:var(--ds-fg-subtle);font-size:10px;font-weight:var(--ds-weight-medium);}
+.ptab .tb{display:grid;place-items:center;gap:3px;color:var(--ds-fg-muted);font-size:10px;font-weight:var(--ds-weight-bold);
+  min-width:48px;min-height:46px;align-content:center;}
 .ptab .tb svg{width:22px;height:22px;}
 .ptab .tb.on{color:var(--ds-primary);}
+.ptab .tb.tcreate{margin-top:-22px;}
+.ptab .tb.tcreate .tcbtn{width:50px;height:50px;border-radius:18px 20px 19px 21px;display:grid;place-items:center;
+  background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-clay-accent);}
+.ptab .tb.tcreate .tcbtn svg{width:26px;height:26px;}
 /* profile */
-.pprof{text-align:center;}
-.pprof .phead{border-radius:var(--ds-radius-lg);overflow:hidden;box-shadow:var(--ds-clay-raised);aspect-ratio:16/10;margin-bottom:-32px;}
+.pprof{display:flex;flex-direction:column;flex:1;min-height:0;text-align:center;}
+.pprof .phead{border-radius:0 0 var(--ds-radius-lg) var(--ds-radius-lg);overflow:hidden;box-shadow:var(--ds-clay-raised);aspect-ratio:16/9;margin:0 0 -38px;position:relative;z-index:0;}
 .pprof .phead img{width:100%;height:100%;object-fit:cover;}
-.pprof .pav{width:84px;height:84px;border-radius:var(--ds-radius-full);object-fit:cover;margin:0 auto;border:5px solid var(--ds-bg);box-shadow:var(--ds-clay-raised);position:relative;}
+.pprof .phead::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  box-shadow:inset 0 -12px 26px rgba(20,16,50,.34);}
+/* 顶部状态栏（sb-light 白字）落在图片头上时，加顶部渐变压暗保证 9:41 / 信号图标对比 */
+.pdhead::before,.pprof .phead::before{content:"";position:absolute;top:0;left:0;right:0;height:58px;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(20,16,50,.5),transparent);}
+.pprof .pav{width:88px;height:88px;border-radius:var(--ds-radius-full);object-fit:cover;margin:0 auto;border:5px solid var(--ds-bg-elevated);box-shadow:var(--ds-clay-raised);position:relative;z-index:2;}
 .pprof .pname{font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);margin-top:var(--ds-space-3);}
-.pprof .pbio{font-size:var(--ds-text-sm);color:var(--ds-fg-muted);margin:6px 0 var(--ds-space-4);}
+.pprof .pbio{font-size:var(--ds-text-sm);color:var(--ds-fg-muted);margin:6px var(--ds-space-2) var(--ds-space-4);}
 .pstats{display:flex;justify-content:space-around;background:var(--ds-bg-elevated);border-radius:var(--ds-radius-lg);padding:var(--ds-space-4);box-shadow:var(--ds-clay-raised);margin-bottom:var(--ds-space-4);}
-.pstats .pst{display:flex;flex-direction:column;}
-.pstats .pst b{font-size:var(--ds-text-lg);font-variant-numeric:tabular-nums;}
+.pstats .pst{display:flex;flex-direction:column;gap:2px;}
+.pstats .pst b{font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;}
 .pstats .pst span{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.pactions{display:flex;gap:10px;margin-bottom:var(--ds-space-4);}
+.pactions .btn{flex:1;justify-content:center;}
+.pseg{display:flex;gap:6px;background:var(--ds-bg-sunken);padding:5px;border-radius:var(--ds-radius-full);box-shadow:var(--ds-clay-pressed);margin-bottom:var(--ds-space-4);}
+.pseg button{flex:1;border:none;background:none;font-family:inherit;cursor:pointer;padding:10px 0;border-radius:var(--ds-radius-full);
+  font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);color:var(--ds-fg);min-height:44px;}
+.pseg button.on{background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-clay-accent);}
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .pgrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--ds-radius-sm);box-shadow:var(--ds-shadow-sm);}
 
@@ -1096,22 +1128,26 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
           </div>
           <div class="dvc-body">
             <div class="pbody">
-              <div class="ptop">
-                <div class="pgreet"><div class="ph">早上好，小软</div><div class="ps">今天想捏点什么呀？</div></div>
-                <img src="../../_assets/avatars/a8.jpg" alt="我的头像" loading="lazy">
-              </div>
-              <div class="pbanner"><img src="../../_assets/gen/clay-hero.jpg" alt="本周精选作品" loading="lazy"><span class="pbt">本周精选</span></div>
-              <div class="pchips"><span class="pchip on">全部</span><span class="pchip">摆件</span><span class="pchip">挂件</span><span class="pchip">表情</span></div>
-              <div class="pfeed">
-                <div class="pfcard"><img src="../../_assets/photos/square2.jpg" alt="薄荷小怪兽" loading="lazy"><div style="flex:1"><div class="pt">薄荷小怪兽</div><div class="pm">@奶糖 · 点赞 642</div></div><button class="btn btn-icon" style="width:38px;height:38px" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
-                <div class="pfcard"><img src="../../_assets/photos/square3.jpg" alt="紫色云朵" loading="lazy"><div style="flex:1"><div class="pt">紫色云朵</div><div class="pm">@布丁 · 点赞 318</div></div><button class="btn btn-icon" style="width:38px;height:38px" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
-                <div class="pfcard"><img src="../../_assets/photos/square1.jpg" alt="圆滚滚小熊" loading="lazy"><div style="flex:1"><div class="pt">圆滚滚小熊</div><div class="pm">@林小软 · 点赞 1,280</div></div><button class="btn btn-icon" style="width:38px;height:38px" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
-                <div class="pfcard"><img src="../../_assets/photos/food.jpg" alt="草莓甜筒" loading="lazy"><div style="flex:1"><div class="pt">草莓甜筒</div><div class="pm">@团子 · 点赞 506</div></div><button class="btn btn-icon" style="width:38px;height:38px" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
+              <div class="pmain">
+                <div class="ptop">
+                  <div class="pgreet"><div class="ph">早上好，小软</div><div class="ps">今天想捏点什么呀？</div></div>
+                  <img src="../../_assets/avatars/a8.jpg" alt="我的头像" loading="lazy">
+                </div>
+                <div class="pbanner"><img src="../../_assets/gen/clay-hero.jpg" alt="本周精选作品" loading="lazy"><span class="pbscrim" aria-hidden="true"></span><span class="pbt">本周精选 · 软糖小宇宙</span></div>
+                <div class="pchips"><span class="pchip on">全部</span><span class="pchip">摆件</span><span class="pchip">挂件</span><span class="pchip">表情</span></div>
+                <div class="psec">热门作品 <a href="#mobile">查看全部</a></div>
+                <div class="pfeed">
+                  <div class="pfcard"><img src="../../_assets/photos/square2.jpg" alt="薄荷小怪兽" loading="lazy"><div style="flex:1;min-width:0"><div class="pt">薄荷小怪兽</div><div class="pm">@奶糖 · 点赞 642</div></div><button class="plike" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
+                  <div class="pfcard"><img src="../../_assets/photos/square3.jpg" alt="紫色云朵" loading="lazy"><div style="flex:1;min-width:0"><div class="pt">紫色云朵</div><div class="pm">@布丁 · 点赞 318</div></div><button class="plike" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
+                  <div class="pfcard"><img src="../../_assets/photos/square1.jpg" alt="圆滚滚小熊" loading="lazy"><div style="flex:1;min-width:0"><div class="pt">圆滚滚小熊</div><div class="pm">@林小软 · 点赞 1,280</div></div><button class="plike" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
+                  <div class="pfcard"><img src="../../_assets/photos/food.jpg" alt="草莓甜筒" loading="lazy"><div style="flex:1;min-width:0"><div class="pt">草莓甜筒</div><div class="pm">@团子 · 点赞 506</div></div><button class="plike" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button></div>
+                </div>
               </div>
               <div class="ptab">
                 <span class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9h14v-9"/></svg>首页</span>
                 <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>发现</span>
-                <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>创建</span>
+                <span class="tb tcreate"><span class="tcbtn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg></span>创建</span>
+                <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.5a6 6 0 0 0-12 0c0 6-2.5 7.5-2.5 7.5h17S18 14.5 18 8.5Z"/><path d="M10.5 19.5a1.8 1.8 0 0 0 3 0"/></svg>消息</span>
                 <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"/></svg>我的</span>
               </div>
             </div>
@@ -1135,9 +1171,9 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
             </span>
           </div>
           <div class="dvc-body" style="padding-top:0">
-            <div class="pbody" style="padding-top:0">
+            <div class="pbody" style="padding:0 var(--ds-space-4) calc(var(--ds-space-4) + 12px)">
               <div class="pprof">
-                <div class="phead"><img src="../../_assets/photos/ocean.jpg" alt="个人页封面" loading="lazy"></div>
+                <div class="phead" style="margin-left:calc(var(--ds-space-4)*-1);margin-right:calc(var(--ds-space-4)*-1)"><img src="../../_assets/photos/ocean.jpg" alt="个人页封面" loading="lazy"></div>
                 <img class="pav" src="../../_assets/avatars/a15.jpg" alt="林小软的头像" loading="lazy">
                 <div class="pname">林小软</div>
                 <div class="pbio">黏土手作爱好者 · 每天捏一点点</div>
@@ -1146,11 +1182,16 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
                   <div class="pst"><b>5.6k</b><span>粉丝</span></div>
                   <div class="pst"><b>342</b><span>关注</span></div>
                 </div>
-                <div style="display:flex;gap:10px;margin-bottom:var(--ds-space-4)">
-                  <button class="btn btn-primary" style="flex:1">关注</button>
-                  <button class="btn btn-secondary" style="flex:1">私信</button>
+                <div class="pactions">
+                  <button class="btn btn-primary">关注</button>
+                  <button class="btn btn-secondary">私信</button>
                 </div>
-                <div class="pgrid">
+                <div class="pseg" role="tablist">
+                  <button class="on" role="tab" aria-selected="true">作品</button>
+                  <button role="tab" aria-selected="false">收藏</button>
+                  <button role="tab" aria-selected="false">点赞</button>
+                </div>
+                <div class="pgrid" style="margin-top:auto">
                   <img src="../../_assets/photos/square1.jpg" alt="作品" loading="lazy">
                   <img src="../../_assets/photos/square2.jpg" alt="作品" loading="lazy">
                   <img src="../../_assets/photos/square3.jpg" alt="作品" loading="lazy">
@@ -1158,6 +1199,52 @@ td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-al
                   <img src="../../_assets/photos/coffee.jpg" alt="作品" loading="lazy">
                   <img src="../../_assets/photos/travel.jpg" alt="作品" loading="lazy">
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <!-- 作品详情（顶部大图深色，状态栏转白 sb-light） -->
+      <div class="dvc17 sb-light">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body" style="padding-top:0">
+            <div class="pbody" style="padding:0 var(--ds-space-4) calc(var(--ds-space-4) + 12px)">
+              <div class="pmain">
+                <div class="phead pdhead" style="margin:0 calc(var(--ds-space-4)*-1) var(--ds-space-4);border-radius:0 0 var(--ds-radius-lg) var(--ds-radius-lg);overflow:hidden;box-shadow:var(--ds-clay-raised);aspect-ratio:4/3;position:relative">
+                  <img src="../../_assets/gen/clay-hero.jpg" alt="圆滚滚小熊作品大图" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+                  <span aria-hidden="true" style="position:absolute;inset:0;box-shadow:inset 0 -14px 30px rgba(20,16,50,.36)"></span>
+                  <span style="position:absolute;left:14px;bottom:13px;color:#fff;font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);text-shadow:0 1px 8px rgba(0,0,0,.6)">圆滚滚小熊</span>
+                </div>
+                <div class="userrow" style="margin-bottom:var(--ds-space-4)">
+                  <img class="av av-40" src="../../_assets/avatars/a15.jpg" alt="林小软的头像" loading="lazy">
+                  <div style="flex:1;min-width:0"><div class="un">林小软</div><div class="us">2 天前 · 摆件</div></div>
+                  <span class="badge b-suc">已关注</span>
+                </div>
+                <div class="pfcard" style="margin-bottom:var(--ds-space-4)">
+                  <div style="flex:1;min-width:0"><div class="pt">软糖小宇宙系列</div><div class="pm">三种马卡龙色 · 大圆角 · 充气质感</div></div>
+                  <span class="badge b-solid">热门</span>
+                </div>
+                <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);margin:0 0 var(--ds-space-4);line-height:var(--ds-leading-normal)">圆鼓鼓的身体配上薄荷色围巾，捏一下会回弹。点击下方收藏到自己的作品集，或一键发布到社区。</p>
+                <div class="pchips" style="margin-bottom:0">
+                  <span class="pchip on">薄荷绿</span><span class="pchip">草莓粉</span><span class="pchip">奶油黄</span><span class="pchip">薰衣草</span>
+                </div>
+              </div>
+              <div class="ptab" style="gap:10px;padding:11px 12px">
+                <button class="btn btn-secondary" style="flex:none" aria-label="点赞"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9C1.5 8 3 4.5 6.5 4.5c2 0 3.4 1.2 4.2 2.5h2.6c.8-1.3 2.2-2.5 4.2-2.5 3.5 0 5 3.5 3.7 6.5C19 15.6 12 20 12 20Z"/></svg></button>
+                <button class="btn btn-primary" style="flex:1;justify-content:center"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 4 2.5 5.4 5.9.5-4.5 3.9 1.4 5.8L12 17l-5.3 3.1 1.4-5.8-4.5-3.9 5.9-.5L12 4Z"/></svg> 收藏到作品集</button>
               </div>
             </div>
           </div>

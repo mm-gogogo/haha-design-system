@@ -316,23 +316,58 @@
   .modal-foot { display: flex; justify-content: flex-end; gap: var(--ds-space-3); padding: var(--ds-space-4) var(--ds-space-6); background: var(--ds-bg-subtle); border-top: 1px solid var(--ds-border); }
 
   /* ===== 移动端 Mobile 演示（套 iPhone 17 Pro Max 壳 .dvc17，见 _assets/device.css） ===== */
-  /* 多台 .dvc17 并排排列；壳样式在共享 device.css，这里只管屏内布局 */
+  /* 多台 .dvc17 并排排列；壳样式在共享 device.css，这里只管屏内布局。
+     屏内做成精致 App 屏：dvc-body 顶部已留 54px 状态栏；dvc-screen 用 flex 纵列填满 812px，
+     主区 .ph-main flex:1 可滚动，底部 tab 栏 margin-top:auto 贴底，消除底部留白。 */
   .phone-row { display: flex; gap: var(--ds-space-9); flex-wrap: wrap; align-items: flex-start; justify-content: center; }
-  /* 屏内内容容器（.dvc-body 内的一屏布局） */
-  .dvc-screen { padding: var(--ds-space-4); display: flex; flex-direction: column; gap: var(--ds-space-4); min-height: 100%; }
-  /* 屏内 App 顶栏 */
-  .dvc-apptop { display: flex; align-items: center; gap: var(--ds-space-2); padding-bottom: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
-  .dvc-apptop .pmark { width: 24px; height: 24px; border-radius: var(--ds-radius-sm); background: var(--ds-primary); color: var(--ds-primary-fg); display: grid; place-items: center; flex-shrink: 0; }
-  .dvc-apptop .pmark svg { width: 15px; height: 15px; display: block; }
-  .dvc-apptop .pname { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-base); }
-  .dvc-apptop .pburger { margin-left: auto; color: var(--ds-fg-muted); background: none; border: none; cursor: pointer; font-size: var(--ds-text-lg); line-height: 1; }
+  /* 屏内内容容器：纵向填满整屏（dvc-body 已 inset:0 + padding-top:54px） */
+  .dvc-screen { min-height: 100%; display: flex; flex-direction: column; }
+  /* 屏内 App 顶栏（贴在 54px 状态栏正下方，浅底 sticky 质感） */
+  .dvc-apptop { display: flex; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-4); background: var(--ds-bg); border-bottom: 1px solid var(--ds-border); }
+  .dvc-apptop .pmark { width: 28px; height: 28px; border-radius: var(--ds-radius-sm); background: var(--ds-primary); color: var(--ds-primary-fg); display: grid; place-items: center; flex-shrink: 0; }
+  .dvc-apptop .pmark svg { width: 17px; height: 17px; display: block; }
+  .dvc-apptop .pname { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
+  .dvc-apptop .pburger { margin-left: auto; width: 44px; height: 44px; display: grid; place-items: center; color: var(--ds-fg-muted); background: none; border: none; cursor: pointer; font-size: var(--ds-text-lg); line-height: 1; border-radius: var(--ds-radius-md); }
+  .dvc-apptop .pburger:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  .dvc-apptop .pburger svg { width: 22px; height: 22px; }
+  /* 主滚动区：占据中段、填满剩余空间，竖向堆叠各组件 */
+  .dvc-body .ph-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--ds-space-4); padding: var(--ds-space-4); }
+  /* 屏内分组小标题 */
+  .dvc-body .ph-sec { font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold); color: var(--ds-fg-subtle); text-transform: uppercase; letter-spacing: .05em; margin: var(--ds-space-1) 0 calc(-1 * var(--ds-space-1)); display: flex; align-items: center; justify-content: space-between; }
+  .dvc-body .ph-sec a { font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium); color: var(--ds-primary); text-transform: none; letter-spacing: 0; }
+  /* 屏内搜索框 */
+  .dvc-body .ph-search { position: relative; display: flex; align-items: center; }
+  .dvc-body .ph-search svg { position: absolute; left: var(--ds-space-3); width: 18px; height: 18px; color: var(--ds-fg-subtle); pointer-events: none; }
+  .dvc-body .ph-search input { width: 100%; height: 44px; font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); background: var(--ds-bg-subtle); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); color: var(--ds-fg); padding: 0 var(--ds-space-3) 0 var(--ds-space-9); }
+  .dvc-body .ph-search input::placeholder { color: var(--ds-fg-subtle); }
+  .dvc-body .ph-search input:focus { outline: none; border-color: var(--ds-primary); box-shadow: var(--ds-focus-ring); }
+  /* 屏内分段控件 / 筛选 chip 行 */
+  .dvc-body .ph-seg { display: flex; gap: var(--ds-space-2); overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .dvc-body .ph-seg::-webkit-scrollbar { display: none; }
+  .dvc-body .ph-chip { flex-shrink: 0; min-height: 32px; padding: var(--ds-space-1) var(--ds-space-3); border-radius: var(--ds-radius-full); border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); font-size: var(--ds-text-xs); display: inline-flex; align-items: center; cursor: pointer; }
+  .dvc-body .ph-chip.on { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  /* 软件产品卡 */
   .dvc-body .mcard { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-4); box-shadow: var(--ds-shadow-sm); }
   .dvc-body .mcard .mtop { display: flex; align-items: center; gap: var(--ds-space-3); margin-bottom: var(--ds-space-3); }
-  .dvc-body .mcard .micon { width: 40px; height: 40px; border-radius: var(--ds-radius-md); display: grid; place-items: center; font-size: 20px; color: var(--ds-primary-fg); flex-shrink: 0; }
+  .dvc-body .mcard .micon { width: 44px; height: 44px; border-radius: var(--ds-radius-md); display: grid; place-items: center; color: var(--ds-primary-fg); flex-shrink: 0; }
+  .dvc-body .mcard .micon svg { width: 22px; height: 22px; display: block; }
   .dvc-body .mcard h4 { font-size: var(--ds-text-base); font-weight: var(--ds-weight-medium); margin: 0; }
-  .dvc-body .mcard .mone { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 2px 0 0; }
+  .dvc-body .mcard .mone { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 2px 0 0; line-height: var(--ds-leading-normal); }
   .dvc-body .mcard .mplats { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; margin: var(--ds-space-3) 0; }
-  .dvc-body .btn { width: 100%; justify-content: center; }
+  /* 下载列表行（紧凑列表样式的软件项） */
+  .dvc-body .dl-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); box-shadow: var(--ds-shadow-sm); }
+  .dvc-body .dl-list li { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+  .dvc-body .dl-list li:last-child { border-bottom: none; }
+  .dvc-body .dl-list .dl-ic { width: 40px; height: 40px; border-radius: var(--ds-radius-md); display: grid; place-items: center; color: var(--ds-primary-fg); flex-shrink: 0; }
+  .dvc-body .dl-list .dl-ic svg { width: 20px; height: 20px; display: block; }
+  .dvc-body .dl-list .dl-t { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  .dvc-body .dl-list .dl-d { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .dvc-body .dl-list .dl-go { margin-left: auto; flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--ds-radius-md); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated); color: var(--ds-primary); cursor: pointer; }
+  .dvc-body .dl-list .dl-go:hover { background: var(--ds-bg-subtle); }
+  .dvc-body .dl-list .dl-go svg { width: 20px; height: 20px; display: block; }
+  /* 屏内按钮统一满宽、触控 ≥44px */
+  .dvc-body .btn { width: 100%; justify-content: center; min-height: 44px; }
+  .dvc-body .ph-main .btn-lg { height: 48px; }
 
   /* ============================================================
      响应式断点 · ≤640px 收窄、TOC 折叠、栅格收一列
@@ -546,30 +581,40 @@
   .mini-doc .md-main p { font-size: var(--ds-text-sm); color: var(--ds-fg); line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-4); max-width: 60ch; }
   .mini-doc .md-main pre { background: var(--ds-bg-sunken); border-radius: var(--ds-radius-sm); padding: var(--ds-space-3) var(--ds-space-4); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); overflow-x: auto; margin: 0 0 var(--ds-space-4); }
 
-  /* ---- 第二台手机：详情 / 个人页（屏内布局，套 .dvc17 壳） ---- */
-  /* 大图 header 顶到状态栏下沿（抵消 dvc-body 的 54px 顶留白 + dvc-screen 内边距） */
-  .dvc-body .ph-hero { aspect-ratio: 16 / 12; margin: calc(-54px - var(--ds-space-4)) calc(-1 * var(--ds-space-4)) 0; position: relative; overflow: hidden; }
+  /* ---- 第二台手机：详情页（屏内布局，套 .dvc17 壳） ---- */
+  /* 大图 header 顶到状态栏底（抵消 dvc-body 的 54px 顶留白），自身全宽不受 ph-main padding 影响 */
+  .dvc-body .ph-hero { aspect-ratio: 16 / 11; margin-top: -54px; position: relative; overflow: hidden; flex-shrink: 0; }
   .dvc-body .ph-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .dvc-body .ph-hero .ph-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, color-mix(in srgb, #06120d 72%, transparent)); }
-  .dvc-body .ph-hero .ph-cap { position: absolute; left: var(--ds-space-4); bottom: var(--ds-space-4); color: #f4fbf8; }
-  .dvc-body .ph-hero .ph-cap .t { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); }
-  .dvc-body .ph-hero .ph-cap .k { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); opacity: .92; }
+  .dvc-body .ph-hero .ph-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, #06120d 30%, transparent) 0%, transparent 32%, color-mix(in srgb, #06120d 74%, transparent) 100%); }
+  .dvc-body .ph-hero .ph-cap { position: absolute; left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-4); color: #f4fbf8; }
+  .dvc-body .ph-hero .ph-cap .t { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-xl); line-height: 1.1; }
+  .dvc-body .ph-hero .ph-cap .k { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); opacity: .92; margin-top: var(--ds-space-1); }
   .dvc-body .ph-stats { display: flex; gap: var(--ds-space-3); }
-  .dvc-body .ph-stats .pst { flex: 1; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-3); text-align: center; }
-  .dvc-body .ph-stats .pst .n { font-family: var(--ds-font-mono); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
-  .dvc-body .ph-stats .pst .l { font-size: 11px; color: var(--ds-fg-muted); }
-  .dvc-body .ph-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+  .dvc-body .ph-stats .pst { flex: 1; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-3); text-align: center; background: var(--ds-bg-elevated); }
+  .dvc-body .ph-stats .pst .n { font-family: var(--ds-font-mono); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); color: var(--ds-fg); }
+  .dvc-body .ph-stats .pst .l { font-size: 11px; color: var(--ds-fg-muted); margin-top: 2px; }
+  .dvc-body .ph-desc { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+  /* 详情页特性勾选行 */
+  .dvc-body .ph-feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ds-space-2); }
+  .dvc-body .ph-feat li { display: flex; align-items: center; gap: var(--ds-space-2); font-size: var(--ds-text-sm); color: var(--ds-fg); }
+  .dvc-body .ph-feat li svg { width: 18px; height: 18px; color: var(--ds-success); flex-shrink: 0; }
+  /* 通用列表（动态/收件箱行） */
+  .dvc-body .ph-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); box-shadow: var(--ds-shadow-sm); }
   .dvc-body .ph-list li { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); font-size: var(--ds-text-sm); }
   .dvc-body .ph-list li:last-child { border-bottom: none; }
-  .dvc-body .ph-list li .pl-thumb { width: 40px; height: 40px; border-radius: var(--ds-radius-sm); object-fit: cover; flex-shrink: 0; }
-  .dvc-body .ph-list li .pl-t { font-weight: var(--ds-weight-medium); }
-  .dvc-body .ph-list li .pl-d { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
-  .dvc-body .ph-list li .pl-x { margin-left: auto; font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); }
-  /* 底部标签栏：吸附在屏底（抵消 dvc-screen 内边距，贴住 home 条上方） */
-  .dvc-body .ph-tabbar { margin-top: auto; display: flex; justify-content: space-around; padding: var(--ds-space-3) 0 var(--ds-space-5); border-top: 1px solid var(--ds-border); background: var(--ds-bg-elevated); margin-left: calc(-1 * var(--ds-space-4)); margin-right: calc(-1 * var(--ds-space-4)); margin-bottom: calc(-1 * var(--ds-space-4)); }
-  .dvc-body .ph-tabbar .tb { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ds-fg-subtle); font-size: 10px; }
+  .dvc-body .ph-list li .pl-thumb { width: 44px; height: 44px; border-radius: var(--ds-radius-md); object-fit: cover; flex-shrink: 0; }
+  .dvc-body .ph-list li .pl-t { font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  .dvc-body .ph-list li .pl-d { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin-top: 1px; }
+  .dvc-body .ph-list li .pl-x { margin-left: auto; align-self: flex-start; font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); flex-shrink: 0; }
+  /* 底部固定操作条（详情页下载 CTA，贴屏底） */
+  .dvc-body .ph-actionbar { margin-top: auto; display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4); padding-bottom: var(--ds-space-6); border-top: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .dvc-body .ph-actionbar .btn { flex: 1; margin: 0; }
+  .dvc-body .ph-actionbar .btn-icononly { flex: 0 0 48px; width: 48px; padding: 0; }
+  /* 底部标签栏：吸附在屏底（贴住 home 条上方） */
+  .dvc-body .ph-tabbar { margin-top: auto; display: flex; justify-content: space-around; padding: var(--ds-space-2) 0 var(--ds-space-6); border-top: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .dvc-body .ph-tabbar .tb { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ds-fg-subtle); font-size: 10px; min-width: 48px; min-height: 48px; background: none; border: none; cursor: pointer; }
   .dvc-body .ph-tabbar .tb.on { color: var(--ds-primary); }
-  .dvc-body .ph-tabbar .tb svg { width: 20px; height: 20px; }
+  .dvc-body .ph-tabbar .tb svg { width: 22px; height: 22px; }
 
   /* ---- v2 响应式收敛 ---- */
   @media (max-width: 880px) {
@@ -1292,7 +1337,7 @@ pnpm dev --filter @haha/imgsqueeze</pre>
   <div class="shell">
     <p class="eyebrow">移动布局</p>
     <h2>移动端 Mobile · iPhone 17 Pro Max ×3</h2>
-    <p class="lede">统一套 iPhone 17 Pro Max 设备壳（钛金边框 / 灵动岛 / 状态栏 / Home 条，主题无关、亮暗皆可）：App 首页（卡片流 + 下载 CTA）、详情页（大图 header + 信息 + 操作）、收件箱列表（头像 / 缩略图行 + 底部标签栏）。屏内全走 <code>--ds-*</code> 与本地素材。</p>
+    <p class="lede">统一套 iPhone 17 Pro Max 设备壳（钛金边框 / 灵动岛 / 状态栏 / Home 条，主题无关、亮暗皆可）：App 首页（搜索 + 卡片流 + 下载列表 + 底部 Tab）、详情页（大图 header + 信息 + 底部固定下载条）、更新动态（分组列表 + 底部标签栏）。每屏纵向填满 812px、零底部留白，触控目标 ≥44px，屏内全走 <code>--ds-*</code> 与本地素材。</p>
     <div class="phone-row">
       <!-- 手机 1：App 首页（卡片流 + 下载 CTA） -->
       <div class="dvc17">
@@ -1312,31 +1357,63 @@ pnpm dev --filter @haha/imgsqueeze</pre>
           <div class="dvc-screen">
           <div class="dvc-apptop">
             <span class="pmark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4.5 12 9 17"/><path d="m15 7 4.5 5L15 17"/><path d="M12 4c2.5 4 2.5 12 0 16"/></svg></span>
-            <span class="pname">哈哈</span>
-            <button class="pburger" aria-label="菜单">≡</button>
+            <span class="pname">哈哈全家桶</span>
+            <button class="pburger" aria-label="菜单"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
           </div>
-          <div class="mcard">
-            <div class="mtop">
-              <span class="micon" style="background: var(--ds-primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:block"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m4 17 4.5-4.5a2 2 0 0 1 2.8 0L20 21"/></svg></span>
-              <div><h4>哈哈图压</h4><p class="mone">本地批量压缩，不上传、不打水印。</p></div>
+          <div class="ph-main">
+            <div class="ph-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="search" placeholder="搜索开源应用…" aria-label="搜索开源应用">
             </div>
-            <div class="mplats"><span class="badge badge-plat">macOS</span><span class="badge badge-plat">iOS</span><span class="badge badge-plat">Web</span></div>
-            <button class="btn btn-primary btn-sm">下载</button>
-          </div>
-          <div class="mcard">
-            <div class="mtop">
-              <span class="micon" style="background: var(--ds-accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:block"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20"/><path d="M8.1 15.9 20 4"/></svg></span>
-              <div><h4>哈哈抠图</h4><p class="mone">一键去背景，离线模型、零上传。</p></div>
+            <div class="ph-seg" role="tablist" aria-label="分类">
+              <button class="ph-chip on" role="tab" aria-selected="true">全部</button>
+              <button class="ph-chip" role="tab" aria-selected="false">图像</button>
+              <button class="ph-chip" role="tab" aria-selected="false">下载</button>
+              <button class="ph-chip" role="tab" aria-selected="false">效率</button>
             </div>
-            <div class="mplats"><span class="badge badge-plat">iOS</span><span class="badge badge-plat">Android</span></div>
-            <button class="btn btn-primary btn-sm">下载</button>
+            <div class="ph-sec">精选应用 <a href="#">全部</a></div>
+            <div class="mcard">
+              <div class="mtop">
+                <span class="micon" style="background: var(--ds-primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m4 17 4.5-4.5a2 2 0 0 1 2.8 0L20 21"/></svg></span>
+                <div><h4>哈哈图压</h4><p class="mone">本地批量压缩，不上传、不打水印。</p></div>
+              </div>
+              <div class="mplats"><span class="badge badge-plat">macOS</span><span class="badge badge-plat">iOS</span><span class="badge badge-plat">Web</span></div>
+              <button class="btn btn-primary btn-sm">下载</button>
+            </div>
+            <div class="mcard">
+              <div class="mtop">
+                <span class="micon" style="background: var(--ds-accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20"/><path d="M8.1 15.9 20 4"/></svg></span>
+                <div><h4>哈哈抠图</h4><p class="mone">一键去背景，离线模型、零上传。</p></div>
+              </div>
+              <div class="mplats"><span class="badge badge-plat">iOS</span><span class="badge badge-plat">Android</span></div>
+              <button class="btn btn-primary btn-sm">下载</button>
+            </div>
+            <div class="ph-sec">更多工具</div>
+            <ul class="dl-list">
+              <li>
+                <span class="dl-ic" style="background: var(--ds-accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 19h14"/></svg></span>
+                <div><div class="dl-t">哈哈下载器</div><div class="dl-d">aria2 内核 · 断点续传</div></div>
+                <button class="dl-go" aria-label="下载 哈哈下载器"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 19h14"/></svg></button>
+              </li>
+              <li>
+                <span class="dl-ic" style="background: var(--ds-primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span>
+                <div><div class="dl-t">哈哈转码</div><div class="dl-d">本地音视频格式转换</div></div>
+                <button class="dl-go" aria-label="下载 哈哈转码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 19h14"/></svg></button>
+              </li>
+            </ul>
+            <button class="btn btn-primary btn-lg">下载全家桶 →</button>
+            <div class="trust-row" style="justify-content: center">
+              <span class="badge badge-success">免费</span>
+              <span class="badge badge-success">开源</span>
+              <span class="badge badge-info">无广告</span>
+            </div>
           </div>
-          <button class="btn btn-primary btn-lg">下载全家桶 →</button>
-          <div class="trust-row" style="justify-content: flex-start">
-            <span class="badge badge-success">免费</span>
-            <span class="badge badge-success">开源</span>
-            <span class="badge badge-info">无广告</span>
-          </div>
+          <nav class="ph-tabbar" aria-label="底部导航">
+            <button class="tb on" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg>首页</button>
+            <button class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>应用</button>
+            <button class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 19h14"/></svg>下载</button>
+            <button class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的</button>
+          </nav>
           </div>
           </div>
           <div class="home"></div>
@@ -1364,15 +1441,29 @@ pnpm dev --filter @haha/imgsqueeze</pre>
             <div class="ph-scrim" aria-hidden="true"></div>
             <div class="ph-cap"><div class="t">哈哈下载器</div><div class="k">v2.1 · 免费开源</div></div>
           </div>
-          <div class="ph-stats">
-            <div class="pst"><div class="n">128k</div><div class="l">下载量</div></div>
-            <div class="pst"><div class="n">4.9</div><div class="l">评分</div></div>
-            <div class="pst"><div class="n">12MB</div><div class="l">体积</div></div>
+          <div class="ph-main">
+            <div class="ph-stats">
+              <div class="pst"><div class="n">128k</div><div class="l">下载量</div></div>
+              <div class="pst"><div class="n">4.9</div><div class="l">评分</div></div>
+              <div class="pst"><div class="n">12MB</div><div class="l">体积</div></div>
+            </div>
+            <div class="mplats"><span class="badge badge-plat">macOS</span><span class="badge badge-plat">Windows</span><span class="badge badge-plat">Linux</span></div>
+            <p class="ph-desc">多线程下载视频与文件，aria2 内核，断点续传、零追踪，全程本地运行。</p>
+            <div class="ph-sec">核心特性</div>
+            <ul class="ph-feat">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>aria2 多线程内核，速度拉满</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>断点续传，关机不丢进度</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>零追踪、零上传，全程本地</li>
+            </ul>
+            <div class="ph-sec">同款贡献者</div>
+            <ul class="ph-list">
+              <li><img class="pl-thumb" src="../../_assets/avatars/a8.jpg" alt="维护者头像" loading="lazy"><div><div class="pl-t">陈知行 · 主维护</div><div class="pl-d">合并 312 · star 1.2k</div></div><span class="pl-x">core</span></li>
+            </ul>
           </div>
-          <p style="font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal)">多线程下载视频与文件，aria2 内核，断点续传、零追踪，全程本地。</p>
-          <div class="mplats"><span class="badge badge-plat">macOS</span><span class="badge badge-plat">Windows</span><span class="badge badge-plat">Linux</span></div>
-          <button class="btn btn-primary btn-lg">下载 · macOS</button>
-          <button class="btn btn-secondary"><svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>在 GitHub 查看</button>
+          <div class="ph-actionbar">
+            <button class="btn btn-secondary btn-icononly" aria-label="在 GitHub 查看"><svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg></button>
+            <button class="btn btn-primary btn-lg">下载 · macOS</button>
+          </div>
           </div>
           </div>
           <div class="home"></div>
@@ -1396,21 +1487,34 @@ pnpm dev --filter @haha/imgsqueeze</pre>
           <div class="dvc-body">
           <div class="dvc-screen">
           <div class="dvc-apptop">
-            <span class="pname" style="font-family: var(--ds-font-serif)">更新动态</span>
-            <button class="pburger" aria-label="筛选"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M3 5h18M6 12h12M10 19h4"/></svg></button>
+            <span class="pname">更新动态</span>
+            <button class="pburger" aria-label="筛选"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg></button>
           </div>
-          <ul class="ph-list">
-            <li><img class="pl-thumb" src="../../_assets/avatars/a5.jpg" alt="贡献者 a5 头像" loading="lazy"><div><div class="pl-t">林舒春 合并了 PR</div><div class="pl-d">imgsqueeze · 修复批处理内存</div></div><span class="pl-x">2h</span></li>
-            <li><img class="pl-thumb" src="../../_assets/photos/tech.jpg" alt="哈哈图压发布缩略图" loading="lazy"><div><div class="pl-t">哈哈图压 v3.0 发布</div><div class="pl-d">支持 AVIF 与并行编码</div></div><span class="pl-x">1d</span></li>
-            <li><img class="pl-thumb" src="../../_assets/avatars/a23.jpg" alt="贡献者 a23 头像" loading="lazy"><div><div class="pl-t">新增 14 位翻译贡献者</div><div class="pl-d">文档站现支持 8 种语言</div></div><span class="pl-x">3d</span></li>
-            <li><img class="pl-thumb" src="../../_assets/photos/desk.jpg" alt="下载器更新缩略图" loading="lazy"><div><div class="pl-t">哈哈下载器 v2.1</div><div class="pl-d">aria2 内核升级 · 断点续传</div></div><span class="pl-x">5d</span></li>
-          </ul>
-          <div class="ph-tabbar">
-            <span class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg>首页</span>
-            <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>发现</span>
-            <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>动态</span>
-            <span class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的</span>
+          <div class="ph-main">
+            <div class="ph-seg" aria-label="筛选">
+              <button class="ph-chip on">全部</button>
+              <button class="ph-chip">发布</button>
+              <button class="ph-chip">PR</button>
+              <button class="ph-chip">社区</button>
+            </div>
+            <div class="ph-sec">今天</div>
+            <ul class="ph-list">
+              <li><img class="pl-thumb" src="../../_assets/avatars/a5.jpg" alt="贡献者 a5 头像" loading="lazy"><div><div class="pl-t">林舒春 合并了 PR</div><div class="pl-d">imgsqueeze · 修复批处理内存</div></div><span class="pl-x">2h</span></li>
+              <li><img class="pl-thumb" src="../../_assets/photos/tech.jpg" alt="哈哈图压发布缩略图" loading="lazy"><div><div class="pl-t">哈哈图压 v3.0 发布</div><div class="pl-d">支持 AVIF 与并行编码</div></div><span class="pl-x">1d</span></li>
+            </ul>
+            <div class="ph-sec">本周</div>
+            <ul class="ph-list">
+              <li><img class="pl-thumb" src="../../_assets/avatars/a23.jpg" alt="贡献者 a23 头像" loading="lazy"><div><div class="pl-t">新增 14 位翻译贡献者</div><div class="pl-d">文档站现支持 8 种语言</div></div><span class="pl-x">3d</span></li>
+              <li><img class="pl-thumb" src="../../_assets/photos/desk.jpg" alt="下载器更新缩略图" loading="lazy"><div><div class="pl-t">哈哈下载器 v2.1</div><div class="pl-d">aria2 内核升级 · 断点续传</div></div><span class="pl-x">5d</span></li>
+              <li><img class="pl-thumb" src="../../_assets/avatars/a12.jpg" alt="贡献者 a12 头像" loading="lazy"><div><div class="pl-t">周岚 提交了 issue</div><div class="pl-d">建议增加暗色主题导出</div></div><span class="pl-x">6d</span></li>
+            </ul>
           </div>
+          <nav class="ph-tabbar" aria-label="底部导航">
+            <button class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg>首页</button>
+            <button class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>发现</button>
+            <button class="tb on" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>动态</button>
+            <button class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的</button>
+          </nav>
           </div>
           </div>
           <div class="home"></div>

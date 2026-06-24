@@ -326,34 +326,54 @@ tbody tr:hover{background:var(--ds-bg-subtle)}
 
 /* 移动端：iPhone 17 Pro Max 套壳内容（屏内布局，套壳件见 _assets/device.css） */
 .phones{display:flex; flex-wrap:wrap; gap:var(--ds-space-7); align-items:flex-start}
-/* 屏内 App 顶栏 */
-.dvc-body .ptop{display:flex; align-items:center; gap:var(--ds-space-2); height:48px; padding:0 var(--ds-space-4); border-bottom:1px solid var(--ds-border); background:var(--ds-bg)}
+/* dvc-body 改为纵向 flex：顶栏 + 主区(flex:1) + 底部(margin-top:auto)，填满 812px、消除底部留白 */
+.dvc17 .dvc-body{display:flex; flex-direction:column; min-height:100%}
+.dvc-body .pmain{flex:1 1 auto; min-height:0; display:flex; flex-direction:column}
+/* 屏内 App 顶栏（贴 54px 状态栏下，sticky 顶） */
+.dvc-body .ptop{position:sticky; top:0; z-index:8; display:flex; align-items:center; gap:var(--ds-space-2); height:52px; flex:none; padding:0 var(--ds-space-3); border-bottom:1px solid var(--ds-border); background:var(--ds-bg)}
 .dvc-body .ptop.dark{background:var(--ds-primary); color:var(--ds-primary-fg); border-bottom-color:transparent}
-.dvc-body .ptop .pmark{width:26px; height:26px; flex:none; border-radius:var(--ds-radius-md); background:var(--ds-primary); color:var(--ds-primary-fg); display:grid; place-items:center; font-size:13px}
+.dvc-body .ptop .pmark{width:28px; height:28px; flex:none; border-radius:var(--ds-radius-md); background:var(--ds-primary); color:var(--ds-primary-fg); display:grid; place-items:center; font-size:13px}
 .dvc-body .ptop .pname{font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md)}
-.dvc-body .ptop .pic{width:32px; height:32px; display:grid; place-items:center; border-radius:var(--ds-radius-sm); color:inherit; cursor:pointer}
-.dvc-body .ptop.dark .pic:hover{background:rgba(255,255,255,.14)}
+.dvc-body .ptop .pic{width:44px; height:44px; display:grid; place-items:center; border-radius:var(--ds-radius-md); color:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent}
+.dvc-body .ptop.dark .pic:hover{background:rgba(255,255,255,.16)}
 .dvc-body .ptop:not(.dark) .pic{color:var(--ds-fg-muted)}
 .dvc-body .ptop:not(.dark) .pic:hover{background:var(--ds-bg-subtle)}
-/* 屏内邮件行 */
-.dvc-body .pmail{display:flex; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); border-bottom:1px solid var(--ds-border); min-height:44px; align-items:center}
-.dvc-body .pmail .pav{width:38px; height:38px; flex:none; border-radius:var(--ds-radius-full); object-fit:cover; border:1px solid var(--ds-border)}
-.dvc-body .pmail .pun{position:absolute; left:6px; top:50%; transform:translateY(-50%)}
-.dvc-body .pmail{position:relative}
+/* 屏内搜索条 */
+.dvc-body .psearch{flex:none; padding:var(--ds-space-2) var(--ds-space-3) var(--ds-space-1); background:var(--ds-bg)}
+.dvc-body .psearch .pse{display:flex; align-items:center; gap:var(--ds-space-2); height:38px; padding:0 var(--ds-space-3); border-radius:var(--ds-radius-md); background:var(--ds-bg-sunken); color:var(--ds-fg-subtle); font-size:var(--ds-text-sm)}
+.dvc-body .psearch .pse svg{width:16px; height:16px; flex:none}
+/* 收件箱分组标题 */
+.dvc-body .plabel{flex:none; display:flex; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-2) var(--ds-space-4) var(--ds-space-1); font-size:11px; font-family:var(--ds-font-mono); color:var(--ds-fg-subtle); text-transform:uppercase; letter-spacing:.04em}
+.dvc-body .plabel .pcount{margin-left:auto; font-family:var(--ds-font-sans); color:var(--ds-fg-muted); text-transform:none; letter-spacing:0}
+/* 邮件列表（可滚主区） */
+.dvc-body .plist{flex:1 1 auto; min-height:0; overflow:auto; -webkit-overflow-scrolling:touch}
+.dvc-body .plist::-webkit-scrollbar{width:0; height:0}
+/* 屏内邮件行（触控 ≥44px） */
+.dvc-body .pmail{position:relative; display:flex; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4) var(--ds-space-3) var(--ds-space-5); border-bottom:1px solid var(--ds-border); min-height:60px; align-items:center; cursor:pointer; -webkit-tap-highlight-color:transparent}
+.dvc-body .pmail:hover{background:var(--ds-bg-subtle)}
+.dvc-body .pmail.cur{background:var(--ds-info-bg)}
+.dvc-body .pmail .pav{width:40px; height:40px; flex:none; border-radius:var(--ds-radius-full); object-fit:cover; border:1px solid var(--ds-border)}
+.dvc-body .pmail .pun{position:absolute; left:8px; top:50%; transform:translateY(-50%)}
 .dvc-body .pmail .pb{flex:1; min-width:0}
-.dvc-body .pmail .pfrom{font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-.dvc-body .pmail .psubj{font-size:var(--ds-text-sm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
+.dvc-body .pmail .pfrom{display:flex; align-items:baseline; gap:var(--ds-space-2)}
+.dvc-body .pmail .pname2{font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.dvc-body .pmail.read .pname2{color:var(--ds-fg-muted); font-weight:var(--ds-weight-normal)}
+.dvc-body .pmail .ptime{margin-left:auto; flex:none; font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric)}
+.dvc-body .pmail .psubj{font-size:var(--ds-text-sm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:2px}
 .dvc-body .pmail.unr .psubj{font-weight:var(--ds-weight-medium); color:var(--ds-fg)}
 .dvc-body .pmail.read .psubj{color:var(--ds-fg-muted)}
-.dvc-body .pmail.read .pav{opacity:.78}
-.dvc-body .pmail .pprev{font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px}
-.dvc-body .pmail .ptime{flex:none; align-self:flex-start; font-size:11px; color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric)}
+.dvc-body .pmail.read .pav{opacity:.82}
+.dvc-body .pmail .pprev{display:flex; align-items:center; gap:var(--ds-space-1); font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); overflow:hidden; margin-top:2px}
+.dvc-body .pmail .pprev .ptxt{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+.dvc-body .pmail .pclip{flex:none; display:inline-flex; align-items:center; gap:2px; color:var(--ds-fg-subtle)}
+.dvc-body .pmail .pclip svg{width:12px; height:12px}
+.dvc-body .pmail .ptag{flex:none}
 .dvc-body .pauth{padding:var(--ds-space-3) var(--ds-space-4); display:flex; flex-wrap:wrap; gap:var(--ds-space-1); border-bottom:1px solid var(--ds-border); background:var(--ds-bg-subtle)}
 .dvc-body .pauth .palabel{width:100%; font-size:11px; color:var(--ds-fg-subtle); margin-bottom:2px; font-family:var(--ds-font-mono)}
-/* 屏内底部标签栏（贴底） */
-.dvc-body .pbar{position:sticky; bottom:0; display:flex; height:56px; border-top:1px solid var(--ds-border); background:var(--ds-bg); padding-bottom:env(safe-area-inset-bottom)}
-.dvc-body .pbar .pt{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:10px; color:var(--ds-fg-subtle); cursor:pointer}
-.dvc-body .pbar .pt .pi{font-size:16px}
+/* 屏内底部标签栏（margin-top:auto 贴底） */
+.dvc-body .pbar{flex:none; margin-top:auto; display:flex; height:56px; border-top:1px solid var(--ds-border); background:var(--ds-bg)}
+.dvc-body .pbar .pt{flex:1; min-height:44px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:10px; color:var(--ds-fg-subtle); cursor:pointer; -webkit-tap-highlight-color:transparent}
+.dvc-body .pbar .pt .pi{display:grid; place-items:center}
 .dvc-body .pbar .pt.on{color:var(--ds-primary); font-weight:var(--ds-weight-medium)}
 
 /* ============================================================
@@ -524,7 +544,9 @@ tbody tr:hover{background:var(--ds-bg-subtle)}
 .adminlayout tbody td{padding:var(--ds-space-1) var(--ds-space-2)}
 @media(max-width:780px){.adminlayout{grid-template-columns:1fr}.adminlayout .ad-side{flex-direction:row; flex-wrap:wrap; border-right:none; border-bottom:1px solid var(--ds-border)}.adminlayout .ad-brand{width:100%}}
 
-/* 第二个套壳：阅读视图（屏内内容） */
+/* 第二个套壳：阅读视图（屏内内容；prscroll=可滚主区 flex:1） */
+.dvc-body .prscroll{flex:1 1 auto; min-height:0; overflow:auto; -webkit-overflow-scrolling:touch}
+.dvc-body .prscroll::-webkit-scrollbar{width:0; height:0}
 .dvc-body .pread{padding:var(--ds-space-4); border-bottom:1px solid var(--ds-border)}
 .dvc-body .pread .prt{font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); line-height:1.25; letter-spacing:-0.01em}
 .dvc-body .pread .prfrom{display:flex; align-items:center; gap:var(--ds-space-2); margin:var(--ds-space-3) 0; padding-bottom:var(--ds-space-3); border-bottom:1px solid var(--ds-border)}
@@ -532,13 +554,16 @@ tbody tr:hover{background:var(--ds-bg-subtle)}
 .dvc-body .pread .prfrom .prn{font-size:13px; font-weight:var(--ds-weight-medium)}
 .dvc-body .pread .prfrom .pre{font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono)}
 .dvc-body .pread .prbody{font-size:13px; color:var(--ds-fg-muted); line-height:var(--ds-leading-relaxed)}
-.dvc-body .pread .prbody p{margin:0 0 var(--ds-space-2)}
+.dvc-body .pread .prbody p{margin:0 0 var(--ds-space-3)}
+.dvc-body .pread .prquote{margin-top:var(--ds-space-2); padding:var(--ds-space-2) var(--ds-space-3); border-left:2px solid var(--ds-border-strong); color:var(--ds-fg-subtle); font-size:12px; line-height:var(--ds-leading-normal)}
 .dvc-body .pattach{padding:var(--ds-space-4); display:flex; gap:var(--ds-space-2); border-bottom:1px solid var(--ds-border)}
-.dvc-body .pattach .pa{flex:1; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-elevated)}
+.dvc-body .pattach .pa{flex:1; min-width:0; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-elevated)}
 .dvc-body .pattach .pa img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
-.dvc-body .pattach .pa .pan{font-size:10px; font-family:var(--ds-font-mono); color:var(--ds-fg-subtle); padding:3px var(--ds-space-2); border-top:1px solid var(--ds-border); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-.dvc-body .pactions{display:flex; gap:var(--ds-space-2); padding:var(--ds-space-4)}
-.dvc-body .pactions .btn{flex:1}
+.dvc-body .pattach .pa .pan{display:flex; align-items:center; gap:4px; font-size:10px; font-family:var(--ds-font-mono); color:var(--ds-fg-subtle); padding:4px var(--ds-space-2); border-top:1px solid var(--ds-border)}
+.dvc-body .pattach .pa .pan span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+.dvc-body .pattach .pa .pan svg{width:11px; height:11px; flex:none}
+.dvc-body .pactions{flex:none; margin-top:auto; display:flex; gap:var(--ds-space-2); padding:var(--ds-space-3) var(--ds-space-4); border-top:1px solid var(--ds-border); background:var(--ds-bg)}
+.dvc-body .pactions .btn{flex:1; min-height:44px}
 
 /* ============================================================
    响应式断点：≤640 收一列；规则表横向滚动
@@ -1269,63 +1294,95 @@ _dmarc.example.com.     IN  TXT  "v=DMARC1; p=reject; rua=mailto:dmarc@example.c
         </div>
         <div class="dvc-body">
           <div class="ptop">
-            <span class="pmark"><svg class="ic-svg" style="width:14px;height:14px;vertical-align:0"><use href="#i-mail"/></svg></span>
-            <span class="pname">hahamail</span>
-            <span class="pic" style="margin-left:auto" aria-label="搜索"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-search"/></svg></span>
+            <span class="pmark"><svg class="ic-svg" style="width:15px;height:15px;vertical-align:0"><use href="#i-mail"/></svg></span>
+            <span class="pname">收件箱</span>
+            <span class="pic" style="margin-left:auto" aria-label="筛选"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-filter"/></svg></span>
             <span class="pic" aria-label="写信"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-pencil"/></svg></span>
           </div>
-          <div class="pmail unr">
-            <span class="pun"><span class="dot dot-info"></span></span>
-            <img class="pav" src="../../_assets/avatars/a1.jpg" alt="Stripe 发件人头像" loading="lazy">
-            <span class="pb">
-              <span class="pfrom">stripe@stripe.com</span>
-              <span class="psubj">[Invoice] 你的 6 月账单已生成</span>
-              <span class="pprev">本期合计 $42.00，自动续费…</span>
-            </span>
-            <span class="ptime">09:24</span>
+          <div class="psearch">
+            <div class="pse"><svg class="ic-svg"><use href="#i-search"/></svg>搜索邮件、发件人或域名</div>
           </div>
-          <div class="pmail unr">
-            <span class="pun"><span class="dot dot-info"></span></span>
-            <img class="pav" src="../../_assets/avatars/a8.jpg" alt="GitHub 发件人头像" loading="lazy">
-            <span class="pb">
-              <span class="pfrom">noreply@github.com</span>
-              <span class="psubj">[hahamail] CI passed on main</span>
-              <span class="pprev">16 packages, race detector ok…</span>
-            </span>
-            <span class="ptime">08:51</span>
-          </div>
-          <div class="pmail read">
-            <span class="pun"></span>
-            <img class="pav" src="../../_assets/avatars/a23.jpg" alt="Postmaster 发件人头像" loading="lazy">
-            <span class="pb">
-              <span class="pfrom">postmaster@gmail.com</span>
-              <span class="psubj">Delivery Status Notification (Failure)</span>
-              <span class="pprev">550 5.1.1 user unknown…</span>
-            </span>
-            <span class="ptime">周一</span>
-          </div>
-          <div class="pmail read">
-            <span class="pun"></span>
-            <img class="pav" src="../../_assets/avatars/a15.jpg" alt="Linear 发件人头像" loading="lazy">
-            <span class="pb">
-              <span class="pfrom">notify@linear.app</span>
-              <span class="psubj">3 issues assigned to you</span>
-              <span class="pprev">DELIV-204, DELIV-211, OPS-88…</span>
-            </span>
-            <span class="ptime">周日</span>
-          </div>
-          <div class="pauth">
-            <span class="palabel">来自 stripe@stripe.com 的认证</span>
-            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
-            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
-            <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
-            <span class="tag tag-info">spam 0.4</span>
+          <div class="plist">
+            <div class="plabel">今天<span class="pcount">2 封未读</span></div>
+            <div class="pmail unr cur">
+              <span class="pun"><span class="dot dot-info"></span></span>
+              <img class="pav" src="../../_assets/avatars/a1.jpg" alt="Stripe 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Stripe Billing</span><span class="ptime">09:24</span></span>
+                <span class="psubj">[Invoice] 你的 6 月账单已生成</span>
+                <span class="pprev"><span class="ptxt">本期合计 $42.00，将于 28 日自动扣款…</span><span class="pclip"><svg class="ic-svg"><use href="#i-clip"/></svg>2</span></span>
+              </span>
+            </div>
+            <div class="pmail unr">
+              <span class="pun"><span class="dot dot-info"></span></span>
+              <img class="pav" src="../../_assets/avatars/a8.jpg" alt="GitHub 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">GitHub Actions</span><span class="ptime">08:51</span></span>
+                <span class="psubj">[hahamail] CI passed on main</span>
+                <span class="pprev"><span class="ptxt">16 packages built, race detector ok…</span></span>
+              </span>
+            </div>
+            <div class="pmail read">
+              <span class="pun"></span>
+              <img class="pav" src="../../_assets/avatars/a23.jpg" alt="Postmaster 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Mail Delivery System</span><span class="ptime">07:12</span></span>
+                <span class="psubj">Delivery Status Notification (Failure)</span>
+                <span class="pprev"><span class="ptxt">550 5.1.1 user unknown — 退信详情…</span></span>
+              </span>
+            </div>
+            <div class="plabel">更早</div>
+            <div class="pmail read">
+              <span class="pun"></span>
+              <img class="pav" src="../../_assets/avatars/a15.jpg" alt="Linear 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Linear</span><span class="ptime">周一</span></span>
+                <span class="psubj">3 issues assigned to you</span>
+                <span class="pprev"><span class="ptxt">DELIV-204, DELIV-211, OPS-88…</span></span>
+              </span>
+            </div>
+            <div class="pmail read">
+              <span class="pun"></span>
+              <img class="pav" src="../../_assets/avatars/a5.jpg" alt="Cloudflare 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Cloudflare</span><span class="ptime">周一</span></span>
+                <span class="psubj">你的域名 MX 记录已生效</span>
+                <span class="pprev"><span class="ptxt">mx.hahamail.io 已通过解析校验…</span></span>
+              </span>
+            </div>
+            <div class="pmail read">
+              <span class="pun"></span>
+              <img class="pav" src="../../_assets/avatars/a33.jpg" alt="Figma 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Figma</span><span class="ptime">周日</span></span>
+                <span class="psubj">钟岚 在「邮件后台」中提到了你</span>
+                <span class="pprev"><span class="ptxt">@你 这版收件箱密度可以再紧一点…</span></span>
+              </span>
+            </div>
+            <div class="pmail read">
+              <span class="pun"></span>
+              <img class="pav" src="../../_assets/avatars/a47.jpg" alt="Vercel 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Vercel</span><span class="ptime">周六</span></span>
+                <span class="psubj">Deployment ready · hahamail-web</span>
+                <span class="pprev"><span class="ptxt">Production 部署完成，构建 38s…</span></span>
+              </span>
+            </div>
+            <div class="pmail read">
+              <span class="pun"></span>
+              <img class="pav" src="../../_assets/avatars/a12.jpg" alt="Postmark 发件人头像" loading="lazy">
+              <span class="pb">
+                <span class="pfrom"><span class="pname2">Postmark</span><span class="ptime">周五</span></span>
+                <span class="psubj">月度送达率报告 · 99.2%</span>
+                <span class="pprev"><span class="ptxt">本月共发送 18,402 封，退信 0.8%…</span></span>
+              </span>
+            </div>
           </div>
           <div class="pbar">
-            <span class="pt on"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-inbox"/></svg></span>收件箱</span>
-            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-route"/></svg></span>路由</span>
-            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-outbox"/></svg></span>队列</span>
-            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-chart"/></svg></span>指标</span>
+            <span class="pt on"><span class="pi"><svg class="ic-svg" style="width:20px;height:20px;vertical-align:0"><use href="#i-inbox"/></svg></span>收件箱</span>
+            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:20px;height:20px;vertical-align:0"><use href="#i-route"/></svg></span>路由</span>
+            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:20px;height:20px;vertical-align:0"><use href="#i-outbox"/></svg></span>队列</span>
+            <span class="pt"><span class="pi"><svg class="ic-svg" style="width:20px;height:20px;vertical-align:0"><use href="#i-chart"/></svg></span>指标</span>
           </div>
         </div>
         <div class="home"></div>
@@ -1348,33 +1405,37 @@ _dmarc.example.com.     IN  TXT  "v=DMARC1; p=reject; rua=mailto:dmarc@example.c
         </div>
         <div class="dvc-body">
           <div class="ptop dark">
-            <span class="pic" aria-label="返回"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-reply"/></svg></span>
+            <span class="pic" aria-label="返回"><svg class="ic-svg" style="width:20px;height:20px;vertical-align:0"><use href="#i-reply"/></svg></span>
             <span class="pname" style="font-size:var(--ds-text-base); margin-left:var(--ds-space-1)">阅读</span>
             <span class="pic" style="margin-left:auto" aria-label="星标"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-star"/></svg></span>
             <span class="pic" aria-label="归档"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-archive"/></svg></span>
+            <span class="pic" aria-label="删除"><svg class="ic-svg" style="width:18px;height:18px;vertical-align:0"><use href="#i-trash"/></svg></span>
           </div>
-          <div class="pread">
-            <div class="prt">[Invoice] 你的 6 月账单已生成</div>
-            <div class="prfrom">
-              <img src="../../_assets/avatars/a1.jpg" alt="Stripe Billing 头像" loading="lazy">
-              <div style="flex:1; min-width:0"><div class="prn">Stripe Billing</div><div class="pre">billing@stripe.com</div></div>
-              <span class="ptime">09:24</span>
+          <div class="prscroll">
+            <div class="pread">
+              <div class="prt">[Invoice] 你的 6 月账单已生成</div>
+              <div class="prfrom">
+                <img src="../../_assets/avatars/a1.jpg" alt="Stripe Billing 头像" loading="lazy">
+                <div style="flex:1; min-width:0"><div class="prn">Stripe Billing</div><div class="pre">billing@stripe.com</div></div>
+                <span class="ptime">09:24</span>
+              </div>
+              <div class="pauth" style="border:none; padding:0 0 var(--ds-space-3); background:transparent">
+                <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
+                <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
+                <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
+                <span class="tag tag-info">spam 0.4</span>
+              </div>
+              <div class="prbody">
+                <p>你好，</p>
+                <p>本期合计 <span class="mono">$42.00</span>，将于 6 月 28 日自动扣款。本期含 Pro 套餐月费及超量转发用量，明细见所附 PDF 发票。</p>
+                <p>如需调整套餐、更换付款方式或下载历史账单，可在控制台「账单」页随时查看与导出。</p>
+                <div class="prquote">&gt; 上一期：5 月账单 $42.00 已于 5 月 28 日成功扣款，感谢你的使用。</div>
+              </div>
             </div>
-            <div class="pauth" style="border:none; padding:0 0 var(--ds-space-3); background:transparent">
-              <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>SPF</span>
-              <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DKIM</span>
-              <span class="tag tag-success"><svg class="ic-svg"><use href="#i-check"/></svg>DMARC</span>
-              <span class="tag tag-info">spam 0.4</span>
+            <div class="pattach">
+              <div class="pa"><img src="../../_assets/photos/square1.jpg" alt="附件 invoice 缩略图" loading="lazy"><div class="pan"><svg class="ic-svg"><use href="#i-clip"/></svg><span>invoice-jun.pdf</span></div></div>
+              <div class="pa"><img src="../../_assets/photos/square2.jpg" alt="附件 usage 缩略图" loading="lazy"><div class="pan"><svg class="ic-svg"><use href="#i-clip"/></svg><span>usage.png</span></div></div>
             </div>
-            <div class="prbody">
-              <p>你好，</p>
-              <p>本期合计 <span class="mono">$42.00</span>，将于 6 月 28 日自动扣款。明细见所附 PDF 发票。</p>
-              <p>如需调整套餐或下载历史账单，可在控制台「账单」页查看。</p>
-            </div>
-          </div>
-          <div class="pattach">
-            <div class="pa"><img src="../../_assets/photos/square1.jpg" alt="附件 invoice 缩略图" loading="lazy"><div class="pan">invoice-jun.pdf</div></div>
-            <div class="pa"><img src="../../_assets/photos/square2.jpg" alt="附件 usage 缩略图" loading="lazy"><div class="pan">usage.png</div></div>
           </div>
           <div class="pactions">
             <button class="btn btn-primary btn-sm"><svg class="ic-svg"><use href="#i-reply"/></svg>回复</button>

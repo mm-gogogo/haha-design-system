@@ -320,34 +320,71 @@ tbody tr:last-child td{border-bottom:none}
 .toast.t-info .ico{color:var(--ds-info)}
 .toast.t-danger .ico{color:var(--ds-danger)}
 
-/* ---- MOBILE MOCKUP (≈375px phone) ---- */
-.phone-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-7);align-items:flex-start}
-.phone{width:375px;max-width:100%;border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);background:var(--ds-bg);overflow:hidden}
-.phone .ph-status{display:flex;align-items:center;justify-content:space-between;background:var(--ds-fg);color:var(--ds-bg);font-family:var(--ds-font-mono);font-size:8px;letter-spacing:0;padding:5px 10px}
-.phone .ph-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border-bottom:3px solid var(--ds-border-strong);padding:10px 12px}
-.phone .ph-top .ph-title{font-family:var(--ds-font-mono);font-size:10px;line-height:1.3;letter-spacing:0}
-.phone .ph-burger{width:28px;height:28px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:inline-flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;cursor:pointer}
-.phone .ph-burger i{display:block;width:14px;height:2px;background:var(--ds-fg)}
-.phone .ph-body{padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-4)}
-.phone .ph-card{background:var(--ds-bg-elevated);border:2px solid var(--ds-border);box-shadow:var(--ds-shadow-md);padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-2)}
-.phone .ph-card h4{font-family:var(--ds-font-mono);font-size:9px;line-height:1.5;letter-spacing:0}
-.phone .ph-card p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
-.phone .ph-list{list-style:none;margin:0;padding:0;border:2px solid var(--ds-border);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm)}
-.phone .ph-list li{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);padding:10px 12px;border-bottom:2px solid var(--ds-border);font-size:var(--ds-text-base)}
-.phone .ph-list li:last-child{border-bottom:none}
-.phone .ph-list .num{font-family:var(--ds-font-mono);font-size:11px;font-variant-numeric:tabular-nums}
-.phone .ph-list .px{width:10px;height:10px;flex:0 0 10px;border:2px solid var(--ds-border-strong)}
+/* ---- MOBILE SCREEN (iPhone 17 Pro Max device shell, 390×812 内屏) ----
+   说明：.ph-* 屏内样式同时作用于 .dvc17 .dvc-body（设备壳）。
+   .dvc-body 设为 flex 纵列：app bar 顶 → 内容区 flex:1 充满 → tab bar 贴底，
+   彻底消除 812px 底部留白。状态栏由 device.css 占位（padding-top:54px）。 */
+.phone-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-9);align-items:flex-start;justify-content:center}
+
+/* 屏内容器：flex 纵列，撑满整屏高（812 - 54 状态栏） */
+.dvc17 .dvc-body{display:flex;flex-direction:column}
+/* 顶部带满铺深色 header 的屏：媒体顶到屏顶（image 在状态栏后面，配 sb-light 白字）。
+   header 顶部用 box-shadow 内补一段渐变保证状态栏文字对比，app bar 概念=此深色 header。 */
+.dvc17 .dvc-body.flush-top{padding-top:0}
+.dvc17 .dvc-body.flush-top .ph-hd-media img{height:178px}
+
+.ph-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border-bottom:3px solid var(--ds-border-strong);padding:12px 16px;flex:0 0 auto}
+.ph-top .ph-title{font-family:var(--ds-font-mono);font-size:11px;line-height:1.3;letter-spacing:0;overflow-wrap:anywhere}
+.ph-burger{width:32px;height:32px;flex:0 0 32px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:inline-flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.ph-burger i{display:block;width:14px;height:2px;background:var(--ds-fg)}
+
+/* 内容区：撑满剩余高度，纵向滚动安全；底部留出 home 条空间 */
+.ph-body{padding:var(--ds-space-4);padding-bottom:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-4);flex:1 1 auto;min-height:0}
+
+.ph-card{background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-3)}
+.ph-card h4{font-family:var(--ds-font-mono);font-size:10px;line-height:1.5;letter-spacing:0;text-transform:uppercase}
+.ph-card p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+
+/* 区块小标题（屏内分组用，像素 mono 全大写） */
+.ph-h{font-family:var(--ds-font-mono);font-size:9px;line-height:1.4;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);margin:2px 0 -4px}
+
+/* HUD 资源条（金币 / 生命 / 关卡）：硬边像素徽条 */
+.ph-hud{display:flex;gap:8px;flex-wrap:wrap}
+.ph-hud .hud-i{display:inline-flex;align-items:center;gap:6px;flex:1 1 0;justify-content:center;font-family:var(--ds-font-mono);font-size:8px;line-height:1;letter-spacing:0;text-transform:uppercase;color:var(--ds-fg-muted);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);padding:8px 6px;white-space:nowrap}
+.ph-hud .hud-i b{font-size:10px;color:var(--ds-fg);font-variant-numeric:tabular-nums}
+.ph-hud .hud-dot{width:8px;height:8px;flex:0 0 8px;border:2px solid var(--ds-border-strong)}
+
+/* 像素进度条（硬边轨道 + 实心填充） */
+.ph-prog{position:relative;height:18px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-sunken);display:flex;align-items:center;overflow:hidden}
+.ph-prog-bar{position:absolute;left:0;top:0;bottom:0;background:var(--ds-primary);border-right:2px solid var(--ds-border-strong)}
+.ph-prog-tx{position:relative;z-index:1;width:100%;text-align:center;font-family:var(--ds-font-mono);font-size:8px;line-height:1;letter-spacing:0;color:var(--ds-fg)}
+
+.ph-list{list-style:none;margin:0;padding:0;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm)}
+.ph-list li{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);padding:11px 12px;border-bottom:2px solid var(--ds-border);font-size:var(--ds-text-base);min-height:44px}
+.ph-list li:last-child{border-bottom:none}
+/* 左侧名称区可收缩+省略，右侧时间/数字不换行 */
+.ph-list li>:first-child{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ph-list .num{font-family:var(--ds-font-mono);font-size:11px;font-variant-numeric:tabular-nums;flex:0 0 auto;white-space:nowrap;color:var(--ds-fg-muted)}
+.ph-list .stars{flex:0 0 auto}
+.ph-list .px{width:10px;height:10px;flex:0 0 10px;border:2px solid var(--ds-border-strong)}
+/* 收件箱两行消息块：标题加粗 + 预览省略 */
+.ph-list .msg{display:flex;flex-direction:column;gap:2px;min-width:0;overflow:hidden}
+.ph-list .msg b{font-family:var(--ds-font-mono);font-size:10px;line-height:1.3;letter-spacing:0;color:var(--ds-fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ph-list .msg i{font-style:normal;font-size:var(--ds-text-sm);line-height:1.3;color:var(--ds-fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 /* 像素星级评分（SVG，实星=warning 色，空星=描边） */
 .stars{display:inline-flex;gap:2px;align-items:center}
 .stars i{width:12px;height:12px;display:inline-block;image-rendering:pixelated}
 .stars i svg{display:block;width:100%;height:100%}
 .stars i.on{color:var(--ds-warning)}
 .stars i.off{color:var(--ds-fg-subtle)}
-.phone .ph-tabbar{display:flex;border-top:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated)}
-.phone .ph-tabbar button{flex:1;font-family:var(--ds-font-mono);font-size:8px;line-height:1.2;letter-spacing:0;text-transform:uppercase;border:none;border-right:2px solid var(--ds-border);background:transparent;color:var(--ds-fg-muted);padding:10px 4px;cursor:pointer;min-height:44px}
-.phone .ph-tabbar button:last-child{border-right:none}
-.phone .ph-tabbar button[aria-current="page"]{background:var(--ds-primary);color:var(--ds-primary-fg)}
-.phone .ph-tabbar button:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);position:relative;z-index:1}
+
+/* 底部 tab bar：贴底，永远在屏幕最下方（flex 容器把它推到底） */
+.ph-tabbar{display:flex;border-top:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);flex:0 0 auto;padding-bottom:22px}
+.ph-tabbar button{flex:1;font-family:var(--ds-font-mono);font-size:8px;line-height:1.2;letter-spacing:0;text-transform:uppercase;border:none;border-right:2px solid var(--ds-border);background:transparent;color:var(--ds-fg-muted);padding:10px 4px;cursor:pointer;min-height:44px}
+.ph-tabbar button:last-child{border-right:none}
+.ph-tabbar button[aria-current="page"]{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.ph-tabbar button:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);position:relative;z-index:1}
 
 /* ====================================================================
    语义层级 z-index（替代魔法值；像素风沿用统一尺度）
@@ -900,17 +937,29 @@ tbody tr:last-child td{border-bottom:none}
               <button class="ph-burger" aria-label="菜单"><i></i><i></i><i></i></button>
             </div>
             <div class="ph-body">
+              <!-- HUD 资源条：金币 / 生命 / 关卡进度 -->
+              <div class="ph-hud" role="group" aria-label="资源状态">
+                <span class="hud-i"><span class="hud-dot" style="background:var(--ds-warning)"></span>COIN <b>2,480</b></span>
+                <span class="hud-i"><span class="hud-dot" style="background:var(--ds-danger)"></span>LIFE <b>×3</b></span>
+                <span class="hud-i"><span class="hud-dot" style="background:var(--ds-primary)"></span>WORLD <b>1-3</b></span>
+              </div>
               <div class="ph-card">
                 <h4>DAILY QUEST</h4>
                 <p>通关任意 3 关即可领取金币 ×500。窄屏下卡片占满整列。</p>
+                <div class="ph-prog" aria-label="任务进度 2 / 3">
+                  <span class="ph-prog-bar" style="width:66%"></span>
+                  <span class="ph-prog-tx">2 / 3 CLEARED</span>
+                </div>
                 <button class="btn btn-primary btn-sm" style="align-self:flex-start">START</button>
               </div>
+              <span class="ph-h">关卡 Stages</span>
               <ul class="ph-list">
-                <li><span><span class="px" style="background:var(--ds-success)"></span>&nbsp;Stage 1-1</span><span class="stars" role="img" aria-label="评分 3 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
-                <li><span><span class="px" style="background:var(--ds-warning)"></span>&nbsp;Stage 1-2</span><span class="stars" role="img" aria-label="评分 2 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
-                <li><span><span class="px" style="background:var(--ds-danger)"></span>&nbsp;Stage 1-3</span><span class="stars" role="img" aria-label="评分 0 / 3"><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+                <li><span><span class="px" style="background:var(--ds-success)"></span>Stage 1-1</span><span class="stars" role="img" aria-label="评分 3 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+                <li><span><span class="px" style="background:var(--ds-warning)"></span>Stage 1-2</span><span class="stars" role="img" aria-label="评分 2 / 3"><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="on" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+                <li><span><span class="px" style="background:var(--ds-danger)"></span>Stage 1-3</span><span class="stars" role="img" aria-label="评分 0 / 3"><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i><i class="off" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"><path d="M5 1h2v3h3v2h-1v2h1v3H8v-2H4v2H1V8h1V6H1V4h3z"/></svg></i></span></li>
+                <li><span><span class="px" style="background:var(--ds-fg-subtle)"></span>Stage 1-4</span><span class="num">LOCKED</span></li>
               </ul>
-              <button class="btn btn-secondary" style="width:100%">CONTINUE <span class="svg-ico" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M3 1h2v2H3zm2 2h2v2H5zm2 2h2v2H7zm-2 2h2v2H5zm-2 2h2v2H3z"/></svg></span></button>
+              <button class="btn btn-secondary" style="width:100%;margin-top:auto">CONTINUE <span class="svg-ico" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor" shape-rendering="crispEdges"><path d="M3 1h2v2H3zm2 2h2v2H5zm2 2h2v2H7zm-2 2h2v2H5zm-2 2h2v2H3z"/></svg></span></button>
             </div>
             <nav class="ph-tabbar" aria-label="底部导航">
               <button aria-current="page">PLAY</button>
@@ -937,12 +986,13 @@ tbody tr:last-child td{border-bottom:none}
               <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
             </span>
           </div>
-          <div class="dvc-body">
-            <!-- 深色 header：满铺主视觉 + 标题 -->
-            <div style="position:relative;border-bottom:3px solid var(--ds-border-strong)">
-              <span class="pic" style="display:block;border:none;box-shadow:none;aspect-ratio:16/9"><img src="../../_assets/gen/pixel-hero.jpg" alt="商店首图：8-bit 街机精选" loading="lazy"></span>
-              <span class="scrim" aria-hidden="true" style="position:absolute;inset:0"></span>
-              <span style="position:absolute;left:var(--ds-space-4);bottom:var(--ds-space-3);z-index:1;font-family:var(--ds-font-mono);font-size:12px;letter-spacing:0;color:#fffdf5;text-shadow:2px 2px 0 #000">PIXEL&nbsp;SHOP</span>
+          <div class="dvc-body flush-top">
+            <!-- 深色 header：满铺主视觉顶到屏顶（配 sb-light 白状态栏）+ 标题 -->
+            <div class="ph-hd ph-hd-media" style="position:relative;border-bottom:3px solid var(--ds-border-strong);overflow:hidden">
+              <img src="../../_assets/gen/pixel-hero.jpg" alt="商店首图：8-bit 街机精选" loading="lazy" style="display:block;width:100%;height:170px;object-fit:cover;image-rendering:pixelated">
+              <span aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,18,.86) 0%,rgba(10,10,18,.32) 55%,rgba(10,10,18,.55) 100%)"></span>
+              <span style="position:absolute;left:var(--ds-space-4);bottom:var(--ds-space-3);z-index:1;font-family:var(--ds-font-mono);font-size:13px;letter-spacing:0;color:#fffdf5;text-shadow:2px 2px 0 #000">PIXEL&nbsp;SHOP</span>
+              <span style="position:absolute;left:var(--ds-space-4);top:60px;z-index:1;font-family:var(--ds-font-mono);font-size:8px;letter-spacing:0;text-transform:uppercase;color:#fffdf5;text-shadow:1px 1px 0 #000;background:var(--ds-accent);border:2px solid var(--ds-border-strong);padding:3px 6px">街机精选</span>
             </div>
             <div class="ph-body">
               <article class="media-card">
@@ -1237,22 +1287,29 @@ tbody tr:last-child td{border-bottom:none}
               <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
             </span>
           </div>
-          <div class="dvc-body">
-            <div style="position:relative">
-              <span class="pic" style="display:block;border:none;border-bottom:3px solid var(--ds-border-strong);box-shadow:none;aspect-ratio:16/9"><img src="../../_assets/photos/hero-gallery.jpg" alt="个人主页封面" loading="lazy"></span>
-              <span class="overlay" style="position:absolute;inset:0;border:none;box-shadow:none;aspect-ratio:auto"><span class="scrim" aria-hidden="true"></span></span>
+          <div class="dvc-body flush-top">
+            <div class="ph-hd ph-hd-media" style="position:relative;border-bottom:3px solid var(--ds-border-strong);overflow:hidden">
+              <img src="../../_assets/photos/hero-gallery.jpg" alt="个人主页封面" loading="lazy" style="display:block;width:100%;height:178px;object-fit:cover;image-rendering:pixelated">
+              <span aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,18,.80) 0%,rgba(10,10,18,.20) 50%,rgba(10,10,18,.50) 100%)"></span>
             </div>
             <div class="ph-body" style="padding-top:var(--ds-space-3)">
-              <div class="user-row" style="margin-top:calc(var(--ds-space-7) * -1);position:relative;z-index:1">
+              <div class="user-row" style="margin-top:calc(var(--ds-space-6) * -1);position:relative;z-index:1;align-items:flex-end">
                 <img class="av av-48" src="../../_assets/avatars/a23.jpg" alt="ARCADE_KING 头像" loading="lazy">
-                <div><div class="ur-name" style="color:var(--ds-fg)">ARCADE_KING</div><div class="ur-sub">LV.42 · 高分榜 #1</div></div>
+                <div style="min-width:0;background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);padding:5px 9px"><div class="ur-name" style="color:var(--ds-fg)">ARCADE_KING</div><div class="ur-sub">LV.42 · 高分榜 #1</div></div>
               </div>
               <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
                 <div class="kpi"><div class="k-lbl">SCORE</div><div class="k-val" style="font-size:13px">128K</div></div>
                 <div class="kpi"><div class="k-lbl">STAGES</div><div class="k-val" style="font-size:13px">86</div></div>
                 <div class="kpi"><div class="k-lbl">BADGES</div><div class="k-val" style="font-size:13px">24</div></div>
               </div>
-              <button class="btn btn-primary" style="width:100%"><span class="svg-ico" aria-hidden="true" data-ico="heart"></span>FOLLOW</button>
+              <button class="btn btn-primary" style="width:100%;gap:8px"><span class="svg-ico" aria-hidden="true" data-ico="heart"></span>FOLLOW</button>
+              <span class="ph-h">最近成就 Achievements</span>
+              <ul class="ph-list">
+                <li><span><span class="px" style="background:var(--ds-warning)"></span>SPEED RUN</span><span class="num">+50</span></li>
+                <li><span><span class="px" style="background:var(--ds-success)"></span>NO DEATH</span><span class="num">+30</span></li>
+                <li><span><span class="px" style="background:var(--ds-info)"></span>COMBO ×20</span><span class="num">+20</span></li>
+              </ul>
+              <button class="btn btn-secondary" style="width:100%;margin-top:auto">EDIT PROFILE</button>
             </div>
             <nav class="ph-tabbar" aria-label="底部导航">
               <button>PLAY</button><button>MAP</button><button>SHOP</button><button aria-current="page">ME</button>
@@ -1283,13 +1340,16 @@ tbody tr:last-child td{border-bottom:none}
             </div>
             <div class="ph-body" style="gap:var(--ds-space-3)">
               <div class="icon-input"><span class="gico" aria-hidden="true" data-ico="search"></span><input class="input" placeholder="SEARCH…" aria-label="搜索消息"></div>
+              <span class="ph-h">未读消息 Unread · 5</span>
               <ul class="ph-list">
-                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a1.jpg" alt="" loading="lazy">&nbsp;NEO_RGB</span><span class="num">2m</span></li>
-                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a5.jpg" alt="" loading="lazy">&nbsp;PIX_LORD</span><span class="num">1h</span></li>
-                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a12.jpg" alt="" loading="lazy">&nbsp;BIT_QUEEN</span><span class="num">3h</span></li>
-                <li><span style="display:flex;align-items:center;gap:8px"><img class="av av-32" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy">&nbsp;GG_BOT</span><span class="num">1d</span></li>
+                <li><span><img class="av av-32" src="../../_assets/avatars/a1.jpg" alt="" loading="lazy"><span class="msg"><b>NEO_RGB</b><i>新好友请求待处理</i></span></span><span class="num">2m</span></li>
+                <li><span><img class="av av-32" src="../../_assets/avatars/a5.jpg" alt="" loading="lazy"><span class="msg"><b>PIX_LORD</b><i>给你的对局点了赞</i></span></span><span class="num">1h</span></li>
+                <li><span><img class="av av-32" src="../../_assets/avatars/a12.jpg" alt="" loading="lazy"><span class="msg"><b>BIT_QUEEN</b><i>邀请你加入战队</i></span></span><span class="num">3h</span></li>
+                <li><span><img class="av av-32" src="../../_assets/avatars/a33.jpg" alt="" loading="lazy"><span class="msg"><b>GG_BOT</b><i>每日奖励已到账</i></span></span><span class="num">1d</span></li>
+                <li><span><img class="av av-32" src="../../_assets/avatars/a15.jpg" alt="" loading="lazy"><span class="msg"><b>MEGA_FOX</b><i>分享了一段录像</i></span></span><span class="num">2d</span></li>
+                <li><span><img class="av av-32" src="../../_assets/avatars/a47.jpg" alt="" loading="lazy"><span class="msg"><b>RETRO_CAT</b><i>关注了你</i></span></span><span class="num">3d</span></li>
               </ul>
-              <button class="btn btn-secondary" style="width:100%">LOAD MORE</button>
+              <button class="btn btn-secondary" style="width:100%;margin-top:auto">LOAD MORE</button>
             </div>
             <nav class="ph-tabbar" aria-label="底部导航">
               <button>PLAY</button><button aria-current="page">INBOX</button><button>SHOP</button><button>ME</button>

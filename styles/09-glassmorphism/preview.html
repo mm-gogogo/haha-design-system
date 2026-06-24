@@ -465,32 +465,86 @@
 
   /* ===== 手机框（iPhone 17 Pro Max 套壳，壳样式见 _assets/device.css） ===== */
   .phones { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,max-content)); gap:var(--ds-space-8); justify-content:center; justify-items:center; }
-  .ph-body { padding:var(--ds-space-4); }
+
+  /* 屏内：dvc-body 纵向 flex 填满 812px，消除底部留白；顶部留出 54px 状态栏 */
+  .dvc17 .dvc-body { display:flex; flex-direction:column; }
+  /* 屏内承载文字的玻璃面提高不透明度，叠在鲜艳渐变上仍保 AA（≥4.5:1） */
+  .dvc17 .dvc-body .glass { background:rgba(255,255,255,.82); }
+  [data-theme="dark"] .dvc17 .dvc-body .glass { background:rgba(28,31,56,.78); }
+  .dvc17 .dvc-body .btn--glass { background:rgba(255,255,255,.74); color:var(--ds-fg); }
+  [data-theme="dark"] .dvc17 .dvc-body .btn--glass { background:rgba(255,255,255,.16); color:var(--ds-fg); }
+
+  .ph-body { padding:var(--ds-space-4); padding-top:var(--ds-space-3); flex:1; display:flex; flex-direction:column; min-height:0; }
   .ph-h { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-4); }
-  .ph-h h5 { margin:0; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); letter-spacing:-0.02em; }
+  .ph-h h5 { margin:0; font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); letter-spacing:-0.02em; }
+  .ph-h .ph-h-sub { display:block; font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-weight:var(--ds-weight-normal); margin-top:2px; }
   .ph-card { padding:var(--ds-space-4); border-radius:var(--ds-radius-md); margin-bottom:var(--ds-space-3); }
   .ph-feat-img { aspect-ratio:16/10; border-radius:var(--ds-radius-sm); overflow:hidden; margin-bottom:var(--ds-space-3); }
   .ph-feat-img img { width:100%; height:100%; object-fit:cover; display:block; }
   .ph-card .pk { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
-  .ph-card .pv { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.02em; }
-  .ph-list-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3); border-radius:var(--ds-radius-sm); }
+  .ph-card .pv { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.03em; margin-top:2px; }
+  .ph-list-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3); border-radius:var(--ds-radius-sm); min-height:44px; }
   .ph-list-item + .ph-list-item { margin-top:var(--ds-space-1); }
+  .ph-list-item .pli-ic { width:34px; height:34px; flex:none; border-radius:var(--ds-radius-sm); display:grid; place-items:center; background:var(--ds-bg-sunken); }
+  .ph-list-item .pli-ic svg { width:18px; height:18px; }
   .ph-list-item .pli-tx { flex:1; min-width:0; } .ph-list-item .pli-tx b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
   .ph-list-item .pli-tx span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
-  .ph-list-item .pli-v { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
-  .ph-tabbar { display:flex; justify-content:space-around; padding:var(--ds-space-3) var(--ds-space-2) var(--ds-space-4); margin-top:var(--ds-space-3); border-radius:var(--ds-radius-md); }
-  .ph-tab { display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--ds-fg-subtle); font-size:10px; }
+  .ph-list-item .pli-v { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); font-variant-numeric:tabular-nums; flex:none; }
+  /* 屏内分区小标题 */
+  .ph-label { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-weight:var(--ds-weight-medium); letter-spacing:.02em; margin:var(--ds-space-4) 0 var(--ds-space-2); }
+  /* 快捷操作格 */
+  .ph-quick { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--ds-space-2); margin-bottom:var(--ds-space-3); }
+  .ph-quick .qa { display:flex; flex-direction:column; align-items:center; gap:6px; padding:var(--ds-space-3) 2px; min-height:64px; justify-content:center; }
+  .ph-quick .qa .qa-ic { width:38px; height:38px; border-radius:var(--ds-radius-md); display:grid; place-items:center; background:linear-gradient(135deg,var(--ds-primary),var(--ds-accent)); color:#fff; }
+  .ph-quick .qa .qa-ic svg { width:18px; height:18px; }
+  .ph-quick .qa span { font-size:11px; color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .ph-tabbar { display:flex; justify-content:space-around; padding:var(--ds-space-3) var(--ds-space-2); margin-top:auto; border-radius:var(--ds-radius-md); }
+  .ph-tab { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ds-fg-subtle); font-size:10px; min-width:44px; min-height:44px; }
   .ph-tab svg { width:22px; height:22px; }
-  .ph-tab.on { color:var(--ds-primary); }
-  .ph-profile-hero { aspect-ratio:3/2; border-radius:var(--ds-radius-md); overflow:hidden; position:relative; margin-bottom:38px; }
+  .ph-tab.on { color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .ph-profile-hero { aspect-ratio:3/2; overflow:hidden; position:relative; margin-bottom:38px; }
   .ph-profile-hero img { width:100%; height:100%; object-fit:cover; }
-  .ph-avatar-float { position:absolute; left:50%; bottom:-32px; transform:translateX(-50%); width:64px; height:64px; border-radius:var(--ds-radius-full); border:3px solid #fff; object-fit:cover; box-shadow:var(--ds-shadow-md); }
+  .ph-avatar-float { position:absolute; left:50%; bottom:-32px; transform:translateX(-50%); width:72px; height:72px; border-radius:var(--ds-radius-full); border:3px solid #fff; object-fit:cover; box-shadow:var(--ds-shadow-md); z-index:2; }
+  [data-theme="dark"] .ph-avatar-float { border-color:#1a1f3a; }
   .ph-center { text-align:center; }
-  .ph-center b { font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .ph-center b { font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); letter-spacing:-0.02em; }
   .ph-center span { display:block; font-size:var(--ds-text-xs); color:var(--ds-fg-muted); margin-top:2px; }
-  .ph-stats3 { display:flex; justify-content:space-around; margin:var(--ds-space-4) 0; }
-  .ph-stats3 .s b { display:block; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); text-align:center; }
+  .ph-stats3 { display:flex; justify-content:space-around; margin:var(--ds-space-4) 0; padding:var(--ds-space-3) 0; }
+  .ph-stats3 .s { text-align:center; flex:1; }
+  .ph-stats3 .s b { display:block; font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); text-align:center; letter-spacing:-0.02em; }
   .ph-stats3 .s span { font-size:11px; color:var(--ds-fg-muted); }
+  .ph-stats3 .s + .s { border-left:1px solid var(--ds-border); }
+  /* 操作条贴底（个人页） */
+  .ph-spacer { flex:1; min-height:var(--ds-space-3); }
+  .ph-actions { margin-top:auto; padding-top:var(--ds-space-3); }
+  /* 工作作品网格 */
+  .ph-works { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-2); }
+  .ph-works .pw { border-radius:var(--ds-radius-sm); overflow:hidden; aspect-ratio:1; position:relative; }
+  .ph-works .pw img { width:100%; height:100%; object-fit:cover; display:block; }
+  /* 钱包页：顶部鲜艳渐变 header（白字，钱包卡叠在其上） */
+  .ph-walletbar { position:relative; padding:calc(54px + var(--ds-space-3)) var(--ds-space-4) var(--ds-space-4);
+    background:linear-gradient(150deg,var(--ds-primary) 0%,var(--ds-accent) 100%); color:#fff; }
+  .ph-walletbar .ph-h { margin-bottom:var(--ds-space-3); }
+  .ph-walletbar .ph-h h5 { color:#fff; }
+  .ph-walletbar .ph-h-sub { color:rgba(255,255,255,.85); }
+  .ph-glass-btn { width:38px; height:38px; padding:0; display:grid; place-items:center; border-radius:var(--ds-radius-full);
+    background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4); color:#fff; box-shadow:none; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+  .ph-glass-btn:hover { background:rgba(255,255,255,.3); transform:none; box-shadow:none; }
+  .ph-balance-card { padding:var(--ds-space-4) var(--ds-space-5); border-radius:var(--ds-radius-md);
+    background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.42);
+    -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); box-shadow:var(--ds-glass-inset); color:#fff; }
+  .ph-balance-card .pk { color:rgba(255,255,255,.88); font-size:var(--ds-text-xs); }
+  .ph-balance-card .pv { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.03em; margin-top:2px; color:#fff; }
+  .ph-bal-row { display:flex; align-items:center; justify-content:space-between; margin-top:var(--ds-space-3); }
+  .ph-pill { display:inline-flex; align-items:center; gap:4px; font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium);
+    background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.4); padding:3px 10px; border-radius:var(--ds-radius-full); color:#fff; }
+  .ph-bal-card-no { font-size:var(--ds-text-xs); color:rgba(255,255,255,.85); font-family:var(--ds-font-mono); letter-spacing:.08em; }
+  /* 个人页：玻璃图标/块按钮（叠在屏内玻璃卡上） */
+  .dvc17 .dvc-body .ph-glass-btn-dark { background:var(--ds-bg-sunken); color:var(--ds-fg); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-sm), var(--ds-glass-inset); }
+  .dvc17 .dvc-body .ph-glass-btn-dark:hover { background:var(--ds-border-strong); transform:translateY(-1px); }
+  .dvc17 .dvc-body .ph-glass-block { background:var(--ds-bg-elevated); color:var(--ds-fg); border:1px solid var(--ds-border);
+    -webkit-backdrop-filter:blur(var(--ds-glass-blur-sm)); backdrop-filter:blur(var(--ds-glass-blur-sm)); box-shadow:var(--ds-shadow-sm), var(--ds-glass-inset); }
+  .dvc17 .dvc-body .ph-glass-block:hover { background:var(--ds-border-strong); transform:translateY(-1px); }
 
   /* ===== 响应式 ===== */
   @media (max-width: 860px) {
@@ -948,7 +1002,7 @@
       <div class="phones">
 
         <!-- App 首页 -->
-        <div class="dvc17">
+        <div class="dvc17 sb-light">
           <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
           <span class="k k-cam"></span><span class="k k-pwr"></span>
           <div class="scr">
@@ -961,20 +1015,30 @@
                 <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
               </span>
             </div>
-            <div class="dvc-body" style="background-image:var(--grad)">
+            <div class="dvc-body" style="padding-top:0;background-image:var(--grad)">
+              <!-- 顶部鲜艳渐变 header（白字，在状态栏 54px 下）+ 总资产玻璃卡叠在其上 -->
+              <div class="ph-walletbar">
+                <div class="ph-h"><div><h5>钱包概览</h5><span class="ph-h-sub">早上好，林清越</span></div><button class="btn btn--icon ph-glass-btn" aria-label="通知"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button></div>
+                <div class="ph-balance-card">
+                  <div class="pk">总资产 (CNY)</div>
+                  <div class="pv tnum">¥ 84,320.50</div>
+                  <div class="ph-bal-row"><span class="ph-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:12px;height:12px"><path d="m6 15 6-6 6 6"/></svg> 本月 +6.4%</span><span class="ph-bal-card-no tnum">**** 4021</span></div>
+                </div>
+              </div>
               <div class="ph-body">
-              <div class="ph-h"><h5>钱包概览</h5><button class="btn btn--icon btn--glass btn--sm" style="width:34px;height:34px" aria-label="通知"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button></div>
-              <div class="glass ph-card">
-                <div class="pk">总资产</div>
-                <div class="pv tnum">¥ 84,320.50</div>
-                <div class="badge badge--success" style="margin-top:var(--ds-space-2)"><svg class="dot-ic" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg> 本月 +6.4%</div>
+              <div class="ph-quick">
+                <div class="glass qa"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></span><span>转账</span></div>
+                <div class="glass qa"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span><span>收款</span></div>
+                <div class="glass qa"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span><span>卡片</span></div>
+                <div class="glass qa"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="m7 14 3-3 3 3 5-6"/></svg></span><span>账单</span></div>
               </div>
+              <div class="ph-label">近期交易</div>
               <div class="glass ph-card" style="padding:var(--ds-space-2)">
-                <div class="ph-list-item"><span class="li-ic" style="color:var(--ds-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:20px;height:20px"><path d="m6 15 6-6 6 6"/></svg></span><span class="pli-tx"><b>工资入账</b><span>今天 09:12</span></span><span class="pli-v" style="color:var(--ds-success)">+12,000</span></div>
-                <div class="ph-list-item"><span class="li-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:20px;height:20px"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span><span class="pli-tx"><b>超市消费</b><span>昨天 18:40</span></span><span class="pli-v">-238.00</span></div>
-                <div class="ph-list-item"><span class="li-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:20px;height:20px"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/></svg></span><span class="pli-tx"><b>保险扣款</b><span>06-20</span></span><span class="pli-v">-520.00</span></div>
+                <div class="ph-list-item"><span class="pli-ic" style="color:var(--ds-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 15 6-6 6 6"/></svg></span><span class="pli-tx"><b>工资入账</b><span>今天 09:12</span></span><span class="pli-v" style="color:var(--ds-success-fg)">+12,000</span></div>
+                <div class="ph-list-item"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span><span class="pli-tx"><b>超市消费</b><span>昨天 18:40</span></span><span class="pli-v">-238.00</span></div>
+                <div class="ph-list-item"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/></svg></span><span class="pli-tx"><b>保险扣款</b><span>06-20</span></span><span class="pli-v">-520.00</span></div>
+                <div class="ph-list-item"><span class="pli-ic" style="color:var(--ds-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 15 6-6 6 6"/></svg></span><span class="pli-tx"><b>红包退款</b><span>06-17</span></span><span class="pli-v" style="color:var(--ds-success-fg)">+66.00</span></div>
               </div>
-              <button class="btn btn--block" style="margin-top:var(--ds-space-3)">转账</button>
               <div class="glass ph-tabbar" style="border:1px solid var(--ds-border)">
                 <span class="ph-tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>首页</span>
                 <span class="ph-tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="m7 14 3-3 3 3 5-6"/></svg>账单</span>
@@ -1002,29 +1066,36 @@
               </span>
             </div>
             <div class="dvc-body" style="padding-top:0;background-image:var(--grad)">
-              <div class="ph-profile-hero" style="border-radius:0;margin-bottom:38px">
+              <div class="ph-profile-hero" style="border-radius:0;margin-bottom:30px;aspect-ratio:5/3">
                 <img src="../../_assets/photos/hero-gallery.jpg" alt="个人页背景大图" loading="lazy">
                 <div class="hero-scrim" aria-hidden="true"></div>
                 <img class="ph-avatar-float" src="../../_assets/avatars/a15.jpg" alt="苏砚的头像" loading="lazy">
               </div>
               <div class="ph-body" style="padding-top:0">
-              <div class="ph-center">
-                <b>苏砚</b><span>视觉设计师 · 上海</span>
+              <div class="glass ph-card" style="margin-bottom:var(--ds-space-3)">
+                <div class="ph-center">
+                  <b>苏砚</b><span>视觉设计师 · 上海</span>
+                </div>
+                <div class="ph-stats3">
+                  <div class="s"><b class="tnum">128</b><span>作品</span></div>
+                  <div class="s"><b class="tnum">5.4k</b><span>关注者</span></div>
+                  <div class="s"><b class="tnum">312</b><span>关注中</span></div>
+                </div>
+                <div class="row" style="gap:var(--ds-space-2)">
+                  <button class="btn btn--block" style="flex:1">关注</button>
+                  <button class="btn btn--icon ph-glass-btn-dark" aria-label="私信"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
               </div>
-              <div class="ph-stats3">
-                <div class="s"><b class="tnum">128</b><span>作品</span></div>
-                <div class="s"><b class="tnum">5.4k</b><span>关注者</span></div>
-                <div class="s"><b class="tnum">312</b><span>关注中</span></div>
+              <div class="ph-label" style="margin-top:0">精选作品</div>
+              <div class="ph-works">
+                <div class="pw"><img src="../../_assets/photos/square3.jpg" alt="玻璃拟态系统设计作品" loading="lazy"></div>
+                <div class="pw"><img src="../../_assets/photos/architecture.jpg" alt="建筑作品" loading="lazy"></div>
+                <div class="pw"><img src="../../_assets/photos/desk.jpg" alt="工作台作品" loading="lazy"></div>
+                <div class="pw"><img src="../../_assets/photos/tech.jpg" alt="科技作品" loading="lazy"></div>
+                <div class="pw"><img src="../../_assets/photos/square2.jpg" alt="抽象构图作品" loading="lazy"></div>
+                <div class="pw"><img src="../../_assets/photos/street.jpg" alt="街头作品" loading="lazy"></div>
               </div>
-              <div class="row" style="gap:var(--ds-space-2)">
-                <button class="btn btn--block" style="flex:1">关注</button>
-                <button class="btn btn--icon btn--glass" aria-label="私信"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
-              </div>
-              <div class="glass ph-card" style="margin-top:var(--ds-space-3)">
-                <div class="ph-feat-img"><img src="../../_assets/photos/square3.jpg" alt="作品缩略图" loading="lazy"></div>
-                <b style="font-size:var(--ds-text-sm)">玻璃拟态系统设计</b>
-                <p class="muted" style="font-size:var(--ds-text-xs);margin:4px 0 0;line-height:var(--ds-leading-normal)">一套通透轻盈的界面语言探索。</p>
-              </div>
+              <button class="btn btn--block ph-glass-block ph-actions">查看全部作品</button>
               </div>
             </div>
             <div class="home"></div>

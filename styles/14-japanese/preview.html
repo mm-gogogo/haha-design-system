@@ -373,40 +373,77 @@
   .shop-item .cat { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-2); }
   .shop-item .row { display: flex; align-items: center; justify-content: space-between; }
 
-  /* ---------- 移动端框（iPhone 17 Pro Max 套壳见 _assets/device.css） ---------- */
-  .phones { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; justify-content: center; }
-  .dvc-body .p-top { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  /* ---------- 移动端框（iPhone 17 Pro Max 套壳见 _assets/device.css） ----------
+     设计目标：每个 .dvc-body 是一块精致日系极简移动屏。
+     纵向 flex 填满 812px：顶栏在 54px 状态栏下 → 主区 flex:1 可滚动 → 底部 tab/操作条 margin-top:auto 贴底。
+     消除底部留白，整屏不溢出。 */
+  .phones { display: flex; gap: var(--ds-space-8); flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+  /* 屏内 body：纵列填满，主区可滚但隐藏滚动条 */
+  .dvc17 .dvc-body { display: flex; flex-direction: column; }
+  .dvc-body .p-body { padding: var(--ds-space-4); flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  .dvc-body .p-body::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* 顶栏：贴在状态栏下方 */
+  .dvc-body .p-top { flex: none; display: flex; align-items: center; gap: var(--ds-space-3); min-height: 52px; padding: var(--ds-space-2) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); background: color-mix(in srgb, var(--ds-bg) 92%, transparent); }
   .dvc-body .p-top .pt-title { flex: 1; font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
-  .dvc-body .p-top .pt-ico { width: 34px; height: 34px; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--ds-fg-muted); background: var(--ds-bg-elevated); }
-  .dvc-body .p-body { padding: var(--ds-space-4); }
+  .dvc-body .p-top .pt-ico { width: 44px; height: 44px; margin: -5px 0; border-radius: var(--ds-radius-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--ds-fg-muted); background: none; border: none; transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease); }
+  .dvc-body .p-top .pt-ico:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+
+  /* 图片大图 header：整屏顶部全幅照片（该屏 .dvc17 加 sb-light，状态栏转白） */
+  .dvc-body .p-imghead { flex: none; position: relative; height: 232px; overflow: hidden; }
+  .dvc-body .p-imghead img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dvc-body .p-imghead .ih-scrim { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(28,26,23,.42) 0%, rgba(28,26,23,0) 30%, rgba(28,26,23,0) 55%, rgba(28,26,23,.62) 100%); }
+  .dvc-body .p-imghead .ih-bar { position: absolute; top: 54px; left: 0; right: 0; display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-4); }
+  .dvc-body .p-imghead .ih-bar .pt-ico { width: 44px; height: 44px; margin: -5px 0; border-radius: var(--ds-radius-sm); display: inline-flex; align-items: center; justify-content: center; color: #faf8f3; background: color-mix(in srgb, rgba(28,26,23,.4) 100%, transparent); backdrop-filter: blur(4px); border: none; }
+  .dvc-body .p-imghead .ih-bar .ih-spacer { flex: 1; }
+  .dvc-body .p-imghead .ih-txt { position: absolute; left: var(--ds-space-5); right: var(--ds-space-5); bottom: var(--ds-space-5); color: #faf8f3; }
+  .dvc-body .p-imghead .ih-eyebrow { font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .18em; opacity: .9; margin: 0 0 var(--ds-space-1); }
+  .dvc-body .p-imghead h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); margin: 0; color: #faf8f3; letter-spacing: var(--ds-tracking-tight); text-wrap: balance; line-height: var(--ds-leading-tight); }
+
+  /* 屏内小标题（section 标签） */
+  .dvc-body .p-sec { display: flex; align-items: baseline; justify-content: space-between; margin: 0 0 var(--ds-space-3); }
+  .dvc-body .p-sec .ps-t { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); font-weight: var(--ds-weight-bold); margin: 0; }
+  .dvc-body .p-sec .ps-m { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+
   .dvc-body .p-hero { aspect-ratio: 16/10; border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border); margin-bottom: var(--ds-space-4); }
   .dvc-body .p-hero img { width: 100%; height: 100%; object-fit: cover; }
   .dvc-body .feed-card { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); margin-bottom: var(--ds-space-3); }
+  .dvc-body .feed-card:last-child { margin-bottom: 0; }
   .dvc-body .feed-card .fc-img { aspect-ratio: 16/9; }
   .dvc-body .feed-card .fc-img img { width: 100%; height: 100%; object-fit: cover; }
   .dvc-body .feed-card .fc-body { padding: var(--ds-space-3) var(--ds-space-4); }
   .dvc-body .feed-card .fc-cat { font-size: var(--ds-text-xs); color: var(--ds-accent); text-transform: uppercase; letter-spacing: .12em; margin: 0 0 4px; }
   .dvc-body .feed-card h5 { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); margin: 0 0 4px; font-weight: var(--ds-weight-bold); }
   .dvc-body .feed-card p { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
-  .dvc-body .p-tabbar { display: flex; border-top: 1px solid var(--ds-border); }
-  .dvc-body .p-tabbar a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--ds-space-3) 0; color: var(--ds-fg-subtle); text-decoration: none; font-size: 10px; }
-  .dvc-body .p-tabbar a svg { width: 20px; height: 20px; }
+
+  /* 底部 tab 栏：margin-top:auto 贴底，含 home 指示条留白 */
+  .dvc-body .p-tabbar { flex: none; margin-top: auto; display: flex; border-top: 1px solid var(--ds-border); background: var(--ds-bg-elevated); padding-bottom: 18px; }
+  .dvc-body .p-tabbar a { flex: 1; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: var(--ds-space-2) 0; color: var(--ds-fg-subtle); text-decoration: none; font-size: 10px; transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .dvc-body .p-tabbar a svg { width: 21px; height: 21px; }
   .dvc-body .p-tabbar a.active { color: var(--ds-primary); }
+
+  /* 底部贴底操作条（详情页 CTA） */
+  .dvc-body .p-actionbar { flex: none; margin-top: auto; display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4) calc(var(--ds-space-3) + 18px); border-top: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .dvc-body .p-actionbar .btn { min-height: 46px; }
+
   /* 列表行 */
-  .list-row { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .list-row { display: flex; align-items: center; gap: var(--ds-space-3); min-height: 64px; padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
   .list-row .lr-thumb { width: 48px; height: 48px; border-radius: var(--ds-radius-sm); object-fit: cover; border: 1px solid var(--ds-border); flex: none; }
   .list-row .lr-main { flex: 1; min-width: 0; }
   .list-row .lr-main .t { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); margin: 0 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .list-row .lr-main .s { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .list-row .lr-meta { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); flex: none; }
+  .list-row .lr-meta { font-family: var(--ds-font-serif); font-size: var(--ds-text-sm); color: var(--ds-fg); font-weight: var(--ds-weight-medium); flex: none; }
   /* 详情页 */
-  .p-detail-hero { aspect-ratio: 4/3; }
-  .p-detail-hero img { width: 100%; height: 100%; object-fit: cover; }
-  .p-detail-body { padding: var(--ds-space-4); }
+  .p-detail-body { padding: var(--ds-space-5) var(--ds-space-4) var(--ds-space-4); }
   .p-detail-body .eyebrow { font-size: var(--ds-text-xs); color: var(--ds-accent); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 var(--ds-space-2); }
   .p-detail-body h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); margin: 0 0 var(--ds-space-2); }
   .p-detail-body .pr { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); }
   .p-detail-body p { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-4); }
+  /* 详情规格小表 */
+  .p-spec { display: flex; flex-direction: column; gap: 0; margin: 0 0 var(--ds-space-2); border-top: 1px solid var(--ds-border); }
+  .p-spec .sp-row { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: var(--ds-space-1) 0; border-bottom: 1px solid var(--ds-border); font-size: var(--ds-text-sm); }
+  .p-spec .sp-row .sp-k { color: var(--ds-fg-muted); }
+  .p-spec .sp-row .sp-v { color: var(--ds-fg); }
 
   /* ---------- dropdown / tooltip / modal / toast ---------- */
   .dropdown { position: relative; display: inline-block; }
@@ -992,12 +1029,12 @@
 
     <!-- ===== 移动端布局 ===== -->
     <section>
-      <p class="sec-label">移动端布局 <span class="sec-en">Mobile · ~320px</span></p>
-      <p class="lede" style="margin-bottom:var(--ds-space-6);">App 首页（feed + 底部标签栏）、商品详情、列表收件箱三个 iPhone 17 Pro Max 套壳。栅格在窄屏自动换行。</p>
+      <p class="sec-label">移动端布局 <span class="sec-en">Mobile · iPhone 17 Pro Max · 390×812</span></p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">三块精致日系极简移动屏：App 首页（图大图 header + feed + 贴底标签栏）、商品详情（大图 header + 贴底操作条）、订单列表（筛选 + 列表 + 贴底标签栏）。每屏纵向填满 812px、无底部留白，触控目标 ≥44px。</p>
       <div class="phones">
 
-        <!-- App 首页 -->
-        <div class="dvc17">
+        <!-- App 首页（图片大图 header → sb-light） -->
+        <div class="dvc17 sb-light">
           <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
           <span class="k k-cam"></span><span class="k k-pwr"></span>
           <div class="scr">
@@ -1011,19 +1048,28 @@
               </span>
             </div>
             <div class="dvc-body">
-              <div class="p-top">
-                <span class="pt-title">無印 · 生活</span>
-                <span class="pt-ico" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></span>
-                <span class="pt-ico" aria-label="购物袋"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></span>
+              <!-- 图片大图 header -->
+              <div class="p-imghead">
+                <img src="../../_assets/photos/forest.jpg" alt="自然系列主视觉" loading="lazy">
+                <div class="ih-scrim"></div>
+                <div class="ih-bar">
+                  <span class="ih-spacer"></span>
+                  <span class="pt-ico" aria-label="搜索"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></span>
+                  <span class="pt-ico" aria-label="购物袋"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></span>
+                </div>
+                <div class="ih-txt">
+                  <p class="ih-eyebrow">無印 · 生活</p>
+                  <h4>把山的安静，搬进房间</h4>
+                </div>
               </div>
               <div class="p-body">
-                <div class="p-hero"><img src="../../_assets/photos/forest.jpg" alt="自然系列主视觉" loading="lazy"></div>
+                <div class="p-sec"><p class="ps-t">本季精选</p><span class="ps-m">器物随笔</span></div>
                 <div class="feed-card">
-                  <div class="fc-img"><img src="../../_assets/photos/coffee.jpg" alt="手冲" loading="lazy"></div>
+                  <div class="fc-img"><img src="../../_assets/photos/coffee.jpg" alt="木桌上的一杯手冲咖啡" loading="lazy"></div>
                   <div class="fc-body"><p class="fc-cat">厨房</p><h5>慢下来的早晨</h5><p>一套手冲器具，把通勤前的十分钟还给自己。</p></div>
                 </div>
                 <div class="feed-card">
-                  <div class="fc-img"><img src="../../_assets/photos/workspace.jpg" alt="收纳" loading="lazy"></div>
+                  <div class="fc-img"><img src="../../_assets/photos/workspace.jpg" alt="整洁的居家工作区" loading="lazy"></div>
                   <div class="fc-body"><p class="fc-cat">收纳</p><h5>看得见的整洁</h5><p>亚麻收纳系列，让桌面只留下需要的东西。</p></div>
                 </div>
               </div>
@@ -1038,8 +1084,8 @@
           </div>
         </div>
 
-        <!-- 商品详情 -->
-        <div class="dvc17">
+        <!-- 商品详情（图片大图 header → sb-light） -->
+        <div class="dvc17 sb-light">
           <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
           <span class="k k-cam"></span><span class="k k-pwr"></span>
           <div class="scr">
@@ -1053,21 +1099,34 @@
               </span>
             </div>
             <div class="dvc-body">
-              <div class="p-top">
-                <span class="pt-ico" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></span>
-                <span class="pt-title" style="font-size:var(--ds-text-sm);">商品详情</span>
-                <span class="pt-ico" aria-label="收藏"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 8.5c0 4.5-7 9.5-7 9.5s-7-5-7-9.5A3.5 3.5 0 0 1 12 6a3.5 3.5 0 0 1 7 2.5z"/></svg></span>
-              </div>
-              <div class="p-detail-hero"><img src="../../_assets/photos/food.jpg" alt="粗陶饭碗" loading="lazy"></div>
-              <div class="p-detail-body">
-                <p class="eyebrow">厨房 · 手作</p>
-                <h4>粗陶饭碗</h4>
-                <p class="pr">¥86</p>
-                <p>手作粗陶，低饱和的大地釉色。每一只的釉面纹理都略有不同，那是窑火留下的痕迹。容量约 350ml，可入微波。</p>
-                <div style="display:flex;gap:var(--ds-space-3);">
-                  <button class="btn btn-secondary" style="flex:1;">加入购物袋</button>
-                  <button class="btn btn-primary" style="flex:1;">立即购买</button>
+              <!-- 图片大图 header（含返回 / 收藏） -->
+              <div class="p-imghead">
+                <img src="../../_assets/photos/food.jpg" alt="陶碗盛装的简餐" loading="lazy">
+                <div class="ih-scrim"></div>
+                <div class="ih-bar">
+                  <span class="pt-ico" aria-label="返回"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></span>
+                  <span class="ih-spacer"></span>
+                  <span class="pt-ico" aria-label="收藏"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 8.5c0 4.5-7 9.5-7 9.5s-7-5-7-9.5A3.5 3.5 0 0 1 12 6a3.5 3.5 0 0 1 7 2.5z"/></svg></span>
                 </div>
+                <div class="ih-txt">
+                  <p class="ih-eyebrow">厨房 · 手作</p>
+                  <h4>粗陶饭碗</h4>
+                </div>
+              </div>
+              <div class="p-body">
+                <div class="p-detail-body" style="padding:0;">
+                  <p class="pr">¥86</p>
+                  <p>手作粗陶，低饱和的大地釉色。每一只的釉面纹理都略有不同，那是窑火留下的痕迹。容量约 350ml，可入微波。</p>
+                  <div class="p-spec">
+                    <div class="sp-row"><span class="sp-k">材质</span><span class="sp-v">手作粗陶</span></div>
+                    <div class="sp-row"><span class="sp-k">容量</span><span class="sp-v">约 350 ml</span></div>
+                    <div class="sp-row"><span class="sp-k">配送</span><span class="sp-v">顺丰 · 满 ¥299 免运</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="p-actionbar">
+                <button class="btn btn-secondary" style="flex:1;">加入购物袋</button>
+                <button class="btn btn-primary" style="flex:1.3;">立即购买</button>
               </div>
             </div>
             <div class="home"></div>
@@ -1091,9 +1150,12 @@
             <div class="dvc-body">
               <div class="p-top">
                 <span class="pt-title">我的订单</span>
-                <span class="pt-ico" aria-label="筛选"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span>
+                <span class="pt-ico" aria-label="筛选"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span>
               </div>
               <div class="p-body" style="padding-top:var(--ds-space-2);">
+                <div class="tabs" style="margin-bottom:var(--ds-space-1);gap:var(--ds-space-5);">
+                  <span class="tab active">全部</span><span class="tab">待付款</span><span class="tab">待收货</span><span class="tab">已完成</span>
+                </div>
                 <div class="list-row">
                   <img class="lr-thumb" src="../../_assets/photos/coffee.jpg" alt="" loading="lazy">
                   <div class="lr-main"><p class="t">细嘴手冲壶</p><p class="s">已发货 · 顺丰 SF1394</p></div>
@@ -1109,11 +1171,22 @@
                   <div class="lr-main"><p class="t">桧木方盘</p><p class="s">已完成 · 6 月 12 日送达</p></div>
                   <span class="lr-meta">¥98</span>
                 </div>
-                <div class="list-row" style="border-bottom:none;">
+                <div class="list-row">
                   <img class="lr-thumb" src="../../_assets/photos/square1.jpg" alt="" loading="lazy">
                   <div class="lr-main"><p class="t">水洗亚麻巾</p><p class="s">已评价 · 谢谢你的好评</p></div>
                   <span class="lr-meta">¥45</span>
                 </div>
+                <div class="list-row">
+                  <img class="lr-thumb" src="../../_assets/photos/desk.jpg" alt="" loading="lazy">
+                  <div class="lr-main"><p class="t">桧木笔筒</p><p class="s">已完成 · 5 月 28 日送达</p></div>
+                  <span class="lr-meta">¥128</span>
+                </div>
+              </div>
+              <div class="p-tabbar">
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-7 9 7"/><path d="M5 10v10h14V10"/></svg> 首页</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> 分类</a>
+                <a class="active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg> 订单</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg> 我的</a>
               </div>
             </div>
             <div class="home"></div>

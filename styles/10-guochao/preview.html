@@ -437,19 +437,30 @@
   .phone-bar .ttl { flex: 1; font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-base); }
 
   /* App 首页 feed */
+  .feed-body { flex: 1; overflow: auto; padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-2); }
   .feed-hero { position: relative; border-radius: var(--ds-radius-md); overflow: hidden; margin-bottom: var(--ds-space-4); border: 1px solid var(--ds-border-strong); }
   .feed-hero img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; }
   .feed-hero .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(20,16,12,.8)); }
   .feed-hero .fh-body { position: absolute; left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-4); color: #fbf5e9; }
   .feed-hero .fh-body .k { font-family: var(--ds-font-sans); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #f3d9a0; }
   .feed-hero .fh-body h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); margin: 2px 0 0; color: #fbf5e9; }
+  /* 横向分类 chip */
+  .chip-row { display: flex; gap: var(--ds-space-2); overflow-x: auto; margin-bottom: var(--ds-space-4); padding-bottom: 2px; scrollbar-width: none; }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip-pill { flex: none; height: 32px; padding: 0 var(--ds-space-4); border-radius: var(--ds-radius-full); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); cursor: pointer; transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease); }
+  .chip-pill:hover { border-color: var(--ds-primary); color: var(--ds-primary); }
+  .chip-pill.active { background: var(--ds-primary); border-color: var(--ds-primary); color: var(--ds-primary-fg); }
+  .feed-sec { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); margin: var(--ds-space-4) 0 var(--ds-space-1); display: flex; align-items: center; gap: var(--ds-space-2); }
+  .feed-sec::before { content: ""; width: 4px; height: 15px; border-radius: 2px; background: var(--ds-primary); flex: none; }
   .feed-card { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
   .feed-card img { width: 64px; height: 64px; border-radius: var(--ds-radius-sm); object-fit: cover; flex: none; border: 1px solid var(--ds-border); }
   .feed-card h5 { font-family: var(--ds-font-serif); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); margin: 0 0 4px; }
   .feed-card p { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
-  .feed-card .fc-meta { font-family: var(--ds-font-sans); font-size: 11px; color: var(--ds-fg-subtle); margin-top: 6px; display: flex; gap: var(--ds-space-3); }
-  .tabbar { display: flex; justify-content: space-around; align-items: center; height: 56px; border-top: 1px solid var(--ds-border); background: var(--ds-bg); }
-  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ds-fg-subtle); text-decoration: none; font-family: var(--ds-font-sans); font-size: 10px; }
+  .feed-card .fc-meta { font-family: var(--ds-font-sans); font-size: 11px; color: var(--ds-fg-subtle); margin-top: 6px; display: flex; gap: var(--ds-space-2); align-items: center; }
+  .feed-card .fc-meta .price { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); color: var(--ds-primary); }
+  .feed-card:last-child { border-bottom: none; }
+  .tabbar { display: flex; justify-content: space-around; align-items: center; height: 60px; padding-bottom: 8px; border-top: 1px solid var(--ds-border); background: color-mix(in srgb, var(--ds-bg) 92%, transparent); backdrop-filter: blur(8px); flex: none; }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ds-fg-subtle); text-decoration: none; font-family: var(--ds-font-sans); font-size: 10px; min-width: 48px; min-height: 44px; }
   .tabbar a svg { width: 22px; height: 22px; }
   .tabbar a.active { color: var(--ds-primary); }
 
@@ -460,10 +471,14 @@
   .profile-body { padding: var(--ds-space-7) var(--ds-space-4) var(--ds-space-4); }
   .profile-body h3 { font-size: var(--ds-text-lg); margin: 0 0 2px; }
   .profile-body .p-sign { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-4); }
-  .profile-stats { display: flex; gap: var(--ds-space-5); margin-bottom: var(--ds-space-4); }
+  .profile-stats { display: flex; gap: var(--ds-space-6); margin-bottom: var(--ds-space-4); }
   .profile-stats .ps { text-align: center; }
-  .profile-stats .ps .n { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); display: block; font-variant-numeric: tabular-nums; }
+  .profile-stats .ps .n { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); display: block; font-variant-numeric: tabular-nums; color: var(--ds-fg); }
   .profile-stats .ps .l { font-family: var(--ds-font-sans); font-size: 11px; color: var(--ds-fg-muted); }
+  .profile-tabs { display: flex; gap: var(--ds-space-5); border-bottom: 1px solid var(--ds-border); margin-bottom: var(--ds-space-3); }
+  .profile-tabs .ptab { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: var(--ds-space-2) 0; cursor: pointer; min-height: 38px; transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .profile-tabs .ptab:hover { color: var(--ds-fg); }
+  .profile-tabs .ptab.active { color: var(--ds-primary); border-bottom-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
   .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .profile-grid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--ds-radius-sm); display: block; }
 
@@ -1131,23 +1146,40 @@
                   <span class="ttl" style="color:var(--ds-primary-fg);">云山堂</span>
                   <span class="ico" aria-label="搜索" style="color:var(--ds-primary-fg);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
                 </div>
-                <div style="flex:1; overflow:auto; padding:var(--ds-space-4);">
+                <div class="feed-body">
                   <div class="feed-hero">
                     <img src="../../_assets/photos/mountain.jpg" alt="节气专题主图：云雾远山" loading="lazy">
                     <div class="scrim"></div>
                     <div class="fh-body"><span class="k">节气专题</span><h4>谷雨 · 雨生百谷</h4></div>
                   </div>
+                  <div class="chip-row" role="tablist" aria-label="分类">
+                    <button class="chip-pill active" role="tab" aria-selected="true">精选</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">新品</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">茶事</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">器物</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">节令</button>
+                  </div>
+                  <p class="feed-sec">本周上新</p>
                   <div class="feed-card">
                     <img src="../../_assets/photos/coffee.jpg" alt="明前龙井茶汤" loading="lazy">
-                    <div><h5>明前龙井 · 头采</h5><p>狮峰嫩芽，豆香清雅，限量预售。</p><div class="fc-meta"><span>¥ 388</span><span>预售</span></div></div>
+                    <div><h5>明前龙井 · 头采</h5><p>狮峰嫩芽，豆香清雅，限量预售。</p><div class="fc-meta"><span class="price">¥ 388</span><span class="badge warning">预售</span></div></div>
                   </div>
                   <div class="feed-card">
                     <img src="../../_assets/photos/desk.jpg" alt="青瓷盖碗器物" loading="lazy">
-                    <div><h5>青瓷盖碗 · 复刻</h5><p>龙泉窑釉色温润，日用赏玩皆宜。</p><div class="fc-meta"><span>¥ 268</span><span>现货</span></div></div>
+                    <div><h5>青瓷盖碗 · 复刻</h5><p>龙泉窑釉色温润，日用赏玩皆宜。</p><div class="fc-meta"><span class="price">¥ 268</span><span class="badge success">现货</span></div></div>
                   </div>
                   <div class="feed-card">
                     <img src="../../_assets/photos/food.jpg" alt="桂花乌龙礼盒" loading="lazy">
-                    <div><h5>桂花乌龙 · 礼盒</h5><p>金桂入茶，香气馥郁，节庆首选。</p><div class="fc-meta"><span>¥ 198</span><span>售罄</span></div></div>
+                    <div><h5>桂花乌龙 · 礼盒</h5><p>金桂入茶，香气馥郁，节庆首选。</p><div class="fc-meta"><span class="price">¥ 198</span><span class="badge">售罄</span></div></div>
+                  </div>
+                  <p class="feed-sec">茶人荐读</p>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/architecture.jpg" alt="古建一隅" loading="lazy">
+                    <div><h5>园林里的待客之道</h5><p>移步换景，一茶一席，皆有分寸。</p><div class="fc-meta"><span>林清和</span><span>5 分钟</span></div></div>
+                  </div>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/forest.jpg" alt="竹林深处" loading="lazy">
+                    <div><h5>谷雨煎茶，听一场细雨</h5><p>取雨前嫩芽，配竹炉活水，慢煎细品。</p><div class="fc-meta"><span>云山堂</span><span>8 分钟</span></div></div>
                   </div>
                 </div>
                 <nav class="tabbar" aria-label="底部标签栏">
@@ -1178,9 +1210,11 @@
                   <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
                 </span>
               </div>
-              <div class="dvc-body" style="padding-top:0;">
+              <div class="dvc-body" style="padding-top:0; display:flex; flex-direction:column;">
+                <div class="profile-scroll" style="flex:1; overflow:auto;">
                 <div class="profile-hero">
                   <img class="cover" src="../../_assets/photos/forest.jpg" alt="个人主页封面：竹林深处" loading="lazy">
+                  <span class="stamp-sm" aria-hidden="true">堂</span>
                   <img class="pavatar" src="../../_assets/avatars/a23.jpg" alt="林清和的头像" loading="lazy">
                 </div>
                 <div class="profile-body">
@@ -1196,6 +1230,11 @@
                     <button class="btn btn-secondary btn-sm" style="flex:1;">私信</button>
                     <button class="btn btn-secondary btn-icon btn-sm" aria-label="收藏"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg></button>
                   </div>
+                  <div class="profile-tabs" role="tablist" aria-label="内容切换">
+                    <button class="ptab active" role="tab" aria-selected="true">作品 128</button>
+                    <button class="ptab" role="tab" aria-selected="false">喜欢</button>
+                    <button class="ptab" role="tab" aria-selected="false">收藏</button>
+                  </div>
                   <div class="profile-grid">
                     <img src="../../_assets/photos/coffee.jpg" alt="作品：茶汤特写" loading="lazy">
                     <img src="../../_assets/photos/desk.jpg" alt="作品：器物陈设" loading="lazy">
@@ -1203,8 +1242,18 @@
                     <img src="../../_assets/photos/architecture.jpg" alt="作品：古建一隅" loading="lazy">
                     <img src="../../_assets/photos/travel.jpg" alt="作品：行旅风物" loading="lazy">
                     <img src="../../_assets/photos/square1.jpg" alt="作品：方寸小景" loading="lazy">
+                    <img src="../../_assets/photos/mountain.jpg" alt="作品：远山云雾" loading="lazy">
+                    <img src="../../_assets/photos/square2.jpg" alt="作品：清供小品" loading="lazy">
+                    <img src="../../_assets/photos/square3.jpg" alt="作品：闲事一桩" loading="lazy">
                   </div>
                 </div>
+                </div>
+                <nav class="tabbar" aria-label="底部标签栏">
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/></svg>首页</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>发现</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2 3h3l2.5 13h11l2-9H6.5"/></svg>购物车</a>
+                  <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>我的</a>
+                </nav>
               </div>
               <div class="home"></div>
             </div>

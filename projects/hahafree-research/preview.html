@@ -306,17 +306,63 @@
   .pager select:focus-visible, .pager .jump-in:focus-visible, .pg:focus-visible { outline:none; border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
   .pg:disabled { color:var(--ds-fg-subtle); cursor:not-allowed; border-color:var(--ds-border); }
 
-  /* ===== 移动端屏内组件（套入 .dvc17 .dvc-body） ===== */
-  .mscreen { padding:var(--ds-space-3); }
-  .mkpis { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-2); margin-bottom:var(--ds-space-3); }
-  .mkpi { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:var(--ds-space-2); }
-  .mkpi .label { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
-  .mkpi .val { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); line-height:1.15; }
-  .mlist .li { display:flex; align-items:center; gap:8px; padding:9px 4px; border-bottom:1px solid var(--ds-border); font-size:var(--ds-text-sm); }
+  /* ===== 移动端屏内组件（套入 .dvc17 .dvc-body）：精致数据情报台 ===== */
+  /* 纵向满屏骨架：app bar 在 54px 状态栏下；主区 flex:1；底部 tab 贴底。消除底部留白。 */
+  .mflow { min-height:100%; display:flex; flex-direction:column; }
+  .mflow > .mmain { flex:1 1 auto; display:flex; flex-direction:column; }
+  .mflow > .mtab { margin-top:auto; }
+
+  /* app bar：紧贴状态栏下方（dvc-body 已留 54px），高 52px，触控 ≥44px */
+  .mappbar { display:flex; align-items:center; gap:var(--ds-space-2); height:52px; padding:0 var(--ds-space-3);
+    background:var(--ds-bg); border-bottom:1px solid var(--ds-border); position:sticky; top:0; z-index:5; }
+  .mappbar .ab-btn { width:44px; height:44px; margin:0 -8px; flex:none; display:inline-flex; align-items:center; justify-content:center;
+    border:none; background:transparent; color:var(--ds-fg-muted); border-radius:var(--ds-radius-md); cursor:pointer; }
+  .mappbar .ab-btn:hover { color:var(--ds-primary); background:var(--ds-bg-subtle); }
+  .mappbar .ab-ttl { min-width:0; display:flex; flex-direction:column; line-height:1.2; }
+  .mappbar .ab-ttl b { font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); letter-spacing:-0.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mappbar .ab-ttl span { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ds-fg-subtle); }
+  .mappbar .ab-act { margin-left:auto; display:inline-flex; gap:2px; }
+
+  /* 屏内段落标题 */
+  .mscreen { padding:var(--ds-space-3); display:flex; flex-direction:column; gap:var(--ds-space-3); flex:1; }
+  .mcap { display:flex; align-items:baseline; justify-content:space-between; }
+  .mcap h6 { margin:0; font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); text-transform:uppercase; letter-spacing:.05em; color:var(--ds-fg-muted); }
+  .mcap a { font-size:var(--ds-text-xs); color:var(--ds-accent); text-decoration:none; font-weight:var(--ds-weight-medium); }
+
+  /* KPI 卡：玫瑰主色强调，tabular 数字 */
+  .mkpis { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-2); }
+  .mkpi { position:relative; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:10px var(--ds-space-3) 11px;
+    background:var(--ds-bg-elevated); overflow:hidden; }
+  .mkpi.hot::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--ds-primary); }
+  .mkpi.cool::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--ds-accent); }
+  .mkpi .label { font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--ds-fg-muted); }
+  .mkpi .val { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); line-height:1.1; margin-top:2px; letter-spacing:-0.02em; }
+  .mkpi .delta { display:flex; align-items:center; gap:4px; font-size:10px; margin-top:3px; font-variant-numeric:var(--ds-numeric); }
+  .mkpi .delta svg { width:11px; height:11px; flex:none; }
+
+  /* 精简排行表：tabular 数字、可逐行比对 */
+  .mtable { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-elevated); }
+  .mtable table { width:100%; border-collapse:collapse; font-size:var(--ds-text-sm); }
+  .mtable th { background:var(--ds-bg-subtle); color:var(--ds-fg-muted); font-weight:var(--ds-weight-medium); text-align:left;
+    padding:6px var(--ds-space-3); border-bottom:1px solid var(--ds-border-strong); font-size:var(--ds-text-xs); white-space:nowrap; }
+  .mtable th.n, .mtable td.n { text-align:right; font-variant-numeric:var(--ds-numeric); }
+  .mtable td { padding:8px var(--ds-space-3); border-bottom:1px solid var(--ds-border); }
+  .mtable tr:last-child td { border-bottom:none; }
+  .mtable .rk { color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric); width:1.4em; }
+  .mtable .pn { font-weight:var(--ds-weight-medium); color:var(--ds-fg); }
+  .mtable .sc { font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); }
+
+  /* 精简列表：触控行 ≥44px */
+  .mlist { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg-elevated); }
+  .mlist .li { display:flex; align-items:center; gap:10px; min-height:48px; padding:8px var(--ds-space-3); border-bottom:1px solid var(--ds-border); font-size:var(--ds-text-sm); }
   .mlist .li:last-child { border-bottom:none; }
-  .mlist .li .name { font-weight:var(--ds-weight-medium); }
+  .mlist .li .name { font-weight:var(--ds-weight-medium); min-width:0; }
   .mlist .li .name small { display:block; font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
-  .mlist .li .sc { margin-left:auto; font-variant-numeric:var(--ds-numeric); font-weight:var(--ds-weight-medium); }
+  .mlist .li .qbar { width:48px; height:5px; border-radius:var(--ds-radius-full); background:var(--chart-track); overflow:hidden; flex:none; margin-left:auto; }
+  .mlist .li .qbar > i { display:block; height:100%; border-radius:var(--ds-radius-full); }
+  .mlist .li .sc { font-variant-numeric:var(--ds-numeric); font-weight:var(--ds-weight-bold); width:24px; text-align:right; flex:none; }
+
+  /* 底部 tab（情报台首页复用 .tabbar，见下） */
 
   /* ===== 响应式断点 ===== */
   /* 密集表横向滚动（窄屏不压列、不换行，保持可逐行比对） */
@@ -547,30 +593,45 @@
   .phones { display:flex; gap:var(--ds-space-7); flex-wrap:wrap; align-items:flex-start; justify-content:center; }
   .mdevice { display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-3); }
   .mdevice .pcap { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); text-align:center; }
-  .dvc-body > .mfeed { display:flex; flex-direction:column; min-height:100%; }
-  .dvc-body > .mfeed .feedlist { flex:1; padding:var(--ds-space-3) var(--ds-space-3) 0; overflow:auto; }
-  .dvc-body > .mfeed .tabbar { margin-top:auto; position:sticky; bottom:0; }
-  /* mobile feed */
-  .mfeed .mcardf { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; margin-bottom:var(--ds-space-3); background:var(--ds-bg-elevated); }
-  .mfeed .mcardf .mt { aspect-ratio:16/9; } .mfeed .mcardf .mt img { width:100%; height:100%; object-fit:cover; display:block; }
+  /* mobile feed（套在 .mflow > .mmain 内；列表 flex:1 撑满，tab 贴底） */
+  .mfeed { flex:1; padding:var(--ds-space-3) var(--ds-space-3) var(--ds-space-2); }
+  .mfeed .mcardf { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; margin-bottom:var(--ds-space-3); background:var(--ds-bg-elevated);
+    transition:border-color var(--ds-dur-fast) var(--ds-ease); }
+  .mfeed .mcardf:last-child { margin-bottom:0; }
+  .mfeed .mcardf:hover { border-color:var(--ds-primary); }
+  .mfeed .mcardf .mt { aspect-ratio:16/9; position:relative; background:var(--ds-bg-sunken); } .mfeed .mcardf .mt img { width:100%; height:100%; object-fit:cover; display:block; }
+  .mfeed .mcardf .mt .pin { position:absolute; left:8px; top:8px; height:20px; padding:0 8px; display:inline-flex; align-items:center; gap:4px;
+    border-radius:var(--ds-radius-sm); background:color-mix(in srgb,var(--ds-fg) 72%,transparent); color:var(--ds-bg); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); }
   .mfeed .mcardf .mc { padding:var(--ds-space-2) var(--ds-space-3) var(--ds-space-3); }
   .mfeed .mcardf .mc h5 { margin:0 0 4px; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-bold); }
   .mfeed .mcardf .mc .mrow { display:flex; align-items:center; gap:8px; font-size:var(--ds-text-xs); color:var(--ds-fg-muted); margin-top:6px; }
   .tabbar { display:flex; border-top:1px solid var(--ds-border); background:var(--ds-bg); }
-  .tabbar a { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 0; color:var(--ds-fg-subtle); text-decoration:none; font-size:10px; }
+  .tabbar a { flex:1; min-height:48px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:7px 0; color:var(--ds-fg-subtle); text-decoration:none; font-size:10px; }
   .tabbar a svg { width:20px; height:20px; }
   .tabbar a.cur { color:var(--ds-primary); }
-  /* mobile detail */
-  .mdetail .mh2 { position:relative; aspect-ratio:16/10; } .mdetail .mh2 img { width:100%; height:100%; object-fit:cover; display:block; }
-  .mdetail .mh2 .g { position:absolute; inset:0; background:linear-gradient(0deg, color-mix(in srgb,var(--ds-fg) 70%,transparent), transparent 55%); }
-  .mdetail .mh2 .t { position:absolute; left:var(--ds-space-3); bottom:var(--ds-space-2); right:var(--ds-space-3); color:#fafafa; }
-  .mdetail .mh2 .t b { display:block; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
-  .mdetail .mh2 .t small { font-size:var(--ds-text-xs); color:rgba(250,250,250,.82); font-family:var(--ds-font-mono); }
-  .mdetail .mbd { padding:var(--ds-space-3); }
-  .mdetail .mstats { display:flex; gap:var(--ds-space-3); padding:var(--ds-space-3) 0; border-bottom:1px solid var(--ds-border); margin-bottom:var(--ds-space-3); }
-  .mdetail .mstats .ms { flex:1; } .mdetail .mstats .ms b { display:block; font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); }
-  .mdetail .mstats .ms span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
-  .mdetail p { margin:0 0 var(--ds-space-3); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); line-height:1.55; }
+  /* mobile detail（dvc-body 已 padding-top:54px；详情大图顶到状态栏下，app bar 浮在大图上） */
+  .mdetail { min-height:100%; display:flex; flex-direction:column; }
+  .mdetail .mh2 { position:relative; height:218px; flex:none; } .mdetail .mh2 img { width:100%; height:100%; object-fit:cover; display:block; }
+  .mdetail .mh2 .g { position:absolute; inset:0; background:linear-gradient(0deg, color-mix(in srgb,var(--ds-fg) 78%,transparent), color-mix(in srgb,var(--ds-fg) 18%,transparent) 48%, color-mix(in srgb,var(--ds-fg) 30%,transparent)); }
+  /* 浮在大图上的返回/操作条（沿用 sb-light 白状态栏） */
+  .mdetail .mh2 .mover { position:absolute; left:0; right:0; top:0; display:flex; align-items:center; padding:6px var(--ds-space-2); z-index:2; }
+  .mdetail .mh2 .mover .ab-btn { width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; border:none; background:transparent; color:#fafafa; cursor:pointer; border-radius:var(--ds-radius-md); }
+  .mdetail .mh2 .mover .ab-btn:hover { background:rgba(255,255,255,.16); }
+  .mdetail .mh2 .mover .sp { margin-left:auto; }
+  .mdetail .mh2 .t { position:absolute; left:var(--ds-space-3); bottom:var(--ds-space-3); right:var(--ds-space-3); color:#fafafa; z-index:2; }
+  .mdetail .mh2 .t .tg { display:inline-flex; align-items:center; gap:5px; height:20px; padding:0 8px; border-radius:var(--ds-radius-sm);
+    background:color-mix(in srgb,var(--ds-primary) 88%,transparent); color:#fff; font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); margin-bottom:6px; }
+  .mdetail .mh2 .t b { display:block; font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.02em; }
+  .mdetail .mh2 .t small { font-size:var(--ds-text-xs); color:rgba(250,250,250,.86); font-family:var(--ds-font-mono); }
+  .mdetail .mbd { flex:1; display:flex; flex-direction:column; gap:var(--ds-space-3); padding:var(--ds-space-3); }
+  .mdetail .mstats { display:flex; gap:var(--ds-space-2); }
+  .mdetail .mstats .ms { flex:1; border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:8px var(--ds-space-2); background:var(--ds-bg-elevated); }
+  .mdetail .mstats .ms b { display:block; font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric); line-height:1.1; }
+  .mdetail .mstats .ms span { font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--ds-fg-muted); }
+  .mdetail p { margin:0; font-size:var(--ds-text-sm); color:var(--ds-fg-muted); line-height:1.55; }
+  .mdetail .mfoot { margin-top:auto; display:flex; gap:var(--ds-space-2); }
+  .mdetail .mfoot .btn { height:44px; flex:1; }
+  .mdetail .mfoot .btn-sec { flex:none; width:44px; padding:0; }
 
   @media (max-width:900px){
     .hero { grid-template-columns:1fr; }
@@ -1208,7 +1269,7 @@
 
     <!-- MOBILE -->
     <h2 class="sec">移动布局 Mobile Layouts</h2>
-    <p class="sub">三套 iPhone 17 Pro Max 套壳（标准 <code style="font-family:var(--ds-font-mono)">.dvc17</code> 框 · 灵动岛 / 状态栏 / Home 条）：情报台首页（KPI + 精简列表）、媒体 feed（图文卡 + 底部标签栏）、项目详情（深色大图 header + 信息）。窄屏密度让位于触控目标。</p>
+    <p class="sub">三套 iPhone 17 Pro Max 套壳（标准 <code style="font-family:var(--ds-font-mono)">.dvc17</code> 框 · 灵动岛 / 状态栏 / Home 条），每屏均为精致数据情报台：app bar 嵌在 54px 状态栏下，纵向 flex 撑满 812px、底部 tab/CTA 贴底零留白。情报台首页（KPI 卡 + 排行表 + watchlist）、媒体 feed（图文卡 + 底部标签栏）、项目详情（深色大图 header 配 <code style="font-family:var(--ds-font-mono)">.sb-light</code> + 证据表）。玫瑰主色 + 冷青强调、tabular 数字、触控目标 ≥44px。</p>
     <div class="phones">
       <!-- M1 情报台首页 -->
       <div class="mdevice">
@@ -1226,23 +1287,53 @@
               </span>
             </div>
             <div class="dvc-body">
-              <div class="mscreen">
-                <nav class="crumbs" aria-label="面包屑" style="margin-bottom:var(--ds-space-3)">
-                  <a href="#">情报台</a><span class="sep" aria-hidden="true">/</span><span class="cur" aria-current="page">AI 应用</span>
+              <div class="mflow">
+                <div class="mmain">
+                  <header class="mappbar">
+                    <button class="ab-btn" aria-label="返回"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <div class="ab-ttl"><b>AI 应用赛道</b><span>1,204 个项目 · 实时</span></div>
+                    <div class="ab-act">
+                      <button class="ab-btn" aria-label="筛选"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                      <button class="ab-btn" aria-label="搜索"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </header>
+                  <div class="mscreen">
+                    <div class="mkpis">
+                      <div class="mkpi hot"><div class="label">潜力股</div><div class="val num" style="color:var(--ds-primary)">18</div><div class="delta trend-up"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 18 10 11l4 4 6-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>+5 本轮</div></div>
+                      <div class="mkpi cool"><div class="label">可分析</div><div class="val num">6,222</div><div class="delta" style="color:var(--ds-fg-muted)">12,490 条线索</div></div>
+                      <div class="mkpi"><div class="label">已实现</div><div class="val num">300</div><div class="delta trend-up"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 18 10 11l4 4 6-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>+22</div></div>
+                      <div class="mkpi"><div class="label">不可访问</div><div class="val num">28</div><div class="delta trend-down"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6 10 13l4-4 6 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>-3</div></div>
+                    </div>
+                    <div>
+                      <div class="mcap"><h6>质量分排行 Top</h6><a href="#">全部 →</a></div>
+                      <div class="mtable">
+                        <table>
+                          <thead><tr><th class="n">#</th><th>项目</th><th class="n">浏览</th><th class="n">质量分</th></tr></thead>
+                          <tbody>
+                            <tr><td class="n rk">1</td><td class="pn">古籍智能修复台</td><td class="n num">12,841</td><td class="n sc" style="color:var(--ds-primary)">94</td></tr>
+                            <tr><td class="n rk">2</td><td class="pn">苏北旅行规划助手</td><td class="n num">9,602</td><td class="n sc">88</td></tr>
+                            <tr><td class="n rk">3</td><td class="pn">3D 飞鸟生成器</td><td class="n num">7,418</td><td class="n sc">76</td></tr>
+                            <tr><td class="n rk">4</td><td class="pn">哈哈邮件管家</td><td class="n num">5,233</td><td class="n sc">58</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="mcap"><h6>关注列表 Watchlist</h6><a href="#">编辑</a></div>
+                      <div class="mlist">
+                        <div class="li"><span class="st st-ok" aria-hidden="true"><span class="d"></span></span><span class="name">古籍智能修复台<small>#22684</small></span><span class="qbar"><i style="width:94%;background:var(--chart-positive)"></i></span><span class="sc num">94</span></div>
+                        <div class="li"><span class="st st-ok" aria-hidden="true"><span class="d"></span></span><span class="name">苏北旅行规划助手<small>#21907</small></span><span class="qbar"><i style="width:88%;background:var(--chart-positive)"></i></span><span class="sc num">88</span></div>
+                        <div class="li"><span class="st st-demo" aria-hidden="true"><span class="d"></span></span><span class="name">3D 飞鸟生成器<small>#20415</small></span><span class="qbar"><i style="width:76%;background:var(--ds-warning)"></i></span><span class="sc num">76</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <nav class="tabbar mtab" aria-label="底部导航">
+                  <a href="#" class="cur"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13h4l2.5 6 5-14L17 13h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>总览</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M4 9h16" stroke="currentColor" stroke-width="1.8"/></svg>项目</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>关注</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>我的</a>
                 </nav>
-                <div class="mkpis">
-                  <div class="mkpi"><div class="label">可分析</div><div class="val num">6,222</div></div>
-                  <div class="mkpi"><div class="label">潜力股</div><div class="val num" style="color:var(--ds-primary)">18</div></div>
-                  <div class="mkpi"><div class="label">已实现</div><div class="val num">300</div></div>
-                  <div class="mkpi"><div class="label">不可访问</div><div class="val num">28</div></div>
-                </div>
-                <div class="mlist">
-                  <div class="li"><span class="st st-ok" aria-hidden="true"><span class="d"></span></span><span class="name">古籍智能修复台<small>#22684</small></span><span class="sc num">94</span></div>
-                  <div class="li"><span class="st st-ok" aria-hidden="true"><span class="d"></span></span><span class="name">苏北旅行规划助手<small>#21907</small></span><span class="sc num">88</span></div>
-                  <div class="li"><span class="st st-demo" aria-hidden="true"><span class="d"></span></span><span class="name">3D 飞鸟生成器<small>#20415</small></span><span class="sc num">76</span></div>
-                  <div class="li"><span class="st st-idea" aria-hidden="true"><span class="d"></span></span><span class="name">哈哈邮件管家<small>#18733</small></span><span class="sc num">58</span></div>
-                </div>
-                <button class="btn btn-primary" style="width:100%;margin-top:var(--ds-space-3)"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>加入 watchlist</button>
               </div>
             </div>
             <div class="home"></div>
@@ -1267,30 +1358,39 @@
               </span>
             </div>
             <div class="dvc-body">
-              <div class="mfeed">
-                <div class="feedlist">
-                  <article class="mcardf">
-                    <div class="mt"><img src="../../_assets/photos/workspace.jpg" alt="古籍智能修复台截图" loading="lazy" /></div>
-                    <div class="mc"><h5>古籍智能修复台</h5>
-                      <div class="mrow"><span class="tag tag-1" style="height:18px"><span class="swatch" style="background:var(--chart-1)"></span>AI 应用</span><span class="num" style="margin-left:auto">94 分</span></div>
+              <div class="mflow">
+                <div class="mmain">
+                  <header class="mappbar">
+                    <div class="ab-ttl"><b>媒体情报 Feed</b><span>12,490 条线索 · 已抓 3,108 截图</span></div>
+                    <div class="ab-act">
+                      <button class="ab-btn" aria-label="排序"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4v16m0 0-3-3m3 3 3-3M17 20V4m0 0-3 3m3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                      <button class="ab-btn" aria-label="通知"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
                     </div>
-                  </article>
-                  <article class="mcardf">
-                    <div class="mt"><img src="../../_assets/photos/travel.jpg" alt="苏北旅行规划助手截图" loading="lazy" /></div>
-                    <div class="mc"><h5>苏北旅行规划助手</h5>
-                      <div class="mrow"><span class="tag tag-3" style="height:18px"><span class="swatch" style="background:var(--chart-3)"></span>效率工具</span><span class="num" style="margin-left:auto">88 分</span></div>
-                    </div>
-                  </article>
-                  <article class="mcardf">
-                    <div class="mt"><img src="../../_assets/photos/tech.jpg" alt="3D 飞鸟生成器截图" loading="lazy" /></div>
-                    <div class="mc"><h5>3D 飞鸟生成器</h5>
-                      <div class="mrow"><span class="tag tag-6" style="height:18px"><span class="swatch" style="background:var(--chart-6)"></span>创意生成</span><span class="num" style="margin-left:auto">76 分</span></div>
-                    </div>
-                  </article>
+                  </header>
+                  <div class="mfeed">
+                    <article class="mcardf">
+                      <div class="mt"><img src="../../_assets/photos/workspace.jpg" alt="古籍智能修复台截图" loading="lazy" /><span class="pin">94 分</span></div>
+                      <div class="mc"><h5>古籍智能修复台</h5>
+                        <div class="mrow"><span class="tag tag-1" style="height:18px"><span class="swatch" style="background:var(--chart-1)"></span>AI 应用</span><span class="num" style="margin-left:auto">3 截图 · Demo 可运行</span></div>
+                      </div>
+                    </article>
+                    <article class="mcardf">
+                      <div class="mt"><img src="../../_assets/photos/travel.jpg" alt="苏北旅行规划助手截图" loading="lazy" /><span class="pin">88 分</span></div>
+                      <div class="mc"><h5>苏北旅行规划助手</h5>
+                        <div class="mrow"><span class="tag tag-3" style="height:18px"><span class="swatch" style="background:var(--chart-3)"></span>效率工具</span><span class="num" style="margin-left:auto">5 截图 · 已实现</span></div>
+                      </div>
+                    </article>
+                    <article class="mcardf">
+                      <div class="mt"><img src="../../_assets/photos/tech.jpg" alt="3D 飞鸟生成器截图" loading="lazy" /><span class="pin">76 分</span></div>
+                      <div class="mc"><h5>3D 飞鸟生成器</h5>
+                        <div class="mrow"><span class="tag tag-6" style="height:18px"><span class="swatch" style="background:var(--chart-6)"></span>创意生成</span><span class="num" style="margin-left:auto">2 截图 · Demo</span></div>
+                      </div>
+                    </article>
+                  </div>
                 </div>
-                <nav class="tabbar" aria-label="底部导航">
-                  <a href="#" class="cur"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13h4l2.5 6 5-14L17 13h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>总览</a>
-                  <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M4 9h16" stroke="currentColor" stroke-width="1.8"/></svg>项目</a>
+                <nav class="tabbar mtab" aria-label="底部导航">
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13h4l2.5 6 5-14L17 13h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>总览</a>
+                  <a href="#" class="cur"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M4 9h16" stroke="currentColor" stroke-width="1.8"/></svg>项目</a>
                   <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>关注</a>
                   <a href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>我的</a>
                 </nav>
@@ -1319,19 +1419,44 @@
             </div>
             <div class="dvc-body" style="padding-top:0">
               <div class="mdetail">
-                <div class="mh2" style="aspect-ratio:auto;height:230px">
+                <div class="mh2">
                   <img src="../../_assets/photos/hero-studio.jpg" alt="古籍智能修复台 详情大图" loading="lazy" />
                   <span class="g" aria-hidden="true"></span>
-                  <div class="t"><b>古籍智能修复台</b><small>#22684 · AI 应用</small></div>
+                  <div class="mover">
+                    <button class="ab-btn" aria-label="返回"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <span class="sp"></span>
+                    <button class="ab-btn" aria-label="分享"><svg class="i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0-12-4 4m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="ab-btn" aria-label="更多"><svg class="i18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
+                  </div>
+                  <div class="t">
+                    <span class="tg">质量分本轮第一</span>
+                    <b>古籍智能修复台</b><small>#22684 · AI 应用赛道</small>
+                  </div>
                 </div>
                 <div class="mbd">
                   <div class="mstats">
-                    <div class="ms"><b class="num">94</b><span>质量分</span></div>
+                    <div class="ms"><b class="num" style="color:var(--ds-primary)">94</b><span>质量分</span></div>
                     <div class="ms"><b class="num">12,841</b><span>浏览</span></div>
-                    <div class="ms"><b class="num">¥50k</b><span>预测</span></div>
+                    <div class="ms"><b class="num">¥50k</b><span>奖金预测</span></div>
                   </div>
-                  <p>OCR + 扩散模型补全残缺古籍页面，评审实测可运行，质量分本轮第一。已抓取 3 张截图与 1 个 Demo 链接。</p>
-                  <button class="btn btn-primary" style="width:100%"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>加入 watchlist</button>
+                  <p>OCR + 扩散模型补全残缺古籍页面，评审实测可运行，质量分本轮第一。已抓取 3 张截图与 1 个 Demo 链接，待人工复核。</p>
+                  <div>
+                    <div class="mcap"><h6>线索证据 Evidence</h6><a href="#">查看全部</a></div>
+                    <div class="mtable">
+                      <table>
+                        <tbody>
+                          <tr><td class="pn">Demo 链接</td><td class="n"><span class="st st-ok" style="justify-content:flex-end"><span class="d"></span>可运行</span></td></tr>
+                          <tr><td class="pn">截图证据</td><td class="n num">3 张</td></tr>
+                          <tr><td class="pn">文件线索</td><td class="n num">41 条</td></tr>
+                          <tr><td class="pn">最近抓取</td><td class="n num">2 分钟前</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="mfoot">
+                    <button class="btn btn-sec" aria-label="收藏"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 17.3-6.2 3.7 1.6-7L2 9.3l7.1-.6L12 2l2.9 6.7 7.1.6-5.4 4.7 1.6 7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+                    <button class="btn btn-primary"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>加入 watchlist</button>
+                  </div>
                 </div>
               </div>
             </div>
