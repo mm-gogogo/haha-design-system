@@ -1,0 +1,123 @@
+/* ============================================================
+   hahafree调研 · TRAE 项目情报台  ·  Design Tokens
+   基于「B 端风」定制 — 正式化项目既有 DESIGN.md（oklch）
+   玫瑰主色（rose 主操作/选中）· 冷蓝/青分析强调 · 白底中性面
+   高密度表格 · tabular-nums · 弱阴影靠描边 · 小圆角
+   契约变量名固定（--ds-*），仅取值随项目变。
+   亮色 :root  ｜  暗色 [data-theme="dark"], .dark
+   ============================================================ */
+
+:root {
+  /* ---------- 表面与文字（白底 + 低彩中性面，玫瑰微调 hue） ---------- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f8f6f8;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #efebef;
+  --ds-fg: #12111b;            --ds-fg-muted: #585865;
+  --ds-fg-subtle: #9899a3;     --ds-fg-on-accent: #fafafa;
+  --ds-border: #dddde3;        --ds-border-strong: #c7c6cf;
+
+  /* ---------- 品牌与强调（玫瑰主色，保留给主操作 / 选中） ---------- */
+  --ds-primary: #9e4799;       --ds-primary-hover: #8e3489;
+  --ds-primary-active: #7d2278;--ds-primary-fg: #fafafa;
+  /* accent = 冷青分析强调（链接、分析信号，与玫瑰品牌动作区分） */
+  --ds-accent: #007985;        --ds-accent-fg: #fafafa;
+
+  /* ---------- 语义状态（主色 + 很淡的底 + 底上文字，均 ≥6.6:1） ---------- */
+  --ds-success: #1e7546; --ds-success-bg: #e5faeb; --ds-success-fg: #006133;
+  --ds-warning: #ba8400; --ds-warning-bg: #fff1d2; --ds-warning-fg: #6f4700;
+  --ds-danger:  #bc4945; --ds-danger-bg:  #ffe9e6; --ds-danger-fg:  #9a2929;
+  --ds-info:    #3578b8; --ds-info-bg:    #e2f6ff; --ds-info-fg:    #00569f;
+
+  /* ---------- 焦点（玫瑰主色环） ---------- */
+  --ds-focus: #9e4799;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---------- 圆角（小 · 沿用 B端，不宜过圆） ---------- */
+  --ds-radius-sm: 4px; --ds-radius-md: 6px; --ds-radius-lg: 8px; --ds-radius-full: 9999px;
+
+  /* ---------- 间距比例（偏紧凑 · 4px 基 · 数据台高密度） ---------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---------- 控件高度（密度三档） ---------- */
+  --ds-control-sm: 24px; --ds-control-md: 32px; --ds-control-lg: 36px;
+
+  /* ---------- 字体（Inter 产品栈 · 字号偏小 · 数字等宽） ---------- */
+  --ds-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", Arial, sans-serif;
+  --ds-font-serif: Georgia, "Songti SC", "SimSun", serif;
+  --ds-font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, "Courier New", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 18px; --ds-text-xl: 20px; --ds-text-2xl: 24px; --ds-text-3xl: 30px;
+  --ds-leading-tight: 1.3; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+  /* 数字等宽（指标卡 / 数据列 / 金额 / 浏览数 / 质量分 / 分页） */
+  --ds-numeric: tabular-nums;
+
+  /* ---------- 阴影（很弱 · 仅弹层/下拉 · 平面靠描边） ---------- */
+  --ds-shadow-sm: 0 1px 2px rgba(18,17,27,.05);
+  --ds-shadow-md: 0 2px 8px rgba(18,17,27,.09), 0 1px 2px rgba(18,17,27,.05);
+  --ds-shadow-lg: 0 4px 16px rgba(18,17,27,.13), 0 2px 4px rgba(18,17,27,.07);
+
+  /* ---------- 动效（极克制 · 150–200ms） ---------- */
+  --ds-ease: cubic-bezier(.25,.1,.25,1);
+  --ds-dur-fast: 120ms; --ds-dur-base: 160ms; --ds-dur-slow: 200ms;
+
+  /* ---------- 手写 SVG 图表令牌（--chart-* · 全部 ≥3:1 可作图形） ---------- */
+  /* 分类序列：玫瑰 → 冷蓝 → 青 → 绿 → 琥珀 → 紫，赛道/类目稳定上色 */
+  --chart-1: #9e4799;  /* rose  · 品牌 / 主序列 / 当前选中赛道 */
+  --chart-2: #3578b8;  /* blue  · 冷分析强调 */
+  --chart-3: #007985;  /* teal  · 冷分析强调 */
+  --chart-4: #1e7546;  /* green · 正向 / 已实现 */
+  --chart-5: #b5820c;  /* amber · 待观察 / Demo */
+  --chart-6: #6959ae;  /* violet· 创意设想 / 第六类 */
+  --chart-grid: var(--ds-border);          /* 网格线 / 基准线 */
+  --chart-axis: var(--ds-fg-subtle);       /* 轴标签 / 刻度 */
+  --chart-track: var(--ds-bg-sunken);      /* 进度/质量条底槽 */
+  --chart-positive: var(--ds-success);     /* 上升趋势 */
+  --chart-negative: var(--ds-danger);      /* 下降趋势 */
+  --chart-highlight: var(--ds-primary);    /* 高亮数据点 / 潜力股 */
+}
+
+[data-theme="dark"], .dark {
+  /* ---------- 表面与文字（玫瑰微染近黑） ---------- */
+  --ds-bg: #121115;            --ds-bg-subtle: #1a191d;
+  --ds-bg-elevated: #212024;   --ds-bg-sunken: #0c0a0e;
+  --ds-fg: #eeecee;            --ds-fg-muted: #aca9b0;
+  --ds-fg-subtle: #75737a;     --ds-fg-on-accent: #fafafa;
+  --ds-border: #333236;        --ds-border-strong: #4e4c52;
+
+  /* ---------- 品牌与强调（玫瑰提亮且压至白字 AA：白字 5.04:1） ---------- */
+  --ds-primary: #a34f9e;       --ds-primary-hover: #be67b7;
+  --ds-primary-active: #8e3489;--ds-primary-fg: #fafafa;
+  --ds-accent: #2fabb7;        --ds-accent-fg: #0c0a0e;
+
+  /* ---------- 语义状态（暗色：浅底 + 亮文字 ≥8.6:1） ---------- */
+  --ds-success: #3fb171; --ds-success-bg: #122d1d; --ds-success-fg: #8ee0ab;
+  --ds-warning: #c58d04; --ds-warning-bg: #32240a; --ds-warning-fg: #f0c374;
+  --ds-danger:  #e2726b; --ds-danger-bg:  #3a1d1b; --ds-danger-fg:  #ffaea6;
+  --ds-info:    #4c9deb; --ds-info-bg:    #14283c; --ds-info-fg:    #92d0ff;
+
+  /* ---------- 焦点 ---------- */
+  --ds-focus: #be67b7;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---------- 阴影（暗色更深底） ---------- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --ds-shadow-md: 0 2px 8px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.45);
+  --ds-shadow-lg: 0 4px 16px rgba(0,0,0,.65), 0 2px 4px rgba(0,0,0,.45);
+
+  /* ---------- 图表令牌（暗色提亮，全部 ≥6.6:1 可作图形） ---------- */
+  --chart-1: #cb7fc5;  /* rose  */
+  --chart-2: #5aa3ec;  /* blue  */
+  --chart-3: #00b5c5;  /* teal  */
+  --chart-4: #51b67a;  /* green */
+  --chart-5: #c8942d;  /* amber */
+  --chart-6: #9e8fe9;  /* violet*/
+  --chart-grid: var(--ds-border);
+  --chart-axis: var(--ds-fg-subtle);
+  --chart-track: var(--ds-bg-sunken);
+  --chart-positive: var(--ds-success);
+  --chart-negative: var(--ds-danger);
+  --chart-highlight: var(--ds-primary);
+}

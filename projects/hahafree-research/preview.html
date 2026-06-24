@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>hahafree调研 · TRAE 项目情报台 · 设计系统预览</title>
+<style>
+  /* ===== Tokens（亮色） ===== */
+  :root {
+    --ds-bg:#ffffff; --ds-bg-subtle:#f8f6f8; --ds-bg-elevated:#ffffff; --ds-bg-sunken:#efebef;
+    --ds-fg:#12111b; --ds-fg-muted:#585865; --ds-fg-subtle:#9899a3; --ds-fg-on-accent:#fafafa;
+    --ds-border:#dddde3; --ds-border-strong:#c7c6cf;
+    --ds-primary:#9e4799; --ds-primary-hover:#8e3489; --ds-primary-active:#7d2278; --ds-primary-fg:#fafafa;
+    --ds-accent:#007985; --ds-accent-fg:#fafafa;
+    --ds-success:#1e7546; --ds-success-bg:#e5faeb; --ds-success-fg:#006133;
+    --ds-warning:#ba8400; --ds-warning-bg:#fff1d2; --ds-warning-fg:#6f4700;
+    --ds-danger:#bc4945;  --ds-danger-bg:#ffe9e6;  --ds-danger-fg:#9a2929;
+    --ds-info:#3578b8;    --ds-info-bg:#e2f6ff;    --ds-info-fg:#00569f;
+    --ds-focus:#9e4799; --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+    --ds-radius-sm:4px; --ds-radius-md:6px; --ds-radius-lg:8px; --ds-radius-full:9999px;
+    --ds-space-1:4px; --ds-space-2:8px; --ds-space-3:12px; --ds-space-4:16px; --ds-space-6:24px; --ds-space-7:32px;
+    --ds-control-sm:24px; --ds-control-md:32px; --ds-control-lg:36px;
+    --ds-font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    --ds-font-mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    --ds-text-xs:12px; --ds-text-sm:13px; --ds-text-base:14px; --ds-text-md:16px;
+    --ds-text-lg:18px; --ds-text-xl:20px; --ds-text-2xl:24px; --ds-text-3xl:30px;
+    --ds-leading-tight:1.3; --ds-leading-normal:1.5;
+    --ds-weight-normal:400; --ds-weight-medium:500; --ds-weight-bold:600;
+    --ds-numeric:tabular-nums;
+    --ds-shadow-sm:0 1px 2px rgba(18,17,27,.05);
+    --ds-shadow-md:0 2px 8px rgba(18,17,27,.09),0 1px 2px rgba(18,17,27,.05);
+    --ds-shadow-lg:0 4px 16px rgba(18,17,27,.13),0 2px 4px rgba(18,17,27,.07);
+    --ds-ease:cubic-bezier(.25,.1,.25,1); --ds-dur-fast:120ms; --ds-dur-base:160ms; --ds-dur-slow:200ms;
+    --chart-1:#9e4799; --chart-2:#3578b8; --chart-3:#007985; --chart-4:#1e7546; --chart-5:#b5820c; --chart-6:#6959ae;
+    --chart-grid:var(--ds-border); --chart-axis:var(--ds-fg-subtle); --chart-track:var(--ds-bg-sunken);
+    --chart-positive:var(--ds-success); --chart-negative:var(--ds-danger); --chart-highlight:var(--ds-primary);
+    --ds-z-dropdown:1000; --ds-z-sticky:1100; --ds-z-modal-backdrop:1200; --ds-z-modal:1300; --ds-z-toast:1400; --ds-z-tooltip:1500;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg:#121115; --ds-bg-subtle:#1a191d; --ds-bg-elevated:#212024; --ds-bg-sunken:#0c0a0e;
+    --ds-fg:#eeecee; --ds-fg-muted:#aca9b0; --ds-fg-subtle:#75737a; --ds-fg-on-accent:#fafafa;
+    --ds-border:#333236; --ds-border-strong:#4e4c52;
+    --ds-primary:#a34f9e; --ds-primary-hover:#be67b7; --ds-primary-active:#8e3489; --ds-primary-fg:#fafafa;
+    --ds-accent:#2fabb7; --ds-accent-fg:#0c0a0e;
+    --ds-success:#3fb171; --ds-success-bg:#122d1d; --ds-success-fg:#8ee0ab;
+    --ds-warning:#c58d04; --ds-warning-bg:#32240a; --ds-warning-fg:#f0c374;
+    --ds-danger:#e2726b;  --ds-danger-bg:#3a1d1b;  --ds-danger-fg:#ffaea6;
+    --ds-info:#4c9deb;    --ds-info-bg:#14283c;    --ds-info-fg:#92d0ff;
+    --ds-focus:#be67b7;
+    --ds-shadow-sm:0 1px 2px rgba(0,0,0,.45);
+    --ds-shadow-md:0 2px 8px rgba(0,0,0,.55),0 1px 2px rgba(0,0,0,.45);
+    --ds-shadow-lg:0 4px 16px rgba(0,0,0,.65),0 2px 4px rgba(0,0,0,.45);
+    --chart-1:#cb7fc5; --chart-2:#5aa3ec; --chart-3:#00b5c5; --chart-4:#51b67a; --chart-5:#c8942d; --chart-6:#9e8fe9;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--ds-bg); color:var(--ds-fg);
+    font:var(--ds-weight-normal) var(--ds-text-base)/var(--ds-leading-normal) var(--ds-font-sans);
+    -webkit-font-smoothing:antialiased; transition:background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .num { font-variant-numeric:var(--ds-numeric); }
+  .wrap { max-width:1180px; margin:0 auto; padding:var(--ds-space-7) var(--ds-space-6) 80px; }
+
+  /* 内联 SVG 图标：统一线性风格，currentColor 继承、与文字基线对齐 */
+  .ico-svg { width:1em; height:1em; flex:none; vertical-align:-0.125em; }
+  svg.i16 { width:16px; height:16px; }
+  svg.i18 { width:18px; height:18px; }
+
+  /* topbar */
+  .topbar {
+    position:sticky; top:0; z-index:var(--ds-z-sticky); display:flex; align-items:center; gap:var(--ds-space-4);
+    height:56px; padding:0 var(--ds-space-6); background:var(--ds-bg);
+    border-bottom:1px solid var(--ds-border);
+  }
+  .brand { display:flex; align-items:center; gap:var(--ds-space-2); font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md); letter-spacing:-0.01em; }
+  .brand .mark { flex:none; width:20px; height:20px; color:var(--ds-primary); }
+  .brand small { font-weight:var(--ds-weight-normal); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .topbar .searchbox { margin-left:auto; position:relative; width:240px; }
+  .topbar .searchbox .si { position:absolute; left:var(--ds-space-3); top:50%; transform:translateY(-50%);
+    color:var(--ds-fg-subtle); pointer-events:none; }
+  .topbar .search {
+    height:var(--ds-control-md); width:100%; padding:0 var(--ds-space-3) 0 32px;
+    border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-md);
+    background:var(--ds-bg); color:var(--ds-fg); font-size:var(--ds-text-base);
+  }
+  .topbar .search::placeholder { color:var(--ds-fg-subtle); }
+  .topbar .search:focus-visible { outline:none; border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
+
+  h2.sec { font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); letter-spacing:-0.01em; margin:var(--ds-space-7) 0 var(--ds-space-3); }
+  .sub { color:var(--ds-fg-muted); font-size:var(--ds-text-sm); margin:0 0 var(--ds-space-4); }
+
+  /* buttons */
+  .btn { height:var(--ds-control-md); padding:0 var(--ds-space-3); border-radius:var(--ds-radius-md);
+    font:var(--ds-weight-medium) var(--ds-text-base)/1 var(--ds-font-sans); border:1px solid transparent;
+    cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+    transition:background var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease); }
+  .btn:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .btn-primary { background:var(--ds-primary); color:var(--ds-primary-fg); }
+  .btn-primary:hover { background:var(--ds-primary-hover); }
+  .btn-primary:active { background:var(--ds-primary-active); }
+  .btn-sec { background:var(--ds-bg); color:var(--ds-fg); border-color:var(--ds-border-strong); }
+  .btn-sec:hover { border-color:var(--ds-primary); color:var(--ds-primary); }
+  .btn-tert { background:transparent; color:var(--ds-fg-muted); }
+  .btn-tert:hover { background:var(--ds-bg-subtle); }
+  .btn-sm { height:var(--ds-control-sm); padding:0 var(--ds-space-2); font-size:var(--ds-text-sm); }
+
+  /* KPI grid */
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:var(--ds-space-4); }
+  .kpi { position:relative; background:var(--ds-bg-elevated); border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-lg); padding:var(--ds-space-4); overflow:hidden; }
+  .kpi.hot::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--ds-primary); }
+  .kpi .label { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); text-transform:uppercase; letter-spacing:.04em; }
+  .kpi .val { font-size:var(--ds-text-3xl); font-weight:var(--ds-weight-bold); line-height:1.1; margin:6px 0 4px; }
+  .kpi .meta { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); display:flex; align-items:center; gap:6px; }
+  .trend-up { color:var(--chart-positive); font-weight:var(--ds-weight-medium); }
+  .trend-down { color:var(--chart-negative); font-weight:var(--ds-weight-medium); }
+
+  /* filter bar */
+  .filters { display:flex; flex-wrap:wrap; align-items:center; gap:var(--ds-space-2); margin-bottom:var(--ds-space-3); }
+  .seg { display:inline-flex; border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-md); overflow:hidden; }
+  .seg button { height:var(--ds-control-sm); padding:0 var(--ds-space-3); border:none; background:var(--ds-bg);
+    color:var(--ds-fg-muted); font-size:var(--ds-text-sm); cursor:pointer; border-right:1px solid var(--ds-border); }
+  .seg button:last-child { border-right:none; }
+  .seg button[aria-pressed="true"] { background:var(--ds-primary); color:var(--ds-primary-fg); font-weight:var(--ds-weight-medium); }
+  .filters input.search { height:var(--ds-control-sm); padding:0 var(--ds-space-2); border:1px solid var(--ds-border-strong);
+    border-radius:var(--ds-radius-md); background:var(--ds-bg); color:var(--ds-fg); font-size:var(--ds-text-sm); width:180px; }
+  .filters input.search::placeholder { color:var(--ds-fg-subtle); }
+  .filters input.search:focus-visible { outline:none; border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
+
+  /* table */
+  .tbl-wrap { border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; }
+  table { width:100%; border-collapse:collapse; font-size:var(--ds-text-sm); }
+  thead th { background:var(--ds-bg-subtle); color:var(--ds-fg-muted); font-weight:var(--ds-weight-medium);
+    text-align:left; padding:8px var(--ds-space-3); border-bottom:1px solid var(--ds-border-strong); white-space:nowrap; }
+  thead th.num, td.num { text-align:right; }
+  th.sortable { cursor:pointer; user-select:none; }
+  th.sortable .ar { color:var(--ds-primary); margin-left:3px; }
+  tbody td { padding:9px var(--ds-space-3); border-bottom:1px solid var(--ds-border); vertical-align:middle; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:var(--ds-bg-subtle); }
+  tbody tr.selected { background:color-mix(in srgb, var(--ds-primary) 10%, var(--ds-bg)); }
+  .proj { font-weight:var(--ds-weight-medium); color:var(--ds-fg); }
+  .proj small { display:block; font-weight:var(--ds-weight-normal); color:var(--ds-fg-subtle); font-size:var(--ds-text-xs); font-family:var(--ds-font-mono); }
+
+  /* track tag */
+  .tag { display:inline-flex; align-items:center; gap:5px; height:20px; padding:0 8px; border-radius:var(--ds-radius-sm);
+    font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); }
+  .tag .swatch { width:7px; height:7px; border-radius:var(--ds-radius-full); }
+  .tag-1 { background:color-mix(in srgb,var(--chart-1) 14%,var(--ds-bg)); color:var(--chart-1); }
+  .tag-2 { background:color-mix(in srgb,var(--chart-2) 14%,var(--ds-bg)); color:var(--chart-2); }
+  .tag-3 { background:color-mix(in srgb,var(--chart-3) 14%,var(--ds-bg)); color:var(--chart-3); }
+  .tag-5 { background:color-mix(in srgb,var(--chart-5) 16%,var(--ds-bg)); color:var(--chart-5); }
+  .tag-6 { background:color-mix(in srgb,var(--chart-6) 14%,var(--ds-bg)); color:var(--chart-6); }
+
+  /* quality bar */
+  .q { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
+  .q .bar { width:54px; height:6px; border-radius:var(--ds-radius-full); background:var(--chart-track); overflow:hidden; }
+  .q .bar > i { display:block; height:100%; border-radius:var(--ds-radius-full); }
+  .q .score { width:30px; text-align:right; font-weight:var(--ds-weight-medium); }
+
+  /* status dot */
+  .st { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+  .st .d { width:7px; height:7px; border-radius:var(--ds-radius-full); }
+  .st-ok .d{background:var(--ds-success);} .st-ok{color:var(--ds-success-fg);}
+  .st-demo .d{background:var(--ds-warning);} .st-demo{color:var(--ds-warning-fg);}
+  .st-idea .d{background:var(--ds-info);} .st-idea{color:var(--ds-info-fg);}
+  .st-dead .d{background:var(--ds-danger);} .st-dead{color:var(--ds-danger-fg);}
+
+  /* pagination */
+  .pager { display:flex; align-items:center; gap:6px; margin-top:var(--ds-space-3); font-size:var(--ds-text-sm); }
+  .pager .total { color:var(--ds-fg-muted); margin-right:auto; }
+  .pg { min-width:30px; height:30px; padding:0 6px; border:1px solid var(--ds-border); border-radius:var(--ds-radius-sm);
+    background:var(--ds-bg); color:var(--ds-fg); cursor:pointer; font-size:var(--ds-text-sm); }
+  .pg:hover { border-color:var(--ds-primary); color:var(--ds-primary); }
+  .pg.cur { background:var(--ds-primary); color:var(--ds-primary-fg); border-color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+
+  /* watchlist cards */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(248px,1fr)); gap:var(--ds-space-4); }
+  .card { position:relative; background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg);
+    padding:var(--ds-space-4); transition:border-color var(--ds-dur-fast) var(--ds-ease); }
+  .card:hover { border-color:var(--ds-primary); }
+  .card.star::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:var(--ds-radius-lg) 0 0 var(--ds-radius-lg); background:var(--chart-highlight); }
+  .card h4 { margin:0 0 6px; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .card .row { display:flex; align-items:center; justify-content:space-between; margin-top:10px; font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .card .big { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); }
+
+  /* swatches */
+  .pal { display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:var(--ds-space-2); }
+  .sw { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; font-size:var(--ds-text-xs); }
+  .sw .chip { height:44px; }
+  .sw .cap { padding:6px 8px; background:var(--ds-bg-elevated); }
+  .sw .cap b { display:block; color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .sw .cap span { color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+
+  /* alerts：前置语义 SVG 图标 + 浅底 + 1px 全描边（不用侧边色条） */
+  .alert { display:flex; align-items:flex-start; gap:10px; padding:10px var(--ds-space-3); border-radius:var(--ds-radius-md);
+    border:1px solid; font-size:var(--ds-text-sm); margin-bottom:var(--ds-space-2); }
+  .alert > .ai { flex:none; margin-top:1px; }
+  .al-s{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:color-mix(in srgb,var(--ds-success) 32%,transparent);}
+  .al-w{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:color-mix(in srgb,var(--ds-warning) 32%,transparent);}
+  .al-d{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:color-mix(in srgb,var(--ds-danger) 32%,transparent);}
+  .al-i{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:color-mix(in srgb,var(--ds-info) 32%,transparent);}
+  .al-s > .ai{color:var(--ds-success);} .al-w > .ai{color:var(--ds-warning);}
+  .al-d > .ai{color:var(--ds-danger);} .al-i > .ai{color:var(--ds-info);}
+
+  /* type scale */
+  .ts > div { margin-bottom:6px; color:var(--ds-fg); }
+  .toggle { display:inline-flex; align-items:center; gap:6px; height:var(--ds-control-md); padding:0 var(--ds-space-3); border:1px solid var(--ds-border-strong);
+    border-radius:var(--ds-radius-md); background:var(--ds-bg); color:var(--ds-fg); cursor:pointer; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  .toggle:hover { border-color:var(--ds-primary); color:var(--ds-primary); }
+  .toggle:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+
+  /* ===== Breadcrumb ===== */
+  .crumbs { display:flex; align-items:center; flex-wrap:wrap; gap:6px; font-size:var(--ds-text-sm); color:var(--ds-fg-muted); }
+  .crumbs a { color:var(--ds-fg-muted); text-decoration:none; padding:2px 4px; border-radius:var(--ds-radius-sm);
+    transition:color var(--ds-dur-fast) var(--ds-ease), background var(--ds-dur-fast) var(--ds-ease); }
+  .crumbs a:hover { color:var(--ds-accent); background:var(--ds-bg-subtle); }
+  .crumbs a:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .crumbs .sep { color:var(--ds-fg-subtle); user-select:none; }
+  .crumbs .cur { color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+
+  /* ===== Stepper / 步骤条 ===== */
+  .stepper { display:flex; align-items:flex-start; gap:0; flex-wrap:wrap; }
+  .step { display:flex; align-items:center; gap:8px; flex:1 1 0; min-width:120px; }
+  .step .ico { flex:none; width:24px; height:24px; border-radius:var(--ds-radius-full); display:inline-flex; align-items:center;
+    justify-content:center; font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); font-variant-numeric:var(--ds-numeric);
+    border:1px solid var(--ds-border-strong); background:var(--ds-bg); color:var(--ds-fg-muted); }
+  .step .txt { display:flex; flex-direction:column; line-height:1.25; }
+  .step .txt b { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); }
+  .step .txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); }
+  .step .line { flex:1 1 auto; height:2px; min-width:16px; margin:0 8px; background:var(--ds-border); border-radius:var(--ds-radius-full); }
+  .step.done .ico { background:var(--ds-success); color:var(--ds-fg-on-accent); border-color:var(--ds-success); }
+  .step.done .line { background:var(--ds-success); }
+  .step.active .ico { background:var(--ds-primary); color:var(--ds-primary-fg); border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
+  .step.active .txt b { color:var(--ds-primary); }
+
+  /* ===== Dropdown / 下拉菜单 ===== */
+  .menu-anchor { position:relative; display:inline-block; }
+  .menu { position:absolute; top:calc(100% + 4px); left:0; z-index:var(--ds-z-dropdown); min-width:184px; padding:var(--ds-space-1);
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); }
+  .menu[hidden] { display:none; }
+  .menu .item { display:flex; align-items:center; gap:8px; width:100%; height:var(--ds-control-sm); padding:0 var(--ds-space-2);
+    border:none; background:transparent; color:var(--ds-fg); font:var(--ds-weight-normal) var(--ds-text-sm)/1 var(--ds-font-sans);
+    text-align:left; cursor:pointer; border-radius:var(--ds-radius-sm);
+    transition:background var(--ds-dur-fast) var(--ds-ease); }
+  .menu .item:hover, .menu .item:focus-visible { background:var(--ds-bg-subtle); outline:none; }
+  .menu .item[aria-current="true"] { background:color-mix(in srgb,var(--ds-primary) 12%,var(--ds-bg)); color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .menu .item.danger { color:var(--ds-danger-fg); }
+  .menu .item.danger:hover { background:var(--ds-danger-bg); }
+  .menu .sep { height:1px; margin:var(--ds-space-1) 0; background:var(--ds-border); }
+  .menu .item .k { margin-left:auto; font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+
+  /* ===== Tooltip / 工具提示 ===== */
+  .tip { position:relative; display:inline-flex; }
+  .tip > .trg { cursor:help; border-bottom:1px dashed var(--ds-border-strong); }
+  .tip .bub { position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%) translateY(2px);
+    z-index:var(--ds-z-tooltip); white-space:nowrap; padding:5px var(--ds-space-2); border-radius:var(--ds-radius-sm);
+    background:var(--ds-fg); color:var(--ds-bg); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium);
+    box-shadow:var(--ds-shadow-md); opacity:0; pointer-events:none;
+    transition:opacity var(--ds-dur-fast) var(--ds-ease), transform var(--ds-dur-fast) var(--ds-ease); }
+  .tip .bub::after { content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border:5px solid transparent; border-top-color:var(--ds-fg); }
+  .tip:hover .bub, .tip:focus-within .bub { opacity:1; transform:translateX(-50%) translateY(0); }
+  .tip .bub .n { font-family:var(--ds-font-mono); font-variant-numeric:var(--ds-numeric); }
+
+  /* ===== Modal / 模态框 ===== */
+  .overlay { position:fixed; inset:0; z-index:var(--ds-z-modal); display:flex; align-items:center; justify-content:center;
+    padding:var(--ds-space-4); background:color-mix(in srgb,var(--ds-fg) 38%,transparent); }
+  .overlay[hidden] { display:none; }
+  .modal { width:100%; max-width:460px; background:var(--ds-bg-elevated); border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg); overflow:hidden; }
+  .modal .mh { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-4) var(--ds-space-4) var(--ds-space-3);
+    border-bottom:1px solid var(--ds-border); }
+  .modal .mh h3 { margin:0; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .modal .mh .x { margin-left:auto; display:inline-flex; align-items:center; justify-content:center; width:var(--ds-control-sm); height:var(--ds-control-sm); border:none; background:transparent;
+    color:var(--ds-fg-muted); border-radius:var(--ds-radius-sm); cursor:pointer; }
+  .modal .mh .x:hover { background:var(--ds-bg-subtle); color:var(--ds-fg); }
+  .modal .mh .x:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .modal .mb { padding:var(--ds-space-4); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); }
+  .modal .mb .num { color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .modal .mf { display:flex; justify-content:flex-end; gap:var(--ds-space-2); padding:var(--ds-space-3) var(--ds-space-4);
+    border-top:1px solid var(--ds-border); background:var(--ds-bg-subtle); }
+
+  /* ===== Toast / 通知 ===== */
+  .toasts { position:fixed; right:var(--ds-space-4); bottom:var(--ds-space-4); z-index:var(--ds-z-toast); display:flex; flex-direction:column;
+    gap:var(--ds-space-2); width:320px; max-width:calc(100vw - var(--ds-space-7)); }
+  .toast { display:flex; align-items:flex-start; gap:10px; padding:10px var(--ds-space-3); border-radius:var(--ds-radius-md);
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-lg); font-size:var(--ds-text-sm); }
+  .toast .ti { flex:none; margin-top:1px; }
+  .toast .body { flex:1; }
+  .toast .body b { display:block; font-weight:var(--ds-weight-medium); color:var(--ds-fg); }
+  .toast .body span { color:var(--ds-fg-muted); font-size:var(--ds-text-xs); }
+  .toast .x { flex:none; display:inline-flex; align-items:center; justify-content:center; border:none; background:transparent; color:var(--ds-fg-subtle); cursor:pointer; line-height:1; padding:0; }
+  .toast .x:hover { color:var(--ds-fg); }
+  .toast.t-s .ti{color:var(--ds-success);} .toast.t-w .ti{color:var(--ds-warning);}
+  .toast.t-d .ti{color:var(--ds-danger);}  .toast.t-i .ti{color:var(--ds-info);}
+
+  /* ===== Pagination 增强（每页条数 / 跳页） ===== */
+  .pager .sizer, .pager .jumper { display:inline-flex; align-items:center; gap:6px; color:var(--ds-fg-muted); }
+  .pager select, .pager .jump-in { height:30px; border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-sm);
+    background:var(--ds-bg); color:var(--ds-fg); font-size:var(--ds-text-sm); padding:0 var(--ds-space-2); }
+  .pager .jump-in { width:52px; text-align:center; font-variant-numeric:var(--ds-numeric); }
+  .pager select:focus-visible, .pager .jump-in:focus-visible, .pg:focus-visible { outline:none; border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
+  .pg:disabled { color:var(--ds-fg-subtle); cursor:not-allowed; border-color:var(--ds-border); }
+
+  /* ===== 移动端手机框 ===== */
+  .phone { width:375px; max-width:100%; margin:0; border:1px solid var(--ds-border-strong); border-radius:22px;
+    background:var(--ds-bg); box-shadow:var(--ds-shadow-lg); overflow:hidden; }
+  .phone .notch { height:26px; display:flex; align-items:center; justify-content:center; background:var(--ds-bg-subtle);
+    border-bottom:1px solid var(--ds-border); font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-variant-numeric:var(--ds-numeric); }
+  .phone .screen { padding:var(--ds-space-3); }
+  .phone .mkpis { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-2); margin-bottom:var(--ds-space-3); }
+  .phone .mkpi { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:var(--ds-space-2); }
+  .phone .mkpi .label { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .phone .mkpi .val { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); line-height:1.15; }
+  .phone .mlist .li { display:flex; align-items:center; gap:8px; padding:9px 4px; border-bottom:1px solid var(--ds-border); font-size:var(--ds-text-sm); }
+  .phone .mlist .li:last-child { border-bottom:none; }
+  .phone .mlist .li .name { font-weight:var(--ds-weight-medium); }
+  .phone .mlist .li .name small { display:block; font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .phone .mlist .li .sc { margin-left:auto; font-variant-numeric:var(--ds-numeric); font-weight:var(--ds-weight-medium); }
+
+  /* ===== 响应式断点 ===== */
+  /* 密集表横向滚动（窄屏不压列、不换行，保持可逐行比对） */
+  .tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .tbl-wrap table { min-width:680px; }
+
+  @media (max-width:880px){
+    .kpis { grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
+  }
+  @media (max-width:640px){
+    .wrap { padding:var(--ds-space-6) var(--ds-space-4) 64px; }
+    /* 栅格收一列 */
+    .kpis { grid-template-columns:1fr; }
+    .grid { grid-template-columns:1fr; }
+    .pal { grid-template-columns:repeat(2,1fr); }
+    .topbar .search { width:auto; flex:1 1 120px; min-width:0; }
+    .filters input.search { flex:1 1 140px; width:auto; }
+    .stepper { flex-direction:column; align-items:stretch; }
+    .step { min-width:0; }
+    .step .line { display:none; }
+    .pager { flex-wrap:wrap; }
+    .pager .total { flex-basis:100%; margin-bottom:6px; }
+    .toasts { left:var(--ds-space-4); right:var(--ds-space-4); width:auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{transition-duration:.01ms!important;animation-duration:.01ms!important;} }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">
+      <svg class="mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
+        <path d="M7 16V9m5 7V7m5 9v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      TRAE 项目情报台 <small>hahafree调研 · Design Kit</small>
+    </span>
+    <span class="searchbox">
+      <svg class="si i16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+        <path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <input class="search" placeholder="搜索 6,222 个项目…" aria-label="全局搜索" />
+    </span>
+    <button class="toggle" id="themeBtn" aria-label="切换暗色主题">
+      <svg class="ti-icon i16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+      <span class="lbl">暗色</span>
+    </button>
+  </div>
+
+  <div class="wrap">
+    <nav class="crumbs" aria-label="面包屑" style="margin-top:8px">
+      <a href="#">情报台</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="#">TRAE 比赛</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="#">AI 应用赛道</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span class="cur" aria-current="page">古籍智能修复台</span>
+    </nav>
+    <p class="sub" style="margin-top:10px">基于「B 端风」+ hahafree调研 定制 · 正式化既有 DESIGN.md（玫瑰主色 + 冷分析强调 + 白底中性面 + 高密度表格）。全部走 <code style="font-family:var(--ds-font-mono)">var(--ds-*)</code> / <code style="font-family:var(--ds-font-mono)">var(--chart-*)</code>，满足 WCAG AA。</p>
+
+    <!-- KPI -->
+    <h2 class="sec">总览指标（KPI）</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="label">可分析项目</div><div class="val num">6,222</div><div class="meta"><span class="trend-up">▲ 132</span> 较上轮</div></div>
+      <div class="kpi"><div class="label">文件/截图线索</div><div class="val num">12,490</div><div class="meta">覆盖 <span class="num">5,514</span> 项目</div></div>
+      <div class="kpi"><div class="label">已实现</div><div class="val num">300</div><div class="meta"><span class="trend-up">▲ 4.8%</span> 公开口径</div></div>
+      <div class="kpi"><div class="label">Demo/原型</div><div class="val num">4,969</div><div class="meta">占比 <span class="num">79.9%</span></div></div>
+      <div class="kpi hot"><div class="label">潜力股 watchlist</div><div class="val num">18</div><div class="meta"><svg class="ico-svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:var(--ds-primary)"><path d="m12 3 2.6 5.6 6.1.7-4.5 4.1 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.3l6.1-.7L12 3Z"/></svg> 高潜力高亮</div></div>
+      <div class="kpi"><div class="label">不可访问链接</div><div class="val num">28</div><div class="meta"><span class="trend-down">▼ 6</span> 已修复</div></div>
+    </div>
+
+    <!-- TABLE -->
+    <h2 class="sec">密集项目数据表</h2>
+    <p class="sub">赛道分类 · 质量分 · 浏览 · 状态点 · tabular 数字右对齐 · 可排序表头。</p>
+    <div class="filters">
+      <input class="search" placeholder="筛选项目名 / ID" />
+      <div class="seg" role="group" aria-label="状态筛选">
+        <button aria-pressed="true">全部</button>
+        <button aria-pressed="false">已实现</button>
+        <button aria-pressed="false">Demo</button>
+        <button aria-pressed="false">创意</button>
+      </div>
+      <button class="btn btn-sec btn-sm"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11a8 8 0 1 0-.5 4M20 5v6h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>刷新</button>
+      <button class="btn btn-primary btn-sm" style="margin-left:auto"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>加入 watchlist</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>赛道</th>
+            <th class="sortable">提交日<span class="ar">↕</span></th>
+            <th class="num sortable">质量分 <span class="ar">▼</span></th>
+            <th class="num sortable">浏览<span class="ar">↕</span></th>
+            <th class="num">奖金预测</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="selected">
+            <td class="proj">古籍智能修复台<small>#22684</small></td>
+            <td><span class="tag tag-1"><span class="swatch" style="background:var(--chart-1)"></span>AI 应用</span></td>
+            <td class="num">06-14</td>
+            <td class="num"><div class="q"><span class="score">94</span><div class="bar"><i style="width:94%;background:var(--chart-4)"></i></div></div></td>
+            <td class="num">12,841</td>
+            <td class="num">¥ 50,000</td>
+            <td><span class="st st-ok"><span class="d"></span>已实现</span></td>
+          </tr>
+          <tr>
+            <td class="proj">苏北旅行规划助手<small>#21907</small></td>
+            <td><span class="tag tag-3"><span class="swatch" style="background:var(--chart-3)"></span>效率工具</span></td>
+            <td class="num">06-12</td>
+            <td class="num"><div class="q"><span class="score">88</span><div class="bar"><i style="width:88%;background:var(--chart-4)"></i></div></div></td>
+            <td class="num">9,302</td>
+            <td class="num">¥ 30,000</td>
+            <td><span class="st st-ok"><span class="d"></span>已实现</span></td>
+          </tr>
+          <tr>
+            <td class="proj">3D 飞鸟生成器<small>#20415</small></td>
+            <td><span class="tag tag-6"><span class="swatch" style="background:var(--chart-6)"></span>创意生成</span></td>
+            <td class="num">06-11</td>
+            <td class="num"><div class="q"><span class="score">76</span><div class="bar"><i style="width:76%;background:var(--chart-5)"></i></div></div></td>
+            <td class="num">6,118</td>
+            <td class="num">¥ 12,000</td>
+            <td><span class="st st-demo"><span class="d"></span>Demo</span></td>
+          </tr>
+          <tr>
+            <td class="proj">AI 背诵小说<small>#19980</small></td>
+            <td><span class="tag tag-2"><span class="swatch" style="background:var(--chart-2)"></span>教育学习</span></td>
+            <td class="num">06-10</td>
+            <td class="num"><div class="q"><span class="score">71</span><div class="bar"><i style="width:71%;background:var(--chart-5)"></i></div></div></td>
+            <td class="num">4,556</td>
+            <td class="num">¥ 8,000</td>
+            <td><span class="st st-demo"><span class="d"></span>Demo</span></td>
+          </tr>
+          <tr>
+            <td class="proj">哈哈邮件管家<small>#18733</small></td>
+            <td><span class="tag tag-3"><span class="swatch" style="background:var(--chart-3)"></span>效率工具</span></td>
+            <td class="num">06-09</td>
+            <td class="num"><div class="q"><span class="score">58</span><div class="bar"><i style="width:58%;background:var(--chart-1)"></i></div></div></td>
+            <td class="num">2,034</td>
+            <td class="num">—</td>
+            <td><span class="st st-idea"><span class="d"></span>创意</span></td>
+          </tr>
+          <tr>
+            <td class="proj">老人陪伴助手<small>#17621</small></td>
+            <td><span class="tag tag-5"><span class="swatch" style="background:var(--chart-5)"></span>社会公益</span></td>
+            <td class="num">06-08</td>
+            <td class="num"><div class="q"><span class="score">42</span><div class="bar"><i style="width:42%;background:var(--chart-1)"></i></div></div></td>
+            <td class="num">887</td>
+            <td class="num">—</td>
+            <td><span class="st st-dead"><span class="d"></span>不可访问</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span class="total">共 <b class="num">6,222</b> 个项目</span>
+      <label class="sizer">每页
+        <select aria-label="每页条数">
+          <option>20</option><option selected>50</option><option>100</option><option>200</option>
+        </select>条
+      </label>
+      <button class="pg num" disabled aria-label="上一页">‹</button>
+      <button class="pg cur num" aria-current="page">1</button>
+      <button class="pg num">2</button>
+      <button class="pg num">3</button>
+      <button class="pg num" disabled aria-hidden="true">…</button>
+      <button class="pg num">125</button>
+      <button class="pg num" aria-label="下一页">›</button>
+      <span class="jumper">跳至
+        <input class="jump-in num" type="text" inputmode="numeric" value="1" aria-label="跳至页码" />
+        页
+      </span>
+    </div>
+
+    <!-- WATCHLIST -->
+    <h2 class="sec">潜力股 watchlist</h2>
+    <p class="sub">高潜力项目左侧玫瑰高亮条；质量分迷你条 + 浏览/趋势副行；hover 描边转玫瑰。</p>
+    <div class="grid">
+      <div class="card star">
+        <h4>古籍智能修复台</h4>
+        <span class="tag tag-1"><span class="swatch" style="background:var(--chart-1)"></span>AI 应用</span>
+        <div class="row"><span>质量分</span><span class="big num">94</span></div>
+        <div class="q" style="justify-content:flex-start;margin-top:6px"><div class="bar" style="width:100%"><i style="width:94%;background:var(--chart-4)"></i></div></div>
+        <div class="row"><span class="num">浏览 12,841</span><span class="trend-up">▲ 高潜力</span></div>
+      </div>
+      <div class="card star">
+        <h4>苏北旅行规划助手</h4>
+        <span class="tag tag-3"><span class="swatch" style="background:var(--chart-3)"></span>效率工具</span>
+        <div class="row"><span>质量分</span><span class="big num">88</span></div>
+        <div class="q" style="justify-content:flex-start;margin-top:6px"><div class="bar" style="width:100%"><i style="width:88%;background:var(--chart-4)"></i></div></div>
+        <div class="row"><span class="num">浏览 9,302</span><span class="trend-up">▲ 上升</span></div>
+      </div>
+      <div class="card">
+        <h4>3D 飞鸟生成器</h4>
+        <span class="tag tag-6"><span class="swatch" style="background:var(--chart-6)"></span>创意生成</span>
+        <div class="row"><span>质量分</span><span class="big num">76</span></div>
+        <div class="q" style="justify-content:flex-start;margin-top:6px"><div class="bar" style="width:100%"><i style="width:76%;background:var(--chart-5)"></i></div></div>
+        <div class="row"><span class="num">浏览 6,118</span><span class="trend-down">▼ 观望</span></div>
+      </div>
+      <div class="card">
+        <h4>AI 背诵小说</h4>
+        <span class="tag tag-2"><span class="swatch" style="background:var(--chart-2)"></span>教育学习</span>
+        <div class="row"><span>质量分</span><span class="big num">71</span></div>
+        <div class="q" style="justify-content:flex-start;margin-top:6px"><div class="bar" style="width:100%"><i style="width:71%;background:var(--chart-5)"></i></div></div>
+        <div class="row"><span class="num">浏览 4,556</span><span>稳定</span></div>
+      </div>
+    </div>
+
+    <!-- STEPPER -->
+    <h2 class="sec">步骤条 Stepper</h2>
+    <p class="sub">导入 → 审计 → 评分 → 入库四阶段；已完成绿勾、当前玫瑰焦点、未来灰态。</p>
+    <div class="stepper">
+      <div class="step done"><span class="ico" aria-hidden="true"><svg class="i16" viewBox="0 0 24 24" fill="none"><path d="m5 12 4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><b>导入线索</b><span>12,490 条</span></span></div>
+      <span class="step line" aria-hidden="true" style="flex:0 0 24px;height:2px;margin-top:11px;background:var(--ds-success)"></span>
+      <div class="step done"><span class="ico" aria-hidden="true"><svg class="i16" viewBox="0 0 24 24" fill="none"><path d="m5 12 4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><b>质量审计</b><span>100 分 pass</span></span></div>
+      <span class="step line" aria-hidden="true" style="flex:0 0 24px;height:2px;margin-top:11px;background:var(--ds-success)"></span>
+      <div class="step active" aria-current="step"><span class="ico num">3</span><span class="txt"><b>赛道评分</b><span>进行中…</span></span></div>
+      <span class="step line" aria-hidden="true" style="flex:0 0 24px;height:2px;margin-top:11px"></span>
+      <div class="step"><span class="ico num">4</span><span class="txt"><b>入库 watchlist</b><span>待开始</span></span></div>
+    </div>
+
+    <!-- MODAL / DROPDOWN / TOOLTIP / TOAST -->
+    <h2 class="sec">浮层组件 · 模态框 / 下拉 / 工具提示 / Toast</h2>
+    <p class="sub">弹层靠阴影分层，面板靠描边；hover / 选中 / 激活态齐备，全部 <code style="font-family:var(--ds-font-mono)">var(--ds-*)</code> 驱动。</p>
+    <div style="display:flex;gap:var(--ds-space-3);flex-wrap:wrap;align-items:center">
+      <button class="btn btn-primary" id="openModal">打开模态框</button>
+
+      <span class="menu-anchor">
+        <button class="btn btn-sec" id="ddBtn" aria-haspopup="true" aria-expanded="false">行操作 <svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="menu" id="ddMenu" role="menu" hidden>
+          <button class="item" role="menuitem" aria-current="true">查看详情<span class="k">↵</span></button>
+          <button class="item" role="menuitem">加入 watchlist<span class="k">W</span></button>
+          <button class="item" role="menuitem">导出 CSV<span class="k">⌘E</span></button>
+          <div class="sep" role="separator"></div>
+          <button class="item danger" role="menuitem">标记不可访问</button>
+        </div>
+      </span>
+
+      <span class="tip" tabindex="0">
+        <span class="trg">质量分算法 <span class="num">?</span></span>
+        <span class="bub" role="tooltip">完整度 60% + 可运行 <span class="n">40%</span> 加权</span>
+      </span>
+
+      <button class="btn btn-tert" id="toastBtn">触发 Toast 通知</button>
+    </div>
+
+    <!-- BUTTONS + ALERTS -->
+    <h2 class="sec">按钮 · 状态提示</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:var(--ds-space-4)">
+      <button class="btn btn-primary">主操作（分析）</button>
+      <button class="btn btn-sec">次操作</button>
+      <button class="btn btn-tert">文本操作</button>
+      <button class="btn btn-primary btn-sm">小尺寸</button>
+      <button class="btn btn-sec" disabled style="background:var(--ds-bg-sunken);color:var(--ds-fg-subtle);border-color:var(--ds-border);cursor:not-allowed">禁用</button>
+    </div>
+    <div class="alert al-s"><svg class="ai i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12 2.6 2.6L16 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>导入完成：本轮新增 132 个可分析项目，审计 100 分 pass。</span></div>
+    <div class="alert al-w"><svg class="ai i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 21 19.5H3L12 3.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="currentColor"/></svg><span>4,969 个 Demo/原型缺少可运行链接，建议补充证据。</span></div>
+    <div class="alert al-d"><svg class="ai i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>28 个远程链接不可访问，已标记并停止重试。</span></div>
+    <div class="alert al-i"><svg class="ai i18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1" fill="currentColor"/></svg><span>下一次自动迭代将在 1800 秒后运行（launchd）。</span></div>
+
+    <!-- PALETTE -->
+    <h2 class="sec">色板</h2>
+    <div class="pal">
+      <div class="sw"><div class="chip" style="background:var(--ds-primary)"></div><div class="cap"><b>primary 玫瑰</b><span>--ds-primary</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--ds-accent)"></div><div class="cap"><b>accent 冷青</b><span>--ds-accent</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--ds-success)"></div><div class="cap"><b>success</b><span>--ds-success</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--ds-warning)"></div><div class="cap"><b>warning</b><span>--ds-warning</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--ds-danger)"></div><div class="cap"><b>danger</b><span>--ds-danger</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--ds-info)"></div><div class="cap"><b>info</b><span>--ds-info</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--chart-1)"></div><div class="cap"><b>chart-1</b><span>--chart-1</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--chart-2)"></div><div class="cap"><b>chart-2</b><span>--chart-2</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--chart-3)"></div><div class="cap"><b>chart-3</b><span>--chart-3</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--chart-4)"></div><div class="cap"><b>chart-4</b><span>--chart-4</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--chart-5)"></div><div class="cap"><b>chart-5</b><span>--chart-5</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--chart-6)"></div><div class="cap"><b>chart-6</b><span>--chart-6</span></div></div>
+    </div>
+
+    <!-- TYPE -->
+    <h2 class="sec">字号比例尺 · tabular 数字</h2>
+    <div class="ts">
+      <div style="font-size:var(--ds-text-3xl);font-weight:600">30px KPI 大数 <span class="num">6,222</span></div>
+      <div style="font-size:var(--ds-text-2xl);font-weight:600">24px 主标题</div>
+      <div style="font-size:var(--ds-text-xl);font-weight:600">20px 页标题</div>
+      <div style="font-size:var(--ds-text-lg);font-weight:600">18px 区块标题</div>
+      <div style="font-size:var(--ds-text-md)">16px 卡片标题</div>
+      <div style="font-size:var(--ds-text-base)">14px 正文基准 — Inter / PingFang SC</div>
+      <div style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted)">13px 密集表格态</div>
+      <div style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);font-family:var(--ds-font-mono)">12px Mono · #22684 · 06-14 · tabular-nums</div>
+    </div>
+
+    <!-- MOBILE -->
+    <h2 class="sec">移动端 Mobile</h2>
+    <p class="sub">≈375px 手机框：KPI 卡两列收窄、精简项目列表（名 + ID + 质量分），密集表在窄屏改横向滚动。</p>
+    <div class="phone">
+      <div class="notch">09:41 · TRAE 情报台</div>
+      <div class="screen">
+        <nav class="crumbs" aria-label="面包屑" style="margin-bottom:var(--ds-space-3)">
+          <a href="#">情报台</a><span class="sep" aria-hidden="true">/</span><span class="cur" aria-current="page">AI 应用</span>
+        </nav>
+        <div class="mkpis">
+          <div class="mkpi"><div class="label">可分析</div><div class="val num">6,222</div></div>
+          <div class="mkpi"><div class="label">潜力股</div><div class="val num" style="color:var(--ds-primary)">18</div></div>
+          <div class="mkpi"><div class="label">已实现</div><div class="val num">300</div></div>
+          <div class="mkpi"><div class="label">不可访问</div><div class="val num">28</div></div>
+        </div>
+        <div class="mlist">
+          <div class="li"><span class="st st-ok" aria-hidden="true"><span class="d"></span></span><span class="name">古籍智能修复台<small>#22684</small></span><span class="sc">94</span></div>
+          <div class="li"><span class="st st-ok" aria-hidden="true"><span class="d"></span></span><span class="name">苏北旅行规划助手<small>#21907</small></span><span class="sc">88</span></div>
+          <div class="li"><span class="st st-demo" aria-hidden="true"><span class="d"></span></span><span class="name">3D 飞鸟生成器<small>#20415</small></span><span class="sc">76</span></div>
+          <div class="li"><span class="st st-idea" aria-hidden="true"><span class="d"></span></span><span class="name">哈哈邮件管家<small>#18733</small></span><span class="sc">58</span></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:var(--ds-space-3)"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>加入 watchlist</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL（默认隐藏） -->
+  <div class="overlay" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="mh">
+        <h3 id="modalTitle">加入潜力股 watchlist</h3>
+        <button class="x" id="closeModal" aria-label="关闭"><svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="mb">
+        将「古籍智能修复台 <span class="num" style="font-family:var(--ds-font-mono)">#22684</span>」加入 watchlist？
+        当前质量分 <span class="num">94</span>、浏览 <span class="num">12,841</span>，标记为高潜力后将参与下一轮奖金预测。
+      </div>
+      <div class="mf">
+        <button class="btn btn-sec" id="cancelModal">取消</button>
+        <button class="btn btn-primary" id="confirmModal">确认加入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOASTS 容器 -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  const root = document.documentElement, btn = document.getElementById('themeBtn');
+  const ICON_MOON = '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>';
+  const ICON_SUN = '<circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>';
+  btn.addEventListener('click', () => {
+    const dark = root.dataset.theme === 'dark';
+    root.dataset.theme = dark ? 'light' : 'dark';
+    btn.querySelector('.ti-icon').innerHTML = dark ? ICON_MOON : ICON_SUN;
+    btn.querySelector('.lbl').textContent = dark ? '暗色' : '亮色';
+  });
+  // segmented toggle demo
+  document.querySelectorAll('.seg').forEach(seg => {
+    seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+    }));
+  });
+
+  // dropdown
+  const ddBtn = document.getElementById('ddBtn'), ddMenu = document.getElementById('ddMenu');
+  const closeDD = () => { ddMenu.hidden = true; ddBtn.setAttribute('aria-expanded','false'); };
+  ddBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = ddMenu.hidden;
+    ddMenu.hidden = !open; ddBtn.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', e => { if (!ddMenu.contains(e.target) && e.target !== ddBtn) closeDD(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDD(); });
+
+  // modal
+  const modal = document.getElementById('modal');
+  const openM = () => { modal.hidden = false; };
+  const closeM = () => { modal.hidden = true; };
+  document.getElementById('openModal').addEventListener('click', openM);
+  document.getElementById('closeModal').addEventListener('click', closeM);
+  document.getElementById('cancelModal').addEventListener('click', closeM);
+  document.getElementById('confirmModal').addEventListener('click', () => { closeM(); spawnToast('s','已加入 watchlist','古籍智能修复台 · #22684'); });
+  modal.addEventListener('click', e => { if (e.target === modal) closeM(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeM(); });
+
+  // toast
+  const toasts = document.getElementById('toasts');
+  const TOAST_ICON = {
+    s:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12 2.6 2.6L16 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+    w:'<path d="M12 3.5 21 19.5H3L12 3.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="currentColor"/>',
+    d:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    i:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1" fill="currentColor"/>'
+  };
+  const CLOSE_SVG = '<svg class="i16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  function spawnToast(type, title, desc){
+    const t = document.createElement('div');
+    t.className = 'toast t-' + type; t.setAttribute('role','status');
+    t.innerHTML = '<svg class="ti i18" viewBox="0 0 24 24" fill="none" aria-hidden="true">' + (TOAST_ICON[type]||TOAST_ICON.i) + '</svg>'
+      + '<div class="body"><b></b><span></span></div><button class="x" aria-label="关闭">' + CLOSE_SVG + '</button>';
+    t.querySelector('b').textContent = title;
+    t.querySelector('.body span').textContent = desc;
+    t.querySelector('.x').addEventListener('click', () => t.remove());
+    toasts.appendChild(t);
+    setTimeout(() => t.remove(), 5000);
+  }
+  document.getElementById('toastBtn').addEventListener('click', () => spawnToast('i','自动迭代已排程','下一轮将在 1800 秒后运行'));
+</script>
+</body>
+</html>

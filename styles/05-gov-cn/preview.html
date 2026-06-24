@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<title>中国政府风 · Gov-CN 设计系统预览</title>
+<style>
+  /* ===== Tokens（内联，自包含；与 tokens.css 同步）===== */
+  :root {
+    --ds-bg: #ffffff;            --ds-bg-subtle: #f5f3f0;
+    --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #efece6;
+    --ds-fg: #1a1a1a;            --ds-fg-muted: #4a4a4a;
+    --ds-fg-subtle: #757575;     --ds-fg-on-accent: #ffffff;
+    --ds-border: #e0ddd6;        --ds-border-strong: #c8c4ba;
+    --ds-primary: #c4161c;       --ds-primary-hover: #a91219;
+    --ds-primary-active: #8c0f15;--ds-primary-fg: #ffffff;
+    --ds-accent: #1c4d8c;        --ds-accent-fg: #ffffff;
+    --ds-gold: #c9a227;
+    --ds-success: #2e7d32; --ds-success-bg: #eaf3ea; --ds-success-fg: #14401a;
+    --ds-warning: #c77700; --ds-warning-bg: #fbf1e0; --ds-warning-fg: #5e3800;
+    --ds-danger:  #c4161c; --ds-danger-bg:  #fbe9e9; --ds-danger-fg:  #5e0a0d;
+    --ds-info:    #1c4d8c; --ds-info-bg:    #e9f0f8; --ds-info-fg:    #0d2848;
+    --ds-focus: #1c4d8c;
+    --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm: 2px; --ds-radius-md: 4px; --ds-radius-lg: 6px; --ds-radius-full: 9999px;
+    --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+    --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+    --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+    --ds-font-sans: "Inter", "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Heiti SC", sans-serif;
+    --ds-font-serif: "Noto Serif", "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+    --ds-font-mono: "Source Han Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+    --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+    --ds-leading-tight: 1.25; --ds-leading-normal: 1.6; --ds-leading-relaxed: 1.9;
+    --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 700;
+    --ds-tracking-tight: 0; --ds-tracking-normal: 0;
+    --ds-shadow-sm: 0 1px 0 rgba(26,26,26,.04);
+    --ds-shadow-md: 0 1px 2px rgba(26,26,26,.06), 0 4px 10px -6px rgba(26,26,26,.12);
+    --ds-shadow-lg: 0 2px 4px rgba(26,26,26,.06), 0 12px 28px -10px rgba(26,26,26,.18);
+    --ds-ease: cubic-bezier(.4,0,.2,1);
+    --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+    /* 语义 z-index 尺度（dropdown<sticky<modal-backdrop<modal<toast<tooltip） */
+    --ds-z-dropdown: 30; --ds-z-sticky: 40; --ds-z-modal-backdrop: 100;
+    --ds-z-modal: 110; --ds-z-toast: 120; --ds-z-tooltip: 130;
+  }
+  [data-theme="dark"] {
+    --ds-bg: #14181f;            --ds-bg-subtle: #1a1f28;
+    --ds-bg-elevated: #1f2530;   --ds-bg-sunken: #0f131a;
+    --ds-fg: #ededed;            --ds-fg-muted: #b3b8c0;
+    --ds-fg-subtle: #828892;     --ds-fg-on-accent: #ffffff;
+    --ds-border: #2a313d;        --ds-border-strong: #3c4554;
+    --ds-primary: #e23b41;       --ds-primary-hover: #ec5258;
+    --ds-primary-active: #c4161c;--ds-primary-fg: #ffffff;
+    --ds-accent: #4a86d6;        --ds-accent-fg: #0b1018;
+    --ds-gold: #d9b441;
+    --ds-success: #57b85e; --ds-success-bg: #0f2613; --ds-success-fg: #cdeecf;
+    --ds-warning: #e0992e; --ds-warning-bg: #2a1d05; --ds-warning-fg: #f7e2b8;
+    --ds-danger:  #e85a5f; --ds-danger-bg:  #2c1213; --ds-danger-fg:  #ffd6d7;
+    --ds-info:    #4a86d6; --ds-info-bg:    #0d1f38; --ds-info-fg:    #d4e4f7;
+    --ds-focus: #4a86d6;
+    --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-shadow-sm: 0 1px 0 rgba(0,0,0,.4);
+    --ds-shadow-md: 0 1px 2px rgba(0,0,0,.5), 0 4px 12px -6px rgba(0,0,0,.6);
+    --ds-shadow-lg: 0 2px 4px rgba(0,0,0,.55), 0 16px 32px -10px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--ds-bg-subtle);
+    color: var(--ds-fg);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-base);
+    line-height: var(--ds-leading-normal);
+    -webkit-font-smoothing: antialiased;
+    transition: background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  h1,h2,h3 { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); margin: 0; line-height: var(--ds-leading-tight); }
+  a { color: var(--ds-accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); }
+
+  /* ===== 内联 SVG 图标（政务感线性，统一 currentColor）===== */
+  .svg-ic { width: 1em; height: 1em; flex: none; display: inline-block; vertical-align: -0.125em; }
+  .svg-ic[data-size="sm"] { width: 14px; height: 14px; }
+  .svg-ic[data-size="md"] { width: 18px; height: 18px; }
+  .svg-ic[data-size="lg"] { width: 24px; height: 24px; }
+
+  /* ===== 顶部红色 banner + 标题栏 ===== */
+  .gov-banner {
+    background: var(--ds-primary);
+    color: var(--ds-primary-fg);
+    border-bottom: 3px solid var(--ds-gold);
+  }
+  .gov-banner-inner {
+    max-width: 1120px; margin: 0 auto; padding: var(--ds-space-6) var(--ds-space-5);
+    display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-4);
+  }
+  .gov-emblem {
+    display: flex; align-items: center; gap: var(--ds-space-4);
+  }
+  .gov-emblem .seal {
+    width: 48px; height: 48px; border-radius: var(--ds-radius-full);
+    border: 2px solid var(--ds-gold); display: grid; place-items: center;
+    color: var(--ds-gold); flex: none;
+  }
+  .gov-emblem .seal .svg-ic { width: 28px; height: 28px; }
+  .gov-emblem h1 { font-size: var(--ds-text-2xl); color: var(--ds-primary-fg); letter-spacing: 2px; }
+  .gov-emblem .sub { font-size: var(--ds-text-sm); opacity: .9; font-family: var(--ds-font-sans); }
+  .titlebar {
+    background: var(--ds-bg-elevated);
+    border-bottom: 1px solid var(--ds-border-strong);
+  }
+  .titlebar-inner { max-width: 1120px; margin: 0 auto; padding: 0 var(--ds-space-5); display: flex; align-items: center; gap: var(--ds-space-6); }
+  .gnav { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; flex: 1; }
+  .gnav a {
+    padding: var(--ds-space-4) var(--ds-space-4); color: var(--ds-fg);
+    font-weight: var(--ds-weight-medium); border-bottom: 2px solid transparent;
+    transition: all var(--ds-dur-fast) var(--ds-ease);
+  }
+  .gnav a:hover { background: var(--ds-bg-subtle); text-decoration: none; }
+  .gnav a.active { color: var(--ds-primary); border-bottom-color: var(--ds-primary); }
+
+  /* 主题切换 */
+  .toggle {
+    background: transparent; color: var(--ds-primary-fg);
+    border: 1px solid rgba(255,255,255,.5); border-radius: var(--ds-radius-sm);
+    padding: var(--ds-space-2) var(--ds-space-4); cursor: pointer; font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm); transition: all var(--ds-dur-fast) var(--ds-ease);
+  }
+  .toggle:hover { background: rgba(255,255,255,.12); }
+
+  /* 面包屑 */
+  .crumbs { max-width: 1120px; margin: 0 auto; padding: var(--ds-space-3) var(--ds-space-5); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  .crumbs a { color: var(--ds-fg-muted); }
+  .crumbs .sep { margin: 0 var(--ds-space-2); color: var(--ds-fg-subtle); }
+  .crumbs .cur { color: var(--ds-fg); }
+
+  /* 主体 */
+  main { max-width: 1120px; margin: 0 auto; padding: var(--ds-space-7) var(--ds-space-5) var(--ds-space-12); }
+  section { margin-bottom: var(--ds-space-9); }
+  .sec-title {
+    font-size: var(--ds-text-xl); margin-bottom: var(--ds-space-5);
+    padding-left: var(--ds-space-3); border-left: 4px solid var(--ds-primary);
+    display: flex; align-items: center; gap: var(--ds-space-3);
+  }
+  .sec-title small { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-weight: 400; }
+
+  .card {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-sm);
+  }
+  .grid { display: grid; gap: var(--ds-space-5); }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 860px) { .grid-3,.grid-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) {
+    /* ≤640px：栅格收一列；红色 banner 与导航折叠 */
+    .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; }
+    .gov-banner-inner { flex-direction: column; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-4) var(--ds-space-4); }
+    .gov-emblem h1 { font-size: var(--ds-text-xl); letter-spacing: 1px; }
+    .gov-emblem .seal { width: 40px; height: 40px; }
+    .gov-emblem .sub { font-size: var(--ds-text-xs); }
+    .toggle { align-self: flex-end; margin-top: calc(-1 * var(--ds-space-7)); }
+    /* 导航折叠为可横向滚动的单行（移动惯例） */
+    .titlebar-inner { padding: 0 var(--ds-space-3); }
+    .gnav { flex-wrap: nowrap; overflow-x: auto; gap: 0; -webkit-overflow-scrolling: touch; }
+    .gnav a { padding: var(--ds-space-3); white-space: nowrap; flex: none; }
+    .crumbs { padding: var(--ds-space-3) var(--ds-space-4); white-space: nowrap; overflow-x: auto; }
+    main { padding: var(--ds-space-5) var(--ds-space-4) var(--ds-space-10); }
+    .sec-title { font-size: var(--ds-text-lg); }
+  }
+
+  /* 色板 */
+  .swatch { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+  .swatch .chip { height: 64px; }
+  .swatch .meta { padding: var(--ds-space-3); font-size: var(--ds-text-xs); }
+  .swatch .meta b { display: block; font-family: var(--ds-font-mono); color: var(--ds-fg); font-weight: var(--ds-weight-medium); }
+  .swatch .meta span { color: var(--ds-fg-subtle); }
+
+  /* 字体比例 */
+  .type-row { display: flex; align-items: baseline; gap: var(--ds-space-4); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .type-row .tag { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); width: 120px; flex: none; }
+
+  /* 按钮 */
+  .btn {
+    font-family: var(--ds-font-sans); font-weight: var(--ds-weight-medium);
+    border: 1px solid transparent; border-radius: var(--ds-radius-sm); cursor: pointer;
+    height: 40px; padding: 0 var(--ds-space-4); font-size: var(--ds-text-base);
+    transition: all var(--ds-dur-fast) var(--ds-ease); display: inline-flex; align-items: center; gap: var(--ds-space-2);
+  }
+  .btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .btn-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .btn-primary:hover { background: var(--ds-primary-hover); }
+  .btn-primary:active { background: var(--ds-primary-active); }
+  .btn-secondary { background: var(--ds-bg); color: var(--ds-accent); border-color: var(--ds-accent); }
+  .btn-secondary:hover { background: var(--ds-info-bg); }
+  .btn-tertiary { background: transparent; color: var(--ds-accent); }
+  .btn-tertiary:hover { background: var(--ds-bg-subtle); }
+  .btn-danger { background: var(--ds-danger); color: #fff; }
+  .btn-danger:hover { filter: brightness(.92); }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .btn-sm { height: 32px; font-size: var(--ds-text-sm); }
+  .btn-lg { height: 48px; font-size: var(--ds-text-md); padding: 0 var(--ds-space-6); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; }
+
+  /* 表单 */
+  .field { margin-bottom: var(--ds-space-4); }
+  .field label { display: block; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-bottom: var(--ds-space-2); font-weight: var(--ds-weight-medium); }
+  .input, .select, .textarea {
+    width: 100%; height: 40px; padding: 0 var(--ds-space-3); font-family: var(--ds-font-sans); font-size: var(--ds-text-base);
+    background: var(--ds-bg-sunken); color: var(--ds-fg); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm);
+    transition: all var(--ds-dur-fast) var(--ds-ease);
+  }
+  .textarea { height: auto; padding: var(--ds-space-3); min-height: 84px; resize: vertical; line-height: var(--ds-leading-normal); }
+  .input::placeholder, .textarea::placeholder { color: var(--ds-fg-subtle); }
+  .input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--ds-accent); box-shadow: var(--ds-focus-ring); background: var(--ds-bg); }
+  .check-row { display: flex; align-items: center; gap: var(--ds-space-2); margin-bottom: var(--ds-space-3); font-size: var(--ds-text-base); }
+  .check-row input[type=checkbox], .check-row input[type=radio] { width: 18px; height: 18px; accent-color: var(--ds-primary); }
+  .switch { position: relative; width: 40px; height: 22px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: var(--ds-border-strong); border-radius: var(--ds-radius-full); transition: var(--ds-dur-base) var(--ds-ease); }
+  .switch .slider::before { content: ""; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: #fff; border-radius: var(--ds-radius-full); transition: var(--ds-dur-base) var(--ds-ease); }
+  .switch input:checked + .slider { background: var(--ds-primary); }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .switch input:focus-visible + .slider { box-shadow: var(--ds-focus-ring); }
+
+  /* 通知公告列表 */
+  .notice { list-style: none; margin: 0; padding: 0; }
+  .notice li {
+    display: flex; align-items: center; gap: var(--ds-space-3);
+    padding: var(--ds-space-3) var(--ds-space-5); border-bottom: 1px solid var(--ds-border);
+    transition: background var(--ds-dur-fast) var(--ds-ease);
+  }
+  .notice li:last-child { border-bottom: none; }
+  .notice li:hover { background: var(--ds-bg-subtle); }
+  .notice .dot { width: 6px; height: 6px; background: var(--ds-primary); flex: none; }
+  .notice .txt { flex: 1; color: var(--ds-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .notice .txt:hover { color: var(--ds-accent); cursor: pointer; }
+  .notice .date { color: var(--ds-fg-subtle); font-size: var(--ds-text-sm); font-family: var(--ds-font-mono); flex: none; }
+  .notice-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--ds-space-3) var(--ds-space-5); border-bottom: 2px solid var(--ds-primary);
+    background: var(--ds-bg-subtle);
+  }
+  .notice-head h3 { font-size: var(--ds-text-md); color: var(--ds-primary); }
+  .notice-head a { font-size: var(--ds-text-sm); }
+
+  /* 徽章 / 标签 */
+  .badge { display: inline-flex; align-items: center; padding: 2px var(--ds-space-2); border-radius: var(--ds-radius-sm); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium); }
+  .b-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .b-success { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+  .b-warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+  .b-danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg); }
+  .b-info    { background: var(--ds-info-bg);    color: var(--ds-info-fg); }
+  .b-gold    { background: transparent; color: var(--ds-gold); border: 1px solid var(--ds-gold); }
+
+  /* alert：前置语义 SVG 图标 + 浅底 + 1px 全描边（不用侧边色条） */
+  .alert { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4); border-radius: var(--ds-radius-md); border: 1px solid; margin-bottom: var(--ds-space-3); align-items: flex-start; }
+  .alert b { display: block; margin-bottom: 2px; }
+  .alert .a-ic { flex: none; width: 18px; height: 18px; margin-top: 2px; }
+  .a-success { background: var(--ds-success-bg); color: var(--ds-success-fg); border-color: var(--ds-success); }
+  .a-success .a-ic { color: var(--ds-success); }
+  .a-warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); border-color: var(--ds-warning); }
+  .a-warning .a-ic { color: var(--ds-warning); }
+  .a-danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg);  border-color: var(--ds-danger); }
+  .a-danger .a-ic { color: var(--ds-danger); }
+  .a-info    { background: var(--ds-info-bg);    color: var(--ds-info-fg);    border-color: var(--ds-info); }
+  .a-info .a-ic { color: var(--ds-info); }
+
+  /* 表格 */
+  table.gov { width: 100%; border-collapse: collapse; font-size: var(--ds-text-sm); }
+  table.gov caption { text-align: left; padding: var(--ds-space-3) var(--ds-space-4); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  table.gov th, table.gov td { padding: var(--ds-space-3) var(--ds-space-4); text-align: left; border-bottom: 1px solid var(--ds-border); }
+  table.gov thead th { background: var(--ds-bg-subtle); color: var(--ds-fg); font-weight: var(--ds-weight-bold); border-bottom: 2px solid var(--ds-border-strong); }
+  table.gov tbody tr:hover { background: var(--ds-bg-subtle); }
+  table.gov td.num { font-family: var(--ds-font-mono); text-align: right; }
+
+  /* tab */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--ds-border-strong); margin-bottom: var(--ds-space-4); }
+  .tabs button {
+    background: none; border: none; border-bottom: 2px solid transparent; padding: var(--ds-space-3) var(--ds-space-5);
+    cursor: pointer; color: var(--ds-fg-muted); font-family: var(--ds-font-sans); font-size: var(--ds-text-base); font-weight: var(--ds-weight-medium);
+    transition: all var(--ds-dur-fast) var(--ds-ease);
+  }
+  .tabs button.on { color: var(--ds-primary); border-bottom-color: var(--ds-primary); }
+  .tabs button:hover { color: var(--ds-fg); }
+
+  .pad { padding: var(--ds-space-5); }
+  .muted { color: var(--ds-fg-muted); }
+  .subtle { color: var(--ds-fg-subtle); }
+  footer { max-width: 1120px; margin: 0 auto; padding: var(--ds-space-7) var(--ds-space-5); border-top: 1px solid var(--ds-border); color: var(--ds-fg-subtle); font-size: var(--ds-text-sm); text-align: center; }
+
+  /* ===== 面包屑组件 Breadcrumb（政务必备）===== */
+  .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1); list-style: none; margin: 0; padding: 0; font-size: var(--ds-text-sm); }
+  .breadcrumb li { display: flex; align-items: center; gap: var(--ds-space-1); }
+  .breadcrumb a { color: var(--ds-accent); padding: 2px var(--ds-space-1); border-radius: var(--ds-radius-sm); }
+  .breadcrumb a:hover { background: var(--ds-info-bg); text-decoration: none; }
+  .breadcrumb .crumb-sep { color: var(--ds-fg-subtle); user-select: none; }
+  .breadcrumb [aria-current="page"] { color: var(--ds-fg); font-weight: var(--ds-weight-medium); }
+  .breadcrumb .home-ic { color: var(--ds-primary); }
+
+  /* ===== 步进器 / 办事流程步骤条 Stepper（政务"在线办事"）===== */
+  .stepper { display: flex; align-items: flex-start; counter-reset: step; }
+  .stepper .step { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; gap: var(--ds-space-2); }
+  .stepper .step:not(:last-child)::after {
+    content: ""; position: absolute; top: 15px; left: calc(50% + 18px); right: calc(-50% + 18px);
+    height: 2px; background: var(--ds-border-strong);
+  }
+  .stepper .step .num {
+    width: 32px; height: 32px; border-radius: var(--ds-radius-full); display: grid; place-items: center;
+    font-family: var(--ds-font-mono); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-base);
+    background: var(--ds-bg-elevated); color: var(--ds-fg-subtle); border: 2px solid var(--ds-border-strong);
+    z-index: 1; transition: all var(--ds-dur-base) var(--ds-ease);
+  }
+  .stepper .step .lbl { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); font-weight: var(--ds-weight-medium); }
+  /* 已完成 */
+  .stepper .step.done .num { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); }
+  .stepper .step.done::after { background: var(--ds-primary); }
+  .stepper .step.done .lbl { color: var(--ds-fg); }
+  /* 当前激活 */
+  .stepper .step.current .num { background: var(--ds-bg-elevated); color: var(--ds-primary); border-color: var(--ds-primary); box-shadow: var(--ds-focus-ring); }
+  .stepper .step.current .lbl { color: var(--ds-primary); font-weight: var(--ds-weight-bold); }
+
+  /* ===== 分页 Pagination ===== */
+  .pagination { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2); list-style: none; margin: 0; padding: 0; }
+  .pagination .pg {
+    min-width: 36px; height: 36px; padding: 0 var(--ds-space-2); border-radius: var(--ds-radius-sm);
+    border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); color: var(--ds-fg);
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-base); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all var(--ds-dur-fast) var(--ds-ease);
+  }
+  .pagination .pg:hover { border-color: var(--ds-accent); color: var(--ds-accent); background: var(--ds-info-bg); }
+  .pagination .pg.active { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .pagination .pg.active:hover { background: var(--ds-primary-hover); color: var(--ds-primary-fg); }
+  .pagination .pg:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .pagination .pg[disabled] { opacity: .45; cursor: not-allowed; }
+  .pagination .pg[disabled]:hover { border-color: var(--ds-border); color: var(--ds-fg); background: var(--ds-bg-elevated); }
+  .pagination .ellip { color: var(--ds-fg-subtle); padding: 0 var(--ds-space-1); }
+  .pagination .jump { margin-left: var(--ds-space-2); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+
+  /* ===== 下拉菜单 Dropdown ===== */
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-toggle .caret { width: 14px; height: 14px; margin-left: var(--ds-space-1); transition: transform var(--ds-dur-fast) var(--ds-ease); }
+  .dropdown.open .dropdown-toggle .caret { transform: rotate(180deg); }
+  .dropdown-menu {
+    position: absolute; top: calc(100% + var(--ds-space-2)); left: 0; min-width: 200px; z-index: var(--ds-z-dropdown);
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-lg); padding: var(--ds-space-1); margin: 0; list-style: none;
+    opacity: 0; visibility: hidden; transform: translateY(-4px);
+    transition: all var(--ds-dur-fast) var(--ds-ease);
+  }
+  .dropdown.open .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown-menu li > a, .dropdown-menu li > button {
+    display: flex; align-items: center; gap: var(--ds-space-2); width: 100%; text-align: left;
+    padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm);
+    color: var(--ds-fg); background: none; border: none; font: inherit; font-size: var(--ds-text-base); cursor: pointer;
+    transition: background var(--ds-dur-fast) var(--ds-ease);
+  }
+  .dropdown-menu li > a:hover, .dropdown-menu li > button:hover { background: var(--ds-bg-subtle); text-decoration: none; }
+  .dropdown-menu li > .sel { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .dropdown-menu li > .sel .sel-check { margin-left: auto; width: 16px; height: 16px; color: var(--ds-primary); }
+  .dropdown-menu .divider { height: 1px; background: var(--ds-border); margin: var(--ds-space-1) 0; }
+
+  /* ===== 工具提示 Tooltip ===== */
+  .tip { position: relative; display: inline-flex; }
+  .tip .tip-bubble {
+    position: absolute; bottom: calc(100% + var(--ds-space-2)); left: 50%; transform: translateX(-50%) translateY(4px);
+    background: var(--ds-fg); color: var(--ds-bg); font-size: var(--ds-text-xs); line-height: 1.4;
+    padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); white-space: nowrap; z-index: var(--ds-z-tooltip);
+    opacity: 0; visibility: hidden; transition: all var(--ds-dur-fast) var(--ds-ease); box-shadow: var(--ds-shadow-md);
+  }
+  .tip .tip-bubble::after {
+    content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--ds-fg);
+  }
+  .tip:hover .tip-bubble, .tip:focus-within .tip-bubble { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+  /* ===== 模态框 Modal ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(26,26,26,.5); z-index: var(--ds-z-modal-backdrop);
+    display: flex; align-items: center; justify-content: center; padding: var(--ds-space-4);
+    opacity: 0; visibility: hidden; transition: opacity var(--ds-dur-base) var(--ds-ease), visibility var(--ds-dur-base) var(--ds-ease);
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal {
+    background: var(--ds-bg-elevated); border-radius: var(--ds-radius-lg); border-top: 4px solid var(--ds-primary);
+    box-shadow: var(--ds-shadow-lg); width: 100%; max-width: 480px; overflow: hidden;
+    transform: translateY(8px) scale(.98); transition: transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: var(--ds-space-4) var(--ds-space-5); border-bottom: 1px solid var(--ds-border); }
+  .modal-head h3 { font-size: var(--ds-text-lg); color: var(--ds-fg); }
+  .modal-x { background: none; border: none; cursor: pointer; color: var(--ds-fg-subtle); font-size: var(--ds-text-lg); line-height: 1; padding: var(--ds-space-1); border-radius: var(--ds-radius-sm); }
+  .modal-x:hover { color: var(--ds-fg); background: var(--ds-bg-subtle); }
+  .modal-x:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .modal-body { padding: var(--ds-space-5); color: var(--ds-fg-muted); }
+  .modal-foot { display: flex; justify-content: flex-end; gap: var(--ds-space-3); padding: var(--ds-space-4) var(--ds-space-5); border-top: 1px solid var(--ds-border); background: var(--ds-bg-subtle); }
+
+  /* ===== Toast 通知 ===== */
+  .toast-stack { display: flex; flex-direction: column; gap: var(--ds-space-3); }
+  .toast {
+    display: flex; align-items: flex-start; gap: var(--ds-space-3); width: 100%; max-width: 380px;
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-left: 4px solid var(--ds-accent);
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-md); padding: var(--ds-space-3) var(--ds-space-4);
+  }
+  .toast.t-success { border-left-color: var(--ds-success); }
+  .toast.t-warning { border-left-color: var(--ds-warning); }
+  .toast.t-danger  { border-left-color: var(--ds-danger); }
+  .toast .t-ic { flex: none; width: 18px; height: 18px; margin-top: 1px; }
+  .toast.t-info .t-ic { color: var(--ds-info); }
+  .toast.t-success .t-ic { color: var(--ds-success); }
+  .toast.t-warning .t-ic { color: var(--ds-warning); }
+  .toast.t-danger .t-ic { color: var(--ds-danger); }
+  .toast .t-body { flex: 1; min-width: 0; }
+  .toast .t-body b { display: block; color: var(--ds-fg); font-size: var(--ds-text-base); }
+  .toast .t-body span { color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  .toast .t-x { flex: none; background: none; border: none; cursor: pointer; color: var(--ds-fg-subtle); font-size: var(--ds-text-md); line-height: 1; padding: 0; }
+  .toast .t-x:hover { color: var(--ds-fg); }
+
+  /* ===== 移动端 Mobile 手机框 ===== */
+  .phone-wrap { display: flex; gap: var(--ds-space-7); flex-wrap: wrap; align-items: flex-start; }
+  .phone {
+    width: 375px; max-width: 100%; flex: none; background: var(--ds-bg); border: 10px solid #1a1a1a;
+    border-radius: 36px; overflow: hidden; box-shadow: var(--ds-shadow-lg);
+  }
+  .phone-notch { height: 26px; background: #1a1a1a; position: relative; }
+  .phone-notch::after { content: ""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 120px; height: 6px; background: #2a2a2a; border-radius: var(--ds-radius-full); }
+  .phone-screen { height: 640px; overflow-y: auto; background: var(--ds-bg-subtle); }
+  /* 红头标题栏 */
+  .m-banner { background: var(--ds-primary); color: var(--ds-primary-fg); border-bottom: 3px solid var(--ds-gold); padding: var(--ds-space-4); display: flex; align-items: center; gap: var(--ds-space-3); }
+  .m-banner .seal { width: 36px; height: 36px; border-radius: var(--ds-radius-full); border: 2px solid var(--ds-gold); display: grid; place-items: center; color: var(--ds-gold); flex: none; }
+  .m-banner .seal .svg-ic { width: 22px; height: 22px; }
+  .m-banner h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); margin: 0; color: var(--ds-primary-fg); letter-spacing: 1px; }
+  .m-banner .sub { font-size: 10px; opacity: .9; }
+  /* 移动端面包屑 */
+  .m-crumbs { padding: var(--ds-space-2) var(--ds-space-4); background: var(--ds-bg-elevated); border-bottom: 1px solid var(--ds-border); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); white-space: nowrap; overflow-x: auto; }
+  .m-crumbs a { color: var(--ds-accent); }
+  .m-crumbs .sep { margin: 0 var(--ds-space-1); color: var(--ds-fg-subtle); }
+  /* 办事入口宫格 */
+  .m-entries { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-1); padding: var(--ds-space-4); background: var(--ds-bg-elevated); margin: var(--ds-space-3); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); }
+  .m-entry { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-1); padding: var(--ds-space-2) 0; color: var(--ds-fg); text-align: center; }
+  .m-entry:hover { text-decoration: none; }
+  .m-entry .ic { width: 36px; height: 36px; border-radius: var(--ds-radius-md); display: grid; place-items: center; background: var(--ds-info-bg); color: var(--ds-accent); font-size: var(--ds-text-md); }
+  .m-entry:nth-child(1) .ic { background: var(--ds-danger-bg); color: var(--ds-primary); }
+  .m-entry .ic-lbl { font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  /* 移动端通知公告列表 */
+  .m-block { margin: var(--ds-space-3); background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
+  .m-block-head { display: flex; align-items: center; justify-content: space-between; padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 2px solid var(--ds-primary); }
+  .m-block-head b { color: var(--ds-primary); font-size: var(--ds-text-base); }
+  .m-block-head a { font-size: var(--ds-text-xs); }
+  .m-notice { list-style: none; margin: 0; padding: 0; }
+  .m-notice li { display: flex; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  .m-notice li:last-child { border-bottom: none; }
+  .m-notice .dot { width: 5px; height: 5px; background: var(--ds-primary); flex: none; }
+  .m-notice .txt { flex: 1; font-size: var(--ds-text-sm); color: var(--ds-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .m-notice .date { flex: none; font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部红色 banner -->
+<header class="gov-banner">
+  <div class="gov-banner-inner">
+    <div class="gov-emblem">
+      <div class="seal" aria-hidden="true">
+        <svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 5.4l1.55 3.14 3.47.5-2.51 2.45.59 3.45L12 13.8l-3.1 1.64.59-3.45L6.98 9.54l3.47-.5z" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div>
+        <h1>示范市人民政府门户网站</h1>
+        <div class="sub">XIANFAN MUNICIPAL PEOPLE'S GOVERNMENT · 政务公开 · 公共服务</div>
+      </div>
+    </div>
+    <button class="toggle" onclick="toggleTheme()" id="toggleBtn" aria-label="切换深浅主题">
+      <svg class="svg-ic" id="toggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.6 6.6 0 0 0 21 12.8z"/>
+      </svg>
+      <span id="toggleLbl">切换暗色</span>
+    </button>
+  </div>
+</header>
+
+<!-- 标题栏 / 主导航 -->
+<nav class="titlebar">
+  <div class="titlebar-inner">
+    <div class="gnav">
+      <a href="#" class="active">首页</a>
+      <a href="#">政务公开</a>
+      <a href="#">政务服务</a>
+      <a href="#">互动交流</a>
+      <a href="#">数据开放</a>
+      <a href="#">走进示范</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 面包屑 -->
+<div class="crumbs">
+  <a href="#">首页</a><span class="sep">/</span>
+  <a href="#">设计资源</a><span class="sep">/</span>
+  <span class="cur">中国政府风设计系统</span>
+</div>
+
+<main>
+
+  <!-- 概述 -->
+  <section>
+    <h2 class="sec-title">设计系统概览 <small>gov-cn</small></h2>
+    <div class="card pad">
+      <p class="muted" style="margin-top:0">
+        庄重、权威、规整、可信，严肃但不压抑。双主色——<b style="color:var(--ds-primary)">党政红 #c4161c</b> 承载横幅与主操作，
+        <b style="color:var(--ds-accent)">政务蓝 #1c4d8c</b> 承载链接与信息；暖中性纸感背景，小而方正的圆角，层级靠描边与分隔线表达。
+        点缀 <b style="color:var(--ds-gold)">荣誉金 #c9a227</b> 于徽标描边。
+      </p>
+    </div>
+  </section>
+
+  <!-- 色板 -->
+  <section>
+    <h2 class="sec-title">颜色 · 语义色板 <small>--ds-*</small></h2>
+    <div class="grid grid-4">
+      <div class="swatch"><div class="chip" style="background:var(--ds-primary)"></div><div class="meta"><b>--ds-primary</b><span>党政红 · 主操作</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-accent)"></div><div class="meta"><b>--ds-accent</b><span>政务蓝 · 链接/次</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-gold)"></div><div class="meta"><b>--ds-gold</b><span>荣誉金 · 描边点缀</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-bg-subtle);border-bottom:1px solid var(--ds-border)"></div><div class="meta"><b>--ds-bg-subtle</b><span>暖纸感次背景</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-success)"></div><div class="meta"><b>--ds-success</b><span>成功</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-warning)"></div><div class="meta"><b>--ds-warning</b><span>警示</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-danger)"></div><div class="meta"><b>--ds-danger</b><span>危险</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-info)"></div><div class="meta"><b>--ds-info</b><span>信息</span></div></div>
+    </div>
+  </section>
+
+  <!-- 字体 -->
+  <section>
+    <h2 class="sec-title">字体 · 黑体正文 + 宋体标题 <small>sans / serif</small></h2>
+    <div class="card pad">
+      <div class="type-row"><span class="tag">3xl · serif 700</span><span style="font-family:var(--ds-font-serif);font-size:var(--ds-text-3xl);font-weight:700">政务公开</span></div>
+      <div class="type-row"><span class="tag">2xl · serif 700</span><span style="font-family:var(--ds-font-serif);font-size:var(--ds-text-2xl);font-weight:700">通知公告 权威标题</span></div>
+      <div class="type-row"><span class="tag">xl · serif 700</span><span style="font-family:var(--ds-font-serif);font-size:var(--ds-text-xl);font-weight:700">栏目标题 / 政策解读</span></div>
+      <div class="type-row"><span class="tag">lg · sans 500</span><span style="font-size:var(--ds-text-lg);font-weight:500">小标题 · 思源黑体</span></div>
+      <div class="type-row"><span class="tag">md · sans 400</span><span style="font-size:var(--ds-text-md)">正文内容 16px，行高 1.6，清晰可读。</span></div>
+      <div class="type-row"><span class="tag">base · sans 400</span><span style="font-size:var(--ds-text-base)">界面默认 14px，承载列表与表格密集信息。</span></div>
+      <div class="type-row"><span class="tag">sm · mono</span><span style="font-family:var(--ds-font-mono);font-size:var(--ds-text-sm)">2026-06-22 编号 SF-2026-0612</span></div>
+    </div>
+  </section>
+
+  <!-- 按钮 -->
+  <section>
+    <h2 class="sec-title">按钮 · 红主蓝次 <small>全状态 / 三尺寸</small></h2>
+    <div class="card pad">
+      <div class="btn-row" style="margin-bottom:var(--ds-space-4)">
+        <button class="btn btn-primary">主要操作</button>
+        <button class="btn btn-secondary">次要操作</button>
+        <button class="btn btn-tertiary">文本操作</button>
+        <button class="btn btn-danger">危险操作</button>
+        <button class="btn btn-primary" disabled>禁用</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">小号 32</button>
+        <button class="btn btn-primary">中号 40</button>
+        <button class="btn btn-primary btn-lg">大号 48</button>
+        <span class="subtle" style="font-size:var(--ds-text-sm)">（聚焦任意按钮可见焦点环；hover/active 红渐深）</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 表单 -->
+  <section>
+    <h2 class="sec-title">表单控件 <small>input / select / check / switch</small></h2>
+    <div class="grid grid-2">
+      <div class="card pad">
+        <div class="field"><label>姓名</label><input class="input" placeholder="请输入姓名" /></div>
+        <div class="field"><label>办理事项</label>
+          <select class="select"><option>社保查询</option><option>户籍办理</option><option>不动产登记</option></select>
+        </div>
+        <div class="field"><label>申请说明</label><textarea class="textarea" placeholder="请填写申请说明（聚焦查看焦点环）"></textarea></div>
+      </div>
+      <div class="card pad">
+        <label style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);font-weight:500;display:block;margin-bottom:var(--ds-space-3)">证件类型（单选）</label>
+        <div class="check-row"><input type="radio" name="idt" id="r1" checked /><label for="r1" style="margin:0;color:var(--ds-fg)">居民身份证</label></div>
+        <div class="check-row"><input type="radio" name="idt" id="r2" /><label for="r2" style="margin:0;color:var(--ds-fg)">港澳通行证</label></div>
+        <label style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);font-weight:500;display:block;margin:var(--ds-space-4) 0 var(--ds-space-3)">协议确认（多选）</label>
+        <div class="check-row"><input type="checkbox" id="c1" checked /><label for="c1" style="margin:0;color:var(--ds-fg)">已阅读《信息公开承诺》</label></div>
+        <div class="check-row"><input type="checkbox" id="c2" /><label for="c2" style="margin:0;color:var(--ds-fg)">同意接收办理短信通知</label></div>
+        <div class="check-row" style="margin-top:var(--ds-space-4)">
+          <label class="switch"><input type="checkbox" checked /><span class="slider"></span></label>
+          <span style="color:var(--ds-fg)">开启政务消息推送</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 通知公告 + 卡片 -->
+  <section>
+    <h2 class="sec-title">通知公告 / 政务公开 <small>列表 · 日期右对齐</small></h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="notice-head"><h3>通知公告</h3><a href="#">更多 &gt;</a></div>
+        <ul class="notice">
+          <li><span class="dot"></span><span class="txt">关于开展2026年度政务公开第三方评估工作的通知</span><span class="date">2026-06-20</span></li>
+          <li><span class="dot"></span><span class="txt">示范市优化营商环境实施意见（征求意见稿）公开征集意见</span><span class="date">2026-06-18</span></li>
+          <li><span class="dot"></span><span class="txt">关于公布市级行政许可事项清单（2026年版）的公告</span><span class="date">2026-06-15</span></li>
+          <li><span class="dot"></span><span class="txt">市政府办公室关于做好汛期防灾减灾工作的紧急通知</span><span class="date">2026-06-12</span></li>
+          <li><span class="dot"></span><span class="txt">2026年市级财政预算执行情况公开说明</span><span class="date">2026-06-09</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="notice-head"><h3>政策解读</h3><a href="#">更多 &gt;</a></div>
+        <ul class="notice">
+          <li><span class="dot"></span><span class="txt">《示范市住房公积金管理办法》政策解读</span><span class="date">2026-06-19</span></li>
+          <li><span class="dot"></span><span class="txt">图解：一图读懂高校毕业生就业创业扶持政策</span><span class="date">2026-06-16</span></li>
+          <li><span class="dot"></span><span class="txt">新版老年人优待证申领流程权威解答</span><span class="date">2026-06-13</span></li>
+          <li><span class="dot"></span><span class="txt">关于个体工商户登记便利化改革的政策问答</span><span class="date">2026-06-10</span></li>
+          <li><span class="dot"></span><span class="txt">市级公共数据开放目录调整情况说明</span><span class="date">2026-06-07</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 服务入口卡片 -->
+  <section>
+    <h2 class="sec-title">政务服务入口 <small>内容卡</small></h2>
+    <div class="grid grid-3">
+      <div class="card pad">
+        <h3 style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-2)">个人办事 <span class="badge b-gold" style="vertical-align:middle">荣誉示范</span></h3>
+        <p class="muted" style="margin:0 0 var(--ds-space-4)">社保医保、户籍证件、教育就业、住房保障等 128 项在线服务。</p>
+        <button class="btn btn-primary btn-sm">立即办理</button>
+      </div>
+      <div class="card pad">
+        <h3 style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-2)">法人办事</h3>
+        <p class="muted" style="margin:0 0 var(--ds-space-4)">企业开办、资质审批、税务登记、招标投标全流程网上办。</p>
+        <button class="btn btn-secondary btn-sm">进入大厅</button>
+      </div>
+      <div class="card pad">
+        <h3 style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-2)">咨询投诉</h3>
+        <p class="muted" style="margin:0 0 var(--ds-space-4)">12345 政务服务便民热线，受理咨询、求助、投诉与建议。</p>
+        <button class="btn btn-tertiary btn-sm">我要留言 &gt;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 徽章 -->
+  <section>
+    <h2 class="sec-title">徽章 / 标签 <small>各语义色</small></h2>
+    <div class="card pad btn-row">
+      <span class="badge b-primary">重要</span>
+      <span class="badge b-info">已公开</span>
+      <span class="badge b-success">已办结</span>
+      <span class="badge b-warning">待审核</span>
+      <span class="badge b-danger">已撤回</span>
+      <span class="badge b-gold">荣誉单位</span>
+    </div>
+  </section>
+
+  <!-- 提示条 -->
+  <section>
+    <h2 class="sec-title">提示条 Alert <small>四种语义</small></h2>
+    <div class="alert a-info"><svg class="a-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><div><b>信息提示</b>本网站已通过政务网站标识备案，内容来源于各市级部门官方发布。</div></div>
+    <div class="alert a-success"><svg class="a-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg><div><b>办理成功</b>您的不动产登记申请已受理，受理编号 SF-2026-0612，请留意短信通知。</div></div>
+    <div class="alert a-warning"><svg class="a-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg><div><b>征集中</b>《优化营商环境实施意见》正在公开征求意见，截止日期 2026-06-30。</div></div>
+    <div class="alert a-danger"><svg class="a-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/><path d="M12 16h.01"/></svg><div><b>紧急通知</b>受强降雨影响，部分线下办事窗口临时调整，请优先选择网上办理。</div></div>
+  </section>
+
+  <!-- tab + 表格 -->
+  <section>
+    <h2 class="sec-title">规整表格 <small>表头分隔 / 数字右对齐</small></h2>
+    <div class="card">
+      <div class="pad" style="padding-bottom:0">
+        <div class="tabs">
+          <button class="on">行政许可事项</button>
+          <button>公共服务事项</button>
+          <button>行政处罚事项</button>
+        </div>
+      </div>
+      <table class="gov">
+        <caption>市级行政许可事项清单（2026年版） · 数据来源：示范市政务服务管理局</caption>
+        <thead>
+          <tr><th style="width:90px">事项编码</th><th>事项名称</th><th>实施部门</th><th>办结时限</th><th class="num">办件量</th><th>状态</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>XK-001</code></td><td>建设工程规划许可证核发</td><td>自然资源和规划局</td><td>15 个工作日</td><td class="num">1,284</td><td><span class="badge b-success">正常办理</span></td></tr>
+          <tr><td><code>XK-014</code></td><td>食品经营许可证核发</td><td>市场监督管理局</td><td>10 个工作日</td><td class="num">3,902</td><td><span class="badge b-success">正常办理</span></td></tr>
+          <tr><td><code>XK-027</code></td><td>道路运输经营许可</td><td>交通运输局</td><td>20 个工作日</td><td class="num">567</td><td><span class="badge b-warning">系统维护</span></td></tr>
+          <tr><td><code>XK-039</code></td><td>医疗机构执业登记</td><td>卫生健康委员会</td><td>30 个工作日</td><td class="num">238</td><td><span class="badge b-success">正常办理</span></td></tr>
+          <tr><td><code>XK-052</code></td><td>危险化学品经营许可</td><td>应急管理局</td><td>20 个工作日</td><td class="num">96</td><td><span class="badge b-danger">暂停受理</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 面包屑 Breadcrumb -->
+  <section>
+    <h2 class="sec-title">面包屑 Breadcrumb <small>政务必备 · 路径导航</small></h2>
+    <div class="card pad">
+      <nav aria-label="面包屑导航">
+        <ol class="breadcrumb">
+          <li><a href="#"><svg class="svg-ic home-ic" data-size="sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg> 首页</a></li>
+          <li><span class="crumb-sep">/</span></li>
+          <li><a href="#">政务服务</a></li>
+          <li><span class="crumb-sep">/</span></li>
+          <li><a href="#">个人办事</a></li>
+          <li><span class="crumb-sep">/</span></li>
+          <li><span aria-current="page">不动产登记</span></li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 步进器 Stepper -->
+  <section>
+    <h2 class="sec-title">办事流程步骤条 Stepper <small>在线办事 · 完成/激活/待办</small></h2>
+    <div class="card pad">
+      <ol class="stepper" style="padding:0;margin:0;list-style:none">
+        <li class="step done"><span class="num"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="lbl">在线申请</span></li>
+        <li class="step done"><span class="num"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="lbl">材料预审</span></li>
+        <li class="step current"><span class="num">3</span><span class="lbl">受理审核</span></li>
+        <li class="step"><span class="num">4</span><span class="lbl">办结领证</span></li>
+        <li class="step"><span class="num">5</span><span class="lbl">评价反馈</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 下拉 / 工具提示 / Toast -->
+  <section>
+    <h2 class="sec-title">下拉菜单 / 工具提示 / Toast <small>悬浮态 · 选中态</small></h2>
+    <div class="grid grid-2">
+      <div class="card pad">
+        <div class="btn-row" style="margin-bottom:var(--ds-space-5)">
+          <div class="dropdown" id="dd1">
+            <button class="btn btn-secondary dropdown-toggle" onclick="toggleDD('dd1')">所属部门<svg class="svg-ic caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+            <ul class="dropdown-menu">
+              <li><a href="#" class="sel" onclick="return false">自然资源和规划局<svg class="svg-ic sel-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></a></li>
+              <li><a href="#" onclick="return false">市场监督管理局</a></li>
+              <li><a href="#" onclick="return false">交通运输局</a></li>
+              <li><div class="divider"></div></li>
+              <li><a href="#" onclick="return false">全部部门</a></li>
+            </ul>
+          </div>
+          <span class="tip" tabindex="0">
+            <button class="btn btn-tertiary">办件量说明 <svg class="svg-ic" data-size="sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></button>
+            <span class="tip-bubble" role="tooltip">统计周期内已受理办件总数，每日 0 时更新。</span>
+          </span>
+        </div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin:0">点击"所属部门"展开下拉（带对勾图标者为选中项）；悬浮或聚焦"办件量说明"查看工具提示。</p>
+      </div>
+      <div class="card pad">
+        <div class="toast-stack">
+          <div class="toast t-success"><svg class="t-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg><div class="t-body"><b>办理成功</b><span>不动产登记申请已受理，编号 SF-2026-0612。</span></div><button class="t-x" aria-label="关闭">×</button></div>
+          <div class="toast t-info"><svg class="t-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><div class="t-body"><b>系统提示</b><span>政务服务系统今晚 22:00 例行维护，约 30 分钟。</span></div><button class="t-x" aria-label="关闭">×</button></div>
+          <div class="toast t-warning"><svg class="t-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg><div class="t-body"><b>材料待补</b><span>请于 3 个工作日内补齐缺失材料，逾期作废。</span></div><button class="t-x" aria-label="关闭">×</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 模态框 Modal -->
+  <section>
+    <h2 class="sec-title">模态框 Modal <small>遮罩 + 红头卡 + 操作区</small></h2>
+    <div class="card pad">
+      <button class="btn btn-primary" onclick="openModal()">打开确认弹窗</button>
+      <span class="subtle" style="font-size:var(--ds-text-sm);margin-left:var(--ds-space-3)">点击遮罩或"取消"关闭。</span>
+    </div>
+  </section>
+
+  <!-- 分页 Pagination -->
+  <section>
+    <h2 class="sec-title">分页 Pagination <small>当前页红底 · hover 蓝</small></h2>
+    <div class="card pad">
+      <nav aria-label="分页导航">
+        <ul class="pagination">
+          <li><button class="pg" disabled aria-label="上一页">‹ 上一页</button></li>
+          <li><button class="pg">1</button></li>
+          <li><button class="pg active" aria-current="page">2</button></li>
+          <li><button class="pg">3</button></li>
+          <li><button class="pg">4</button></li>
+          <li><span class="ellip">…</span></li>
+          <li><button class="pg">28</button></li>
+          <li><button class="pg" aria-label="下一页">下一页 ›</button></li>
+          <li><span class="jump">共 28 页 · 跳至</span></li>
+          <li><input class="input" style="width:56px;height:36px;text-align:center" value="2" aria-label="页码" /></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 移动端 Mobile -->
+  <section>
+    <h2 class="sec-title">移动端 Mobile <small>375px 手机框 · 红头 + 面包屑 + 办事入口 + 公告</small></h2>
+    <div class="card pad">
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <!-- 红头标题栏 -->
+            <div class="m-banner">
+              <div class="seal" aria-hidden="true">
+                <svg class="svg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M12 5.4l1.55 3.14 3.47.5-2.51 2.45.59 3.45L12 13.8l-3.1 1.64.59-3.45L6.98 9.54l3.47-.5z" fill="currentColor" stroke="none"/>
+                </svg>
+              </div>
+              <div>
+                <h4>示范市人民政府</h4>
+                <div class="sub">政务公开 · 掌上办事</div>
+              </div>
+            </div>
+            <!-- 面包屑 -->
+            <div class="m-crumbs">
+              <a href="#">首页</a><span class="sep">/</span><a href="#">政务服务</a><span class="sep">/</span>掌上办事
+            </div>
+            <!-- 办事入口宫格 -->
+            <div class="m-entries">
+              <a href="#" class="m-entry"><span class="ic">证</span><span class="ic-lbl">证件办理</span></a>
+              <a href="#" class="m-entry"><span class="ic">保</span><span class="ic-lbl">社保医保</span></a>
+              <a href="#" class="m-entry"><span class="ic">税</span><span class="ic-lbl">税务登记</span></a>
+              <a href="#" class="m-entry"><span class="ic">住</span><span class="ic-lbl">住房保障</span></a>
+              <a href="#" class="m-entry"><span class="ic">企</span><span class="ic-lbl">企业开办</span></a>
+              <a href="#" class="m-entry"><span class="ic">育</span><span class="ic-lbl">教育就业</span></a>
+              <a href="#" class="m-entry"><span class="ic">查</span><span class="ic-lbl">进度查询</span></a>
+              <a href="#" class="m-entry"><span class="ic"><svg class="svg-ic" data-size="md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg></span><span class="ic-lbl">更多</span></a>
+            </div>
+            <!-- 通知公告列表 -->
+            <div class="m-block">
+              <div class="m-block-head"><b>通知公告</b><a href="#">更多 &gt;</a></div>
+              <ul class="m-notice">
+                <li><span class="dot"></span><span class="txt">2026年度政务公开第三方评估工作通知</span><span class="date">06-20</span></li>
+                <li><span class="dot"></span><span class="txt">优化营商环境实施意见公开征集意见</span><span class="date">06-18</span></li>
+                <li><span class="dot"></span><span class="txt">市级行政许可事项清单（2026版）公告</span><span class="date">06-15</span></li>
+                <li><span class="dot"></span><span class="txt">做好汛期防灾减灾工作的紧急通知</span><span class="date">06-12</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <p class="muted" style="margin-top:0">约 375px 宽的手机框，复用同一套 <code>var(--ds-*)</code> token：红头标题栏（红底白字 + 金线）、面包屑、办事入口宫格、通知公告列表。配合 <code>≤640px</code> 断点，桌面栅格收一列、banner 与导航折叠为可滚动单行。</p>
+          <ul class="muted" style="margin:0;padding-left:var(--ds-space-5);line-height:var(--ds-leading-relaxed)">
+            <li>红头标题栏：<code>--ds-primary</code> + <code>--ds-gold</code> 描边线，与桌面 banner 同语言。</li>
+            <li>办事入口：宫格触控目标 ≥ 44px，图标用语义浅底（首项红、其余蓝）。</li>
+            <li>列表条目：分隔线 + 日期右对齐，沿用政务"通知公告"版式。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 模态框实例 -->
+<div class="modal-overlay" id="modal1" onclick="if(event.target===this)closeModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h3 id="modalTitle">确认提交申请</h3>
+      <button class="modal-x" onclick="closeModal()" aria-label="关闭">×</button>
+    </div>
+    <div class="modal-body">
+      您即将提交"不动产登记"在线申请。提交后将进入受理审核环节，受理结果以短信通知为准。请确认所填信息真实有效。
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="closeModal()">确认提交</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  示范市人民政府 · 政务服务设计系统 Gov-CN ｜ 所有取值走 <code>var(--ds-*)</code> · 严格遵循 Kit Token 契约 ｜ 京ICP备 0000000 号
+</footer>
+
+<script>
+  var ICON_MOON = '<path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.6 6.6 0 0 0 21 12.8z"/>';
+  var ICON_SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  function toggleTheme() {
+    var el = document.documentElement;
+    var dark = el.dataset.theme === 'dark';
+    el.dataset.theme = dark ? 'light' : 'dark';
+    document.getElementById('toggleIcon').innerHTML = dark ? ICON_MOON : ICON_SUN;
+    document.getElementById('toggleLbl').textContent = dark ? '切换暗色' : '切换亮色';
+  }
+  // tab 演示交互
+  document.querySelectorAll('.tabs').forEach(function (group) {
+    group.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        group.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+      });
+    });
+  });
+
+  // 下拉菜单
+  function toggleDD(id) {
+    var el = document.getElementById(id);
+    var willOpen = !el.classList.contains('open');
+    document.querySelectorAll('.dropdown.open').forEach(function (d) { d.classList.remove('open'); });
+    if (willOpen) el.classList.add('open');
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown.open').forEach(function (d) { d.classList.remove('open'); });
+    }
+  });
+
+  // 模态框
+  function openModal() { document.getElementById('modal1').classList.add('open'); }
+  function closeModal() { document.getElementById('modal1').classList.remove('open'); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+  // Toast 关闭
+  document.querySelectorAll('.toast .t-x').forEach(function (x) {
+    x.addEventListener('click', function () { x.closest('.toast').style.display = 'none'; });
+  });
+
+  // 分页演示
+  document.querySelectorAll('.pagination .pg').forEach(function (p) {
+    if (p.disabled || /上一页|下一页/.test(p.textContent)) return;
+    p.addEventListener('click', function () {
+      document.querySelectorAll('.pagination .pg.active').forEach(function (a) { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+      p.classList.add('active'); p.setAttribute('aria-current', 'page');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+/* ============================================================
+   XiunoNext · xiunobbs 论坛设计系统 Design Tokens
+   基于「企业风」+ xiunobbs 定制 · 换肤为「清爽现代论坛社区」气质
+   主色：社区蓝（蓝青同 family），保留企业风的可信/规整/克制，
+   但更轻盈友好、信息层级清晰、利于长时间浏览阅读。
+   契约：变量名固定（--ds-*），仅取值随风格变。
+   亮色 :root ｜ 暗色 [data-theme="dark"] + .dark
+   呼应 SPEC §1.0「延续性优先」：延续 Xiuno 论坛心智，现代化实现。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字 · 清爽通透（带一丝冷蓝灰，比纯灰更轻盈）---- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f4f7fb;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #eaf0f7;
+  --ds-fg: #14202e;            --ds-fg-muted: #4a5b70;
+  --ds-fg-subtle: #64748b;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #e4ebf3;        --ds-border-strong: #cdd9e6;
+
+  /* ---- 品牌与强调 · 社区蓝（清爽天青蓝，白字达 AA 4.5:1）---- */
+  --ds-primary: #1a73d1;       --ds-primary-hover: #1560b3;
+  --ds-primary-active: #114f93;--ds-primary-fg: #ffffff;
+  --ds-accent: #0a8290;        --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态（主色 + 浅底 + 底上文字）---- */
+  --ds-success: #16a34a; --ds-success-bg: #e9faf0; --ds-success-fg: #064b25;
+  --ds-warning: #d97706; --ds-warning-bg: #fff6e6; --ds-warning-fg: #6b3b00;
+  --ds-danger:  #dc2626; --ds-danger-bg:  #fef0f0; --ds-danger-fg:  #6b0e0e;
+  --ds-info:    #1a73d1; --ds-info-bg:    #eaf3fc; --ds-info-fg:    #0b3a6b;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #1a73d1;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 · 友好但不卡通（比企业风略圆，更轻盈）---- */
+  --ds-radius-sm: 7px; --ds-radius-md: 12px; --ds-radius-lg: 18px; --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px/8pt 基）---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体 · 清爽无衬线，长文可读 ---- */
+  --ds-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Source Han Sans SC", sans-serif;
+  --ds-font-serif: "Source Serif 4", Georgia, "Songti SC", "SimSun", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 清新低阴影（细描边为主，阴影更轻）---- */
+  --ds-shadow-sm: 0 1px 2px rgba(20,32,46,.05);
+  --ds-shadow-md: 0 1px 2px rgba(20,32,46,.04), 0 4px 10px -3px rgba(20,32,46,.07), 0 12px 22px -10px rgba(26,115,209,.10);
+  --ds-shadow-lg: 0 1px 2px rgba(20,32,46,.04), 0 8px 18px -5px rgba(20,32,46,.09), 0 24px 44px -14px rgba(26,115,209,.14);
+
+  /* ---- 动效 · 克制 ease-out，节制微动效 ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 · 深蓝夜（独立 token，非简单反相）---- */
+  --ds-bg: #0c141f;            --ds-bg-subtle: #111c2c;
+  --ds-bg-elevated: #15212f;   --ds-bg-sunken: #080f18;
+  --ds-fg: #e9f0f8;            --ds-fg-muted: #a4b5c9;
+  --ds-fg-subtle: #7d8fa6;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #213149;        --ds-border-strong: #314765;
+
+  /* ---- 品牌与强调 · 提亮社区蓝 ---- */
+  --ds-primary: #4ba0f0;       --ds-primary-hover: #74b6f5;
+  --ds-primary-active: #1d7ee0;--ds-primary-fg: #06121f;
+  --ds-accent: #2ad0dd;        --ds-accent-fg: #06121f;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #34d399; --ds-success-bg: #082619; --ds-success-fg: #c4f5dd;
+  --ds-warning: #fbbf24; --ds-warning-bg: #2a1d05; --ds-warning-fg: #fdeec2;
+  --ds-danger:  #f87171; --ds-danger-bg:  #2c1012; --ds-danger-fg:  #ffd9d9;
+  --ds-info:    #4ba0f0; --ds-info-bg:    #0c2138; --ds-info-fg:    #d3e7fb;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #4ba0f0;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（暗色加深，蓝调辉光更含蓄）---- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 4px 10px -3px rgba(0,0,0,.55), 0 12px 24px -8px rgba(0,0,0,.65);
+  --ds-shadow-lg: 0 8px 18px -5px rgba(0,0,0,.6), 0 24px 44px -14px rgba(0,0,0,.75);
+}

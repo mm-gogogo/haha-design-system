@@ -1,0 +1,96 @@
+/* ============================================================
+   hahamail · Design Tokens  ——  基于「B 端风」+ hahamail 定制
+   基建 / 邮件管理气质：沉稳靛蓝 · 高密度 · 中性冷灰打底 · 可观测后台
+   契约变量名固定（--ds-*），仅取值随风格变。
+   亮色 :root  ｜  暗色 [data-theme="dark"], .dark（运维常用暗色，完整覆盖）
+   所有色值满足 WCAG AA（正文 ≥4.5:1，大字/图形 ≥3:1）。
+   ============================================================ */
+
+:root {
+  /* ---------- 表面与文字（中性冷灰，略带蓝调，机房后台感） ---------- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f4f5f9;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #eceef4;
+  --ds-fg: #1a1c2b;            --ds-fg-muted: #4a4f63;
+  --ds-fg-subtle: #828799;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #e2e4ee;        --ds-border-strong: #c5c9d8;
+
+  /* ---------- 品牌与强调（邮件蓝 / 靛蓝梯度，沉稳可信） ---------- */
+  --ds-primary: #3d4eea;       --ds-primary-hover: #2c39c9;
+  --ds-primary-active: #1f2a9e;--ds-primary-fg: #ffffff;
+  --ds-accent: #3d4eea;        --ds-accent-fg: #ffffff;
+
+  /* ---------- 语义状态（主色 + 很淡的底 + 底上文字，均达 AA） ---------- */
+  /* success：投递成功 / 在线 / DKIM 通过 */
+  --ds-success: #15a05a; --ds-success-bg: #e6f8ee; --ds-success-fg: #0a5e34;
+  /* warning：队列重试 / 待处理 / 即将到期 */
+  --ds-warning: #c97a00; --ds-warning-bg: #fdf3e2; --ds-warning-fg: #7a4900;
+  /* danger：退信 / 离线 / 认证失败 / DMARC reject */
+  --ds-danger:  #dc3340; --ds-danger-bg:  #fdecee; --ds-danger-fg:  #9b1420;
+  /* info：进行中 / 普通提示（靛蓝） */
+  --ds-info:    #3d4eea; --ds-info-bg:    #ecedfd; --ds-info-fg:    #2030a8;
+
+  /* ---------- 焦点 ---------- */
+  --ds-focus: #3d4eea;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---------- 圆角（小 · B端不宜过圆） ---------- */
+  --ds-radius-sm: 4px; --ds-radius-md: 6px; --ds-radius-lg: 8px; --ds-radius-full: 9999px;
+
+  /* ---------- 间距比例（偏紧凑 · 4px 基） ---------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---------- 控件高度（密度三档） ---------- */
+  --ds-control-sm: 24px; --ds-control-md: 32px; --ds-control-lg: 36px;
+
+  /* ---------- 字体（字号偏小，密度优先；Mono 重于一般 B 端：DNS/Hash/日志多） ---------- */
+  --ds-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", Arial, sans-serif;
+  --ds-font-serif: Georgia, "Songti SC", "SimSun", serif;
+  --ds-font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, "Courier New", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 18px; --ds-text-xl: 20px; --ds-text-2xl: 24px; --ds-text-3xl: 30px;
+  --ds-leading-tight: 1.3; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+  /* 数字等宽（指标卡 / 队列深度 / 计数 / 时间戳） */
+  --ds-numeric: tabular-nums;
+
+  /* ---------- 阴影（很弱 · 仅弹层/下拉用；平面靠描边） ---------- */
+  --ds-shadow-sm: 0 1px 2px rgba(26,28,43,.05);
+  --ds-shadow-md: 0 2px 8px rgba(26,28,43,.09), 0 1px 2px rgba(26,28,43,.05);
+  --ds-shadow-lg: 0 4px 16px rgba(26,28,43,.13), 0 2px 4px rgba(26,28,43,.07);
+
+  /* ---------- 动效（极克制） ---------- */
+  --ds-ease: cubic-bezier(.25,.1,.25,1);
+  --ds-dur-fast: 120ms; --ds-dur-base: 160ms; --ds-dur-slow: 200ms;
+}
+
+[data-theme="dark"], .dark {
+  /* ---------- 表面与文字（深机房蓝黑） ---------- */
+  --ds-bg: #14151c;            --ds-bg-subtle: #1a1b24;
+  --ds-bg-elevated: #20222c;   --ds-bg-sunken: #101118;
+  --ds-fg: #e7e8ee;            --ds-fg-muted: #9a9eb0;
+  --ds-fg-subtle: #686d7e;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #2b2d39;        --ds-border-strong: #41434f;
+
+  /* ---------- 品牌与强调（暗色主色压深以保白字 AA：白字 4.84:1） ---------- */
+  --ds-primary: #5462ec;       --ds-primary-hover: #7d8aff;
+  --ds-primary-active: #4150d8;--ds-primary-fg: #ffffff;
+  --ds-accent: #5462ec;        --ds-accent-fg: #ffffff;
+
+  /* ---------- 语义状态（暗底深色 + 浅字达 AA） ---------- */
+  --ds-success: #34c47a; --ds-success-bg: #0c2a1a; --ds-success-fg: #a8eec6;
+  --ds-warning: #e3a23a; --ds-warning-bg: #2c1f08; --ds-warning-fg: #f8d99a;
+  --ds-danger:  #f06472; --ds-danger-bg:  #2c1316; --ds-danger-fg:  #ffc4ca;
+  --ds-info:    #7886f6; --ds-info-bg:    #161a3a; --ds-info-fg:    #c4ccfb;
+
+  /* ---------- 焦点 ---------- */
+  --ds-focus: #7886f6;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---------- 阴影（暗色更深底） ---------- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --ds-shadow-md: 0 2px 8px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.45);
+  --ds-shadow-lg: 0 4px 16px rgba(0,0,0,.65), 0 2px 4px rgba(0,0,0,.45);
+}

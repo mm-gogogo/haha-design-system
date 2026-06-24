@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-accent="violet">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HahaTool · 哈哈工具 设计系统预览（企业风 + 定制）</title>
+<style>
+  /* ===== 1. 品牌色 4 套主题（RGB 三元组）===== */
+  :root, [data-accent='violet'] {
+    --brand-50:245 243 255; --brand-100:237 233 254; --brand-200:221 214 254;
+    --brand-300:196 181 253; --brand-400:167 139 250; --brand-500:139 92 246;
+    --brand-600:124 58 237;  --brand-700:109 40 217;  --brand-800:91 33 182; --brand-900:76 29 149;
+  }
+  [data-accent='sky'] {
+    --brand-50:240 249 255; --brand-100:224 242 254; --brand-200:186 230 253;
+    --brand-300:125 211 252;--brand-400:56 189 248;  --brand-500:14 165 233;
+    --brand-600:2 132 199;  --brand-700:3 105 161;   --brand-800:7 89 133;  --brand-900:12 74 110;
+  }
+  [data-accent='emerald'] {
+    --brand-50:236 253 245; --brand-100:209 250 229; --brand-200:167 243 208;
+    --brand-300:110 231 183;--brand-400:52 211 153;  --brand-500:16 185 129;
+    --brand-600:5 150 105;  --brand-700:4 120 87;    --brand-800:6 95 70;   --brand-900:6 78 59;
+  }
+  [data-accent='amber'] {
+    --brand-50:255 247 237; --brand-100:255 237 213; --brand-200:254 215 170;
+    --brand-300:253 186 116;--brand-400:251 146 60;  --brand-500:234 88 12;
+    --brand-600:217 70 8;   --brand-700:194 65 12;   --brand-800:154 52 18; --brand-900:124 45 18;
+  }
+
+  /* ===== 2. --ds-* 契约 · 亮色 ===== */
+  :root {
+    --ds-bg:#fff; --ds-bg-subtle:#f7f9fc; --ds-bg-elevated:#fff; --ds-bg-sunken:#eef2f7;
+    --ds-fg:#0f172a; --ds-fg-muted:#475569; --ds-fg-subtle:#64748b; --ds-fg-on-accent:#fff;
+    --ds-border:#e2e8f0; --ds-border-strong:#cbd5e1;
+    --ds-primary:rgb(var(--brand-600)); --ds-primary-hover:rgb(var(--brand-700));
+    --ds-primary-active:rgb(var(--brand-800)); --ds-primary-fg:#fff;
+    --ds-accent:rgb(var(--brand-500)); --ds-accent-fg:#fff;
+    --ds-success:#16a34a; --ds-success-bg:#ecfdf3; --ds-success-fg:#06401f;
+    --ds-warning:#d97706; --ds-warning-bg:#fffaeb; --ds-warning-fg:#6b3b00;
+    --ds-danger:#dc2626; --ds-danger-bg:#fef2f2; --ds-danger-fg:#6b0e0e;
+    --ds-info:rgb(var(--brand-600)); --ds-info-bg:rgb(var(--brand-50)); --ds-info-fg:rgb(var(--brand-800));
+    --ds-focus:rgb(var(--brand-500));
+    --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+    --ds-radius-sm:8px; --ds-radius-md:12px; --ds-radius-lg:16px; --ds-radius-full:9999px;
+    --ds-space-4:16px; --ds-space-5:20px; --ds-space-6:24px;
+    --ds-font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    --ds-font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --ds-shadow-sm:0 1px 2px rgba(16,24,40,.06);
+    --ds-shadow-md:0 1px 2px rgba(16,24,40,.04),0 4px 8px -2px rgba(16,24,40,.06),0 12px 20px -8px rgba(16,24,40,.08);
+    --ds-shadow-lg:0 1px 2px rgba(16,24,40,.04),0 8px 16px -4px rgba(16,24,40,.08),0 24px 40px -12px rgba(16,24,40,.12);
+    --ds-ease:cubic-bezier(.22,.61,.36,1);
+    --chart-grid:#e5e7eb; --chart-label:#6b7280;
+    /* 语义 z-index 尺度 */
+    --ds-z-dropdown:10; --ds-z-sticky:20; --ds-z-modal-backdrop:30;
+    --ds-z-modal:40; --ds-z-toast:50; --ds-z-tooltip:60;
+  }
+  /* ===== 3. --ds-* 契约 · 暗色 ===== */
+  [data-theme="dark"], .dark {
+    --ds-bg:#0b1220; --ds-bg-subtle:#0f1729; --ds-bg-elevated:#131c30; --ds-bg-sunken:#080d18;
+    --ds-fg:#e8eef7; --ds-fg-muted:#9fb0c8; --ds-fg-subtle:#7888a3; --ds-fg-on-accent:#fff;
+    --ds-border:#1f2c45; --ds-border-strong:#314465;
+    --ds-primary:rgb(var(--brand-500)); --ds-primary-hover:rgb(var(--brand-400));
+    --ds-primary-active:rgb(var(--brand-600)); --ds-primary-fg:#fff;
+    --ds-accent:rgb(var(--brand-400)); --ds-accent-fg:#08111f;
+    --ds-success:#34d399; --ds-success-bg:#0a2417; --ds-success-fg:#c4f5dd;
+    --ds-warning:#fbbf24; --ds-warning-bg:#2a1d05; --ds-warning-fg:#fdeec2;
+    --ds-danger:#f87171; --ds-danger-bg:#2c1012; --ds-danger-fg:#ffd9d9;
+    --ds-info:rgb(var(--brand-400)); --ds-info-bg:rgb(var(--brand-900) / .35); --ds-info-fg:rgb(var(--brand-200));
+    --ds-focus:rgb(var(--brand-400));
+    --ds-shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --ds-shadow-md:0 4px 8px -2px rgba(0,0,0,.55),0 12px 24px -8px rgba(0,0,0,.65);
+    --ds-shadow-lg:0 8px 16px -4px rgba(0,0,0,.6),0 24px 40px -12px rgba(0,0,0,.75);
+    --chart-grid:#374151; --chart-label:#9ca3af;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--ds-bg-subtle); color:var(--ds-fg);
+    font-family:var(--ds-font-sans); font-size:14px; line-height:1.6;
+    transition:background .2s var(--ds-ease), color .2s var(--ds-ease);
+  }
+  .wrap { max-width:1160px; margin:0 auto; padding:24px 20px 80px; }
+  h2 { font-size:24px; font-weight:600; letter-spacing:-.01em; margin:48px 0 4px; }
+  h2 + .sub { color:var(--ds-fg-muted); margin:0 0 20px; font-size:13px; }
+  .num { font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; }
+
+  /* 顶栏 */
+  .topbar {
+    position:sticky; top:0; z-index:var(--ds-z-sticky); display:flex; align-items:center; gap:16px;
+    background:var(--ds-bg-elevated); border-bottom:1px solid var(--ds-border);
+    padding:12px 20px; box-shadow:var(--ds-shadow-sm);
+  }
+  .logo { display:flex; align-items:center; gap:8px; font-weight:600; font-size:16px; letter-spacing:-.01em; }
+  .logo .mark {
+    width:30px; height:30px; border-radius:9px; background:var(--ds-primary);
+    color:#fff; display:grid; place-items:center;
+  }
+  .logo .mark svg { width:18px; height:18px; }
+  .nav { display:flex; gap:4px; margin-left:8px; }
+  .nav a { padding:8px 12px; color:var(--ds-fg-muted); text-decoration:none; border-radius:8px; font-size:14px; }
+  .nav a.cur { color:var(--ds-fg); box-shadow:inset 0 -2px 0 var(--ds-primary); }
+  .nav a:hover { color:var(--ds-fg); background:var(--ds-bg-subtle); }
+  .topbar .spacer { flex:1; }
+
+  /* 控件 */
+  .btn {
+    height:40px; min-width:44px; padding:0 16px; border-radius:var(--ds-radius-sm);
+    font:500 14px/1 var(--ds-font-sans); border:1px solid transparent; cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:background .15s var(--ds-ease), box-shadow .15s var(--ds-ease);
+  }
+  .btn:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .btn-primary { background:var(--ds-primary); color:var(--ds-primary-fg); }
+  .btn-primary:hover { background:var(--ds-primary-hover); }
+  .btn-secondary { background:var(--ds-bg); color:var(--ds-fg); border-color:var(--ds-border-strong); }
+  .btn-secondary:hover { background:var(--ds-bg-subtle); }
+  .btn-ghost { background:transparent; color:var(--ds-fg-muted); }
+  .btn-ghost:hover { background:var(--ds-bg-subtle); color:var(--ds-fg); }
+  .btn-sm { height:32px; padding:0 12px; font-size:13px; min-width:0; }
+  .icon-btn { width:40px; height:40px; padding:0; justify-content:center; }
+
+  /* accent 切换点 */
+  .accent-dots { display:flex; gap:6px; }
+  .accent-dots button {
+    width:22px; height:22px; border-radius:50%; border:2px solid var(--ds-border-strong);
+    cursor:pointer; padding:0;
+  }
+  .accent-dots button[aria-pressed="true"] { border-color:var(--ds-fg); transform:scale(1.12); }
+
+  /* 色板 */
+  .swatches { display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:10px; }
+  .sw { border:1px solid var(--ds-border); border-radius:10px; overflow:hidden; background:var(--ds-bg-elevated); }
+  .sw .chip { height:52px; }
+  .sw .meta { padding:8px 10px; font-size:12px; }
+  .sw .meta b { display:block; font-weight:500; }
+  .sw .meta span { color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); font-size:11px; }
+  .brand-ramp { display:flex; border-radius:10px; overflow:hidden; border:1px solid var(--ds-border); }
+  .brand-ramp div { flex:1; height:44px; display:grid; place-items:end center; padding-bottom:3px; font-size:10px; font-family:var(--ds-font-mono); }
+
+  /* 卡片网格 */
+  .grid { display:grid; gap:16px; }
+  .cols-3 { grid-template-columns:repeat(3,1fr); }
+  @media(max-width:780px){ .cols-3{ grid-template-columns:1fr; } }
+
+  /* 工具卡 */
+  .tool {
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md);
+    padding:20px; box-shadow:var(--ds-shadow-sm); position:relative;
+    transition:box-shadow .2s var(--ds-ease), border-color .2s var(--ds-ease);
+  }
+  .tool:hover { box-shadow:var(--ds-shadow-md); border-color:var(--ds-border-strong); }
+  .tool .head { display:flex; align-items:center; gap:12px; }
+  .tool .avatar {
+    width:44px; height:44px; border-radius:var(--ds-radius-full); flex:none;
+    background:rgb(var(--brand-100)); color:rgb(var(--brand-700));
+    display:grid; place-items:center; font-weight:600; font-size:18px;
+  }
+  .tool .name { font-size:16px; font-weight:600; }
+  .tool .tagline { color:var(--ds-fg-muted); font-size:13px; margin:12px 0 14px; }
+  .tool .stats { display:flex; gap:16px; color:var(--ds-fg-muted); font-size:13px; }
+  .tool .stats span { display:inline-flex; align-items:center; gap:5px; }
+  .badge {
+    display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:9999px;
+    font-size:12px; font-weight:500;
+  }
+  .b-free { background:var(--ds-success-bg); color:var(--ds-success-fg); }
+  .b-paid { background:var(--ds-warning-bg); color:var(--ds-warning-fg); }
+  .b-promo { background:var(--ds-info-bg); color:var(--ds-info-fg); position:absolute; top:14px; right:14px; }
+  .ad-empty {
+    border:1px dashed var(--ds-border-strong); border-radius:var(--ds-radius-md); background:transparent;
+    display:grid; place-items:center; text-align:center; padding:28px; color:var(--ds-fg-subtle); min-height:130px;
+  }
+  .ad-empty a { color:var(--ds-accent); text-decoration:none; }
+
+  /* lucide-ish inline icons (stroke=currentColor) */
+  svg.ic { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* 搜索 */
+  .search { position:relative; max-width:420px; }
+  .search input {
+    width:100%; height:44px; padding:0 14px 0 38px; border-radius:var(--ds-radius-sm);
+    border:1px solid var(--ds-border-strong); background:var(--ds-bg); color:var(--ds-fg); font-size:14px;
+  }
+  .search input::placeholder { color:var(--ds-fg-subtle); }
+  .search input:focus { outline:none; border-color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
+  .search .si { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ds-fg-subtle); }
+  .suggest { margin-top:8px; background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); overflow:hidden; }
+  .suggest .row { display:flex; align-items:center; gap:10px; padding:9px 12px; }
+  .suggest .row:hover, .suggest .row.hl { background:var(--ds-bg-subtle); }
+  .suggest .row.hl { background:var(--ds-info-bg); }
+  .suggest .av { width:26px; height:26px; border-radius:9999px; background:rgb(var(--brand-100)); color:rgb(var(--brand-700)); display:grid; place-items:center; font-size:12px; font-weight:600; }
+  .suggest .row small { color:var(--ds-fg-muted); }
+
+  /* 排行榜 */
+  .panel { background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); overflow:hidden; }
+  .podium { display:flex; align-items:flex-end; justify-content:center; gap:14px; padding:24px; }
+  .podium .col { text-align:center; }
+  .podium .bar { width:96px; background:var(--ds-bg-subtle); border:1px solid var(--ds-border); border-radius:10px 10px 0 0; display:grid; place-items:start center; padding-top:10px; }
+  .podium .col.first .bar { height:120px; border-color:var(--ds-primary); border-width:2px; }
+  .podium .col.second .bar { height:92px; }
+  .podium .col.third .bar { height:72px; }
+  .podium .av { width:40px; height:40px; border-radius:9999px; background:rgb(var(--brand-100)); color:rgb(var(--brand-700)); display:grid; place-items:center; font-weight:600; margin:0 auto 6px; }
+  .podium .rk { color:var(--ds-primary); }
+  .rowlist .r { display:grid; grid-template-columns:28px 1fr auto auto; gap:12px; align-items:center; padding:11px 16px; border-top:1px solid var(--ds-border); }
+  .rowlist .r:hover { background:var(--ds-bg-subtle); }
+  .rowlist .seq { color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .rowlist .r.top .seq { color:rgb(var(--brand-600)); font-weight:600; }
+  .rowlist .nm { display:flex; align-items:center; gap:10px; }
+  .rowlist .av { width:28px; height:28px; border-radius:9999px; background:rgb(var(--brand-100)); color:rgb(var(--brand-700)); display:grid; place-items:center; font-size:12px; font-weight:600; }
+  .grow { display:inline-flex; align-items:center; gap:4px; }
+  .grow.up { color:var(--ds-success); } .grow.down { color:var(--ds-danger); }
+
+  /* PK 表 */
+  table.pk { width:100%; border-collapse:collapse; }
+  table.pk th, table.pk td { padding:11px 14px; border-top:1px solid var(--ds-border); text-align:left; }
+  table.pk thead th { background:var(--ds-bg-subtle); color:var(--ds-fg-muted); font-size:13px; font-weight:600; border-top:none; }
+  table.pk td.metric { color:var(--ds-fg-muted); }
+  table.pk td.win { background:var(--ds-success-bg); color:var(--ds-success-fg); font-weight:500; }
+  table.pk td.val { text-align:right; }
+  .pkhead { display:flex; align-items:center; gap:8px; }
+  .pkhead .av { width:24px; height:24px; border-radius:9999px; background:rgb(var(--brand-100)); color:rgb(var(--brand-700)); display:grid; place-items:center; font-size:11px; font-weight:600; }
+
+  /* 快讯时间线 */
+  .timeline { padding:8px 16px 16px; }
+  .tl-day { color:var(--ds-fg-muted); font-size:13px; font-weight:600; padding:12px 0 6px; }
+  .tl-item { position:relative; padding:8px 0 8px 26px; border-left:1px solid var(--ds-border); margin-left:5px; }
+  .tl-item::before { content:""; position:absolute; left:-5px; top:13px; width:9px; height:9px; border-radius:50%; background:rgb(var(--brand-500)); }
+  .tl-item.new::before { box-shadow:0 0 0 4px rgb(var(--brand-500) / .15); }
+  .tl-item .t { color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); font-size:12px; margin-right:8px; }
+
+  /* radar */
+  .radar-wrap { display:flex; gap:24px; align-items:center; flex-wrap:wrap; }
+  .legend { display:flex; gap:16px; font-size:13px; }
+  .legend i { display:inline-block; width:18px; height:0; border-top:2px solid; vertical-align:middle; margin-right:6px; }
+
+  /* ===== 新增组件 ===== */
+
+  /* 面包屑 Breadcrumb */
+  .crumbs { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:13px; color:var(--ds-fg-muted); }
+  .crumbs a { color:var(--ds-fg-muted); text-decoration:none; padding:3px 6px; border-radius:6px; }
+  .crumbs a:hover { color:var(--ds-fg); background:var(--ds-bg-subtle); }
+  .crumbs .sep { color:var(--ds-fg-subtle); display:inline-flex; }
+  .crumbs .cur { color:var(--ds-primary); font-weight:500; }
+
+  /* 步骤条 Stepper */
+  .stepper { display:flex; align-items:flex-start; gap:0; flex-wrap:wrap; }
+  .step { display:flex; align-items:center; flex:1; min-width:120px; }
+  .step .dot {
+    width:30px; height:30px; flex:none; border-radius:9999px; display:grid; place-items:center;
+    font-size:13px; font-weight:600; border:2px solid var(--ds-border-strong);
+    background:var(--ds-bg-elevated); color:var(--ds-fg-subtle);
+    font-variant-numeric:tabular-nums; transition:background .2s var(--ds-ease), border-color .2s var(--ds-ease);
+  }
+  .step .lbl { margin-left:10px; font-size:13px; color:var(--ds-fg-muted); }
+  .step .ln { flex:1; height:2px; background:var(--ds-border); margin:0 12px; min-width:20px; }
+  .step.done .dot { background:var(--ds-primary); border-color:var(--ds-primary); color:var(--ds-primary-fg); }
+  .step.done .ln { background:var(--ds-primary); }
+  .step.active .dot { border-color:var(--ds-primary); color:var(--ds-primary); box-shadow:var(--ds-focus-ring); }
+  .step.active .lbl { color:var(--ds-fg); font-weight:600; }
+
+  /* 下拉菜单 Dropdown */
+  .dropdown { position:relative; display:inline-block; }
+  .menu {
+    min-width:200px; background:var(--ds-bg-elevated); border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); overflow:hidden; padding:6px;
+    position:relative; z-index:var(--ds-z-dropdown);
+  }
+  .menu .mi {
+    display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px;
+    color:var(--ds-fg); font-size:14px; cursor:pointer; text-decoration:none;
+  }
+  .menu .mi:hover { background:var(--ds-bg-subtle); }
+  .menu .mi.sel { background:var(--ds-info-bg); color:var(--ds-info-fg); }
+  .menu .mi.sel svg { color:var(--ds-primary); }
+  .menu .mi.danger { color:var(--ds-danger); }
+  .menu .mi.danger:hover { background:var(--ds-danger-bg); }
+  .menu .sepln { height:1px; background:var(--ds-border); margin:6px 4px; }
+  .menu .mi .rt { margin-left:auto; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); font-size:12px; }
+
+  /* 工具提示 Tooltip */
+  .tip { position:relative; display:inline-flex; }
+  .tip .bubble {
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+    background:var(--ds-fg); color:var(--ds-bg); font-size:12px; line-height:1.4; white-space:nowrap;
+    padding:6px 9px; border-radius:8px; box-shadow:var(--ds-shadow-md); pointer-events:none;
+    opacity:0; transition:opacity .15s var(--ds-ease); z-index:var(--ds-z-tooltip);
+  }
+  .tip .bubble::after {
+    content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border:5px solid transparent; border-top-color:var(--ds-fg);
+  }
+  .tip:hover .bubble, .tip:focus-within .bubble { opacity:1; }
+
+  /* 分页 Pagination */
+  .pager { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .pager button, .pager .pg {
+    min-width:36px; height:36px; padding:0 10px; border-radius:8px; border:1px solid var(--ds-border);
+    background:var(--ds-bg-elevated); color:var(--ds-fg-muted); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; gap:4px;
+    font:500 13px/1 var(--ds-font-sans); font-variant-numeric:tabular-nums;
+    transition:background .15s var(--ds-ease), border-color .15s var(--ds-ease);
+  }
+  .pager .pg:hover { background:var(--ds-bg-subtle); border-color:var(--ds-border-strong); color:var(--ds-fg); }
+  .pager .pg.cur { background:var(--ds-primary); border-color:var(--ds-primary); color:var(--ds-primary-fg); }
+  .pager .pg:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .pager .pg[aria-disabled="true"] { opacity:.45; cursor:not-allowed; }
+  .pager .gap { border:none; background:transparent; color:var(--ds-fg-subtle); cursor:default; }
+
+  /* 模态框 Modal */
+  .modal-mock {
+    position:relative; background:var(--ds-bg-sunken); border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-lg); padding:28px; display:grid; place-items:center; min-height:240px; overflow:hidden;
+  }
+  .modal-mock .scrim { position:absolute; inset:0; background:rgba(8,13,24,.45); z-index:var(--ds-z-modal-backdrop); }
+  .modal {
+    position:relative; z-index:var(--ds-z-modal); width:100%; max-width:400px; background:var(--ds-bg-elevated);
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg); overflow:hidden;
+  }
+  .modal .mhd { display:flex; align-items:center; gap:10px; padding:16px 18px; border-bottom:1px solid var(--ds-border); }
+  .modal .mhd .mt { font-size:16px; font-weight:600; flex:1; }
+  .modal .mhd .x { width:30px; height:30px; border-radius:8px; border:none; background:transparent; color:var(--ds-fg-subtle); cursor:pointer; display:grid; place-items:center; }
+  .modal .mhd .x:hover { background:var(--ds-bg-subtle); color:var(--ds-fg); }
+  .modal .mbd { padding:18px; color:var(--ds-fg-muted); font-size:14px; }
+  .modal .mft { display:flex; justify-content:flex-end; gap:8px; padding:14px 18px; border-top:1px solid var(--ds-border); background:var(--ds-bg-subtle); }
+
+  /* 提示条 Alert（前置语义 SVG 图标 + 浅底 + 1px 全描边，无侧边色条）*/
+  .alert {
+    display:flex; align-items:flex-start; gap:10px; padding:14px;
+    border-radius:var(--ds-radius-md); border:1px solid; font-size:14px;
+  }
+  .alert .ai { flex:none; margin-top:1px; }
+  .alert.ok   { background:var(--ds-success-bg); color:var(--ds-success-fg); border-color:rgb(22 163 74 / .28); }
+  .alert.info { background:var(--ds-info-bg);    color:var(--ds-info-fg);    border-color:rgb(var(--brand-600) / .28); }
+  .alert.warn { background:var(--ds-warning-bg); color:var(--ds-warning-fg); border-color:rgb(217 119 6 / .28); }
+  .alert.err  { background:var(--ds-danger-bg);  color:var(--ds-danger-fg);  border-color:rgb(220 38 38 / .28); }
+
+  /* Toast 通知（前置语义 SVG 图标 + 1px 全描边，无侧边色条）*/
+  .toasts { display:flex; flex-direction:column; gap:10px; max-width:380px; position:relative; z-index:var(--ds-z-toast); }
+  .toast {
+    display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border-radius:var(--ds-radius-md);
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-md);
+  }
+  .toast .ti { flex:none; margin-top:1px; }
+  .toast .tx { flex:1; }
+  .toast .tx b { display:block; font-weight:600; font-size:14px; }
+  .toast .tx span { color:var(--ds-fg-muted); font-size:13px; }
+  .toast .tc { flex:none; width:24px; height:24px; border:none; background:transparent; color:var(--ds-fg-subtle); cursor:pointer; border-radius:6px; display:grid; place-items:center; }
+  .toast .tc:hover { background:var(--ds-bg-subtle); color:var(--ds-fg); }
+  .toast.ok .ti { color:var(--ds-success); }
+  .toast.info .ti { color:var(--ds-info); }
+  .toast.warn .ti { color:var(--ds-warning); }
+  .toast.err .ti { color:var(--ds-danger); }
+
+  /* ===== 移动端手机框 ===== */
+  .phone {
+    width:375px; max-width:100%; margin:0 auto; border:10px solid #0b1220; border-radius:36px;
+    background:var(--ds-bg-subtle); box-shadow:var(--ds-shadow-lg); overflow:hidden;
+  }
+  .phone .notch { height:24px; background:#0b1220; display:grid; place-items:center; }
+  .phone .notch::after { content:""; width:90px; height:6px; border-radius:9999px; background:#314465; }
+  .phone .scr { height:560px; overflow:auto; }
+  .phone .mtop {
+    position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:10px;
+    background:var(--ds-bg-elevated); border-bottom:1px solid var(--ds-border); padding:12px 14px;
+  }
+  .phone .mtop .mark { width:28px; height:28px; border-radius:8px; background:var(--ds-primary); color:#fff; display:grid; place-items:center; }
+  .phone .mtop .mark svg { width:16px; height:16px; }
+  .phone .mtop .ttl { font-weight:600; font-size:15px; flex:1; }
+  .phone .mtop .ham { width:34px; height:34px; border-radius:8px; border:1px solid var(--ds-border); background:var(--ds-bg); color:var(--ds-fg-muted); display:grid; place-items:center; cursor:pointer; }
+  .phone .mbody { padding:14px; display:flex; flex-direction:column; gap:12px; }
+  .phone .msearch { position:relative; }
+  .phone .msearch input { width:100%; height:40px; padding:0 12px 0 36px; border-radius:var(--ds-radius-sm); border:1px solid var(--ds-border-strong); background:var(--ds-bg); color:var(--ds-fg); font-size:14px; }
+  .phone .msearch .si { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--ds-fg-subtle); }
+  .phone .mcard { background:var(--ds-bg-elevated); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:14px; box-shadow:var(--ds-shadow-sm); }
+  .phone .mcard .h { display:flex; align-items:center; gap:10px; }
+  .phone .mcard .av { width:38px; height:38px; border-radius:9999px; background:rgb(var(--brand-100)); color:rgb(var(--brand-700)); display:grid; place-items:center; font-weight:600; flex:none; }
+  .phone .mcard .nm { font-weight:600; font-size:15px; }
+  .phone .mcard .tg { color:var(--ds-fg-muted); font-size:13px; margin:10px 0 12px; }
+  .phone .mcard .ft { display:flex; gap:14px; color:var(--ds-fg-muted); font-size:12px; }
+  .phone .mcard .ft span { display:inline-flex; align-items:center; gap:4px; }
+  .phone .mlist .ri { display:grid; grid-template-columns:24px 1fr auto; gap:10px; align-items:center; padding:10px 0; border-top:1px solid var(--ds-border); }
+  .phone .mlist .ri:first-child { border-top:none; }
+  .phone .mlist .seq { color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; }
+  .phone .mlist .ri.top .seq { color:rgb(var(--brand-600)); font-weight:600; }
+  .phone .mlist .av { width:24px; height:24px; border-radius:9999px; background:rgb(var(--brand-100)); color:rgb(var(--brand-700)); display:grid; place-items:center; font-size:11px; font-weight:600; }
+  .phone .mlist .nm { display:flex; align-items:center; gap:8px; font-size:14px; }
+  .phone .mlist .vl { font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; color:var(--ds-fg-muted); font-size:13px; }
+
+  footer { margin-top:64px; padding-top:20px; border-top:1px solid var(--ds-border); color:var(--ds-fg-subtle); font-size:12px; }
+
+  /* ===== 响应式断点 ===== */
+  @media (max-width:640px){
+    .wrap { padding:16px 14px 56px; }
+    h2 { font-size:20px; margin:36px 0 4px; }
+    .cols-3 { grid-template-columns:1fr; }            /* 卡片收一列 */
+    .nav { display:none; }                              /* 折叠主导航 */
+    .topbar .nav-toggle { display:grid; }              /* 显示汉堡按钮 */
+    .grid[style*="1fr 1fr"] { grid-template-columns:1fr !important; } /* Alert 双列收一列 */
+    .radar-wrap { flex-direction:column; align-items:flex-start; }
+    .podium .bar { width:72px; }
+    .topbar { gap:10px; padding:10px 14px; }
+    table.pk th, table.pk td { padding:9px 10px; }
+  }
+  .topbar .nav-toggle {
+    display:none; width:38px; height:38px; border-radius:8px; border:1px solid var(--ds-border);
+    background:var(--ds-bg); color:var(--ds-fg-muted); cursor:pointer; place-items:center; margin-left:8px;
+  }
+  .topbar .nav-toggle:hover { background:var(--ds-bg-subtle); color:var(--ds-fg); }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition-duration:.01ms!important; } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M16 14l3 3 4-5"/></svg></span> HahaTool</div>
+  <nav class="nav">
+    <a href="#" class="cur">首页</a><a href="#">工具库</a><a href="#">排行榜</a><a href="#">PK</a><a href="#">快讯</a>
+  </nav>
+  <button class="nav-toggle" aria-label="打开导航菜单">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <div class="spacer"></div>
+  <div class="accent-dots" id="accent" title="切换主题色">
+    <button data-a="violet" aria-pressed="true"  style="background:#7c3aed" aria-label="紫"></button>
+    <button data-a="sky"     aria-pressed="false" style="background:#0284c7" aria-label="蓝"></button>
+    <button data-a="emerald" aria-pressed="false" style="background:#059669" aria-label="绿"></button>
+    <button data-a="amber"   aria-pressed="false" style="background:#d94608" aria-label="橙"></button>
+  </div>
+  <button class="btn btn-secondary btn-sm" id="darkBtn" aria-label="切换明暗"><svg class="ic" id="darkIcon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><span id="darkLbl">暗色</span></button>
+</div>
+
+<div class="wrap">
+  <p style="color:var(--ds-fg-muted);margin-top:16px">
+    <b>HahaTool 设计系统</b> · 基于企业风 + hahatool 定制。点右上切 4 套主题色 / 明暗——所有强调色、图表、徽章全走变量，一键换肤。
+  </p>
+
+  <!-- 色板 -->
+  <h2>色板 · 表面 / 文字 / 状态</h2>
+  <p class="sub">表面文字走企业风冷灰；强调色桥接到品牌色（随主题切换）。</p>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:var(--ds-bg);border-bottom:1px solid var(--ds-border)"></div><div class="meta"><b>bg</b><span>--ds-bg</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-bg-subtle)"></div><div class="meta"><b>bg-subtle</b><span>--ds-bg-subtle</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-bg-sunken)"></div><div class="meta"><b>bg-sunken</b><span>--ds-bg-sunken</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-fg)"></div><div class="meta"><b>fg</b><span>--ds-fg</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-primary)"></div><div class="meta"><b>primary</b><span>brand-600</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-accent)"></div><div class="meta"><b>accent</b><span>brand-500</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-success)"></div><div class="meta"><b>success</b><span>--ds-success</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-warning)"></div><div class="meta"><b>warning</b><span>--ds-warning</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-danger)"></div><div class="meta"><b>danger</b><span>--ds-danger</span></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ds-info)"></div><div class="meta"><b>info</b><span>跟随品牌</span></div></div>
+  </div>
+
+  <h2>品牌色梯度 · brand-50 → 900（当前主题）</h2>
+  <p class="sub">切右上主题色，整条梯度与全站强调色一起换肤。</p>
+  <div class="brand-ramp">
+    <div style="background:rgb(var(--brand-50));color:#333">50</div>
+    <div style="background:rgb(var(--brand-100));color:#333">100</div>
+    <div style="background:rgb(var(--brand-200));color:#333">200</div>
+    <div style="background:rgb(var(--brand-300));color:#333">300</div>
+    <div style="background:rgb(var(--brand-400));color:#fff">400</div>
+    <div style="background:rgb(var(--brand-500));color:#fff">500</div>
+    <div style="background:rgb(var(--brand-600));color:#fff">600</div>
+    <div style="background:rgb(var(--brand-700));color:#fff">700</div>
+    <div style="background:rgb(var(--brand-800));color:#fff">800</div>
+    <div style="background:rgb(var(--brand-900));color:#fff">900</div>
+  </div>
+
+  <!-- 按钮 -->
+  <h2>按钮</h2>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="btn btn-primary">官网直达 <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
+    <button class="btn btn-secondary">加入对比</button>
+    <button class="btn btn-ghost">收藏</button>
+    <button class="btn btn-primary" disabled style="opacity:.5;cursor:not-allowed">禁用</button>
+    <button class="btn btn-primary btn-sm">小号</button>
+  </div>
+
+  <!-- 搜索 -->
+  <h2>搜索框 + 建议下拉</h2>
+  <div class="search">
+    <svg class="ic si" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="搜索 AI 工具、分类、标签…" />
+    <div class="suggest">
+      <div class="row hl"><span class="av">C</span> <div><div>ChatGPT</div><small>OpenAI 的对话式 AI</small></div></div>
+      <div class="row"><span class="av">M</span> <div><div>Midjourney</div><small>顶级 AI 绘画</small></div></div>
+      <div class="row"><span class="av">N</span> <div><div>Notion AI</div><small>笔记里的 AI 助手</small></div></div>
+    </div>
+  </div>
+
+  <!-- 工具卡 -->
+  <h2>工具卡片 + 广告位</h2>
+  <p class="sub">头部 logo（失败降级首字母头像）+ 定价徽章；数据脚 mono 等宽对齐。</p>
+  <div class="grid cols-3">
+    <div class="tool">
+      <span class="badge b-promo">推广</span>
+      <div class="head"><div class="avatar">C</div><div><div class="name">ChatGPT</div><span class="badge b-free">免费起</span></div></div>
+      <div class="tagline">OpenAI 出品的对话式 AI，写作、编程、问答全能助手。</div>
+      <div class="stats">
+        <span><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><b class="num">1.8B</b></span>
+        <span><svg class="ic" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A4.5 4.5 0 0 0 12 6 4.5 4.5 0 0 0 2 8.5C2 13 12 21 12 21s4-3 7-7Z"/></svg><b class="num">52.3k</b></span>
+        <span><svg class="ic" viewBox="0 0 24 24" style="color:var(--ds-warning)"><path d="m12 17-5.9 3.1 1.1-6.6L2.5 9l6.6-1L12 2l2.9 6 6.6 1-4.7 4.5 1.1 6.6z"/></svg><b class="num">4.9</b></span>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="head"><div class="avatar">M</div><div><div class="name">Midjourney</div><span class="badge b-paid">付费</span></div></div>
+      <div class="tagline">顶级 AI 图像生成，Discord 内出图，风格惊艳。</div>
+      <div class="stats">
+        <span><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><b class="num">410M</b></span>
+        <span><svg class="ic" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A4.5 4.5 0 0 0 12 6 4.5 4.5 0 0 0 2 8.5C2 13 12 21 12 21s4-3 7-7Z"/></svg><b class="num">38.1k</b></span>
+        <span><svg class="ic" viewBox="0 0 24 24" style="color:var(--ds-warning)"><path d="m12 17-5.9 3.1 1.1-6.6L2.5 9l6.6-1L12 2l2.9 6 6.6 1-4.7 4.5 1.1 6.6z"/></svg><b class="num">4.8</b></span>
+      </div>
+    </div>
+    <div class="ad-empty">
+      <div><b>广告位 AD · 虚位以待</b><br><a href="#">招商入口 →</a></div>
+    </div>
+  </div>
+
+  <!-- 能力雷达 -->
+  <h2>能力雷达（手写 SVG · 双系列 PK）</h2>
+  <div class="radar-wrap panel" style="padding:20px">
+    <svg width="240" height="240" viewBox="0 0 200 200" id="radar"></svg>
+    <div>
+      <div class="legend">
+        <span style="color:rgb(var(--brand-600))"><i style="border-color:rgb(var(--brand-600))"></i>ChatGPT（A）</span>
+        <span style="color:rgb(var(--brand-400))"><i style="border-color:rgb(var(--brand-400));border-top-style:dashed"></i>Midjourney（B）</span>
+      </div>
+      <p class="sub" style="margin-top:10px">五维：易用性 / 功能强度 / 性价比 / 生态集成 / 中文友好。网格 <code>var(--chart-grid)</code>、标签 <code>var(--chart-label)</code>、数据 <code>rgb(var(--brand-600))</code>。B 系列用虚线区分（不靠颜色单独传达）。</p>
+    </div>
+  </div>
+
+  <!-- 排行榜 -->
+  <h2>排行榜 · 领奖台 + 榜单</h2>
+  <div class="panel">
+    <div class="podium">
+      <div class="col second"><div class="bar"><div class="av">M</div><div class="rk num">#2</div></div></div>
+      <div class="col first"><div class="bar"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--ds-warning)"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M6 4h12v5a6 6 0 0 1-12 0V4ZM9 18h6M10 22h4M12 18v4"/></svg><div class="av" style="margin-top:4px">C</div><div class="rk num">#1</div></div></div>
+      <div class="col third"><div class="bar"><div class="av">N</div><div class="rk num">#3</div></div></div>
+    </div>
+    <div class="rowlist">
+      <div class="r top"><span class="seq">1</span><span class="nm"><span class="av">C</span>ChatGPT</span><span class="num">1.8B</span><span class="grow up"><svg class="ic" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8M21 7v6h-6"/></svg>12%</span></div>
+      <div class="r top"><span class="seq">2</span><span class="nm"><span class="av">M</span>Midjourney</span><span class="num">410M</span><span class="grow up"><svg class="ic" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8M21 7v6h-6"/></svg>8%</span></div>
+      <div class="r top"><span class="seq">3</span><span class="nm"><span class="av">N</span>Notion AI</span><span class="num">220M</span><span class="grow down"><svg class="ic" viewBox="0 0 24 24"><path d="m3 7 6 6 4-4 8 8M21 17v-6h-6"/></svg>3%</span></div>
+      <div class="r"><span class="seq">4</span><span class="nm"><span class="av">P</span>Perplexity</span><span class="num">180M</span><span class="grow up"><svg class="ic" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8M21 7v6h-6"/></svg>21%</span></div>
+    </div>
+  </div>
+
+  <!-- PK 表 -->
+  <h2>对比（PK）表格</h2>
+  <p class="sub">胜方单元格底 success-bg + SVG 对勾角标（不靠颜色单独传达）；数字 mono 右对齐。</p>
+  <div class="panel">
+    <table class="pk">
+      <thead><tr><th>对比维度</th><th><span class="pkhead"><span class="av">C</span>ChatGPT</span></th><th><span class="pkhead"><span class="av">M</span>Midjourney</span></th></tr></thead>
+      <tbody>
+        <tr><td class="metric">月访问量</td><td class="val win num"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1.8B</td><td class="val num">410M</td></tr>
+        <tr><td class="metric">综合评分</td><td class="val win num"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 4.9</td><td class="val num">4.8</td></tr>
+        <tr><td class="metric">起步价（月）</td><td class="val num">¥0</td><td class="val win num"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> ¥0 试</td></tr>
+        <tr><td class="metric">中文友好</td><td class="val win num"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 9.2</td><td class="val num">7.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 快讯 -->
+  <h2>快讯时间线</h2>
+  <div class="panel timeline">
+    <div class="tl-day">今天 · 6月22日</div>
+    <div class="tl-item new"><span class="t num">14:30</span>OpenAI 发布 GPT 新模型，推理能力大幅提升</div>
+    <div class="tl-item"><span class="t num">11:05</span>Midjourney V7 内测开启，支持更精细的风格控制</div>
+    <div class="tl-day">昨天 · 6月21日</div>
+    <div class="tl-item"><span class="t num">20:12</span>国产大模型在中文榜单刷新纪录</div>
+  </div>
+
+  <!-- 提示条 -->
+  <h2>提示条 Alert</h2>
+  <p class="sub">前置语义 SVG 图标 + 浅底 + 1px 全描边（不用侧边色条）；不靠颜色单独传达。</p>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+    <div class="alert ok"><span class="ai"><svg class="ic" viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14.1l-3-3"/></svg></span><span>已加入收藏夹</span></div>
+    <div class="alert info"><span class="ai"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span><span>数据为运营演示填充，非真实统计</span></div>
+    <div class="alert warn"><span class="ai"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg></span><span>该工具暂未通过收录审核</span></div>
+    <div class="alert err"><span class="ai"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg></span><span>官网链接已失效</span></div>
+  </div>
+
+  <!-- 面包屑 -->
+  <h2>面包屑 Breadcrumb</h2>
+  <p class="sub">当前项用品牌色高亮；分隔符内联 SVG，随主题换色。</p>
+  <nav class="crumbs panel" style="padding:12px 16px" aria-label="面包屑">
+    <a href="#">首页</a>
+    <span class="sep"><svg class="ic" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="m9 18 6-6-6-6"/></svg></span>
+    <a href="#">工具库</a>
+    <span class="sep"><svg class="ic" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="m9 18 6-6-6-6"/></svg></span>
+    <a href="#">AI 对话</a>
+    <span class="sep"><svg class="ic" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="m9 18 6-6-6-6"/></svg></span>
+    <span class="cur" aria-current="page">ChatGPT</span>
+  </nav>
+
+  <!-- 步骤条 -->
+  <h2>步骤条 Stepper</h2>
+  <p class="sub">已完成=实底品牌色 + SVG 对勾；进行中=品牌色描边 + 焦点环；待办=灰描边。序号 tabular-nums。</p>
+  <div class="panel" style="padding:22px 18px">
+    <div class="stepper">
+      <div class="step done"><span class="dot"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"/></svg></span><span class="lbl">提交工具</span></div>
+      <span class="ln" style="background:var(--ds-primary)"></span>
+      <div class="step done"><span class="dot"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"/></svg></span><span class="lbl">资料审核</span></div>
+      <span class="ln" style="background:var(--ds-primary)"></span>
+      <div class="step active"><span class="dot num">3</span><span class="lbl">收录上线</span></div>
+      <span class="ln"></span>
+      <div class="step"><span class="dot num">4</span><span class="lbl">数据同步</span></div>
+    </div>
+  </div>
+
+  <!-- 下拉菜单 -->
+  <h2>下拉菜单 Dropdown</h2>
+  <p class="sub">选中项底 info-bg + 品牌色勾；hover 行底 bg-subtle；危险项独立色。快捷键 mono。</p>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+    <div class="dropdown">
+      <button class="btn btn-secondary btn-sm">排序：综合 <svg class="ic" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+    </div>
+    <div class="menu">
+      <a class="mi sel" href="#"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 综合推荐</a>
+      <a class="mi" href="#"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg> 访问量最高 <span class="rt">⌘1</span></a>
+      <a class="mi" href="#"><svg class="ic" viewBox="0 0 24 24"><path d="m12 17-5.9 3.1 1.1-6.6L2.5 9l6.6-1L12 2l2.9 6 6.6 1-4.7 4.5 1.1 6.6z"/></svg> 评分最高 <span class="rt">⌘2</span></a>
+      <a class="mi" href="#"><svg class="ic" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8M21 7v6h-6"/></svg> 增长最快 <span class="rt">⌘3</span></a>
+      <div class="sepln"></div>
+      <a class="mi danger" href="#"><svg class="ic" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m-1 0v14H9V6"/></svg> 清除筛选</a>
+    </div>
+  </div>
+
+  <!-- 工具提示 -->
+  <h2>工具提示 Tooltip</h2>
+  <p class="sub">hover / focus 触发；气泡用 fg/bg 反色，明暗自洽，带指向小三角。</p>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:24px 0">
+    <span class="tip"><button class="btn btn-secondary btn-sm">月访问量 <span class="num">1.8B</span></button><span class="bubble" role="tooltip">数据来源：第三方流量估算（演示）</span></span>
+    <span class="tip"><button class="icon-btn btn btn-ghost" aria-label="收藏"><svg class="ic" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A4.5 4.5 0 0 0 12 6 4.5 4.5 0 0 0 2 8.5C2 13 12 21 12 21s4-3 7-7Z"/></svg></button><span class="bubble" role="tooltip">加入收藏夹</span></span>
+    <span class="tip"><a href="#" style="color:var(--ds-accent);text-decoration:none">中文友好 9.2 <svg class="ic" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></a><span class="bubble" role="tooltip">综合中文界面与本地化能力评估</span></span>
+  </div>
+
+  <!-- 分页 -->
+  <h2>分页 Pagination</h2>
+  <p class="sub">当前页实底品牌色；hover 描边加深；首尾禁用降透明。页码 tabular-nums。</p>
+  <div class="panel" style="padding:16px">
+    <nav class="pager" aria-label="分页">
+      <span class="pg" aria-disabled="true"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></span>
+      <span class="pg cur" aria-current="page">1</span>
+      <span class="pg">2</span>
+      <span class="pg">3</span>
+      <span class="pg">4</span>
+      <span class="gap pg">…</span>
+      <span class="pg">28</span>
+      <span class="pg"><svg class="ic" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+    </nav>
+  </div>
+
+  <!-- Toast -->
+  <h2>Toast 通知</h2>
+  <p class="sub">浮层卡 + 左侧语义色条 + 内联 SVG 图标；不靠颜色单独传达。</p>
+  <div class="toasts">
+    <div class="toast ok"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14.1l-3-3"/></svg></span><div class="tx"><b>已加入对比</b><span>ChatGPT 已加入对比列表，最多可对比 4 项。</span></div><button class="tc" aria-label="关闭"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="toast info"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span><div class="tx"><b>榜单已更新</b><span>流量榜数据已同步至今天 14:30。</span></div><button class="tc" aria-label="关闭"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="toast warn"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg></span><div class="tx"><b>未通过审核</b><span>该工具资料不完整，已暂存草稿。</span></div><button class="tc" aria-label="关闭"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="toast err"><span class="ti"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg></span><div class="tx"><b>提交失败</b><span>官网链接无法访问，请检查后重试。</span></div><button class="tc" aria-label="关闭"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  </div>
+
+  <!-- 模态框 -->
+  <h2>模态框 Modal</h2>
+  <p class="sub">scrim 遮罩 + 抬起卡（shadow-lg）；头/脚分隔；主操作品牌色。</p>
+  <div class="modal-mock">
+    <div class="scrim"></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mdt">
+      <div class="mhd">
+        <span class="tool-mark" style="width:30px;height:30px;border-radius:8px;background:var(--ds-primary);color:#fff;display:grid;place-items:center"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/><circle cx="12" cy="12" r="4"/></svg></span>
+        <span class="mt" id="mdt">提交新工具</span>
+        <button class="x" aria-label="关闭"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="mbd">
+        <label style="display:block;font-size:13px;color:var(--ds-fg);font-weight:500;margin-bottom:6px">工具官网</label>
+        <div class="search" style="max-width:none"><svg class="ic si" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><input placeholder="https://example.com" /></div>
+        <p style="margin:12px 0 0;font-size:13px">收录前我们会自动抓取站点标题与描述，请确认链接可访问。</p>
+      </div>
+      <div class="mft">
+        <button class="btn btn-secondary btn-sm">取消</button>
+        <button class="btn btn-primary btn-sm">提交收录</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 移动端 -->
+  <h2>移动端 Mobile · 约 375px</h2>
+  <p class="sub">手机框 = 顶栏（折叠汉堡）+ 搜索 + 工具卡 + 按钮 + 榜单；所有色走 --ds-*，随 4 主题 / 明暗换肤。</p>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="scr">
+      <div class="mtop">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M16 14l3 3 4-5"/></svg></span>
+        <span class="ttl">HahaTool</span>
+        <button class="ham" aria-label="菜单"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      </div>
+      <div class="mbody">
+        <div class="msearch">
+          <svg class="ic si" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input placeholder="搜索 AI 工具…" />
+        </div>
+        <div class="mcard">
+          <div class="h"><span class="av">C</span><div><div class="nm">ChatGPT</div><span class="badge b-free" style="margin-top:2px">免费起</span></div></div>
+          <div class="tg">OpenAI 出品的对话式 AI，写作、编程、问答全能助手。</div>
+          <div class="ft">
+            <span><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><b class="num">1.8B</b></span>
+            <span><svg class="ic" viewBox="0 0 24 24" style="color:var(--ds-warning)"><path d="m12 17-5.9 3.1 1.1-6.6L2.5 9l6.6-1L12 2l2.9 6 6.6 1-4.7 4.5 1.1 6.6z"/></svg><b class="num">4.9</b></span>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%">官网直达 <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
+        <div class="mcard">
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px">热门榜 · Top 4</div>
+          <div class="mlist">
+            <div class="ri top"><span class="seq">1</span><span class="nm"><span class="av">C</span>ChatGPT</span><span class="vl">1.8B</span></div>
+            <div class="ri top"><span class="seq">2</span><span class="nm"><span class="av">M</span>Midjourney</span><span class="vl">410M</span></div>
+            <div class="ri top"><span class="seq">3</span><span class="nm"><span class="av">N</span>Notion AI</span><span class="vl">220M</span></div>
+            <div class="ri"><span class="seq">4</span><span class="nm"><span class="av">P</span>Perplexity</span><span class="vl">180M</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>HahaTool Kit · 基于企业风 + hahatool 定制 · 契约 --ds-* / 品牌 --brand-* / 图表 --chart-* · 离线双击可用</footer>
+</div>
+
+<script>
+  // 明暗切换（class，对齐项目 darkMode:'class'）
+  var darkBtn = document.getElementById('darkBtn');
+  var darkIcon = document.getElementById('darkIcon');
+  var darkLbl = document.getElementById('darkLbl');
+  var moonPath = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+  var sunPath = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  darkBtn.addEventListener('click', function(){
+    var on = document.documentElement.classList.toggle('dark');
+    darkIcon.innerHTML = on ? sunPath : moonPath;
+    darkLbl.textContent = on ? '亮色' : '暗色';
+    drawRadar();
+  });
+  // 4 套主题色切换
+  document.getElementById('accent').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    document.documentElement.dataset.accent = b.dataset.a;
+    this.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', x===b); });
+    drawRadar();
+  });
+
+  // 手写 SVG 雷达图（双系列）
+  function brand(n, a){
+    var v = getComputedStyle(document.documentElement).getPropertyValue('--brand-'+n).trim();
+    return a == null ? 'rgb('+v+')' : 'rgb('+v+' / '+a+')';  // 现代 rgb(r g b / a) 语法
+  }
+  function poly(scores, R){
+    var cx=100, cy=100, n=scores.length, pts=[];
+    for(var i=0;i<n;i++){
+      var ang = -Math.PI/2 + i*2*Math.PI/n;
+      var r = R*scores[i];
+      pts.push((cx+r*Math.cos(ang)).toFixed(1)+','+(cy+r*Math.sin(ang)).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+  function drawRadar(){
+    var svg = document.getElementById('radar'); if(!svg) return;
+    var dims=['易用性','功能','性价比','生态','中文'], R=72, n=dims.length, cx=100, cy=100;
+    var grid = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim();
+    var label = getComputedStyle(document.documentElement).getPropertyValue('--chart-label').trim();
+    var s='';
+    // 网格圈
+    for(var ring=1;ring<=4;ring++){
+      var rr=R*ring/4, p=[];
+      for(var i=0;i<n;i++){ var a=-Math.PI/2+i*2*Math.PI/n; p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1)); }
+      s+='<polygon points="'+p.join(' ')+'" fill="none" stroke="'+grid+'" stroke-width="1"/>';
+    }
+    // 轴线 + 标签
+    for(var i=0;i<n;i++){
+      var a=-Math.PI/2+i*2*Math.PI/n;
+      s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+R*Math.cos(a)).toFixed(1)+'" y2="'+(cy+R*Math.sin(a)).toFixed(1)+'" stroke="'+grid+'" stroke-width="1"/>';
+      var lx=cx+(R+13)*Math.cos(a), ly=cy+(R+13)*Math.sin(a);
+      var anc = Math.abs(Math.cos(a))<0.3?'middle':(Math.cos(a)>0?'start':'end');
+      s+='<text x="'+lx.toFixed(1)+'" y="'+(ly+3).toFixed(1)+'" fill="'+label+'" font-size="10" text-anchor="'+anc+'">'+dims[i]+'</text>';
+    }
+    // 系列 A (实线)
+    var A=[.95,.9,.7,.85,.92];
+    s+='<polygon points="'+poly(A,R)+'" fill="'+brand(600,0.18)+'" stroke="'+brand(600)+'" stroke-width="2"/>';
+    // 系列 B (虚线)
+    var B=[.7,.95,.5,.6,.5];
+    s+='<polygon points="'+poly(B,R)+'" fill="none" stroke="'+brand(400)+'" stroke-width="2" stroke-dasharray="4 3"/>';
+    svg.innerHTML=s;
+  }
+  drawRadar();
+</script>
+</body>
+</html>

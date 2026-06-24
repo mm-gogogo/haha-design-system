@@ -1,0 +1,104 @@
+/* ============================================================================
+   👾 Pixel / 8-bit Design System — tokens.css
+   ----------------------------------------------------------------------------
+   Token 契约 100% 遵守（--ds-* 全量）。亮色 :root + 暗色 [data-theme="dark"]
+   与 .dark 兼容。气质：CRT 复古游戏机 / 硬边 / 硬实心偏移阴影 / 像素字体回退。
+   ============================================================================ */
+
+:root {
+  /* ---- 表面与文字（亮：旧屏米黄 + 近黑） ------------------------------------ */
+  --ds-bg:           #f4f0e1;   /* 旧 CRT 屏米黄 */
+  --ds-bg-subtle:    #ebe6d3;   /* 次背景：略深的米黄 */
+  --ds-bg-elevated:  #fffdf5;   /* 抬起表面：近白卡片 */
+  --ds-bg-sunken:    #e2dcc6;   /* 凹陷：输入槽/代码块 */
+  --ds-fg:           #1a1a2e;   /* 主文字：近黑墨蓝 */
+  --ds-fg-muted:     #3e3e58;   /* 次要文字 (≈7:1 on bg) */
+  --ds-fg-subtle:    #5b5b73;   /* 弱/占位 (≈4.8:1 on bg) */
+  --ds-fg-on-accent: #1a1a2e;   /* 落在亮色强调上的近黑文字 */
+  --ds-border:       #1a1a2e;   /* 像素描边：默认即粗黑 */
+  --ds-border-strong:#000000;   /* 强描边：纯黑 */
+
+  /* ---- 品牌与强调（经典像素绿 + 像素橙） ----------------------------------- */
+  --ds-primary:        #3ab44a; /* 经典像素绿 */
+  --ds-primary-hover:  #2f9c3e;
+  --ds-primary-active: #237a30;
+  --ds-primary-fg:     #1a1a2e; /* 绿上近黑字 (≈6.3:1 AA；像素键帽常用深字) */
+  --ds-accent:         #c2410c; /* 像素橙（链接用深橙保 AA 文本对比） */
+  --ds-accent-fg:      #ffffff;
+
+  /* ---- 语义状态（饱和像素色 主 / -bg 浅底 / -fg 底上文字） ----------------- */
+  --ds-success:    #237a30; --ds-success-bg: #d9f5dd; --ds-success-fg: #0d3314;
+  --ds-warning:    #8a6b00; --ds-warning-bg: #fdf3c9; --ds-warning-fg: #3d2f00;
+  --ds-danger:     #c1272d; --ds-danger-bg:  #fcdcdd; --ds-danger-fg:  #470a0c;
+  --ds-info:       #1f5fb0; --ds-info-bg:    #d9e9fb; --ds-info-fg:    #0a2547;
+
+  /* ---- 焦点（硬方环：双层硬偏移，无模糊） --------------------------------- */
+  --ds-focus: #f59e0b;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（像素无圆角，最多 2px 阶梯） --------------------------------- */
+  --ds-radius-sm: 0px;
+  --ds-radius-md: 0px;
+  --ds-radius-lg: 2px;
+  --ds-radius-full: 0px;
+
+  /* ---- 间距比例（4px 基） ----------------------------------------------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（像素/等宽优先；"Press Start 2P" 仅声明回退，不外链） -------- */
+  --ds-font-sans: "VT323", "Press Start 2P", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --ds-font-serif: "VT323", ui-monospace, Menlo, monospace;
+  --ds-font-mono: "Press Start 2P", "VT323", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 15px; --ds-text-md: 17px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 38px; --ds-text-3xl: 56px;
+  --ds-leading-tight: 1.15; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 400; --ds-weight-bold: 700;
+  --ds-tracking-tight: 0; --ds-tracking-normal: 0.02em;
+
+  /* ---- 阴影（硬实心偏移，绝不模糊 → 贴纸/按键立体） ---------------------- */
+  --ds-shadow-sm: 2px 2px 0 0 #1a1a2e;
+  --ds-shadow-md: 4px 4px 0 0 #1a1a2e;
+  --ds-shadow-lg: 6px 6px 0 0 #1a1a2e;
+
+  /* ---- 动效（steps 跳帧而非平滑） --------------------------------------- */
+  --ds-ease: steps(4, end);
+  --ds-dur-fast: 80ms; --ds-dur-base: 140ms; --ds-dur-slow: 240ms;
+}
+
+/* ============================================================================
+   暗色主题：深空蓝黑 CRT 底 + 霓虹绿主色（街机霓虹）
+   ============================================================================ */
+[data-theme="dark"], .dark {
+  --ds-bg:           #16161e;   /* 深空蓝黑 CRT 底 */
+  --ds-bg-subtle:    #1d1d28;
+  --ds-bg-elevated:  #22222f;
+  --ds-bg-sunken:    #101017;
+  --ds-fg:           #e6e6f0;   /* 主文字：CRT 冷白 */
+  --ds-fg-muted:     #b6b6cc;   /* (≈8:1 on bg) */
+  --ds-fg-subtle:    #8d8da6;   /* (≈4.9:1 on bg) */
+  --ds-fg-on-accent: #0a0a12;   /* 霓虹色上的近黑 */
+  --ds-border:       #3a3a52;
+  --ds-border-strong:#5a5a7a;
+
+  --ds-primary:        #4ce86a; /* 霓虹绿 */
+  --ds-primary-hover:  #6cf088;
+  --ds-primary-active: #34c452;
+  --ds-primary-fg:     #0a0a12;
+  --ds-accent:         #ff5cf0; /* 霓虹品红 */
+  --ds-accent-fg:      #0a0a12;
+
+  --ds-success:    #4ce86a; --ds-success-bg: #0c2914; --ds-success-fg: #c8ffd6;
+  --ds-warning:    #f5c518; --ds-warning-bg: #2e2400; --ds-warning-fg: #fff3c4;
+  --ds-danger:     #ff6b73; --ds-danger-bg:  #330c10; --ds-danger-fg:  #ffd9dc;
+  --ds-info:       #5cc8ff; --ds-info-bg:    #06223a; --ds-info-fg:    #d3f0ff;
+
+  --ds-focus: #f5c518;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* 暗色硬阴影改用纯黑底（在深底上仍立体） */
+  --ds-shadow-sm: 2px 2px 0 0 #000000;
+  --ds-shadow-md: 4px 4px 0 0 #000000;
+  --ds-shadow-lg: 6px 6px 0 0 #000000;
+}

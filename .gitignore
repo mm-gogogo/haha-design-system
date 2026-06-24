@@ -1,0 +1,20 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node (none committed, but guard)
+node_modules/
+npm-debug.log*
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+*.log
+
+# Secrets — never commit credentials
+.cf-creds
+.env
+.env.*

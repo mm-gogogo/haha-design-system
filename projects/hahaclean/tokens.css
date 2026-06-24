@@ -1,0 +1,124 @@
+/* ============================================================
+   🧹 HahaClean · 哈哈清理 设计系统 Tokens
+   基于「新拟物风」(styles/08-neumorphism) + hahaclean 定制换肤。
+   契约：变量名固定为 --ds-*，只换取值。
+   亮色为主场（项目固定浅色）：root 亮 + [data-theme="dark"]/.dark 暗（供官网 site/）。
+   灵魂 = 同色基底 + 双向软阴影（左上白高光 / 右下深暗影）+ inset 凹陷。
+   换肤 = 清新「洁净」薄荷绿 / 松石青（呼应清理 / 扫帚），柔和平静、不吓人。
+   全部文字 / 图标色满足 WCAG AA（正文 ≥4.5:1，大字 / UI ≥3:1）。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（背景与控件同色，靠阴影分层；底色带极淡薄荷冷调） ---- */
+  --ds-bg: #e6eeec;            /* 薄荷晕染的洁净基底（控件也用它） */
+  --ds-bg-subtle: #e1eae7;     /* 次背景 · 区块 / 分组底 */
+  --ds-bg-elevated: #e6eeec;   /* 卡片 / 弹层 · 同色，靠凸阴影抬起 */
+  --ds-bg-sunken: #dce7e3;     /* 凹陷表面 · 输入槽 / 进度槽 / 选中导航 */
+  --ds-fg: #2f3e3a;            /* 主文字（墨绿灰，亮 9.5:1） */
+  --ds-fg-muted: #51625d;      /* 次要文字（AA 5.5:1） */
+  --ds-fg-subtle: #5e6f6a;     /* 占位 / 弱文字（AA 4.5:1，中文正文勿用此级） */
+  --ds-fg-on-accent: #ffffff;  /* 落在强调 / 主色上的文字 */
+  --ds-border: #cdd9d4;        /* 常规描边（几乎不用，靠阴影） */
+  --ds-border-strong: #b8c6c0; /* 强描边 / 密集列表分隔 */
+
+  /* ---- 品牌与强调（洁净薄荷绿主色 / 松石青 accent） ---- */
+  --ds-primary: #11806c;       /* 薄荷青绿主操作色（白字 4.85:1 AA） */
+  --ds-primary-hover: #0c7a66; /* hover（略深，白字 5.3:1） */
+  --ds-primary-active: #0a6a59;/* active / pressed（白字 6.5:1） */
+  --ds-primary-fg: #ffffff;    /* 主操作上的文字 */
+  --ds-primary-strong: #0b6655;/* 「主色文字」专用（选中导航 / 链接落在 bg 上，5.9:1） */
+  --ds-accent: #1f7a93;        /* 松石青次强调 / 链接（白字 4.9:1） */
+  --ds-accent-fg: #ffffff;     /* accent 上的文字 */
+
+  /* ---- 语义状态（柔和但加深保证底上文字对比度；底色偏色不漂浮） ---- */
+  --ds-success: #157f5b; --ds-success-bg: #dcefe6; --ds-success-fg: #0c5a3f;  /* 可回收 / 安全 */
+  --ds-warning: #b97e1f; --ds-warning-bg: #f5ead0; --ds-warning-fg: #6b4709;  /* 谨慎 / 大占用 */
+  --ds-danger:  #c23a3a; --ds-danger-bg:  #f4dede; --ds-danger-fg:  #7c1d1d;  /* 删除 / 高温 */
+  --ds-info:    #1f7a93; --ds-info-bg:    #d6eae6; --ds-info-fg:    #15584b;  /* 提示 / 扫描中 */
+
+  /* ---- 焦点（双层环：底色环 + 主色环，同色底上也清晰） ---- */
+  --ds-focus: #11806c;
+  --ds-focus-ring: 0 0 0 3px var(--ds-bg), 0 0 0 5px var(--ds-focus);
+
+  /* ---- 圆角（大而圆润，软塑料 / macOS 圆体气质） ---- */
+  --ds-radius-sm: 10px;
+  --ds-radius-md: 16px;
+  --ds-radius-lg: 24px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（"Inter" 打头：真实 woff2 经 _fonts/fonts.css 嵌入；后接 macOS 圆体与中文回退） ---- */
+  --ds-font-sans: "Inter", -apple-system, "SF Pro Rounded", "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "PingFang SC", Georgia, "Songti SC", serif;
+  --ds-font-mono: "SF Mono", ui-monospace, Menlo, "Cascadia Code", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 灵魂（双向软阴影：左上白高光 + 右下青灰暗影） ---- */
+  --ds-shadow-sm: -3px -3px 6px rgba(255,255,255,.75), 3px 3px 6px rgba(120,148,138,.30);
+  --ds-shadow-md: -6px -6px 12px rgba(255,255,255,.85), 6px 6px 12px rgba(120,148,138,.35);
+  --ds-shadow-lg: -10px -10px 20px rgba(255,255,255,.9), 10px 10px 20px rgba(120,148,138,.40);
+  /* 凹陷（inset · 输入 / 进度槽 / 选中导航 / 按下态） */
+  --ds-shadow-inset: inset 4px 4px 8px rgba(120,148,138,.40), inset -4px -4px 8px rgba(255,255,255,.85);
+  --ds-shadow-inset-sm: inset 2px 2px 5px rgba(120,148,138,.35), inset -2px -2px 5px rgba(255,255,255,.8);
+
+  /* ---- 动效（柔顺、平静；凸→凹过渡） ---- */
+  --ds-ease: cubic-bezier(.25,.46,.45,.94);
+  --ds-dur-fast: 200ms; --ds-dur-base: 240ms; --ds-dur-slow: 280ms;
+}
+
+/* ============================================================
+   暗色：深松石灰底，控件同色，亮面减弱、暗面加深。
+   项目固定浅色——本主题供官网 site/ 与系统级深色场景使用。
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #22302c;            /* 深松石灰绿基底 */
+  --ds-bg-subtle: #1f2c28;     /* 次背景 */
+  --ds-bg-elevated: #22302c;   /* 卡片 · 同色靠凸阴影 */
+  --ds-bg-sunken: #1d2925;     /* 凹陷 */
+  --ds-fg: #d6e0db;            /* 主文字（AA 10.2:1） */
+  --ds-fg-muted: #9fb0a9;      /* 次要文字（AA 6.1:1） */
+  --ds-fg-subtle: #8fa099;     /* 弱文字（AA 5.0:1） */
+  --ds-fg-on-accent: #06231d;  /* 深字落在亮薄荷上 */
+  --ds-border: #34433d;
+  --ds-border-strong: #46564f;
+
+  /* ---- 品牌与强调（暗色下提亮成清新薄荷） ---- */
+  --ds-primary: #46d6b8;       /* 亮薄荷青（深字 9.1:1，本色当文字 7.6:1） */
+  --ds-primary-hover: #58dcc1;
+  --ds-primary-active: #6ce0c9;
+  --ds-primary-fg: #06231d;    /* 深字落在亮薄荷上（AA 9.1:1） */
+  --ds-primary-strong: #5fdcc0;/* 主色文字（选中导航 / 链接落在暗 bg，8:1） */
+  --ds-accent: #5ec8e0;        /* 亮松石青 */
+  --ds-accent-fg: #04222b;
+
+  /* ---- 语义状态（暗底浅彩，底上文字加亮保 AA） ---- */
+  --ds-success: #4fc795; --ds-success-bg: #15352b; --ds-success-fg: #bff0dd;
+  --ds-warning: #e0a23b; --ds-warning-bg: #372810; --ds-warning-fg: #fbe6c0;
+  --ds-danger:  #e87b7b; --ds-danger-bg:  #3a2022; --ds-danger-fg:  #fad9d9;
+  --ds-info:    #5ec8e0; --ds-info-bg:    #13322c; --ds-info-fg:    #bdeee2;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #46d6b8;
+  --ds-focus-ring: 0 0 0 3px var(--ds-bg), 0 0 0 5px var(--ds-focus);
+
+  /* ---- 阴影 · 双向（暗面加深近黑，亮面用低透白绿） ---- */
+  --ds-shadow-sm: -3px -3px 6px rgba(58,76,70,.55), 3px 3px 6px rgba(0,0,0,.55);
+  --ds-shadow-md: -6px -6px 12px rgba(58,76,70,.6), 6px 6px 12px rgba(0,0,0,.6);
+  --ds-shadow-lg: -10px -10px 20px rgba(58,76,70,.6), 10px 10px 20px rgba(0,0,0,.65);
+  --ds-shadow-inset: inset 4px 4px 8px rgba(0,0,0,.6), inset -4px -4px 8px rgba(58,76,70,.55);
+  --ds-shadow-inset-sm: inset 2px 2px 5px rgba(0,0,0,.55), inset -2px -2px 5px rgba(58,76,70,.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

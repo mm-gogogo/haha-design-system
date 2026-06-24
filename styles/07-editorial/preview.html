@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editorial · 极简 editorial 风 · 预览</title>
+<style>
+  /* ============================================================
+     Token 契约（内联，无外链）。亮色 :root + 暗色 [data-theme=dark]。
+     ============================================================ */
+  :root {
+    --ds-bg: #faf8f3; --ds-bg-subtle: #f3efe6; --ds-bg-elevated: #fffdf8; --ds-bg-sunken: #ece7db;
+    --ds-fg: #2b2722; --ds-fg-muted: #5c554a; --ds-fg-subtle: #6f6757; --ds-fg-on-accent: #fdf6ef;
+    --ds-border: #e5dfd2; --ds-border-strong: #d4ccbb;
+    --ds-primary: #b4541e; --ds-primary-hover: #9c4517; --ds-primary-active: #823609; --ds-primary-fg: #fdf6ef;
+    --ds-accent: #3f6f5f; --ds-accent-fg: #fdf6ef;
+    --ds-success: #4a7c59; --ds-success-bg: #e9f1e8; --ds-success-fg: #244430;
+    --ds-warning: #b8860b; --ds-warning-bg: #f7efd8; --ds-warning-fg: #5e4404;
+    --ds-danger:  #b03a2e; --ds-danger-bg:  #f7e5e0; --ds-danger-fg:  #5e1a13;
+    --ds-info:    #3f6f8f; --ds-info-bg:    #e4eef3; --ds-info-fg:    #1d3a4c;
+    --ds-focus: #b4541e; --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm: 6px; --ds-radius-md: 10px; --ds-radius-lg: 14px; --ds-radius-full: 9999px;
+    --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;--ds-space-6:24px;
+    --ds-space-7:32px;--ds-space-8:40px;--ds-space-9:48px;--ds-space-10:64px;--ds-space-11:80px;--ds-space-12:96px;
+    --ds-font-serif: "Noto Serif","Source Han Serif SC","Noto Serif SC","Songti SC",Georgia,"Times New Roman",serif;
+    --ds-font-sans: "Inter",-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    --ds-font-mono: "JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --ds-text-xs:13px;--ds-text-sm:14px;--ds-text-base:17px;--ds-text-md:19px;--ds-text-lg:22px;
+    --ds-text-xl:28px;--ds-text-2xl:38px;--ds-text-3xl:52px;
+    --ds-leading-tight:1.25;--ds-leading-normal:1.55;--ds-leading-relaxed:1.85;
+    --ds-weight-normal:400;--ds-weight-medium:500;--ds-weight-bold:600;
+    --ds-tracking-tight:-0.015em;--ds-tracking-normal:0;
+    --ds-shadow-sm: 0 1px 2px rgba(43,39,34,.04);
+    --ds-shadow-md: 0 1px 2px rgba(43,39,34,.03), 0 4px 12px -6px rgba(43,39,34,.08);
+    --ds-shadow-lg: 0 2px 4px rgba(43,39,34,.04), 0 12px 28px -10px rgba(43,39,34,.12);
+    --ds-ease: cubic-bezier(.22,.61,.36,1);
+    --ds-dur-fast:160ms;--ds-dur-base:240ms;--ds-dur-slow:300ms;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg: #1a1714; --ds-bg-subtle: #221e1a; --ds-bg-elevated: #2a2520; --ds-bg-sunken: #15110e;
+    --ds-fg: #ece5d8; --ds-fg-muted: #b3a994; --ds-fg-subtle: #8f846f; --ds-fg-on-accent: #1a1714;
+    --ds-border: #3a342c; --ds-border-strong: #524a3e;
+    --ds-primary: #d97746; --ds-primary-hover: #e2885a; --ds-primary-active: #c9663a; --ds-primary-fg: #1a1714;
+    --ds-accent: #7bae9c; --ds-accent-fg: #112019;
+    --ds-success: #7bb389; --ds-success-bg: #1a2c1f; --ds-success-fg: #d7ecdb;
+    --ds-warning: #d8a93a; --ds-warning-bg: #2e2408; --ds-warning-fg: #f6e8c2;
+    --ds-danger:  #e07a6c; --ds-danger-bg:  #341511; --ds-danger-fg:  #f7ddd6;
+    --ds-info:    #6fa3c2; --ds-info-bg:    #122631; --ds-info-fg:    #d6e8f1;
+    --ds-focus: #d97746; --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --ds-shadow-md: 0 2px 6px -2px rgba(0,0,0,.5), 0 8px 20px -10px rgba(0,0,0,.6);
+    --ds-shadow-lg: 0 4px 10px -2px rgba(0,0,0,.55), 0 16px 32px -12px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--ds-bg); color: var(--ds-fg);
+    font-family: var(--ds-font-serif); font-size: var(--ds-text-base);
+    line-height: var(--ds-leading-relaxed);
+    transition: background var(--ds-dur-slow) var(--ds-ease), color var(--ds-dur-slow) var(--ds-ease);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 界面文字（控件/元信息）走无衬线，建立对比轴 */
+  .sans, .topbar, .btn, .badge, .meta, .alert-title, label, input, select, textarea, th, .tab, .swatch-name, .field-hint { font-family: var(--ds-font-sans); }
+
+  /* ---------- 顶栏（阅读顶栏） ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: var(--ds-space-4);
+    padding: 0 var(--ds-space-6); height: 60px;
+    background: color-mix(in srgb, var(--ds-bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--ds-border);
+  }
+  .brand { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-lg); letter-spacing: var(--ds-tracking-tight); }
+  .brand .dot { color: var(--ds-primary); }
+  .topbar-spacer { flex: 1; }
+  .reader-ctl { display: flex; align-items: center; gap: var(--ds-space-1); }
+  .reader-ctl .grp { display: flex; border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-sm); overflow: hidden; }
+  .reader-ctl button {
+    font-family: var(--ds-font-sans); border: none; background: var(--ds-bg-elevated);
+    color: var(--ds-fg-muted); cursor: pointer; min-width: 38px; height: 36px; font-size: var(--ds-text-sm);
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .reader-ctl .grp button + button { border-left: 1px solid var(--ds-border); }
+  .reader-ctl button:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  .reader-ctl button.active { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .reader-ctl button:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); position: relative; z-index: 1; }
+
+  /* ---------- 布局 ---------- */
+  .page { max-width: 1080px; margin: 0 auto; padding: var(--ds-space-9) var(--ds-space-6) var(--ds-space-12); }
+  section { margin-bottom: var(--ds-space-11); }
+  .sec-label {
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase;
+    letter-spacing: .12em; color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-5);
+    padding-bottom: var(--ds-space-2); border-bottom: 1px solid var(--ds-border);
+  }
+  .lede { font-size: var(--ds-text-md); color: var(--ds-fg-muted); max-width: 680px; text-wrap: pretty; }
+
+  /* ---------- 色板 ---------- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: var(--ds-space-3); }
+  .swatch { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+  .swatch .chip { height: 56px; }
+  .swatch .info { padding: var(--ds-space-2) var(--ds-space-3); }
+  .swatch-name { font-size: var(--ds-text-xs); color: var(--ds-fg); display: block; }
+  .swatch-hex { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .state-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: var(--ds-space-3); }
+  .state-card { border-radius: var(--ds-radius-md); padding: var(--ds-space-4); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+
+  /* ---------- 字体比例尺 ---------- */
+  .type-row { display: flex; align-items: baseline; gap: var(--ds-space-5); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .type-tag { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); width: 130px; flex: none; }
+  .weights { display: flex; gap: var(--ds-space-6); flex-wrap: wrap; margin-top: var(--ds-space-5); }
+  .weights span { font-size: var(--ds-text-lg); }
+
+  /* ---------- 按钮 ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 40px; padding: 0 var(--ds-space-4); border-radius: var(--ds-radius-sm);
+    font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); cursor: pointer;
+    border: 1px solid transparent; background: none; color: var(--ds-fg);
+    transition: background var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .btn-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .btn-primary:hover { background: var(--ds-primary-hover); }
+  .btn-primary:active { background: var(--ds-primary-active); }
+  .btn-secondary { background: var(--ds-bg-elevated); color: var(--ds-fg); border-color: var(--ds-border-strong); }
+  .btn-secondary:hover { background: var(--ds-bg-subtle); }
+  .btn-tertiary { background: transparent; color: var(--ds-primary); }
+  .btn-tertiary:hover { background: var(--ds-bg-subtle); }
+  .btn-danger { background: var(--ds-danger); color: #fff; }
+  .btn-danger:hover { filter: brightness(.94); }
+  .btn:disabled, .btn.is-disabled { opacity: .5; cursor: not-allowed; }
+  .btn-sm { height: 32px; padding: 0 var(--ds-space-3); }
+  .btn-lg { height: 48px; padding: 0 var(--ds-space-6); font-size: var(--ds-text-base); }
+  .btn-grid { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; }
+
+  /* ---------- 表单 ---------- */
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: var(--ds-space-5); max-width: 760px; }
+  .field { display: flex; flex-direction: column; gap: var(--ds-space-2); }
+  label { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  input[type=text], input[type=email], textarea, select {
+    height: 40px; padding: 0 var(--ds-space-3); font-size: var(--ds-text-sm);
+    background: var(--ds-bg-elevated); color: var(--ds-fg);
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); width: 100%;
+    transition: border-color var(--ds-dur-fast) var(--ds-ease), box-shadow var(--ds-dur-fast) var(--ds-ease);
+  }
+  textarea { height: auto; padding: var(--ds-space-3); resize: vertical; min-height: 84px; line-height: var(--ds-leading-normal); }
+  input::placeholder, textarea::placeholder { color: var(--ds-fg-subtle); }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ds-primary); box-shadow: var(--ds-focus-ring); }
+  .field-hint { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .field.err input { border-color: var(--ds-danger); }
+  .field.err .field-hint { color: var(--ds-danger); }
+  .choice { display: flex; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+  input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-color: var(--ds-primary); }
+  /* switch */
+  .switch { position: relative; width: 44px; height: 24px; flex: none; }
+  .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--ds-border-strong); border-radius: var(--ds-radius-full); transition: background var(--ds-dur-base) var(--ds-ease); }
+  .switch .thumb { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: var(--ds-bg-elevated); border-radius: 50%; transition: transform var(--ds-dur-base) var(--ds-ease); box-shadow: var(--ds-shadow-sm); }
+  .switch input:checked + .track { background: var(--ds-primary); }
+  .switch input:checked + .track + .thumb { transform: translateX(20px); }
+  .switch input:focus-visible + .track { box-shadow: var(--ds-focus-ring); }
+
+  /* ---------- 卡片 ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: var(--ds-space-5); }
+  .card {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); padding: var(--ds-space-6); box-shadow: var(--ds-shadow-sm);
+    transition: border-color var(--ds-dur-base) var(--ds-ease), box-shadow var(--ds-dur-base) var(--ds-ease);
+  }
+  .card:hover { border-color: var(--ds-border-strong); box-shadow: var(--ds-shadow-md); }
+  .card h3 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); margin: 0 0 var(--ds-space-2); font-weight: var(--ds-weight-bold); }
+  .card .meta { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-bottom: var(--ds-space-3); }
+  .card p { margin: 0 0 var(--ds-space-4); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); line-height: var(--ds-leading-normal); }
+
+  /* ---------- 徽章/标签 ---------- */
+  .badge {
+    display: inline-flex; align-items: center; height: 22px; padding: 0 var(--ds-space-2);
+    border-radius: var(--ds-radius-full); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium);
+    background: var(--ds-bg-subtle); color: var(--ds-fg-muted);
+  }
+  .badge.success { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+  .badge.warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+  .badge.danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg); }
+  .badge.info    { background: var(--ds-info-bg);    color: var(--ds-info-fg); }
+  .badge.primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .badge-row { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; align-items: center; }
+
+  /* ---------- 内联图标（统一细线，1em，继承 currentColor） ---------- */
+  .ico-svg { width: 1em; height: 1em; flex: none; vertical-align: -0.125em; }
+  .ico-svg.lg { width: 18px; height: 18px; }
+
+  /* ---------- alert（前置语义图标 + 浅底 + 1px 全描边，无侧边色条） ---------- */
+  .alert { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4); border-radius: var(--ds-radius-md); margin-bottom: var(--ds-space-3); border: 1px solid; }
+  .alert .alert-ico { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+  .alert .alert-ico svg { width: 20px; height: 20px; display: block; }
+  .alert .alert-title { font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); margin: 0 0 2px; }
+  .alert p { margin: 0; font-size: var(--ds-text-sm); line-height: var(--ds-leading-normal); }
+  .alert.success { background: var(--ds-success-bg); color: var(--ds-success-fg); border-color: color-mix(in srgb, var(--ds-success) 50%, var(--ds-border)); }
+  .alert.success .alert-ico { color: var(--ds-success); }
+  .alert.warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); border-color: color-mix(in srgb, var(--ds-warning) 50%, var(--ds-border)); }
+  .alert.warning .alert-ico { color: var(--ds-warning); }
+  .alert.danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg);  border-color: color-mix(in srgb, var(--ds-danger) 50%, var(--ds-border)); }
+  .alert.danger .alert-ico { color: var(--ds-danger); }
+  .alert.info    { background: var(--ds-info-bg);    color: var(--ds-info-fg);    border-color: color-mix(in srgb, var(--ds-info) 50%, var(--ds-border)); }
+  .alert.info .alert-ico { color: var(--ds-info); }
+
+  /* ---------- tabs ---------- */
+  .tabs { display: flex; gap: var(--ds-space-5); border-bottom: 1px solid var(--ds-border); margin-bottom: var(--ds-space-4); }
+  .tab { font-family: var(--ds-font-sans); padding: var(--ds-space-3) 0; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .tab:hover { color: var(--ds-fg); }
+  .tab.active { color: var(--ds-fg); border-bottom-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+
+  /* ---------- 表格 ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: var(--ds-text-sm); }
+  th, td { text-align: left; padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  th { font-family: var(--ds-font-sans); font-weight: var(--ds-weight-medium); color: var(--ds-fg-muted); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .06em; }
+  td { color: var(--ds-fg); }
+  td.num, th.num { text-align: right; font-family: var(--ds-font-mono); font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: var(--ds-bg-subtle); }
+
+  /* ---------- 真实排版文章 ---------- */
+  .article { max-width: 680px; margin: 0 auto; }
+  .article .kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-primary); margin: 0 0 var(--ds-space-3); }
+  .article h1 { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); text-wrap: balance; margin: 0 0 var(--ds-space-4); }
+  .article .byline { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-7); }
+  .article .article-lede { font-size: var(--ds-text-md); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-7); text-wrap: pretty; }
+  .article h2 { font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); margin: var(--ds-space-8) 0 var(--ds-space-3); padding-bottom: var(--ds-space-2); border-bottom: 1px solid var(--ds-border); text-wrap: balance; }
+  .article h3 { font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); margin: var(--ds-space-7) 0 var(--ds-space-2); }
+  .article p { margin: 0 0 var(--ds-space-6); line-height: var(--ds-leading-relaxed); text-wrap: pretty; }
+  .article p.first::first-letter {
+    float: left; font-size: 3.4em; line-height: .82; padding: 6px 10px 0 0; color: var(--ds-primary); font-weight: var(--ds-weight-bold);
+  }
+  .article a { color: var(--ds-accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--ds-accent) 40%, transparent); transition: border-color var(--ds-dur-fast) var(--ds-ease); }
+  .article a:hover { border-bottom-color: var(--ds-accent); }
+  .article blockquote { margin: var(--ds-space-7) 0; padding: var(--ds-space-2) 0 var(--ds-space-2) var(--ds-space-5); border-left: 3px solid var(--ds-primary); color: var(--ds-fg-muted); font-style: italic; }
+  .article blockquote p { margin: 0; }
+  .article blockquote cite { display: block; font-style: normal; font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-subtle); margin-top: var(--ds-space-2); }
+  .article code { font-family: var(--ds-font-mono); font-size: .88em; background: var(--ds-bg-sunken); padding: 2px 6px; border-radius: var(--ds-radius-sm); }
+  .article pre { background: var(--ds-bg-sunken); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-4); overflow-x: auto; margin: 0 0 var(--ds-space-6); }
+  .article pre code { background: none; padding: 0; font-size: var(--ds-text-sm); line-height: 1.6; color: var(--ds-fg); display: block; }
+  .article ul { padding-left: var(--ds-space-5); margin: 0 0 var(--ds-space-6); }
+  .article li { margin-bottom: var(--ds-space-2); line-height: var(--ds-leading-relaxed); }
+  .article li::marker { color: var(--ds-fg-subtle); }
+  .article .rule { text-align: center; color: var(--ds-fg-subtle); letter-spacing: .5em; margin: var(--ds-space-8) 0; }
+  .article .footnote { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); border-top: 1px solid var(--ds-border); padding-top: var(--ds-space-4); margin-top: var(--ds-space-8); }
+  .tok-syn { color: var(--ds-primary); }
+  .tok-str { color: var(--ds-accent); }
+  .tok-com { color: var(--ds-fg-subtle); }
+
+  /* ---------- 面包屑 Breadcrumb ---------- */
+  .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); }
+  .breadcrumb a { color: var(--ds-fg-muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease); }
+  .breadcrumb a:hover { color: var(--ds-primary); border-bottom-color: color-mix(in srgb, var(--ds-primary) 40%, transparent); }
+  .breadcrumb a:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); border-radius: 2px; }
+  .breadcrumb .sep { color: var(--ds-fg-subtle); }
+  .breadcrumb [aria-current="page"] { color: var(--ds-fg); }
+
+  /* ---------- 分页 Pagination ---------- */
+  .pager { display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; font-family: var(--ds-font-sans); }
+  .pager a, .pager span.page {
+    display: inline-flex; align-items: center; justify-content: center; min-width: 38px; height: 38px; padding: 0 var(--ds-space-3);
+    font-size: var(--ds-text-sm); color: var(--ds-fg-muted); text-decoration: none; cursor: pointer;
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); background: var(--ds-bg-elevated);
+    transition: border-color var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease), background var(--ds-dur-fast) var(--ds-ease);
+  }
+  .pager a:hover { border-color: var(--ds-border-strong); color: var(--ds-fg); background: var(--ds-bg-subtle); }
+  .pager a:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .pager .page.active { border-color: var(--ds-primary); color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .pager .gap { border: none; background: none; color: var(--ds-fg-subtle); min-width: 24px; cursor: default; }
+  .pager .ends { color: var(--ds-fg); }
+  /* 文章翻页（上一篇/下一篇） */
+  .pager-article { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-4); margin-top: var(--ds-space-6); }
+  .pager-article a {
+    display: block; padding: var(--ds-space-4); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md);
+    background: var(--ds-bg-elevated); text-decoration: none; color: var(--ds-fg);
+    transition: border-color var(--ds-dur-base) var(--ds-ease), box-shadow var(--ds-dur-base) var(--ds-ease);
+  }
+  .pager-article a:hover { border-color: var(--ds-border-strong); box-shadow: var(--ds-shadow-md); }
+  .pager-article a:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .pager-article a.next { text-align: right; }
+  .pager-article .dir { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-fg-subtle); }
+  .pager-article .ttl { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); margin-top: var(--ds-space-2); }
+
+  /* ---------- 步进器 / 阅读进度 Stepper ---------- */
+  .stepper { display: flex; align-items: flex-start; font-family: var(--ds-font-sans); }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .step .num {
+    width: 30px; height: 30px; border-radius: var(--ds-radius-full); display: inline-flex; align-items: center; justify-content: center;
+    font-size: var(--ds-text-sm); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); z-index: 1;
+    transition: background var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .step .label { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-top: var(--ds-space-2); }
+  /* 连接线（落在圆点中线，左右各连半段） */
+  .step:not(:first-child)::before { content: ""; position: absolute; top: 15px; right: 50%; left: -50%; height: 1px; background: var(--ds-border); }
+  .step.done:not(:first-child)::before, .step.current:not(:first-child)::before { background: var(--ds-primary); }
+  .step.done .num { background: var(--ds-primary); border-color: var(--ds-primary); color: var(--ds-primary-fg); }
+  .step.current .num { border-color: var(--ds-primary); color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .step.current .label, .step.done .label { color: var(--ds-fg); }
+
+  /* ---------- 下拉菜单 Dropdown ---------- */
+  .dropdown { position: relative; display: inline-block; }
+  .menu {
+    position: absolute; top: calc(100% + var(--ds-space-2)); left: 0; min-width: 180px; z-index: 30;
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-lg); padding: var(--ds-space-2); font-family: var(--ds-font-sans);
+  }
+  .menu[hidden] { display: none; }
+  .menu .menu-item {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-4);
+    padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); font-size: var(--ds-text-sm);
+    color: var(--ds-fg); cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .menu .menu-item:hover, .menu .menu-item:focus-visible { background: var(--ds-bg-subtle); outline: none; }
+  .menu .menu-item.selected { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .menu .menu-item .check { color: var(--ds-primary); width: 16px; height: 16px; flex: none; opacity: 0; }
+  .menu .menu-item.selected .check { opacity: 1; }
+  .menu .menu-item .kbd { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .menu .menu-sep { height: 1px; background: var(--ds-border); margin: var(--ds-space-2) 0; }
+  .menu .menu-label { padding: var(--ds-space-1) var(--ds-space-3); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--ds-fg-subtle); }
+
+  /* ---------- 工具提示 Tooltip ---------- */
+  .tip { position: relative; display: inline-block; }
+  .tip .tip-bubble {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    background: var(--ds-fg); color: var(--ds-bg); font-family: var(--ds-font-sans); font-size: var(--ds-text-xs);
+    padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); white-space: nowrap;
+    opacity: 0; visibility: hidden; pointer-events: none; box-shadow: var(--ds-shadow-md);
+    transition: opacity var(--ds-dur-fast) var(--ds-ease), visibility var(--ds-dur-fast) var(--ds-ease);
+  }
+  .tip .tip-bubble::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--ds-fg); }
+  .tip:hover .tip-bubble, .tip:focus-within .tip-bubble { opacity: 1; visibility: visible; }
+
+  /* ---------- 模态框 Modal ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--ds-fg) 35%, transparent); padding: var(--ds-space-5);
+    opacity: 0; visibility: hidden; transition: opacity var(--ds-dur-base) var(--ds-ease), visibility var(--ds-dur-base) var(--ds-ease);
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg); max-width: 480px; width: 100%; padding: var(--ds-space-7);
+    transform: translateY(8px); transition: transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal h3 { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); }
+  .modal p { margin: 0 0 var(--ds-space-6); color: var(--ds-fg-muted); font-size: var(--ds-text-base); line-height: var(--ds-leading-normal); }
+  .modal .modal-actions { display: flex; justify-content: flex-end; gap: var(--ds-space-3); }
+
+  /* ---------- Toast 通知 ---------- */
+  .toast-wrap { position: fixed; bottom: var(--ds-space-6); right: var(--ds-space-6); z-index: 60; display: flex; flex-direction: column; gap: var(--ds-space-3); max-width: 360px; }
+  .toast {
+    display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-4);
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-lg); font-family: var(--ds-font-sans);
+    transform: translateY(8px); opacity: 0; transition: transform var(--ds-dur-base) var(--ds-ease), opacity var(--ds-dur-base) var(--ds-ease);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast .toast-ico { flex: none; width: 20px; height: 20px; margin-top: 1px; color: var(--ds-primary); }
+  .toast .toast-ico svg { width: 20px; height: 20px; display: block; }
+  .toast.success .toast-ico { color: var(--ds-success); }
+  .toast.danger .toast-ico { color: var(--ds-danger); }
+  .toast .toast-body { flex: 1; }
+  .toast .toast-title { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); color: var(--ds-fg); margin: 0 0 2px; }
+  .toast .toast-msg { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+  .toast .toast-close { border: none; background: none; color: var(--ds-fg-subtle); cursor: pointer; font-size: var(--ds-text-md); line-height: 1; padding: 0; }
+  .toast .toast-close:hover { color: var(--ds-fg); }
+
+  /* ---------- 移动端框 Mobile frame ---------- */
+  .phone {
+    width: 375px; max-width: 100%; margin: 0 auto; border: 1px solid var(--ds-border-strong);
+    border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-bg); box-shadow: var(--ds-shadow-lg);
+  }
+  .phone-bar {
+    display: flex; align-items: center; gap: var(--ds-space-3); height: 52px; padding: 0 var(--ds-space-4);
+    border-bottom: 1px solid var(--ds-border); background: color-mix(in srgb, var(--ds-bg) 88%, transparent);
+    font-family: var(--ds-font-sans);
+  }
+  .phone-bar .ico { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); background: var(--ds-bg-elevated); }
+  .phone-bar .ttl { flex: 1; font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-base); }
+  .phone-body { padding: var(--ds-space-5) var(--ds-space-5) var(--ds-space-6); }
+  .phone-body .kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-primary); margin: 0 0 var(--ds-space-2); }
+  .phone-body h2 { font-family: var(--ds-font-serif); font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); letter-spacing: var(--ds-tracking-tight); margin: 0 0 var(--ds-space-3); text-wrap: balance; }
+  .phone-body .byline { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-5); }
+  .phone-body p { font-size: var(--ds-text-base); line-height: var(--ds-leading-relaxed); margin: 0 0 var(--ds-space-4); }
+  /* 移动端目录 */
+  .phone-toc { border-top: 1px solid var(--ds-border); margin-top: var(--ds-space-5); padding-top: var(--ds-space-4); }
+  .phone-toc .toc-label { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-3); }
+  .phone-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  .phone-toc li { counter-increment: toc; display: flex; align-items: baseline; gap: var(--ds-space-3); padding: var(--ds-space-2) 0; border-bottom: 1px solid var(--ds-border); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+  .phone-toc li::before { content: counter(toc, decimal-leading-zero); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .phone-toc li.active { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .phone-toc li.active::before { color: var(--ds-primary); }
+
+  /* ---------- 响应式断点 ---------- */
+  @media (max-width: 640px) {
+    .page { padding: var(--ds-space-7) var(--ds-space-5) var(--ds-space-10); }
+    .topbar { padding: 0 var(--ds-space-4); gap: var(--ds-space-2); }
+    section { margin-bottom: var(--ds-space-9); }
+    /* 多列栅格收成一列 */
+    .swatches, .state-row, .cards, .form { grid-template-columns: 1fr; }
+    .pager-article { grid-template-columns: 1fr; }
+    /* 阅读容器满宽留边 */
+    .article, .lede { max-width: 100%; }
+    .article h1 { font-size: var(--ds-text-xl); }
+    .article h2 { font-size: var(--ds-text-lg); }
+    /* 字号比例尺行换行避免溢出 */
+    .type-row { flex-wrap: wrap; gap: var(--ds-space-2); }
+    .type-tag { width: auto; }
+    .toast-wrap { left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-4); max-width: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+  <!-- 阅读顶栏：字号切换 + 主题切换 -->
+  <header class="topbar">
+    <span class="brand">纸页<span class="dot">.</span></span>
+    <span class="topbar-spacer"></span>
+    <div class="reader-ctl">
+      <div class="grp" role="group" aria-label="字号">
+        <button onclick="setFont(15)">A−</button>
+        <button class="active" onclick="setFont(17)">A</button>
+        <button onclick="setFont(19)">A＋</button>
+      </div>
+      <button class="grp" id="themeBtn" onclick="toggleTheme()" style="border-radius:var(--ds-radius-sm);padding:0 14px;display:inline-flex;align-items:center;gap:6px;" aria-label="切换主题">
+        <svg class="ico-svg" id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <span id="themeTxt">夜读</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <!-- 标题区 -->
+    <section>
+      <p class="sec-label">Design System Kit</p>
+      <h1 style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight);line-height:var(--ds-leading-tight);margin:0 0 var(--ds-space-4);text-wrap:balance;display:flex;align-items:center;gap:var(--ds-space-4);">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--ds-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v12"/></svg>
+        极简 editorial 风
+      </h1>
+      <p class="lede">排版优先、衬线为骨、暖纸为底、大留白大行高的阅读系统。给阅读站、博客、文档、内容社区、长文——让长文读起来舒服。点右上角切换 <b>夜读模式</b> 与正文字号。</p>
+    </section>
+
+    <!-- 色板 -->
+    <section>
+      <p class="sec-label">颜色 · 表面与文字</p>
+      <div class="swatches" id="surfSwatches"></div>
+      <p class="sec-label" style="margin-top:var(--ds-space-7);">颜色 · 品牌与强调</p>
+      <div class="swatches" id="brandSwatches"></div>
+      <p class="sec-label" style="margin-top:var(--ds-space-7);">颜色 · 语义状态</p>
+      <div class="state-row" id="stateRow"></div>
+    </section>
+
+    <!-- 字体 -->
+    <section>
+      <p class="sec-label">字体 · 对比轴（衬线正文 / 无衬线控件）</p>
+      <div class="type-row"><span class="type-tag">3xl · 52</span><span style="font-size:var(--ds-text-3xl);letter-spacing:var(--ds-tracking-tight);">阅读，是一种慢</span></div>
+      <div class="type-row"><span class="type-tag">2xl · 38 · h1</span><span style="font-size:var(--ds-text-2xl);letter-spacing:var(--ds-tracking-tight);">标题与留白的呼吸</span></div>
+      <div class="type-row"><span class="type-tag">xl · 28 · h2</span><span style="font-size:var(--ds-text-xl);">章节之间的停顿</span></div>
+      <div class="type-row"><span class="type-tag">lg · 22 · h3</span><span style="font-size:var(--ds-text-lg);">小节标题 Heading</span></div>
+      <div class="type-row"><span class="type-tag">md · 19 · 导语</span><span style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);">导语用稍大的灰墨，引人入文。</span></div>
+      <div class="type-row"><span class="type-tag">base · 17 · 正文</span><span style="font-size:var(--ds-text-base);">正文衬线，行高 1.85，读三千字不累眼。</span></div>
+      <div class="type-row"><span class="type-tag sans">sm · 14 · 元信息</span><span class="sans" style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);">作者 · 日期 · 阅读时长（无衬线）</span></div>
+      <div class="type-row"><span class="type-tag sans">xs · 13 · 脚注</span><span class="sans" style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);">脚注与版权（无衬线 muted）</span></div>
+      <div class="weights">
+        <span style="font-weight:var(--ds-weight-normal);">Normal 400 衬线正文</span>
+        <span style="font-weight:var(--ds-weight-medium);">Medium 500 强调</span>
+        <span style="font-weight:var(--ds-weight-bold);">Bold 600 标题</span>
+      </div>
+    </section>
+
+    <!-- 按钮 -->
+    <section>
+      <p class="sec-label">按钮（控件走无衬线）</p>
+      <div class="btn-grid" style="margin-bottom:var(--ds-space-4);">
+        <button class="btn btn-primary">主操作</button>
+        <button class="btn btn-secondary">次操作</button>
+        <button class="btn btn-tertiary">文字按钮</button>
+        <button class="btn btn-danger">删除</button>
+        <button class="btn btn-primary is-disabled" disabled>禁用</button>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-primary btn-sm">小 32</button>
+        <button class="btn btn-primary">中 40</button>
+        <button class="btn btn-primary btn-lg">大 48</button>
+      </div>
+    </section>
+
+    <!-- 表单 -->
+    <section>
+      <p class="sec-label">表单（聚焦看焦点环）</p>
+      <div class="form">
+        <div class="field">
+          <label for="i1">姓名</label>
+          <input id="i1" type="text" placeholder="请输入你的名字">
+          <span class="field-hint">显示在文章署名处</span>
+        </div>
+        <div class="field err">
+          <label for="i2">邮箱</label>
+          <input id="i2" type="email" value="not-an-email" aria-invalid="true">
+          <span class="field-hint">邮箱格式不正确</span>
+        </div>
+        <div class="field">
+          <label for="s1">栏目</label>
+          <select id="s1"><option>随笔</option><option>评论</option><option>书摘</option></select>
+        </div>
+        <div class="field" style="grid-column:1/-1;">
+          <label for="t1">简介</label>
+          <textarea id="t1" placeholder="一句话介绍这篇文章……"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;margin-top:var(--ds-space-5);align-items:center;">
+        <label class="choice"><input type="checkbox" checked> 订阅周刊</label>
+        <label class="choice"><input type="radio" name="r" checked> 衬线</label>
+        <label class="choice"><input type="radio" name="r"> 无衬线</label>
+        <label class="choice"><span class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></span> 夜读自动</label>
+      </div>
+    </section>
+
+    <!-- 卡片 -->
+    <section>
+      <p class="sec-label">卡片</p>
+      <div class="cards">
+        <div class="card">
+          <h3>论安静的版面</h3>
+          <p class="meta sans">林木 · 6 月 18 日 · 8 分钟</p>
+          <p>真正的留白不是空，而是给文字留出呼吸的余地。本文谈版面节奏与阅读密度。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">继续阅读 →</button>
+        </div>
+        <div class="card">
+          <h3>衬线为什么耐读</h3>
+          <p class="meta sans">苏白 · 6 月 12 日 · 5 分钟</p>
+          <p>笔画的起收引导视线，长文里衬线比无衬线更省力。一次关于字族的小考据。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">继续阅读 →</button>
+        </div>
+        <div class="card">
+          <h3>暖纸色的心理学</h3>
+          <p class="meta sans">青禾 · 6 月 5 日 · 6 分钟</p>
+          <p>为什么纸面比纯白屏幕更让人安定？从对比度与色温说起。</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">继续阅读 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 徽章 -->
+    <section>
+      <p class="sec-label">徽章 / 标签</p>
+      <div class="badge-row">
+        <span class="badge">默认</span>
+        <span class="badge primary">精选</span>
+        <span class="badge success">已发布</span>
+        <span class="badge warning">草稿</span>
+        <span class="badge danger">已下线</span>
+        <span class="badge info">连载中</span>
+        <span class="badge" style="background:transparent;border:1px solid var(--ds-border-strong);">＃随笔</span>
+        <span class="badge" style="background:transparent;border:1px solid var(--ds-border-strong);">＃书评</span>
+      </div>
+    </section>
+
+    <!-- alert -->
+    <section>
+      <p class="sec-label">提示条 Alert</p>
+      <div class="alert success"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg></span><div><p class="alert-title">已保存</p><p>草稿已自动保存到云端。</p></div></div>
+      <div class="alert warning"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 2.3 18a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><div><p class="alert-title">未发布</p><p>这篇文章尚处于草稿状态，他人无法查看。</p></div></div>
+      <div class="alert danger"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span><div><p class="alert-title">发布失败</p><p>网络异常，请检查连接后重试。</p></div></div>
+      <div class="alert info"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div><p class="alert-title">小贴士</p><p>开启夜读模式，长时间阅读更护眼。</p></div></div>
+    </section>
+
+    <!-- 导航 tab -->
+    <section>
+      <p class="sec-label">导航 · Tabs</p>
+      <div class="tabs">
+        <div class="tab active">最新</div>
+        <div class="tab">热门</div>
+        <div class="tab">连载</div>
+        <div class="tab">收藏</div>
+      </div>
+      <p class="sans" style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);margin:0;">顶栏见页面最上方——含字号切换 A−/A/A＋ 与日/夜主题切换。</p>
+    </section>
+
+    <!-- 面包屑 -->
+    <section>
+      <p class="sec-label">面包屑 Breadcrumb</p>
+      <nav class="breadcrumb" aria-label="面包屑">
+        <a href="#">首页</a>
+        <span class="sep">/</span>
+        <a href="#">随笔</a>
+        <span class="sep">/</span>
+        <a href="#">版面</a>
+        <span class="sep">/</span>
+        <span aria-current="page">论安静的版面</span>
+      </nav>
+    </section>
+
+    <!-- 下拉菜单 / 工具提示 -->
+    <section>
+      <p class="sec-label">下拉菜单 Dropdown · 工具提示 Tooltip</p>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;align-items:flex-start;">
+        <div class="dropdown">
+          <button class="btn btn-secondary" id="ddBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()" style="gap:6px;">栏目 <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="menu" id="ddMenu" role="menu" hidden>
+            <div class="menu-label">内容栏目</div>
+            <button class="menu-item selected" role="menuitem"><span>随笔</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></button>
+            <button class="menu-item" role="menuitem"><span>评论</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></button>
+            <button class="menu-item" role="menuitem"><span>书摘</span><span class="kbd">⌘3</span></button>
+            <div class="menu-sep"></div>
+            <button class="menu-item" role="menuitem"><span>新建栏目…</span></button>
+          </div>
+        </div>
+        <span class="tip">
+          <button class="btn btn-secondary" aria-describedby="tip1">悬停看提示</button>
+          <span class="tip-bubble" role="tooltip" id="tip1">约 8 分钟阅读</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- 步进器 / 阅读进度 -->
+    <section>
+      <p class="sec-label">步进器 / 阅读进度 Stepper</p>
+      <div class="stepper" role="list">
+        <div class="step done" role="listitem"><span class="num"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span><span class="label">引言</span></div>
+        <div class="step done" role="listitem"><span class="num"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span><span class="label">版面</span></div>
+        <div class="step current" role="listitem" aria-current="step"><span class="num">3</span><span class="label">衬线</span></div>
+        <div class="step" role="listitem"><span class="num">4</span><span class="label">暖纸</span></div>
+        <div class="step" role="listitem"><span class="num">5</span><span class="label">结语</span></div>
+      </div>
+    </section>
+
+    <!-- 分页 -->
+    <section>
+      <p class="sec-label">分页 Pagination · 目录翻页</p>
+      <nav class="pager" aria-label="分页">
+        <a href="#" class="ends" aria-label="上一页">←</a>
+        <span class="page">1</span>
+        <span class="page active" aria-current="page">2</span>
+        <span class="page">3</span>
+        <span class="gap">…</span>
+        <span class="page">12</span>
+        <a href="#" class="ends" aria-label="下一页">→</a>
+      </nav>
+      <div class="pager-article">
+        <a href="#" class="prev"><div class="dir">← 上一篇</div><div class="ttl">衬线为什么耐读</div></a>
+        <a href="#" class="next"><div class="dir">下一篇 →</div><div class="ttl">暖纸色的心理学</div></a>
+      </div>
+    </section>
+
+    <!-- 模态框 / Toast 触发 -->
+    <section>
+      <p class="sec-label">模态框 Modal · Toast 通知</p>
+      <div class="btn-grid">
+        <button class="btn btn-primary" onclick="openModal()">打开模态框</button>
+        <button class="btn btn-secondary" onclick="showToast('success','已发布','文章已成功发布到「随笔」栏目。')">触发 Toast（成功）</button>
+        <button class="btn btn-secondary" onclick="showToast('danger','发布失败','网络异常，请稍后重试。')">触发 Toast（错误）</button>
+      </div>
+    </section>
+
+    <!-- 移动端 -->
+    <section>
+      <p class="sec-label">移动端 Mobile · ~375px 阅读视图</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">手机框含阅读顶栏、文章排版与目录。栅格在 ≤640px 收为单列，阅读容器满宽留边。</p>
+      <div class="phone">
+        <div class="phone-bar">
+          <span class="ico" aria-label="目录"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>
+          <span class="ttl">纸页<span style="color:var(--ds-primary);">.</span></span>
+          <span class="ico" aria-label="字号" style="font-family:var(--ds-font-sans);">A</span>
+          <span class="ico" aria-label="夜读"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></span>
+        </div>
+        <div class="phone-body">
+          <p class="kicker">随笔</p>
+          <h2>论安静的版面</h2>
+          <p class="byline">林木 · 6 月 18 日 · 8 分钟</p>
+          <p>一个好的阅读界面，应当让人忘记界面本身。它把自己退到背景里，只留下文字、空白，与读者之间安静的对话。</p>
+          <p>移动端正文容器满宽，左右各留 20px 边距；字号与桌面一致（17px 起），行高仍是 1.85。</p>
+          <div class="phone-toc">
+            <p class="toc-label">目录</p>
+            <ol>
+              <li class="active">论安静的版面</li>
+              <li>衬线，与一种缓慢的引导</li>
+              <li>暖纸，而非冷白</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 表格 -->
+    <section>
+      <p class="sec-label">表格（无衬线表头 · tabular 数字）</p>
+      <table>
+        <thead><tr><th>文章</th><th>栏目</th><th class="num">字数</th><th class="num">阅读量</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>论安静的版面</td><td>随笔</td><td class="num">3,280</td><td class="num">12,940</td><td><span class="badge success">已发布</span></td></tr>
+          <tr><td>衬线为什么耐读</td><td>考据</td><td class="num">2,110</td><td class="num">8,512</td><td><span class="badge success">已发布</span></td></tr>
+          <tr><td>暖纸色的心理学</td><td>评论</td><td class="num">2,640</td><td class="num">6,073</td><td><span class="badge warning">草稿</span></td></tr>
+          <tr><td>关于脚注的脚注</td><td>随笔</td><td class="num">1,455</td><td class="num">3,201</td><td><span class="badge info">连载中</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 真实排版示例文章 -->
+    <section>
+      <p class="sec-label">真实排版示例 · 长文</p>
+      <article class="article">
+        <p class="kicker">随笔</p>
+        <h1>论安静的版面：留白、衬线与一页好读的纸</h1>
+        <p class="byline">林木 · 2026 年 6 月 18 日 · 约 8 分钟</p>
+        <p class="article-lede">一个好的阅读界面，应当让人忘记界面本身。它把自己退到背景里，只留下文字、空白，与读者之间安静的对话。</p>
+
+        <p class="first">我们常误以为「设计」意味着添加——更多色彩、更多阴影、更多动效。但在阅读的语境里，真正困难的是<a href="#">克制</a>：知道哪些东西不该出现。一页好读的纸，往往是被减出来的，而不是被堆出来的。</p>
+
+        <p>排版优先意味着，正文不是装饰，而是产品本身。于是字号要够大（十七像素起步），行高要够松（一点八五，中文方块字尤其需要），每行的字数要控制在三十多个汉字之内——超过这个宽度，眼睛回到行首时就容易迷路。</p>
+
+        <h2>衬线，与一种缓慢的引导</h2>
+        <p>衬线字的笔画起收，像是给视线安排的小小路标。在长文里，它比无衬线更省力。我们因此把界面分成两套字族：正文与标题用衬线，按钮、日期、署名这些<em>界面元信息</em>用无衬线。两者的对比，本身就是一种层级。</p>
+
+        <blockquote>
+          <p>「留白不是空白。它是版面在呼吸时，胸腔起伏的那段距离。」</p>
+          <cite>— 某位不愿署名的排版师</cite>
+        </blockquote>
+
+        <h2>暖纸，而非冷白</h2>
+        <p>纯白的屏幕在长时间阅读时是刺眼的。我们用一层近乎纸张的暖色（<code>#faf8f3</code>）作为基底，文字则是带暖意的墨（<code>#2b2722</code>）。它们之间的对比足够清晰，却不至于像黑白键那样硬。到了夜里，整套色翻转成深暖墨底，强调色提亮一档——这就是夜读模式。</p>
+
+        <h3>把强调留给真正重要的事</h3>
+        <p>整套系统只有一种强调色：一抹赭橙。它出现在主操作的按钮上、当前选中的标签上、偶尔一个首字下沉里。其余的一切，都交给墨与纸。强调之所以是强调，正因为它稀少。</p>
+
+        <pre><code><span class="tok-com">/* 正文契约：衬线 + 大行高 + 锁定列宽 */</span>
+<span class="tok-syn">.article p</span> {
+  font-family: <span class="tok-str">var(--ds-font-serif)</span>;
+  font-size:   <span class="tok-str">var(--ds-text-base)</span>;   <span class="tok-com">/* 17px */</span>
+  line-height: <span class="tok-str">var(--ds-leading-relaxed)</span>; <span class="tok-com">/* 1.85 */</span>
+  max-width:   <span class="tok-str">680px</span>;
+  text-wrap:   pretty;
+}</code></pre>
+
+        <p>最后，关于节奏。段落之间留二十四像素，章节之间留四十像素，区块之间则可以慷慨到六十四像素以上。这些空白不是浪费——它们是版面给读者的停顿，是一句话与下一句话之间，那口轻轻的呼吸。</p>
+
+        <ul>
+          <li>正文一律衬线，行高一点八五，容器锁六百八十像素。</li>
+          <li>控件与元信息走无衬线，建立内容与界面的对比轴。</li>
+          <li>用留白和一像素分隔线分层，而不是用阴影。</li>
+        </ul>
+
+        <div class="rule">· · ·</div>
+
+        <p class="footnote">¹ 本文为设计系统预览中的示例排版，所有取值均来自 <code style="font-family:var(--ds-font-mono);">tokens.css</code> 的 <code style="font-family:var(--ds-font-mono);">--ds-*</code> 变量。切换主题与字号时，整页随之流动。</p>
+      </article>
+    </section>
+
+    <footer class="sans" style="border-top:1px solid var(--ds-border);padding-top:var(--ds-space-5);color:var(--ds-fg-subtle);font-size:var(--ds-text-sm);">
+      <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.18em;margin-right:4px;"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v12"/></svg>Editorial Kit · 全部取值走 <code style="font-family:var(--ds-font-mono);background:var(--ds-bg-sunken);padding:1px 5px;border-radius:4px;">var(--ds-*)</code> · 亮暗双主题 · 满足 WCAG AA
+    </footer>
+  </div>
+
+  <!-- 模态框 -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3 id="modalTitle">删除这篇草稿？</h3>
+      <p>「论安静的版面」将被永久删除，此操作无法撤销。已发布的版本不受影响。</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+        <button class="btn btn-danger" onclick="closeModal();showToast('success','已删除','草稿已删除。')">删除草稿</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  // 主题切换
+  var MOON_PATH = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+  var SUN_PATH = '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.5 4.5l1.4 1.4M18.1 18.1l1.4 1.4M2.5 12h2M19.5 12h2M4.5 19.5l1.4-1.4M18.1 5.9l1.4-1.4"/>';
+  function toggleTheme(){
+    var el = document.documentElement;
+    var dark = el.dataset.theme === 'dark';
+    el.dataset.theme = dark ? 'light' : 'dark';
+    var nowDark = !dark;
+    document.getElementById('themeIco').innerHTML = nowDark ? SUN_PATH : MOON_PATH;
+    document.getElementById('themeTxt').textContent = nowDark ? '日间' : '夜读';
+  }
+  // 正文字号切换
+  function setFont(px){
+    document.documentElement.style.setProperty('--ds-text-base', px + 'px');
+    document.querySelectorAll('.reader-ctl .grp:first-child button').forEach(function(b){ b.classList.remove('active'); });
+    if(window.event && window.event.target) window.event.target.classList.add('active');
+  }
+  // 色板渲染
+  var surf = [
+    ['--ds-bg','背景'],['--ds-bg-subtle','次背景'],['--ds-bg-elevated','浮层'],['--ds-bg-sunken','凹陷'],
+    ['--ds-fg','主文字'],['--ds-fg-muted','次文字'],['--ds-fg-subtle','弱文字'],['--ds-border','描边'],['--ds-border-strong','强描边']
+  ];
+  var brand = [
+    ['--ds-primary','primary'],['--ds-primary-hover','hover'],['--ds-primary-active','active'],['--ds-accent','accent']
+  ];
+  function hexOf(varName){
+    var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return v || '—';
+  }
+  function renderSwatches(id, arr){
+    document.getElementById(id).innerHTML = arr.map(function(p){
+      return '<div class="swatch"><div class="chip" style="background:var('+p[0]+');border-bottom:1px solid var(--ds-border)"></div>'+
+        '<div class="info"><span class="swatch-name">'+p[1]+'</span><span class="swatch-hex" data-var="'+p[0]+'">'+hexOf(p[0])+'</span></div></div>';
+    }).join('');
+  }
+  var states = [
+    ['success','成功 Success'],['warning','警告 Warning'],['danger','危险 Danger'],['info','信息 Info']
+  ];
+  function renderStates(){
+    document.getElementById('stateRow').innerHTML = states.map(function(s){
+      return '<div class="state-card" style="background:var(--ds-'+s[0]+'-bg);color:var(--ds-'+s[0]+'-fg);border:1px solid var(--ds-'+s[0]+')">'+
+        '<b>'+s[1]+'</b><br><span style="opacity:.85">底 + 主色边 + 底上文字</span></div>';
+    }).join('');
+  }
+  function refreshHex(){
+    document.querySelectorAll('.swatch-hex[data-var]').forEach(function(el){ el.textContent = hexOf(el.dataset.var); });
+  }
+  renderSwatches('surfSwatches', surf);
+  renderSwatches('brandSwatches', brand);
+  renderStates();
+  // 主题切换后刷新 hex 显示
+  var _toggle = toggleTheme;
+  toggleTheme = function(){ _toggle(); setTimeout(refreshHex, 50); };
+
+  // 下拉菜单
+  function toggleMenu(){
+    var m = document.getElementById('ddMenu'), b = document.getElementById('ddBtn');
+    var open = !m.hasAttribute('hidden');
+    if(open){ m.setAttribute('hidden',''); b.setAttribute('aria-expanded','false'); }
+    else { m.removeAttribute('hidden'); b.setAttribute('aria-expanded','true'); }
+  }
+  document.addEventListener('click', function(e){
+    var dd = document.querySelector('.dropdown');
+    if(dd && !dd.contains(e.target)){ var m=document.getElementById('ddMenu'); if(m && !m.hasAttribute('hidden')){ m.setAttribute('hidden',''); document.getElementById('ddBtn').setAttribute('aria-expanded','false'); } }
+  });
+
+  // 模态框
+  function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
+  function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  // Toast
+  var TOAST_ICONS = {
+    success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg>',
+    danger:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+    info:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>'
+  };
+  function showToast(type, title, msg){
+    var wrap = document.getElementById('toastWrap');
+    var t = document.createElement('div');
+    t.className = 'toast ' + (type || '');
+    t.setAttribute('role','status');
+    var icoSvg = TOAST_ICONS[type] || TOAST_ICONS.info;
+    t.innerHTML = '<span class="toast-ico">'+icoSvg+'</span>'+
+                  '<div class="toast-body"><p class="toast-title"></p><p class="toast-msg"></p></div>'+
+                  '<button class="toast-close" aria-label="关闭">×</button>';
+    t.querySelector('.toast-title').textContent = title;
+    t.querySelector('.toast-msg').textContent = msg;
+    var close = function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 240); };
+    t.querySelector('.toast-close').onclick = close;
+    wrap.appendChild(t);
+    requestAnimationFrame(function(){ t.classList.add('show'); });
+    setTimeout(close, 4000);
+  }
+</script>
+</body>
+</html>

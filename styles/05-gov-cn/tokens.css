@@ -1,0 +1,95 @@
+/* ============================================================
+   🇨🇳 Gov-CN · 中国政府风（政务）Design Tokens
+   庄重、权威、规整、可信、严肃不压抑。
+   双主色：党政红 #c4161c + 政务蓝 #1c4d8c；金色描边点缀荣誉/徽标。
+   小而方正的圆角，克制阴影，多用描边与分隔线表达层级。
+   契约：变量名固定（--ds-*），仅取值随风格变。
+   亮色 :root ｜ 暗色 [data-theme="dark"] + .dark
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字 · 暖中性纸感 ---- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f5f3f0;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #efece6;
+  --ds-fg: #1a1a1a;            --ds-fg-muted: #4a4a4a;
+  --ds-fg-subtle: #757575;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #e0ddd6;        --ds-border-strong: #c8c4ba;
+
+  /* ---- 品牌与强调 · 党政红（主）+ 政务蓝（次）---- */
+  --ds-primary: #c4161c;       --ds-primary-hover: #a91219;
+  --ds-primary-active: #8c0f15;--ds-primary-fg: #ffffff;
+  --ds-accent: #1c4d8c;        --ds-accent-fg: #ffffff;
+
+  /* ---- 荣誉金（点缀：描边/徽标，不作大面积底色）---- */
+  --ds-gold: #c9a227;
+
+  /* ---- 语义状态（主色 + 浅底 + 底上文字）· 稳重 ---- */
+  --ds-success: #2e7d32; --ds-success-bg: #eaf3ea; --ds-success-fg: #14401a;
+  --ds-warning: #c77700; --ds-warning-bg: #fbf1e0; --ds-warning-fg: #5e3800;
+  --ds-danger:  #c4161c; --ds-danger-bg:  #fbe9e9; --ds-danger-fg:  #5e0a0d;
+  --ds-info:    #1c4d8c; --ds-info-bg:    #e9f0f8; --ds-info-fg:    #0d2848;
+
+  /* ---- 焦点 · 政务蓝环 ---- */
+  --ds-focus: #1c4d8c;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 · 小而方正（庄重不圆润）---- */
+  --ds-radius-sm: 2px; --ds-radius-md: 4px; --ds-radius-lg: 6px; --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基）---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体 · 黑体正文 + 思源宋体标题（权威）---- */
+  --ds-font-sans: "Inter", "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Heiti SC", sans-serif;
+  --ds-font-serif: "Noto Serif", "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --ds-font-mono: "Source Han Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.6; --ds-leading-relaxed: 1.9;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 700;
+  --ds-tracking-tight: 0; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 克制规整（层级靠描边/分隔线，阴影极轻）---- */
+  --ds-shadow-sm: 0 1px 0 rgba(26,26,26,.04);
+  --ds-shadow-md: 0 1px 2px rgba(26,26,26,.06), 0 4px 10px -6px rgba(26,26,26,.12);
+  --ds-shadow-lg: 0 2px 4px rgba(26,26,26,.06), 0 12px 28px -10px rgba(26,26,26,.18);
+
+  /* ---- 动效 · 极克制 ease-out ---- */
+  --ds-ease: cubic-bezier(.4,0,.2,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 · 深墨蓝 ---- */
+  --ds-bg: #14181f;            --ds-bg-subtle: #1a1f28;
+  --ds-bg-elevated: #1f2530;   --ds-bg-sunken: #0f131a;
+  --ds-fg: #ededed;            --ds-fg-muted: #b3b8c0;
+  --ds-fg-subtle: #828892;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #2a313d;        --ds-border-strong: #3c4554;
+
+  /* ---- 品牌与强调 · 红/蓝提亮 ---- */
+  --ds-primary: #e23b41;       --ds-primary-hover: #ec5258;
+  --ds-primary-active: #c4161c;--ds-primary-fg: #ffffff;
+  --ds-accent: #4a86d6;        --ds-accent-fg: #0b1018;
+
+  /* ---- 荣誉金（暗色提亮）---- */
+  --ds-gold: #d9b441;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #57b85e; --ds-success-bg: #0f2613; --ds-success-fg: #cdeecf;
+  --ds-warning: #e0992e; --ds-warning-bg: #2a1d05; --ds-warning-fg: #f7e2b8;
+  --ds-danger:  #e85a5f; --ds-danger-bg:  #2c1213; --ds-danger-fg:  #ffd6d7;
+  --ds-info:    #4a86d6; --ds-info-bg:    #0d1f38; --ds-info-fg:    #d4e4f7;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #4a86d6;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（暗色加深）---- */
+  --ds-shadow-sm: 0 1px 0 rgba(0,0,0,.4);
+  --ds-shadow-md: 0 1px 2px rgba(0,0,0,.5), 0 4px 12px -6px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 2px 4px rgba(0,0,0,.55), 0 16px 32px -10px rgba(0,0,0,.7);
+}

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cute · 可爱风 Design Kit 预览</title>
+<!-- 真实字体（共享本地表，唯一外部引用；Quicksand 圆体在此生效） -->
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<style>
+/* ====================== Tokens（内联，与 tokens.css 同步） ====================== */
+:root{
+  --ds-bg:#fff7fb; --ds-bg-subtle:#ffeef6; --ds-bg-elevated:#ffffff; --ds-bg-sunken:#ffe2ef;
+  --ds-fg:#4a3b44; --ds-fg-muted:#7a5d6b; --ds-fg-subtle:#86697a; --ds-fg-on-accent:#5a1030;
+  --ds-border:#ffd4e5; --ds-border-strong:#ffabcb;
+  --ds-primary:#ff6b9d; --ds-primary-hover:#ff5294; --ds-primary-active:#ec3f86; --ds-primary-fg:#5a1030;
+  --ds-accent:#5cc8ff; --ds-accent-fg:#0a3a5a;
+  --ds-success:#3ecf8e; --ds-success-bg:#e3fbef; --ds-success-fg:#0a5e3c;
+  --ds-warning:#ffb648; --ds-warning-bg:#fff3dd; --ds-warning-fg:#7a4a00;
+  --ds-danger:#ff5d6c; --ds-danger-bg:#ffe6e9; --ds-danger-fg:#7a0e1c;
+  --ds-info:#5cc8ff; --ds-info-bg:#e6f6ff; --ds-info-fg:#0a5a8a;
+  --ds-focus:#ff6b9d; --ds-focus-ring:0 0 0 3px var(--ds-bg),0 0 0 6px var(--ds-focus);
+  --ds-radius-sm:10px; --ds-radius-md:18px; --ds-radius-lg:28px; --ds-radius-full:9999px;
+  --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;
+  --ds-space-6:24px;--ds-space-7:32px;--ds-space-8:40px;--ds-space-9:48px;--ds-space-10:64px;
+  --ds-space-11:80px;--ds-space-12:96px;
+  --ds-font-sans:"Quicksand","Baloo 2","Varela Round",-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --ds-font-serif:"Baloo 2","Quicksand",Georgia,"Songti SC",serif;
+  --ds-font-mono:"Cascadia Code",ui-monospace,"SF Mono",Menlo,monospace;
+  --ds-text-xs:12px;--ds-text-sm:13px;--ds-text-base:14px;--ds-text-md:16px;--ds-text-lg:20px;
+  --ds-text-xl:24px;--ds-text-2xl:32px;--ds-text-3xl:48px;
+  --ds-leading-tight:1.25;--ds-leading-normal:1.55;--ds-leading-relaxed:1.75;
+  --ds-weight-normal:500;--ds-weight-medium:600;--ds-weight-bold:700;
+  --ds-tracking-tight:0;--ds-tracking-normal:0.01em;
+  --ds-shadow-sm:0 2px 6px -2px rgba(255,107,157,.20);
+  --ds-shadow-md:0 6px 16px -4px rgba(255,107,157,.25),0 2px 6px -2px rgba(255,107,157,.18);
+  --ds-shadow-lg:0 14px 32px -8px rgba(255,107,157,.30),0 6px 14px -6px rgba(255,107,157,.22);
+  --ds-ease:cubic-bezier(.34,1.56,.64,1); --ds-dur-fast:200ms;--ds-dur-base:260ms;--ds-dur-slow:320ms;
+}
+[data-theme="dark"],.dark{
+  --ds-bg:#241a22; --ds-bg-subtle:#2e2029; --ds-bg-elevated:#382835; --ds-bg-sunken:#1c141a;
+  --ds-fg:#ffeaf2; --ds-fg-muted:#d9aebf; --ds-fg-subtle:#b890a0; --ds-fg-on-accent:#3a0a1c;
+  --ds-border:#4d3744; --ds-border-strong:#6b4a59;
+  --ds-primary:#ff8fb5; --ds-primary-hover:#ffa3c3; --ds-primary-active:#ff77a6; --ds-primary-fg:#3a0a1c;
+  --ds-accent:#7fd6ff; --ds-accent-fg:#06243a;
+  --ds-success:#5fe0a6; --ds-success-bg:#0e3a28; --ds-success-fg:#c8ffe6;
+  --ds-warning:#ffc874; --ds-warning-bg:#3a2700; --ds-warning-fg:#ffeccb;
+  --ds-danger:#ff8090; --ds-danger-bg:#3d1219; --ds-danger-fg:#ffdfe3;
+  --ds-info:#7fd6ff; --ds-info-bg:#0a2c44; --ds-info-fg:#d8f1ff;
+  --ds-focus:#ff8fb5; --ds-focus-ring:0 0 0 3px var(--ds-bg),0 0 0 6px var(--ds-focus);
+  --ds-shadow-sm:0 2px 8px -2px rgba(0,0,0,.45);
+  --ds-shadow-md:0 6px 18px -4px rgba(0,0,0,.55),0 0 0 1px rgba(255,143,181,.06);
+  --ds-shadow-lg:0 16px 36px -8px rgba(0,0,0,.65),0 0 0 1px rgba(255,143,181,.08);
+}
+
+/* ====================== 基础 ====================== */
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--ds-bg); color:var(--ds-fg);
+  font-family:var(--ds-font-sans); font-weight:var(--ds-weight-normal);
+  letter-spacing:var(--ds-tracking-normal); line-height:var(--ds-leading-normal);
+  transition:background var(--ds-dur-base) var(--ds-ease),color var(--ds-dur-base) var(--ds-ease);
+  background-image:radial-gradient(var(--ds-border) 1.2px,transparent 1.2px);
+  background-size:24px 24px;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--ds-space-5) var(--ds-space-12);}
+section{margin-top:var(--ds-space-10);}
+h2.sec{font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-2);}
+h2.sec::before{content:"";display:inline-block;width:10px;height:10px;border-radius:var(--ds-radius-full);
+  background:var(--ds-primary);margin-right:var(--ds-space-3);vertical-align:middle;}
+.sub{color:var(--ds-fg-muted);font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-5);}
+.grid{display:grid;gap:var(--ds-space-4);}
+.code{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+
+/* ====================== 顶栏 ====================== */
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(8px);
+  background:color-mix(in srgb,var(--ds-bg) 82%,transparent);
+  border-bottom:1px solid var(--ds-border);}
+.topbar-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:var(--ds-space-4);
+  padding:var(--ds-space-4) var(--ds-space-5);}
+.brand{display:flex;align-items:center;gap:var(--ds-space-3);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-lg);}
+.brand .logo{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:var(--ds-radius-full);
+  background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-sm);}
+.brand .logo svg{width:18px;height:18px;display:block;}
+.brand small{font-size:var(--ds-text-xs);color:var(--ds-fg-muted);font-weight:var(--ds-weight-normal);}
+.nav{display:flex;gap:var(--ds-space-2);margin-left:var(--ds-space-4);}
+.nav a{padding:6px 14px;border-radius:var(--ds-radius-full);color:var(--ds-fg-muted);
+  text-decoration:none;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.nav a:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.nav a.active{background:var(--ds-primary);color:var(--ds-primary-fg);}
+.spacer{flex:1;}
+.toggle{cursor:pointer;border:1px solid var(--ds-border-strong);background:var(--ds-bg-elevated);
+  color:var(--ds-fg);border-radius:var(--ds-radius-full);padding:8px 18px;font-family:inherit;
+  font-weight:var(--ds-weight-medium);font-size:var(--ds-text-sm);box-shadow:var(--ds-shadow-sm);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform var(--ds-dur-fast) var(--ds-ease);}
+.toggle .ico{width:16px;height:16px;}
+.toggle:hover{transform:scale(1.04);}
+.toggle:active{transform:scale(.95);}
+.toggle:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+
+.hero{padding:var(--ds-space-9) 0 0;}
+.hero h1{font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-3);line-height:var(--ds-leading-tight);}
+.hero p{font-size:var(--ds-text-md);color:var(--ds-fg-muted);max-width:60ch;margin:0;}
+
+/* ====================== 色板 ====================== */
+.swatches{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));}
+.sw{border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);overflow:hidden;
+  background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);}
+.sw .chip{height:64px;}
+.sw .meta{padding:10px 12px;}
+.sw .name{font-weight:var(--ds-weight-medium);font-size:var(--ds-text-sm);}
+.sw .hex{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.pair{display:flex;align-items:center;justify-content:center;height:64px;font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);}
+
+/* ====================== 字体 ====================== */
+.type-row{display:flex;align-items:baseline;gap:var(--ds-space-5);padding:var(--ds-space-3) 0;border-bottom:1px dashed var(--ds-border);}
+.type-row:last-child{border-bottom:none;}
+.type-tag{width:120px;flex:none;color:var(--ds-fg-subtle);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);}
+.weights span{margin-right:var(--ds-space-5);}
+
+/* ====================== 按钮 ====================== */
+.btn{font-family:inherit;cursor:pointer;border:none;border-radius:var(--ds-radius-full);
+  font-weight:var(--ds-weight-medium);font-size:var(--ds-text-base);height:40px;padding:0 22px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease);}
+.btn:hover{transform:scale(1.03);}
+.btn:active{transform:scale(.96);}
+.btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none;}
+.btn-primary{background:var(--ds-primary);color:var(--ds-primary-fg);
+  box-shadow:var(--ds-shadow-sm),inset 0 -3px 0 rgba(0,0,0,.10);}
+.btn-primary:hover{background:var(--ds-primary-hover);}
+.btn-primary:active{background:var(--ds-primary-active);box-shadow:var(--ds-shadow-sm),inset 0 -1px 0 rgba(0,0,0,.10);}
+.btn-secondary{background:var(--ds-bg-elevated);color:var(--ds-fg);border:1px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);}
+.btn-secondary:hover{background:var(--ds-bg-subtle);}
+.btn-tertiary{background:transparent;color:var(--ds-fg-muted);}
+.btn-tertiary:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.btn-danger{background:var(--ds-danger);color:#fff;box-shadow:var(--ds-shadow-sm),inset 0 -3px 0 rgba(0,0,0,.12);}
+.btn-danger:hover{filter:brightness(1.04);}
+.btn-sm{height:32px;padding:0 16px;font-size:var(--ds-text-sm);}
+.btn-lg{height:48px;padding:0 28px;font-size:var(--ds-text-md);}
+.btnrow{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-bottom:var(--ds-space-4);}
+
+/* ====================== 表单 ====================== */
+.field{margin-bottom:var(--ds-space-4);}
+.field label{display:block;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);margin-bottom:6px;}
+.inp,.ta,.sel{width:100%;font-family:inherit;font-size:var(--ds-text-base);color:var(--ds-fg);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-sm);
+  padding:0 14px;height:40px;transition:border-color var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease);}
+.ta{height:auto;padding:10px 14px;resize:vertical;min-height:84px;}
+.inp::placeholder,.ta::placeholder{color:var(--ds-fg-subtle);}
+.inp:focus,.ta:focus,.sel:focus{outline:none;border-color:var(--ds-primary);box-shadow:var(--ds-focus-ring);}
+.inp.err{border-color:var(--ds-danger);}
+.err-msg{color:var(--ds-danger-fg);font-size:var(--ds-text-xs);margin-top:6px;}
+.check{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:var(--ds-text-base);cursor:pointer;}
+.check input{accent-color:var(--ds-primary);width:20px;height:20px;}
+/* switch */
+.switch{position:relative;width:48px;height:28px;flex:none;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:var(--ds-border-strong);border-radius:var(--ds-radius-full);
+  transition:background var(--ds-dur-base) var(--ds-ease);cursor:pointer;}
+.slider::before{content:"";position:absolute;height:22px;width:22px;left:3px;top:3px;background:#fff;
+  border-radius:var(--ds-radius-full);box-shadow:var(--ds-shadow-sm);
+  transition:transform var(--ds-dur-base) var(--ds-ease);}
+.switch input:checked + .slider{background:var(--ds-primary);}
+.switch input:checked + .slider::before{transform:translateX(20px);}
+.switch input:focus-visible + .slider{box-shadow:var(--ds-focus-ring);}
+
+/* ====================== 卡片 ====================== */
+.cards{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
+.card{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  padding:var(--ds-space-6);box-shadow:var(--ds-shadow-md);
+  transition:transform var(--ds-dur-base) var(--ds-ease),box-shadow var(--ds-dur-base) var(--ds-ease);}
+.card:hover{transform:scale(1.025);box-shadow:var(--ds-shadow-lg);}
+.card .thumb{height:96px;border-radius:var(--ds-radius-sm);margin-bottom:var(--ds-space-4);
+  background:linear-gradient(135deg,var(--ds-primary),var(--ds-accent));position:relative;overflow:hidden;}
+.card .thumb::after{content:"";position:absolute;width:56px;height:56px;border-radius:var(--ds-radius-full);
+  background:rgba(255,255,255,.45);top:-14px;right:-10px;}
+.card h3{margin:0 0 6px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.card p{margin:0 0 var(--ds-space-4);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+
+/* ====================== 徽章 ====================== */
+.badges{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:var(--ds-radius-full);
+  padding:5px 14px;font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);}
+.badge::before{content:"";width:7px;height:7px;border-radius:var(--ds-radius-full);background:currentColor;}
+.b-pri{background:var(--ds-bg-subtle);color:var(--ds-primary-active);}
+.b-suc{background:var(--ds-success-bg);color:var(--ds-success-fg);}
+.b-war{background:var(--ds-warning-bg);color:var(--ds-warning-fg);}
+.b-dan{background:var(--ds-danger-bg);color:var(--ds-danger-fg);}
+.b-inf{background:var(--ds-info-bg);color:var(--ds-info-fg);}
+.b-solid{background:var(--ds-primary);color:var(--ds-primary-fg);}
+
+/* ====================== Alert ====================== */
+/* 前置语义 SVG 图标 + 浅色底 + 1px 全描边（无侧边粗色条） */
+.alert{display:flex;gap:var(--ds-space-3);border-radius:var(--ds-radius-md);padding:var(--ds-space-4) var(--ds-space-5);
+  margin-bottom:var(--ds-space-3);font-size:var(--ds-text-sm);align-items:flex-start;border:1px solid;}
+.alert .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;}
+.alert .ic svg{width:22px;height:22px;display:block;}
+.alert b{font-weight:var(--ds-weight-bold);}
+.a-suc{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success);}
+.a-suc .ic{color:var(--ds-success-fg);}
+.a-war{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning);}
+.a-war .ic{color:var(--ds-warning-fg);}
+.a-dan{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger);}
+.a-dan .ic{color:var(--ds-danger-fg);}
+.a-inf{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info);}
+.a-inf .ic{color:var(--ds-info-fg);}
+
+/* ====================== 内联 SVG 图标统一规范 ====================== */
+/* 圆润可爱风：viewBox 0 0 24 24、stroke=currentColor、圆头圆角、线宽 2 */
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex:none;
+  fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ====================== Tabs ====================== */
+.tabs{display:flex;gap:var(--ds-space-2);border-bottom:2px solid var(--ds-border);margin-bottom:var(--ds-space-4);}
+.tab{padding:10px 18px;cursor:pointer;font-weight:var(--ds-weight-medium);color:var(--ds-fg-muted);
+  border:none;background:none;font-family:inherit;font-size:var(--ds-text-base);position:relative;
+  transition:color var(--ds-dur-fast) var(--ds-ease);}
+.tab.active{color:var(--ds-primary);}
+.tab.active::after{content:"";position:absolute;left:14px;right:14px;bottom:-2px;height:3px;
+  background:var(--ds-primary);border-radius:var(--ds-radius-full);}
+
+/* ====================== 表格 ====================== */
+table{width:100%;border-collapse:separate;border-spacing:0;background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);overflow:hidden;box-shadow:var(--ds-shadow-sm);}
+th,td{text-align:left;padding:12px 16px;font-size:var(--ds-text-sm);border-bottom:1px solid var(--ds-border);}
+th{background:var(--ds-bg-subtle);font-weight:var(--ds-weight-bold);color:var(--ds-fg);}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--ds-bg-subtle);}
+td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-align:right;}
+
+/* ====================== 模态框 Modal ====================== */
+.modal-demo{position:relative;background:var(--ds-bg-subtle);border:1px dashed var(--ds-border-strong);
+  border-radius:var(--ds-radius-lg);padding:var(--ds-space-8) var(--ds-space-5);overflow:hidden;}
+.scrim{position:absolute;inset:0;background:color-mix(in srgb,var(--ds-fg) 28%,transparent);}
+.modal{position:relative;max-width:420px;margin:0 auto;background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);
+  padding:var(--ds-space-6);}
+.modal .x{position:absolute;top:var(--ds-space-4);right:var(--ds-space-4);width:32px;height:32px;
+  border:none;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);color:var(--ds-fg-muted);
+  cursor:pointer;font-size:var(--ds-text-md);font-family:inherit;display:grid;place-items:center;
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.modal .x:hover{background:var(--ds-border-strong);color:var(--ds-fg);transform:rotate(90deg);}
+.modal .x:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.modal h3{margin:0 0 var(--ds-space-2);font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);}
+.modal p{margin:0 0 var(--ds-space-5);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+.modal .acts{display:flex;gap:var(--ds-space-3);justify-content:flex-end;}
+
+/* ====================== 下拉菜单 Dropdown ====================== */
+.menu{width:240px;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);
+  border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-lg);padding:var(--ds-space-2);}
+.menu .mlabel{padding:6px 12px;font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);
+  font-weight:var(--ds-weight-medium);text-transform:uppercase;letter-spacing:.04em;}
+.mitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--ds-radius-sm);
+  font-size:var(--ds-text-base);color:var(--ds-fg);cursor:pointer;
+  transition:background var(--ds-dur-fast) var(--ds-ease);}
+.mitem .mi{width:18px;height:18px;flex:none;display:grid;place-items:center;color:var(--ds-fg-muted);}
+.mitem .mi svg{width:18px;height:18px;display:block;}
+.mitem.is-active .mi,.mitem.danger .mi{color:inherit;}
+.mitem:hover{background:var(--ds-bg-subtle);}
+.mitem.is-active{background:var(--ds-bg-subtle);color:var(--ds-primary-active);font-weight:var(--ds-weight-medium);}
+.mitem .check-mark{margin-left:auto;width:16px;height:16px;color:var(--ds-primary-active);}
+.mitem.danger{color:var(--ds-danger-fg);}
+.mitem.danger:hover{background:var(--ds-danger-bg);}
+.msep{height:1px;background:var(--ds-border);margin:var(--ds-space-2) var(--ds-space-1);}
+
+/* ====================== 工具提示 Tooltip ====================== */
+.tip{position:relative;display:inline-block;}
+.tip .bubble{position:relative;display:inline-flex;align-items:center;gap:6px;background:var(--ds-fg);color:var(--ds-bg);
+  font-size:var(--ds-text-xs);font-weight:var(--ds-weight-medium);padding:7px 12px;
+  border-radius:var(--ds-radius-sm);box-shadow:var(--ds-shadow-md);white-space:nowrap;}
+.tip .bubble .ico{width:14px;height:14px;}
+.tip .bubble::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--ds-fg);border-bottom:0;}
+.tip.up .bubble::after{top:auto;bottom:-6px;}
+
+/* ====================== 分页 Pagination ====================== */
+.pager{display:flex;flex-wrap:wrap;gap:var(--ds-space-2);align-items:center;}
+.pg{min-width:40px;height:40px;padding:0 12px;border:1px solid var(--ds-border);background:var(--ds-bg-elevated);
+  color:var(--ds-fg);border-radius:var(--ds-radius-full);font-family:inherit;font-size:var(--ds-text-base);
+  font-weight:var(--ds-weight-medium);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.pg:hover{background:var(--ds-bg-subtle);transform:scale(1.06);}
+.pg:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.pg.is-current{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:transparent;
+  box-shadow:var(--ds-shadow-sm),inset 0 -2px 0 rgba(0,0,0,.10);}
+.pg[disabled]{opacity:.45;cursor:not-allowed;transform:none;}
+.pg-gap{color:var(--ds-fg-subtle);padding:0 4px;}
+
+/* ====================== Toast 通知 ====================== */
+.toasts{display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:380px;}
+.toast{display:flex;align-items:flex-start;gap:var(--ds-space-3);background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-lg);
+  padding:var(--ds-space-4);position:relative;overflow:hidden;}
+.toast .tic{width:28px;height:28px;border-radius:var(--ds-radius-full);flex:none;display:grid;place-items:center;
+  color:#fff;background:var(--ds-primary);}
+.toast .tic svg{width:17px;height:17px;display:block;}
+.toast.t-suc .tic{background:var(--ds-success);} .toast.t-war .tic{background:var(--ds-warning);color:var(--ds-warning-fg);}
+.toast.t-dan .tic{background:var(--ds-danger);}
+.toast .tbody{flex:1;}
+.toast .tt{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);margin-bottom:2px;}
+.toast .td{color:var(--ds-fg-muted);font-size:var(--ds-text-xs);}
+.toast .tx{border:none;background:none;color:var(--ds-fg-subtle);cursor:pointer;font-size:var(--ds-text-md);
+  font-family:inherit;padding:0 2px;line-height:1;transition:color var(--ds-dur-fast) var(--ds-ease);}
+.toast .tx:hover{color:var(--ds-fg);}
+
+/* ====================== 步骤条 Stepper ====================== */
+.stepper{display:flex;align-items:flex-start;gap:0;}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
+.step .sdot{width:36px;height:36px;border-radius:var(--ds-radius-full);display:grid;place-items:center;
+  font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);background:var(--ds-bg-elevated);
+  border:2px solid var(--ds-border-strong);color:var(--ds-fg-muted);position:relative;z-index:1;}
+.step .sdot svg{width:18px;height:18px;display:block;}
+.step .sline{position:absolute;top:18px;left:50%;width:100%;height:3px;background:var(--ds-border);z-index:0;border-radius:var(--ds-radius-full);}
+.step:last-child .sline{display:none;}
+.step .slabel{margin-top:var(--ds-space-2);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);}
+.step .ssub{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.step.done .sdot{background:var(--ds-primary);border-color:var(--ds-primary);color:var(--ds-primary-fg);}
+.step.done .sline{background:var(--ds-primary);}
+.step.current .sdot{background:var(--ds-bg-elevated);border-color:var(--ds-primary);color:var(--ds-primary-active);
+  box-shadow:0 0 0 4px var(--ds-bg-subtle);}
+.step.current .slabel{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+
+/* ====================== 面包屑 Breadcrumb ====================== */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-2);font-size:var(--ds-text-sm);}
+.crumbs a{color:var(--ds-fg-muted);text-decoration:none;padding:4px 10px;border-radius:var(--ds-radius-full);
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.crumbs a:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.crumbs .sep{color:var(--ds-fg-subtle);}
+.crumbs .here{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);padding:4px 10px;
+  background:var(--ds-bg-subtle);border-radius:var(--ds-radius-full);}
+
+/* ====================== 移动端示意 Mobile ====================== */
+.phone{width:375px;max-width:100%;margin:0;background:var(--ds-bg);border:10px solid var(--ds-border-strong);
+  border-radius:40px;box-shadow:var(--ds-shadow-lg);overflow:hidden;}
+.phone .notch{height:26px;display:flex;align-items:center;justify-content:center;background:var(--ds-bg);}
+.phone .notch::before{content:"";width:96px;height:8px;border-radius:var(--ds-radius-full);background:var(--ds-border-strong);}
+.phone .pscreen{padding:var(--ds-space-4);height:560px;overflow:auto;}
+.ptop{display:flex;align-items:center;gap:var(--ds-space-3);margin-bottom:var(--ds-space-4);}
+.ptop .pburger{width:38px;height:38px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
+  background:var(--ds-bg-elevated);display:grid;place-items:center;gap:3px;cursor:pointer;}
+.ptop .pburger span{display:block;width:16px;height:2px;background:var(--ds-fg);border-radius:2px;}
+.ptop .ptitle{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);flex:1;}
+.ptop .pava{width:38px;height:38px;border-radius:var(--ds-radius-full);
+  background:radial-gradient(circle at 34% 30%,#fff 0 18%,var(--ds-primary) 20% 100%);box-shadow:var(--ds-shadow-sm);}
+.pcard{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-md);padding:var(--ds-space-4);margin-bottom:var(--ds-space-4);}
+.pcard .pthumb{height:108px;border-radius:var(--ds-radius-sm);margin-bottom:var(--ds-space-3);
+  background:linear-gradient(135deg,var(--ds-primary),var(--ds-accent));}
+.pcard h4{margin:0 0 4px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.pcard p{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);}
+.plist{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-sm);overflow:hidden;}
+.pli{display:flex;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-4);
+  border-bottom:1px solid var(--ds-border);font-size:var(--ds-text-sm);}
+.pli:last-child{border-bottom:none;}
+.pli .pico{width:30px;height:30px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
+  display:grid;place-items:center;flex:none;color:var(--ds-primary-active);}
+.pli .pico svg{width:17px;height:17px;display:block;}
+.pli .ptxt{flex:1;}
+.pli .pmeta{color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);}
+
+.foot{margin-top:var(--ds-space-10);padding-top:var(--ds-space-6);border-top:1px dashed var(--ds-border);
+  color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);text-align:center;}
+
+/* ====================== 响应式断点 ====================== */
+/* 平板 ≤ 960px：放宽容器内边距 */
+@media (max-width: 960px){
+  .wrap{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);}
+}
+/* 手机 ≤ 640px：多列栅格收一列、导航折叠为汉堡、英雄区缩小 */
+@media (max-width: 640px){
+  .grid{grid-template-columns:1fr!important;}
+  .swatches{grid-template-columns:repeat(auto-fill,minmax(132px,1fr))!important;}
+  .topbar-in{flex-wrap:wrap;gap:var(--ds-space-3);}
+  .nav{display:none;}                 /* 折叠：用汉堡代替 */
+  .nav-toggle{display:inline-grid;}   /* 显示汉堡按钮 */
+  .hero h1{font-size:var(--ds-text-2xl);}
+  .hero p{font-size:var(--ds-text-base);}
+  .stepper{flex-direction:column;gap:var(--ds-space-3);align-items:flex-start;}
+  .step{flex-direction:row;gap:var(--ds-space-3);text-align:left;width:100%;}
+  .step .sline{display:none;}
+  .modal .acts{flex-wrap:wrap;}
+}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:var(--ds-radius-full);
+  border:1px solid var(--ds-border-strong);background:var(--ds-bg-elevated);cursor:pointer;
+  place-items:center;gap:3px;box-shadow:var(--ds-shadow-sm);}
+.nav-toggle span{display:block;width:16px;height:2px;background:var(--ds-fg);border-radius:2px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition-duration:.01ms!important;animation:none!important;}
+  .btn:hover,.card:hover,.toggle:hover,.btn:active,.toggle:active,
+  .pg:hover,.modal .x:hover{transform:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶栏 ===== -->
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 20.5c-.5 0-1-.2-1.4-.5C6.3 16.4 3.5 13.9 3.5 10.4 3.5 7.9 5.4 6 7.8 6c1.6 0 3.1.9 3.8 2.3h.8C13.1 6.9 14.6 6 16.2 6c2.4 0 4.3 1.9 4.3 4.4 0 3.5-2.8 6-7.1 9.6-.4.3-.9.5-1.4.5Z"/></svg></span> Cutie UI <small>· 可爱风</small></div>
+    <button class="nav-toggle" aria-label="展开导航 (≤640px 折叠)"><span></span><span></span><span></span></button>
+    <nav class="nav">
+      <a href="#" class="active">首页</a>
+      <a href="#">发现</a>
+      <a href="#">我的</a>
+    </nav>
+    <span class="spacer"></span>
+    <button class="toggle" id="themeBtn" onclick="toggleTheme()"><svg class="ico" id="themeIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> 切换暗色</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== Hero ===== -->
+  <div class="hero">
+    <h1>可爱风 Design Kit</h1>
+    <p>圆润、糖果多巴胺色、稍弹动效、温暖治愈。所有颜色走 <span class="code">var(--ds-*)</span>，亮暗双主题，满足 WCAG AA。点右上角切换看暗色甜不甜～</p>
+  </div>
+
+  <!-- ===== 色板 ===== -->
+  <section>
+    <h2 class="sec">色板 Palette</h2>
+    <p class="sub">表面 / 文字 / 品牌 / 语义状态 —— 标注变量名与取值</p>
+    <div class="grid swatches" id="swatches"></div>
+  </section>
+
+  <!-- ===== 文字落色对 ===== -->
+  <section>
+    <h2 class="sec">文字落色 On-Color</h2>
+    <p class="sub">强调色与状态色上的文字对比（均 ≥ AA）</p>
+    <div class="grid swatches">
+      <div class="sw"><div class="pair" style="background:var(--ds-primary);color:var(--ds-primary-fg)">主色 / primary-fg</div><div class="meta"><div class="name">primary</div><div class="hex">深莓字 AA 5.05:1</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-accent);color:var(--ds-accent-fg)">accent / accent-fg</div><div class="meta"><div class="name">accent</div><div class="hex">深海字 AA 6.3:1</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-success-bg);color:var(--ds-success-fg)">success-bg / fg</div><div class="meta"><div class="name">success</div><div class="hex">7.2:1</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-warning-bg);color:var(--ds-warning-fg)">warning-bg / fg</div><div class="meta"><div class="name">warning</div><div class="hex">6.8:1</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-danger-bg);color:var(--ds-danger-fg)">danger-bg / fg</div><div class="meta"><div class="name">danger</div><div class="hex">9.3:1</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-info-bg);color:var(--ds-info-fg)">info-bg / fg</div><div class="meta"><div class="name">info</div><div class="hex">6.7:1</div></div></div>
+    </div>
+  </section>
+
+  <!-- ===== 字体 ===== -->
+  <section>
+    <h2 class="sec">字体 Typography</h2>
+    <p class="sub">圆润无衬线 · 字号比例尺 + 字重（500 / 600 / 700）</p>
+    <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+      <div class="type-row"><span class="type-tag">3xl / 48</span><span style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);line-height:var(--ds-leading-tight)">软糖标题 Aa</span></div>
+      <div class="type-row"><span class="type-tag">2xl / 32</span><span style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold)">可爱大标题 Aa</span></div>
+      <div class="type-row"><span class="type-tag">xl / 24</span><span style="font-size:var(--ds-text-xl);font-weight:var(--ds-weight-medium)">小标题 Heading Aa</span></div>
+      <div class="type-row"><span class="type-tag">lg / 20</span><span style="font-size:var(--ds-text-lg)">副标题 Subtitle 你好呀</span></div>
+      <div class="type-row"><span class="type-tag">md / 16</span><span style="font-size:var(--ds-text-md)">正文加大 Body large 软软的</span></div>
+      <div class="type-row"><span class="type-tag">base / 14</span><span style="font-size:var(--ds-text-base)">正文 Body 这是一段可爱风的示例文字。</span></div>
+      <div class="type-row"><span class="type-tag">sm / 13</span><span style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted)">次要说明 Caption muted</span></div>
+      <div class="type-row"><span class="type-tag">xs / 12</span><span style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle)">弱提示 Subtle / placeholder</span></div>
+      <div class="type-row weights"><span class="type-tag">weight</span><span style="font-weight:var(--ds-weight-normal)">normal 500</span><span style="font-weight:var(--ds-weight-medium)">medium 600</span><span style="font-weight:var(--ds-weight-bold)">bold 700</span></div>
+    </div>
+  </section>
+
+  <!-- ===== 按钮 ===== -->
+  <section>
+    <h2 class="sec">按钮 Buttons</h2>
+    <p class="sub">药丸大圆角 · 轻下沉立体边 · hover 放大 1.03 / 按下回弹</p>
+    <div class="btnrow">
+      <button class="btn btn-primary">主操作 Primary</button>
+      <button class="btn btn-secondary">次操作 Secondary</button>
+      <button class="btn btn-tertiary">文字 Tertiary</button>
+      <button class="btn btn-danger">删除 Danger</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn btn-primary btn-sm">小 Small</button>
+      <button class="btn btn-primary">中 Medium</button>
+      <button class="btn btn-primary btn-lg">大 Large</button>
+    </div>
+    <p class="sub" style="margin:0">提示：用 Tab 键聚焦任意按钮可见双层焦点环。</p>
+  </section>
+
+  <!-- ===== 表单 ===== -->
+  <section>
+    <h2 class="sec">表单 Forms</h2>
+    <p class="sub">input / textarea / select / checkbox / radio / switch（含 focus 态）</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+      <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+        <div class="field"><label>昵称 Nickname</label><input class="inp" placeholder="给自己取个可爱名字～"></div>
+        <div class="field"><label>心情 Mood</label><select class="sel"><option>开心</option><option>软乎乎</option><option>困困</option></select></div>
+        <div class="field"><label>留言 Message</label><textarea class="ta" placeholder="写点甜甜的话…"></textarea></div>
+        <div class="field"><label style="color:var(--ds-danger-fg)">邮箱 Email（错误态）</label><input class="inp err" value="not-an-email"><div class="err-msg">请输入有效的邮箱地址哦～</div></div>
+      </div>
+      <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+        <label class="check"><input type="checkbox" checked> 接收可爱通知</label>
+        <label class="check"><input type="checkbox"> 同意用户协议</label>
+        <label class="check"><input type="radio" name="r" checked> 草莓味</label>
+        <label class="check"><input type="radio" name="r"> 蜜桃味</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:var(--ds-space-4)">
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+          <span>暗色模式预约</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+          <span>静音模式</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 卡片 ===== -->
+  <section>
+    <h2 class="sec">卡片 Cards</h2>
+    <p class="sub">圆润 + 彩色柔影 · hover 轻微放大抬升</p>
+    <div class="grid cards">
+      <div class="card"><div class="thumb"></div><h3>每日打卡</h3><p>连续 7 天领取限定徽章，今天也要元气满满～</p><button class="btn btn-primary btn-sm">去打卡</button></div>
+      <div class="card"><div class="thumb" style="background:linear-gradient(135deg,var(--ds-accent),var(--ds-success))"></div><h3>好友动态</h3><p>3 位好友更新了头像，快去戳一戳给点赞。</p><button class="btn btn-secondary btn-sm">查看</button></div>
+      <div class="card"><div class="thumb" style="background:linear-gradient(135deg,var(--ds-warning),var(--ds-primary))"></div><h3>限时活动</h3><p>多巴胺周边盲盒上新，集齐一套有惊喜。</p><button class="btn btn-primary btn-sm">逛逛</button></div>
+    </div>
+  </section>
+
+  <!-- ===== 徽章 ===== -->
+  <section>
+    <h2 class="sec">徽章 / 标签 Badges</h2>
+    <p class="sub">圆药丸 · 各语义色</p>
+    <div class="badges">
+      <span class="badge b-solid">主色 Primary</span>
+      <span class="badge b-pri">选中 Selected</span>
+      <span class="badge b-suc">成功 Success</span>
+      <span class="badge b-war">提醒 Warning</span>
+      <span class="badge b-dan">危险 Danger</span>
+      <span class="badge b-inf">信息 Info</span>
+    </div>
+  </section>
+
+  <!-- ===== Alert ===== -->
+  <section>
+    <h2 class="sec">提示条 Alerts</h2>
+    <p class="sub">success / warning / danger / info 四种</p>
+    <div class="alert a-suc"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m8 12.3 2.7 2.7L16 9.3"/></svg></span><div><b>成功啦！</b> 你的资料已经保存好了～</div></div>
+    <div class="alert a-war"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5"/><circle cx="12" cy="16.3" r="0.6" fill="currentColor" stroke="none"/></svg></span><div><b>温馨提醒：</b> 存储空间快满了，记得清理一下哦。</div></div>
+    <div class="alert a-dan"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m9 9 6 6m0-6-6 6"/></svg></span><div><b>出错了：</b> 网络好像断开了，请稍后再试。</div></div>
+    <div class="alert a-inf"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.7" r="0.6" fill="currentColor" stroke="none"/></svg></span><div><b>小贴士：</b> 长按卡片可以快速收藏。</div></div>
+  </section>
+
+  <!-- ===== 导航 Tabs ===== -->
+  <section>
+    <h2 class="sec">导航 Tabs</h2>
+    <p class="sub">选中项主色文字 + 药丸下划线</p>
+    <div class="tabs">
+      <button class="tab active">推荐</button>
+      <button class="tab">关注</button>
+      <button class="tab">热门</button>
+      <button class="tab">附近</button>
+    </div>
+    <p style="color:var(--ds-fg-muted);font-size:var(--ds-text-sm);margin:0">当前内容区演示：选中「推荐」标签。</p>
+  </section>
+
+  <!-- ===== 表格 ===== -->
+  <section>
+    <h2 class="sec">表格 Table</h2>
+    <p class="sub">表头分组 + tabular 等宽数字</p>
+    <table>
+      <thead><tr><th>用户</th><th>状态</th><th class="num">积分</th><th class="num">天数</th></tr></thead>
+      <tbody>
+        <tr><td>桃桃</td><td><span class="badge b-suc">活跃</span></td><td class="num">1,280</td><td class="num">42</td></tr>
+        <tr><td>奶糖</td><td><span class="badge b-war">待激活</span></td><td class="num">860</td><td class="num">17</td></tr>
+        <tr><td>布丁</td><td><span class="badge b-inf">新人</span></td><td class="num">120</td><td class="num">3</td></tr>
+        <tr><td>团子</td><td><span class="badge b-dan">已暂停</span></td><td class="num">0</td><td class="num">0</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== 模态框 Modal ===== -->
+  <section>
+    <h2 class="sec">模态框 Modal</h2>
+    <p class="sub">遮罩 + 大圆角弹层 + 关闭按钮（hover 旋转）· 静态展示</p>
+    <div class="modal-demo">
+      <div class="scrim"></div>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mdt">
+        <button class="x" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+        <h3 id="mdt">领取每日礼包</h3>
+        <p>你已连续打卡 7 天啦～确认领取限定草莓徽章和 100 颗糖豆吗？</p>
+        <div class="acts">
+          <button class="btn btn-tertiary">下次再说</button>
+          <button class="btn btn-primary">开心领取</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 下拉菜单 Dropdown ===== -->
+  <section>
+    <h2 class="sec">下拉菜单 Dropdown</h2>
+    <p class="sub">分组标题 + 项 hover / 选中（行尾对勾）/ 危险项 · 静态展开态</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-5);align-items:flex-start">
+      <button class="btn btn-secondary">账号菜单 <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button>
+      <div class="menu" role="menu">
+        <div class="mlabel">我的账号</div>
+        <div class="mitem" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg></span> 个人主页</div>
+        <div class="mitem is-active" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M12 21a2.4 2.4 0 0 1 0-4.8 2 2 0 0 0 0-4"/></svg></span> 主题：可爱粉 <svg class="check-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div>
+        <div class="mitem" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span> 设置</div>
+        <div class="msep"></div>
+        <div class="mitem danger" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H14"/><path d="M11 12h9m0 0-3-3m3 3-3 3"/></svg></span> 退出登录</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 工具提示 Tooltip ===== -->
+  <section>
+    <h2 class="sec">工具提示 Tooltip</h2>
+    <p class="sub">深底气泡 + 小尖角 · 此处常驻展示其外观（实际为 hover/focus 触发）</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-7);align-items:center">
+      <span class="tip up"><span class="bubble"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4h9L19 7.5v11A1.5 1.5 0 0 1 17.5 20h-11A1.5 1.5 0 0 1 5 18.5Z"/><path d="M8 4v4h6V4"/><rect x="8" y="12" width="8" height="5" rx="1"/></svg> 保存草稿</span></span>
+      <span class="tip up"><span class="bubble">连续打卡可得限定徽章哦～</span></span>
+      <span class="tip up"><span class="bubble">Ctrl + S</span></span>
+    </div>
+  </section>
+
+  <!-- ===== 分页 Pagination ===== -->
+  <section>
+    <h2 class="sec">分页 Pagination</h2>
+    <p class="sub">药丸页码 · 当前页主色 / hover 放大 / 禁用态</p>
+    <div class="pager">
+      <button class="pg" disabled>‹</button>
+      <button class="pg">1</button>
+      <button class="pg is-current" aria-current="page">2</button>
+      <button class="pg">3</button>
+      <button class="pg">4</button>
+      <span class="pg-gap">…</span>
+      <button class="pg">12</button>
+      <button class="pg">›</button>
+    </div>
+  </section>
+
+  <!-- ===== Toast 通知 ===== -->
+  <section>
+    <h2 class="sec">Toast 通知</h2>
+    <p class="sub">浮层卡片 + 左侧语义色条 + 关闭键 · 四态</p>
+    <div class="toasts">
+      <div class="toast t-suc"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span><div class="tbody"><div class="tt">保存成功</div><div class="td">资料已同步到云端啦～</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></span><div class="tbody"><div class="tt">新消息</div><div class="td">桃桃 给你发来一条悄悄话。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast t-war"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5v5"/><circle cx="12" cy="16.2" r="0.7" fill="currentColor" stroke="none"/></svg></span><div class="tbody"><div class="tt">空间将满</div><div class="td">剩余 8%，建议清理一下相册。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast t-dan"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8 8 8m0-8-8 8"/></svg></span><div class="tbody"><div class="tt">上传失败</div><div class="td">网络开小差了，点此重试。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+    </div>
+  </section>
+
+  <!-- ===== 步骤条 Stepper ===== -->
+  <section>
+    <h2 class="sec">步骤条 Stepper</h2>
+    <p class="sub">已完成（实心主色）/ 当前（描边 + 光晕）/ 未开始 三态</p>
+    <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-7) var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+      <div class="stepper">
+        <div class="step done"><div class="sline"></div><div class="sdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div><div class="slabel">填资料</div><div class="ssub">已完成</div></div>
+        <div class="step done"><div class="sline"></div><div class="sdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div><div class="slabel">选口味</div><div class="ssub">已完成</div></div>
+        <div class="step current"><div class="sline"></div><div class="sdot">3</div><div class="slabel">确认订单</div><div class="ssub">进行中</div></div>
+        <div class="step"><div class="sline"></div><div class="sdot">4</div><div class="slabel">完成</div><div class="ssub">待开始</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 面包屑 Breadcrumb ===== -->
+  <section>
+    <h2 class="sec">面包屑 Breadcrumb</h2>
+    <p class="sub">药丸链接 + 分隔符 · 当前页高亮</p>
+    <nav class="crumbs" aria-label="面包屑">
+      <a href="#">首页</a>
+      <span class="sep">›</span>
+      <a href="#">商店</a>
+      <span class="sep">›</span>
+      <a href="#">盲盒周边</a>
+      <span class="sep">›</span>
+      <span class="here" aria-current="page">草莓限定套装</span>
+    </nav>
+  </section>
+
+  <!-- ===== 移动端 Mobile ===== -->
+  <section>
+    <h2 class="sec">移动端 Mobile</h2>
+    <p class="sub">约 375px 手机框：顶栏（汉堡 + 标题 + 头像）+ 卡片 + 按钮 + 列表的移动布局示意</p>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="pscreen">
+        <div class="ptop">
+          <button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button>
+          <div class="ptitle">发现</div>
+          <div class="pava"></div>
+        </div>
+        <div class="pcard">
+          <div class="pthumb"></div>
+          <h4>今日限定盲盒</h4>
+          <p>多巴胺周边上新，集齐一套有惊喜。</p>
+          <button class="btn btn-primary" style="width:100%">立即逛逛</button>
+        </div>
+        <div class="plist">
+          <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5 11 14l4.5-5"/><path d="M19 8.5v9A1.5 1.5 0 0 1 17.5 19h-11A1.5 1.5 0 0 1 5 17.5v-11A1.5 1.5 0 0 1 6.5 5H15Z"/></svg></span><div class="ptxt"><div>每日打卡</div><div class="pmeta">连续 7 天 · 领徽章</div></div><span class="badge b-suc">+10</span></div>
+          <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5A1.5 1.5 0 0 1 6.5 6h11A1.5 1.5 0 0 1 19 7.5v7A1.5 1.5 0 0 1 17.5 16H10l-4 3v-3H6.5A1.5 1.5 0 0 1 5 14.5Z"/></svg></span><div class="ptxt"><div>好友动态</div><div class="pmeta">3 条新更新</div></div><span class="badge b-pri">新</span></div>
+          <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="15" height="10.5" rx="1.5"/><path d="M4.5 9h15M12 9v10.5"/><path d="M12 9C10.5 6 7 5.5 7 7.5S10 9 12 9Zm0 0c1.5-3 5-3.5 5-1.5S14 9 12 9Z"/></svg></span><div class="ptxt"><div>我的礼包</div><div class="pmeta">2 份待领取</div></div><span class="badge b-war">待领</span></div>
+          <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">Cute Design Kit · 全部颜色走 <span class="code">var(--ds-*)</span> · 离线自包含 · WCAG AA · 响应式</div>
+</div>
+
+<script>
+/* 色板数据：所有语义/状态色 swatch */
+const tokens = [
+  ['--ds-bg','#fff7fb / #241a22'],['--ds-bg-subtle','#ffeef6 / #2e2029'],
+  ['--ds-bg-elevated','#ffffff / #382835'],['--ds-bg-sunken','#ffe2ef / #1c141a'],
+  ['--ds-fg','#4a3b44 / #ffeaf2'],['--ds-fg-muted','#7a5d6b / #d9aebf'],
+  ['--ds-fg-subtle','#86697a / #b890a0'],['--ds-border','#ffd4e5 / #4d3744'],
+  ['--ds-border-strong','#ffabcb / #6b4a59'],
+  ['--ds-primary','#ff6b9d / #ff8fb5'],['--ds-primary-hover','#ff5294 / #ffa3c3'],
+  ['--ds-primary-active','#ec3f86 / #ff77a6'],['--ds-accent','#5cc8ff / #7fd6ff'],
+  ['--ds-success','#3ecf8e / #5fe0a6'],['--ds-warning','#ffb648 / #ffc874'],
+  ['--ds-danger','#ff5d6c / #ff8090'],['--ds-info','#5cc8ff / #7fd6ff'],
+  ['--ds-success-bg','#e3fbef / #0e3a28'],['--ds-warning-bg','#fff3dd / #3a2700'],
+  ['--ds-danger-bg','#ffe6e9 / #3d1219'],['--ds-info-bg','#e6f6ff / #0a2c44'],
+];
+const host = document.getElementById('swatches');
+host.innerHTML = tokens.map(([v,hex]) => `
+  <div class="sw">
+    <div class="chip" style="background:var(${v})"></div>
+    <div class="meta"><div class="name code">${v}</div><div class="hex">${hex}</div></div>
+  </div>`).join('');
+
+/* 亮/暗切换：文字与内联 SVG 图标在月亮 / 太阳间切换 */
+const MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+const SUN  = '<circle cx="12" cy="12" r="4"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/>';
+function toggleTheme(){
+  const r = document.documentElement;
+  const dark = r.dataset.theme === 'dark';
+  r.dataset.theme = dark ? 'light' : 'dark';
+  const btn = document.getElementById('themeBtn');
+  const ico = document.getElementById('themeIco');
+  ico.innerHTML = dark ? MOON : SUN;
+  btn.lastChild.textContent = dark ? ' 切换暗色' : ' 切换亮色';
+}
+</script>
+</body>
+</html>

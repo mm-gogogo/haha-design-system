@@ -1,0 +1,150 @@
+/* ============================================================
+   HahaTool · 哈哈工具 Design Tokens
+   基于「企业风 Enterprise」+ hahatool 定制（中文 AI 工具导航站）
+   气质：企业风的克制 / 可信 / 规整 + 现代科技紫的产品感。
+
+   本文件提供三层契约，缺一不可：
+   1) --ds-*       设计系统统一契约（亮 :root ｜ 暗 [data-theme="dark"] + .dark）
+   2) --brand-*    项目品牌色（RGB 三元组），对齐 hahatool frontend/globals.css
+                   形如 124 58 237，配 rgb(var(--brand-600) / <alpha-value>) 使用
+                   4 套主题色：紫(violet,默认) / 蓝(sky) / 绿(emerald) / 橙(amber)
+                   切换：<html data-accent="sky"> 或加 class .brand-sky
+   3) --chart-*    手写 SVG 图表用（雷达/柱状），随明暗切换
+
+   关键桥接：--ds-primary 等强调色直接引用 rgb(var(--brand-*))，
+   因此切换 4 套主题色时，整套 --ds-* 强调系统会一起换肤。
+   ============================================================ */
+
+/* ============================================================
+   一、品牌色 4 套主题（RGB 三元组）— 与项目 globals.css 完全一致
+   默认 = 紫(violet)。data-accent 或 .brand-* 二选一切换。
+   ============================================================ */
+:root,
+[data-accent='violet'],
+.brand-violet {
+  --brand-50: 245 243 255;  --brand-100: 237 233 254; --brand-200: 221 214 254;
+  --brand-300: 196 181 253; --brand-400: 167 139 250; --brand-500: 139 92 246;
+  --brand-600: 124 58 237;  --brand-700: 109 40 217;  --brand-800: 91 33 182;  --brand-900: 76 29 149;
+}
+[data-accent='sky'],
+.brand-sky {
+  --brand-50: 240 249 255;  --brand-100: 224 242 254; --brand-200: 186 230 253;
+  --brand-300: 125 211 252; --brand-400: 56 189 248;  --brand-500: 14 165 233;
+  --brand-600: 2 132 199;   --brand-700: 3 105 161;   --brand-800: 7 89 133;   --brand-900: 12 74 110;
+}
+[data-accent='emerald'],
+.brand-emerald {
+  --brand-50: 236 253 245;  --brand-100: 209 250 229; --brand-200: 167 243 208;
+  --brand-300: 110 231 183; --brand-400: 52 211 153;  --brand-500: 16 185 129;
+  --brand-600: 5 150 105;   --brand-700: 4 120 87;    --brand-800: 6 95 70;    --brand-900: 6 78 59;
+}
+/* 橙：在企业风里以「琥珀橙」呈现，克制不刺眼（amber/orange 之间，AA 友好的深档作字） */
+[data-accent='amber'],
+.brand-amber {
+  --brand-50: 255 247 237;  --brand-100: 255 237 213; --brand-200: 254 215 170;
+  --brand-300: 253 186 116; --brand-400: 251 146 60;  --brand-500: 234 88 12;
+  --brand-600: 217 70 8;    --brand-700: 194 65 12;   --brand-800: 154 52 18;  --brand-900: 124 45 18;
+}
+
+/* ============================================================
+   二、--ds-* 契约 · 亮色 :root
+   表面/文字走企业风冷灰 slate；品牌/强调桥接到 --brand-*。
+   ============================================================ */
+:root {
+  /* ---- 表面与文字（企业风冷灰，克制可信）---- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f7f9fc;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #eef2f7;
+  --ds-fg: #0f172a;            --ds-fg-muted: #475569;
+  --ds-fg-subtle: #64748b;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #e2e8f0;        --ds-border-strong: #cbd5e1;
+
+  /* ---- 品牌与强调 · 桥接到 brand-*（默认紫，随 data-accent 换肤）---- */
+  --ds-primary:        rgb(var(--brand-600));  /* 主操作色 */
+  --ds-primary-hover:  rgb(var(--brand-700));
+  --ds-primary-active: rgb(var(--brand-800));
+  --ds-primary-fg:     #ffffff;                /* 紫底白字，AA 见 README */
+  --ds-accent:         rgb(var(--brand-500));  /* 链接 / 次强调 */
+  --ds-accent-fg:      #ffffff;
+
+  /* ---- 语义状态（企业风专业梯度，配淡底）---- */
+  --ds-success: #16a34a; --ds-success-bg: #ecfdf3; --ds-success-fg: #06401f;
+  --ds-warning: #d97706; --ds-warning-bg: #fffaeb; --ds-warning-fg: #6b3b00;
+  --ds-danger:  #dc2626; --ds-danger-bg:  #fef2f2; --ds-danger-fg:  #6b0e0e;
+  --ds-info:    rgb(var(--brand-600)); --ds-info-bg: rgb(var(--brand-50)); --ds-info-fg: rgb(var(--brand-800));
+
+  /* ---- 焦点（紫环，对齐项目 ring-brand-500）---- */
+  --ds-focus: rgb(var(--brand-500));
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 · 中性（导航站卡片略柔，md 12px 更现代）---- */
+  --ds-radius-sm: 8px; --ds-radius-md: 12px; --ds-radius-lg: 16px; --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基）---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体 · 专业无衬线（对齐项目 var(--font-display) 回退）---- */
+  --ds-font-sans: var(--font-display, "Inter"), -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  --ds-font-serif: "Source Serif 4", Georgia, "Songti SC", "SimSun", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 克制柔和 ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+  --ds-shadow-md: 0 1px 2px rgba(16,24,40,.04), 0 4px 8px -2px rgba(16,24,40,.06), 0 12px 20px -8px rgba(16,24,40,.08);
+  --ds-shadow-lg: 0 1px 2px rgba(16,24,40,.04), 0 8px 16px -4px rgba(16,24,40,.08), 0 24px 40px -12px rgba(16,24,40,.12);
+
+  /* ---- 动效 · 克制 ease-out（无弹跳）---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+
+  /* ---- 图表（手写 SVG）· 亮色 ---- */
+  --chart-grid: #e5e7eb;   /* 雷达/柱状网格线 */
+  --chart-label: #6b7280;  /* 轴标签 / 刻度文字 */
+}
+
+/* ============================================================
+   三、--ds-* 契约 · 暗色 [data-theme="dark"] + .dark
+   两个选择器同时覆盖，兼容项目用 .dark（darkMode:'class'）。
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #0b1220;            --ds-bg-subtle: #0f1729;
+  --ds-bg-elevated: #131c30;   --ds-bg-sunken: #080d18;
+  --ds-fg: #e8eef7;            --ds-fg-muted: #9fb0c8;
+  --ds-fg-subtle: #7888a3;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #1f2c45;        --ds-border-strong: #314465;
+
+  /* ---- 品牌与强调 · 暗色提亮（用 brand-400/500 保证暗底对比）---- */
+  --ds-primary:        rgb(var(--brand-500));
+  --ds-primary-hover:  rgb(var(--brand-400));
+  --ds-primary-active: rgb(var(--brand-600));
+  --ds-primary-fg:     #ffffff;
+  --ds-accent:         rgb(var(--brand-400));
+  --ds-accent-fg:      #08111f;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #34d399; --ds-success-bg: #0a2417; --ds-success-fg: #c4f5dd;
+  --ds-warning: #fbbf24; --ds-warning-bg: #2a1d05; --ds-warning-fg: #fdeec2;
+  --ds-danger:  #f87171; --ds-danger-bg:  #2c1012; --ds-danger-fg:  #ffd9d9;
+  --ds-info:    rgb(var(--brand-400)); --ds-info-bg: rgb(var(--brand-900) / .35); --ds-info-fg: rgb(var(--brand-200));
+
+  /* ---- 焦点 ---- */
+  --ds-focus: rgb(var(--brand-400));
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（暗色加深，避免不可见）---- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 4px 8px -2px rgba(0,0,0,.55), 0 12px 24px -8px rgba(0,0,0,.65);
+  --ds-shadow-lg: 0 8px 16px -4px rgba(0,0,0,.6), 0 24px 40px -12px rgba(0,0,0,.75);
+
+  /* ---- 图表 · 暗色 ---- */
+  --chart-grid: #374151;
+  --chart-label: #9ca3af;
+}

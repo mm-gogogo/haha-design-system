@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>企业风 Enterprise · 设计系统预览</title>
+<style>
+  /* ============================================================
+     Enterprise Tokens（内联，自包含。与 tokens.css 同源）
+     ============================================================ */
+  :root {
+    --ds-bg: #ffffff;            --ds-bg-subtle: #f7f9fc;
+    --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #eef2f7;
+    --ds-fg: #0f172a;            --ds-fg-muted: #475569;
+    --ds-fg-subtle: #64748b;     --ds-fg-on-accent: #ffffff;
+    --ds-border: #e2e8f0;        --ds-border-strong: #cbd5e1;
+    --ds-primary: #2563eb;       --ds-primary-hover: #1d4ed8;
+    --ds-primary-active: #1e40af;--ds-primary-fg: #ffffff;
+    --ds-accent: #0e7490;        --ds-accent-fg: #ffffff;
+    --ds-success: #16a34a; --ds-success-bg: #ecfdf3; --ds-success-fg: #06401f;
+    --ds-warning: #d97706; --ds-warning-bg: #fffaeb; --ds-warning-fg: #6b3b00;
+    --ds-danger:  #dc2626; --ds-danger-bg:  #fef2f2; --ds-danger-fg:  #6b0e0e;
+    --ds-info:    #2563eb; --ds-info-bg:    #eff6ff; --ds-info-fg:    #0b357a;
+    --ds-focus: #2563eb;
+    --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm: 6px; --ds-radius-md: 10px; --ds-radius-lg: 16px; --ds-radius-full: 9999px;
+    --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+    --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+    --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+    --ds-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    --ds-font-serif: "Source Serif 4", Georgia, "Songti SC", "SimSun", serif;
+    --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+    --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+    --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+    --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+    --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+    --ds-shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+    --ds-shadow-md: 0 1px 2px rgba(16,24,40,.04), 0 4px 8px -2px rgba(16,24,40,.06), 0 12px 20px -8px rgba(16,24,40,.08);
+    --ds-shadow-lg: 0 1px 2px rgba(16,24,40,.04), 0 8px 16px -4px rgba(16,24,40,.08), 0 24px 40px -12px rgba(16,24,40,.12);
+    --ds-ease: cubic-bezier(.22,.61,.36,1);
+    --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+    /* 语义 z-index 层级（dropdown < sticky < modal-backdrop < modal < toast < tooltip） */
+    --ds-z-dropdown: 20; --ds-z-sticky: 30; --ds-z-modal-backdrop: 40;
+    --ds-z-modal: 50; --ds-z-toast: 60; --ds-z-tooltip: 70;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg: #0b1220;            --ds-bg-subtle: #0f1729;
+    --ds-bg-elevated: #131c30;   --ds-bg-sunken: #080d18;
+    --ds-fg: #e8eef7;            --ds-fg-muted: #9fb0c8;
+    --ds-fg-subtle: #7888a3;     --ds-fg-on-accent: #ffffff;
+    --ds-border: #1f2c45;        --ds-border-strong: #314465;
+    --ds-primary: #3b82f6;       --ds-primary-hover: #60a5fa;
+    --ds-primary-active: #2563eb;--ds-primary-fg: #08111f;
+    --ds-accent: #22d3ee;        --ds-accent-fg: #08111f;
+    --ds-success: #34d399; --ds-success-bg: #0a2417; --ds-success-fg: #c4f5dd;
+    --ds-warning: #fbbf24; --ds-warning-bg: #2a1d05; --ds-warning-fg: #fdeec2;
+    --ds-danger:  #f87171; --ds-danger-bg:  #2c1012; --ds-danger-fg:  #ffd9d9;
+    --ds-info:    #60a5fa; --ds-info-bg:    #0d1f3d; --ds-info-fg:    #d6e6ff;
+    --ds-focus: #3b82f6;
+    --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+    --ds-shadow-md: 0 4px 8px -2px rgba(0,0,0,.55), 0 12px 24px -8px rgba(0,0,0,.65);
+    --ds-shadow-lg: 0 8px 16px -4px rgba(0,0,0,.6), 0 24px 40px -12px rgba(0,0,0,.75);
+  }
+
+  /* ---------------- base ---------------- */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ds-bg-subtle);
+    color: var(--ds-fg);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-base);
+    line-height: var(--ds-leading-normal);
+    -webkit-font-smoothing: antialiased;
+    transition: background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  h1,h2,h3,h4 { margin: 0; letter-spacing: var(--ds-tracking-tight); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); }
+  p { margin: 0; }
+  code { font-family: var(--ds-font-mono); font-size: .92em; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 var(--ds-space-6); }
+
+  /* ---------------- 内联 SVG 图标（统一线性风格） ---------------- */
+  .ico { width: 1em; height: 1em; flex: none; display: inline-block; vertical-align: -0.125em; }
+  .ico-lg { width: 18px; height: 18px; }
+
+  /* ---------------- top bar (商务顶栏) ---------------- */
+  .topbar {
+    position: sticky; top: 0; z-index: var(--ds-z-sticky);
+    background: var(--ds-bg-elevated);
+    border-bottom: 1px solid var(--ds-border);
+    backdrop-filter: saturate(180%) blur(6px);
+  }
+  .topbar-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 var(--ds-space-6);
+    height: 60px; display: flex; align-items: center; gap: var(--ds-space-6);
+  }
+  .brand { display: flex; align-items: center; gap: var(--ds-space-3); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
+  .brand .logo {
+    width: 30px; height: 30px; flex: none;
+    display: grid; place-items: center; color: var(--ds-primary);
+  }
+  .brand .logo svg { width: 30px; height: 30px; display: block; }
+  .nav { display: flex; gap: var(--ds-space-5); margin-left: var(--ds-space-4); }
+  .nav a {
+    color: var(--ds-fg-muted); text-decoration: none; font-size: var(--ds-text-base);
+    padding: var(--ds-space-2) 0; position: relative; transition: color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .nav a:hover { color: var(--ds-fg); }
+  .nav a.active { color: var(--ds-fg); }
+  .nav a.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -19px; height: 2px;
+    background: var(--ds-primary); border-radius: 2px;
+  }
+  .topbar-spacer { flex: 1; }
+  @media (max-width: 700px) { .nav { display: none; } }
+
+  /* ---------------- theme toggle ---------------- */
+  .toggle {
+    display: inline-flex; align-items: center; gap: var(--ds-space-2);
+    height: 36px; padding: 0 var(--ds-space-3);
+    background: var(--ds-bg); color: var(--ds-fg);
+    border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-sm);
+    font: var(--ds-weight-medium) var(--ds-text-sm)/1 var(--ds-font-sans);
+    cursor: pointer; transition: background var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .toggle:hover { background: var(--ds-bg-subtle); border-color: var(--ds-primary); }
+  .toggle:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+
+  /* ---------------- hero ---------------- */
+  .hero { padding: var(--ds-space-12) 0 var(--ds-space-9); }
+  .eyebrow {
+    display: inline-block; font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium);
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ds-primary);
+    background: var(--ds-info-bg); padding: var(--ds-space-1) var(--ds-space-3);
+    border-radius: var(--ds-radius-full); margin-bottom: var(--ds-space-4);
+  }
+  .hero h1 { font-size: var(--ds-text-3xl); margin-bottom: var(--ds-space-4); }
+  .hero p { font-size: var(--ds-text-md); color: var(--ds-fg-muted); max-width: 640px; line-height: var(--ds-leading-relaxed); }
+  .hero-actions { margin-top: var(--ds-space-6); display: flex; gap: var(--ds-space-3); flex-wrap: wrap; }
+
+  /* ---------------- section ---------------- */
+  section.block { padding: var(--ds-space-8) 0; border-top: 1px solid var(--ds-border); }
+  .sec-head { margin-bottom: var(--ds-space-6); }
+  .sec-head h2 { font-size: var(--ds-text-xl); }
+  .sec-head p { color: var(--ds-fg-muted); margin-top: var(--ds-space-2); font-size: var(--ds-text-base); }
+
+  /* ---------------- swatches ---------------- */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: var(--ds-space-3); }
+  .swatch {
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden;
+    background: var(--ds-bg-elevated); box-shadow: var(--ds-shadow-sm);
+  }
+  .swatch .chip { height: 64px; }
+  .swatch .meta { padding: var(--ds-space-3); }
+  .swatch .name { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); }
+  .swatch .val { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin-top: 2px; }
+
+  /* ---------------- type scale ---------------- */
+  .type-row { display: flex; align-items: baseline; gap: var(--ds-space-4); padding: var(--ds-space-3) 0; border-bottom: 1px dashed var(--ds-border); }
+  .type-row .tag { width: 56px; flex: none; font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .weights { display: flex; gap: var(--ds-space-6); margin-top: var(--ds-space-5); flex-wrap: wrap; }
+  .weights span { font-size: var(--ds-text-lg); }
+
+  /* ---------------- buttons ---------------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--ds-space-2);
+    height: 40px; padding: 0 var(--ds-space-4); border-radius: var(--ds-radius-sm);
+    font: var(--ds-weight-medium) var(--ds-text-base)/1 var(--ds-font-sans);
+    border: 1px solid transparent; cursor: pointer;
+    transition: background var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .btn-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .btn-primary:hover { background: var(--ds-primary-hover); }
+  .btn-primary:active { background: var(--ds-primary-active); }
+  .btn-secondary { background: var(--ds-bg); color: var(--ds-fg); border-color: var(--ds-border-strong); }
+  .btn-secondary:hover { background: var(--ds-bg-subtle); border-color: var(--ds-primary); }
+  .btn-tertiary { background: transparent; color: var(--ds-fg-muted); }
+  .btn-tertiary:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  .btn-danger { background: var(--ds-danger); color: #fff; }
+  .btn-danger:hover { filter: brightness(.94); }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; pointer-events: none; }
+  .btn-sm { height: 32px; padding: 0 var(--ds-space-3); font-size: var(--ds-text-sm); }
+  .btn-lg { height: 48px; padding: 0 var(--ds-space-5); font-size: var(--ds-text-md); }
+  .btn-row { display: flex; gap: var(--ds-space-3); flex-wrap: wrap; align-items: center; margin-bottom: var(--ds-space-4); }
+  .btn-row .label { width: 80px; flex: none; color: var(--ds-fg-subtle); font-size: var(--ds-text-sm); }
+
+  /* ---------------- forms ---------------- */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--ds-space-5); }
+  .field { display: flex; flex-direction: column; gap: var(--ds-space-2); }
+  .field > label { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  .field .hint { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .field .err { font-size: var(--ds-text-xs); color: var(--ds-danger); }
+  .input, .textarea, .select {
+    width: 100%; height: 40px; padding: 0 var(--ds-space-3);
+    background: var(--ds-bg); color: var(--ds-fg);
+    border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-sm);
+    font: var(--ds-weight-normal) var(--ds-text-base)/1.4 var(--ds-font-sans);
+    transition: border-color var(--ds-dur-fast) var(--ds-ease), box-shadow var(--ds-dur-fast) var(--ds-ease);
+  }
+  .textarea { height: auto; padding: var(--ds-space-3); resize: vertical; min-height: 84px; }
+  .input::placeholder, .textarea::placeholder { color: var(--ds-fg-subtle); }
+  .input:focus, .textarea:focus, .select:focus { outline: none; border-color: var(--ds-primary); box-shadow: var(--ds-focus-ring); }
+  .input.is-error { border-color: var(--ds-danger); }
+  .input:disabled { background: var(--ds-bg-sunken); color: var(--ds-fg-subtle); cursor: not-allowed; }
+  .select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ds-fg-muted) 50%), linear-gradient(135deg, var(--ds-fg-muted) 50%, transparent 50%); background-position: calc(100% - 16px) 17px, calc(100% - 11px) 17px; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+
+  .check-row { display: flex; align-items: center; gap: var(--ds-space-2); font-size: var(--ds-text-base); cursor: pointer; }
+  .check-row input { width: 16px; height: 16px; accent-color: var(--ds-primary); cursor: pointer; }
+  .check-row input:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); border-radius: 3px; }
+
+  /* switch */
+  .switch { position: relative; display: inline-flex; align-items: center; gap: var(--ds-space-2); cursor: pointer; font-size: var(--ds-text-base); }
+  .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .switch .track {
+    width: 40px; height: 22px; border-radius: var(--ds-radius-full);
+    background: var(--ds-border-strong); position: relative; transition: background var(--ds-dur-base) var(--ds-ease);
+  }
+  .switch .track::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
+    background: #fff; border-radius: var(--ds-radius-full); box-shadow: var(--ds-shadow-sm);
+    transition: transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .switch input:checked + .track { background: var(--ds-primary); }
+  .switch input:checked + .track::after { transform: translateX(18px); }
+  .switch input:focus-visible + .track { box-shadow: var(--ds-focus-ring); }
+
+  /* ---------------- cards ---------------- */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--ds-space-5); }
+  .card {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); padding: var(--ds-space-6); box-shadow: var(--ds-shadow-sm);
+    transition: box-shadow var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .card:hover { box-shadow: var(--ds-shadow-md); transform: translateY(-2px); }
+  .card h3 { font-size: var(--ds-text-lg); margin-bottom: var(--ds-space-2); }
+  .card p { color: var(--ds-fg-muted); font-size: var(--ds-text-base); line-height: var(--ds-leading-relaxed); }
+  .card .card-foot { margin-top: var(--ds-space-5); display: flex; gap: var(--ds-space-3); align-items: center; }
+  .stat { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-tight); }
+  .stat-up { color: var(--ds-success); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); display: inline-flex; align-items: center; gap: 4px; }
+
+  /* ---------------- badges ---------------- */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 var(--ds-space-2);
+    border-radius: var(--ds-radius-full); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium);
+  }
+  .badge-neutral { background: var(--ds-bg-sunken); color: var(--ds-fg-muted); }
+  .badge-success { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+  .badge-warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+  .badge-danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg); }
+  .badge-info    { background: var(--ds-info-bg);    color: var(--ds-info-fg); }
+  .badge-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .badge-row { display: flex; gap: var(--ds-space-3); flex-wrap: wrap; }
+
+  /* ---------------- alerts ---------------- */
+  .alert {
+    display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4);
+    border-radius: var(--ds-radius-md); border: 1px solid; margin-bottom: var(--ds-space-3);
+    font-size: var(--ds-text-base);
+  }
+  .alert .ic { flex: none; margin-top: 1px; }
+  .alert .ic svg { width: 18px; height: 18px; display: block; }
+  .alert .body strong { display: block; margin-bottom: 2px; font-weight: var(--ds-weight-bold); }
+  .alert .body span { color: inherit; opacity: .85; }
+  .alert-success { background: var(--ds-success-bg); color: var(--ds-success-fg); border-color: var(--ds-success); }
+  .alert-success .ic { color: var(--ds-success); }
+  .alert-warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); border-color: var(--ds-warning); }
+  .alert-warning .ic { color: var(--ds-warning); }
+  .alert-danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg);  border-color: var(--ds-danger); }
+  .alert-danger .ic { color: var(--ds-danger); }
+  .alert-info    { background: var(--ds-info-bg);    color: var(--ds-info-fg);    border-color: var(--ds-info); }
+  .alert-info .ic { color: var(--ds-info); }
+
+  /* ---------------- tabs ---------------- */
+  .tabs { display: flex; gap: var(--ds-space-5); border-bottom: 1px solid var(--ds-border); margin-bottom: var(--ds-space-5); }
+  .tabs button {
+    background: none; border: none; padding: var(--ds-space-3) 0; cursor: pointer;
+    color: var(--ds-fg-muted); font: var(--ds-weight-medium) var(--ds-text-base)/1 var(--ds-font-sans);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .tabs button:hover { color: var(--ds-fg); }
+  .tabs button.active { color: var(--ds-primary); border-bottom-color: var(--ds-primary); }
+  .tabs button:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); border-radius: var(--ds-radius-sm); }
+
+  /* ---------------- table ---------------- */
+  .tbl-wrap { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); box-shadow: var(--ds-shadow-sm); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--ds-text-base); }
+  thead th {
+    text-align: left; background: var(--ds-bg-subtle); color: var(--ds-fg-muted);
+    font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold);
+    padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border);
+  }
+  tbody td { padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); color: var(--ds-fg); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background var(--ds-dur-fast) var(--ds-ease); }
+  tbody tr:hover { background: var(--ds-bg-subtle); }
+  td.num { font-family: var(--ds-font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---------------- shadows demo ---------------- */
+  .shadow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--ds-space-5); }
+  .shadow-box { background: var(--ds-bg-elevated); border-radius: var(--ds-radius-md); padding: var(--ds-space-6); text-align: center; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); border: 1px solid var(--ds-border); }
+
+  /* ---------------- breadcrumb 面包屑 ---------------- */
+  .crumb { display: flex; align-items: center; flex-wrap: wrap; gap: var(--ds-space-2); font-size: var(--ds-text-sm); }
+  .crumb a { color: var(--ds-fg-muted); text-decoration: none; padding: 2px 4px; border-radius: var(--ds-radius-sm); transition: color var(--ds-dur-fast) var(--ds-ease), background var(--ds-dur-fast) var(--ds-ease); }
+  .crumb a:hover { color: var(--ds-primary); background: var(--ds-bg-subtle); }
+  .crumb a:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .crumb .sep { color: var(--ds-fg-subtle); user-select: none; }
+  .crumb .current { color: var(--ds-fg); font-weight: var(--ds-weight-medium); padding: 2px 4px; }
+
+  /* ---------------- stepper 步骤条 ---------------- */
+  .stepper { display: flex; align-items: flex-start; gap: 0; }
+  .step { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); flex: 1; position: relative; min-width: 0; }
+  .step .dot {
+    width: 28px; height: 28px; border-radius: var(--ds-radius-full); display: grid; place-items: center;
+    font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); z-index: 1;
+    background: var(--ds-bg); color: var(--ds-fg-subtle); border: 1px solid var(--ds-border-strong);
+    transition: background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease);
+  }
+  .step .lbl { font-size: var(--ds-text-sm); color: var(--ds-fg-subtle); text-align: center; }
+  .step::before {
+    content: ""; position: absolute; top: 13px; left: -50%; width: 100%; height: 2px;
+    background: var(--ds-border); z-index: 0;
+  }
+  .step:first-child::before { display: none; }
+  .step.done .dot { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); }
+  .step.done .lbl { color: var(--ds-fg-muted); }
+  .step.done::before { background: var(--ds-primary); }
+  .step.current .dot { background: var(--ds-bg); color: var(--ds-primary); border-color: var(--ds-primary); box-shadow: var(--ds-focus-ring); }
+  .step.current .lbl { color: var(--ds-fg); font-weight: var(--ds-weight-medium); }
+
+  /* ---------------- pagination 分页 ---------------- */
+  .pager { display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }
+  .pager button {
+    min-width: 36px; height: 36px; padding: 0 var(--ds-space-3);
+    background: var(--ds-bg); color: var(--ds-fg); border: 1px solid var(--ds-border-strong);
+    border-radius: var(--ds-radius-sm); cursor: pointer;
+    font: var(--ds-weight-medium) var(--ds-text-sm)/1 var(--ds-font-sans);
+    transition: background var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .pager button:hover:not(:disabled):not(.active) { background: var(--ds-bg-subtle); border-color: var(--ds-primary); color: var(--ds-primary); }
+  .pager button:active:not(:disabled) { background: var(--ds-bg-sunken); }
+  .pager button.active { background: var(--ds-primary); color: var(--ds-primary-fg); border-color: var(--ds-primary); cursor: default; }
+  .pager button:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .pager button:disabled { opacity: .5; cursor: not-allowed; }
+  .pager .gap { color: var(--ds-fg-subtle); padding: 0 2px; }
+
+  /* ---------------- dropdown 下拉菜单 ---------------- */
+  .dropdown { position: relative; display: inline-block; }
+  .menu {
+    position: absolute; top: calc(100% + var(--ds-space-2)); left: 0; min-width: 200px; z-index: var(--ds-z-dropdown);
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-md); padding: var(--ds-space-2);
+    opacity: 0; transform: translateY(-4px); pointer-events: none;
+    transition: opacity var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .dropdown.open .menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .menu .item {
+    display: flex; align-items: center; gap: var(--ds-space-3); width: 100%;
+    padding: var(--ds-space-2) var(--ds-space-3); border: none; background: none;
+    color: var(--ds-fg); text-align: left; border-radius: var(--ds-radius-sm); cursor: pointer;
+    font: var(--ds-weight-normal) var(--ds-text-base)/1 var(--ds-font-sans);
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .menu .item:hover { background: var(--ds-bg-subtle); }
+  .menu .item.selected { color: var(--ds-primary); font-weight: var(--ds-weight-medium); background: var(--ds-info-bg); }
+  .menu .item:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .menu .item.danger { color: var(--ds-danger); }
+  .menu .item.danger:hover { background: var(--ds-danger-bg); }
+  .menu .div { height: 1px; background: var(--ds-border); margin: var(--ds-space-2) 0; }
+
+  /* ---------------- tooltip 工具提示 ---------------- */
+  .tip { position: relative; display: inline-flex; }
+  .tip .bubble {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+    background: var(--ds-fg); color: var(--ds-bg); padding: var(--ds-space-2) var(--ds-space-3);
+    border-radius: var(--ds-radius-sm); font-size: var(--ds-text-xs); white-space: nowrap; z-index: var(--ds-z-tooltip);
+    opacity: 0; pointer-events: none; box-shadow: var(--ds-shadow-md);
+    transition: opacity var(--ds-dur-fast) var(--ds-ease), transform var(--ds-dur-fast) var(--ds-ease);
+  }
+  .tip .bubble::after {
+    content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--ds-fg);
+  }
+  .tip:hover .bubble, .tip:focus-within .bubble { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------------- modal 模态框 ---------------- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: var(--ds-z-modal); display: grid; place-items: center;
+    background: rgba(15,23,42,.5); padding: var(--ds-space-5);
+    opacity: 0; pointer-events: none; transition: opacity var(--ds-dur-slow) var(--ds-ease);
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    width: 100%; max-width: 440px; background: var(--ds-bg-elevated);
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg); padding: var(--ds-space-6);
+    transform: translateY(8px) scale(.98); transition: transform var(--ds-dur-slow) var(--ds-ease);
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+  .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ds-space-4); margin-bottom: var(--ds-space-3); }
+  .modal-head h3 { font-size: var(--ds-text-lg); }
+  .modal-head .x {
+    border: none; background: none; color: var(--ds-fg-subtle); cursor: pointer; font-size: 18px;
+    width: 28px; height: 28px; border-radius: var(--ds-radius-sm); display: grid; place-items: center;
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .modal-head .x:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  .modal-head .x:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .modal p { color: var(--ds-fg-muted); line-height: var(--ds-leading-relaxed); }
+  .modal-foot { display: flex; justify-content: flex-end; gap: var(--ds-space-3); margin-top: var(--ds-space-6); }
+
+  /* ---------------- toast 通知 ---------------- */
+  .toast-stack { display: flex; flex-direction: column; gap: var(--ds-space-3); max-width: 380px; }
+  .toast {
+    display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4);
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-md); font-size: var(--ds-text-base);
+  }
+  .toast .ic { flex: none; color: var(--ds-primary); margin-top: 1px; }
+  .toast .ic svg { width: 18px; height: 18px; display: block; }
+  .toast.success .ic { color: var(--ds-success); }
+  .toast.warning .ic { color: var(--ds-warning); }
+  .toast.danger  .ic { color: var(--ds-danger); }
+  .toast .body strong { display: block; font-weight: var(--ds-weight-bold); margin-bottom: 1px; }
+  .toast .body span { color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  .toast .close {
+    margin-left: auto; border: none; background: none; color: var(--ds-fg-subtle); cursor: pointer;
+    width: 22px; height: 22px; border-radius: var(--ds-radius-sm); flex: none;
+    display: grid; place-items: center;
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  .toast .close .ico { width: 15px; height: 15px; }
+  .toast .close:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  .toast .close:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+
+  /* ---------------- mobile 手机框 ---------------- */
+  .phone {
+    width: 375px; max-width: 100%; margin: 0 auto;
+    background: var(--ds-bg); border: 1px solid var(--ds-border-strong);
+    border-radius: var(--ds-radius-lg); box-shadow: var(--ds-shadow-lg); overflow: hidden;
+  }
+  .phone-bar {
+    height: 52px; display: flex; align-items: center; gap: var(--ds-space-3);
+    padding: 0 var(--ds-space-4); background: var(--ds-bg-elevated); border-bottom: 1px solid var(--ds-border);
+  }
+  .phone-bar .menu-btn {
+    width: 32px; height: 32px; border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-sm);
+    background: var(--ds-bg); color: var(--ds-fg); cursor: pointer; display: grid; place-items: center; flex: none;
+  }
+  .phone-bar .menu-btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .phone-bar .ttl { font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
+  .phone-body { padding: var(--ds-space-4); display: flex; flex-direction: column; gap: var(--ds-space-4); background: var(--ds-bg-subtle); }
+  .phone-list { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
+  .phone-list .li {
+    display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4);
+    border-bottom: 1px solid var(--ds-border); transition: background var(--ds-dur-fast) var(--ds-ease);
+  }
+  .phone-list .li:last-child { border-bottom: none; }
+  .phone-list .li:hover { background: var(--ds-bg-subtle); }
+  .phone-list .li .av { width: 32px; height: 32px; border-radius: var(--ds-radius-full); background: var(--ds-bg-sunken); display: grid; place-items: center; flex: none; color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  .phone-list .li .tx { flex: 1; min-width: 0; }
+  .phone-list .li .tx b { font-size: var(--ds-text-base); font-weight: var(--ds-weight-medium); display: block; }
+  .phone-list .li .tx small { color: var(--ds-fg-subtle); font-size: var(--ds-text-xs); }
+
+  footer { padding: var(--ds-space-9) 0; border-top: 1px solid var(--ds-border); color: var(--ds-fg-subtle); font-size: var(--ds-text-sm); text-align: center; }
+
+  /* ---------------- 响应式断点 ---------------- */
+  @media (max-width: 640px) {
+    .wrap, .topbar-inner { padding-left: var(--ds-space-4); padding-right: var(--ds-space-4); }
+    .nav { display: none; }
+    .hero { padding: var(--ds-space-9) 0 var(--ds-space-7); }
+    .hero h1 { font-size: var(--ds-text-2xl); }
+    /* 栅格 ≤640px 收一列 */
+    .swatch-grid, .card-grid, .form-grid, .shadow-grid { grid-template-columns: 1fr; }
+    .btn-row .label, .field > label ~ * { width: auto; }
+    .stepper { gap: var(--ds-space-2); }
+    .step .lbl { font-size: var(--ds-text-xs); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== 顶栏 ===== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span> Enterprise
+      </div>
+      <nav class="nav">
+        <a href="#colors" class="active">概览</a>
+        <a href="#type">字体</a>
+        <a href="#components">组件</a>
+        <a href="#data">数据</a>
+        <a href="#mobile">移动端</a>
+      </nav>
+      <span class="topbar-spacer"></span>
+      <button class="toggle" id="themeToggle" aria-label="切换主题">
+        <span id="themeIcon" class="ico" aria-hidden="true"></span><span id="themeLabel">暗色</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <span class="eyebrow">Design System · 企业风</span>
+      <h1>稳重、专业、可信赖的界面语言</h1>
+      <p>给官网、SaaS 控制台、产品站与品牌门户。以中性灰阶承载界面，商务蓝作为唯一情绪锚点——传达可信与秩序，克制而不冷漠。</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg">开始使用</button>
+        <button class="btn btn-secondary btn-lg">查看文档</button>
+      </div>
+    </section>
+
+    <!-- ===== 色板 ===== -->
+    <section class="block" id="colors">
+      <div class="sec-head"><h2>色彩 · 语义 Token</h2><p>表面 / 文字 / 品牌 / 状态，全部走 <code>var(--ds-*)</code>，亮暗自动切换。</p></div>
+
+      <h3 style="font-size:var(--ds-text-base);color:var(--ds-fg-muted);margin-bottom:var(--ds-space-3)">表面与文字</h3>
+      <div class="swatch-grid" id="surfaceSwatches" style="margin-bottom:var(--ds-space-6)"></div>
+
+      <h3 style="font-size:var(--ds-text-base);color:var(--ds-fg-muted);margin-bottom:var(--ds-space-3)">品牌与强调</h3>
+      <div class="swatch-grid" id="brandSwatches" style="margin-bottom:var(--ds-space-6)"></div>
+
+      <h3 style="font-size:var(--ds-text-base);color:var(--ds-fg-muted);margin-bottom:var(--ds-space-3)">语义状态</h3>
+      <div class="swatch-grid" id="stateSwatches"></div>
+    </section>
+
+    <!-- ===== 字体 ===== -->
+    <section class="block" id="type">
+      <div class="sec-head"><h2>字体 · 比例尺与字重</h2><p>Inter 专业无衬线，正文基准 14px；字重 400 / 500 / 600，标题字距 -0.01em。</p></div>
+      <div class="type-row"><span class="tag">3xl</span><span style="font-size:var(--ds-text-3xl);font-weight:600;letter-spacing:var(--ds-tracking-tight)">企业级控制台 Console</span></div>
+      <div class="type-row"><span class="tag">2xl</span><span style="font-size:var(--ds-text-2xl);font-weight:600;letter-spacing:var(--ds-tracking-tight)">仪表盘 Dashboard</span></div>
+      <div class="type-row"><span class="tag">xl</span><span style="font-size:var(--ds-text-xl);font-weight:600">区块标题 Section</span></div>
+      <div class="type-row"><span class="tag">lg</span><span style="font-size:var(--ds-text-lg);font-weight:500">卡片标题 Card title</span></div>
+      <div class="type-row"><span class="tag">md</span><span style="font-size:var(--ds-text-md)">引导正文 16px lead</span></div>
+      <div class="type-row"><span class="tag">base</span><span style="font-size:var(--ds-text-base)">常规正文 14px body — 稳定、规整、易读。</span></div>
+      <div class="type-row"><span class="tag">sm</span><span style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted)">辅助说明 13px caption</span></div>
+      <div class="type-row"><span class="tag">xs</span><span style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle)">标签 / 元信息 12px label</span></div>
+      <div class="weights">
+        <span style="font-weight:400">Regular 400</span>
+        <span style="font-weight:500">Medium 500</span>
+        <span style="font-weight:600">Semibold 600</span>
+        <span style="font-family:var(--ds-font-mono)">Mono 1234.56</span>
+      </div>
+    </section>
+
+    <!-- ===== 按钮 ===== -->
+    <section class="block" id="components">
+      <div class="sec-head"><h2>按钮 Button</h2><p>实底蓝 primary · 描边 secondary · 幽灵 tertiary · danger，三尺寸全状态。</p></div>
+      <div class="btn-row"><span class="label">Primary</span>
+        <button class="btn btn-primary">默认</button>
+        <button class="btn btn-primary" style="background:var(--ds-primary-hover)">Hover</button>
+        <button class="btn btn-primary" style="background:var(--ds-primary-active)">Active</button>
+        <button class="btn btn-primary" disabled>禁用</button>
+      </div>
+      <div class="btn-row"><span class="label">Secondary</span>
+        <button class="btn btn-secondary">默认</button>
+        <button class="btn btn-secondary" style="background:var(--ds-bg-subtle);border-color:var(--ds-primary)">Hover</button>
+        <button class="btn btn-secondary" disabled>禁用</button>
+      </div>
+      <div class="btn-row"><span class="label">Tertiary</span>
+        <button class="btn btn-tertiary">默认</button>
+        <button class="btn btn-tertiary" style="background:var(--ds-bg-subtle);color:var(--ds-fg)">Hover</button>
+        <button class="btn btn-tertiary" disabled>禁用</button>
+      </div>
+      <div class="btn-row"><span class="label">Danger</span>
+        <button class="btn btn-danger">删除</button>
+        <button class="btn btn-danger" disabled>禁用</button>
+      </div>
+      <div class="btn-row"><span class="label">尺寸</span>
+        <button class="btn btn-primary btn-sm">Small 32</button>
+        <button class="btn btn-primary">Medium 40</button>
+        <button class="btn btn-primary btn-lg">Large 48</button>
+      </div>
+      <p style="color:var(--ds-fg-subtle);font-size:var(--ds-text-sm)">提示：用 Tab 键聚焦任一控件可见双层焦点环。</p>
+    </section>
+
+    <!-- ===== 表单 ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>表单 Form</h2><p>输入 / 文本域 / 下拉 / 复选 / 单选 / 开关，含 focus 与 error 态。</p></div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="f1">公司名称</label>
+          <input id="f1" class="input" placeholder="请输入公司名称" />
+          <span class="hint">将显示在合同与发票上</span>
+        </div>
+        <div class="field">
+          <label for="f2">企业邮箱</label>
+          <input id="f2" class="input is-error" value="admin@example" />
+          <span class="err">邮箱格式不正确</span>
+        </div>
+        <div class="field">
+          <label for="f3">所属行业</label>
+          <select id="f3" class="select">
+            <option>金融与保险</option>
+            <option>制造与供应链</option>
+            <option>互联网与软件</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f4">账号（禁用）</label>
+          <input id="f4" class="input" value="enterprise_admin" disabled />
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label for="f5">备注</label>
+          <textarea id="f5" class="textarea" placeholder="补充说明…"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;margin-top:var(--ds-space-5);align-items:center">
+        <label class="check-row"><input type="checkbox" checked /> 接受服务协议</label>
+        <label class="check-row"><input type="checkbox" /> 订阅产品更新</label>
+        <label class="check-row"><input type="radio" name="r" checked /> 月付</label>
+        <label class="check-row"><input type="radio" name="r" /> 年付</label>
+        <label class="switch"><input type="checkbox" checked /><span class="track"></span> 启用双因素认证</label>
+      </div>
+    </section>
+
+    <!-- ===== 卡片 ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>卡片 Card</h2><p>轻边轻影，hover 抬起。承载内容、指标与操作。</p></div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="badge-row" style="margin-bottom:var(--ds-space-3)"><span class="badge badge-info">企业版</span></div>
+          <h3>团队协作空间</h3>
+          <p>统一权限、审计日志与单点登录，为大型组织提供可控、可追溯的协作环境。</p>
+          <div class="card-foot"><button class="btn btn-primary btn-sm">了解详情</button><button class="btn btn-tertiary btn-sm">对比</button></div>
+        </div>
+        <div class="card">
+          <p style="color:var(--ds-fg-subtle);font-size:var(--ds-text-sm);margin-bottom:var(--ds-space-2)">本月活跃用户</p>
+          <div class="stat">48,290</div>
+          <p style="margin-top:var(--ds-space-2)"><span class="stat-up"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 17 12 9l3 3 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> 12.4%</span> <span style="color:var(--ds-fg-subtle);font-size:var(--ds-text-sm)">环比上月</span></p>
+          <div class="card-foot"><button class="btn btn-secondary btn-sm">查看报表</button></div>
+        </div>
+        <div class="card">
+          <div class="badge-row" style="margin-bottom:var(--ds-space-3)"><span class="badge badge-success">已上线</span></div>
+          <h3>SLA 99.99%</h3>
+          <p>多区域容灾与实时监控，保障关键业务连续性，让每一次签约都更安心。</p>
+          <div class="card-foot"><button class="btn btn-primary btn-sm">查看状态</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 徽章 ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>徽章 / 标签 Badge</h2><p>各语义色，浅底深字，圆角药丸。</p></div>
+      <div class="badge-row">
+        <span class="badge badge-primary">主色</span>
+        <span class="badge badge-neutral">默认</span>
+        <span class="badge badge-info">信息</span>
+        <span class="badge badge-success">成功</span>
+        <span class="badge badge-warning">警告</span>
+        <span class="badge badge-danger">危险</span>
+      </div>
+    </section>
+
+    <!-- ===== 提示条 ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>提示条 Alert</h2><p>四种语义状态，前置语义图标 + 浅底 + 1px 全描边。</p></div>
+      <div class="alert alert-success"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="body"><strong>部署成功</strong><span>新版本已发布至生产环境，所有节点健康。</span></div></div>
+      <div class="alert alert-info"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg></span><div class="body"><strong>系统维护通知</strong><span>本周日 02:00–04:00 将进行例行维护，期间服务可能短暂中断。</span></div></div>
+      <div class="alert alert-warning"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 21 19H3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></span><div class="body"><strong>配额即将用尽</strong><span>当前 API 调用量已达套餐的 85%，建议升级套餐。</span></div></div>
+      <div class="alert alert-danger"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><div class="body"><strong>支付失败</strong><span>账单未能扣款，请更新支付方式以避免服务中断。</span></div></div>
+    </section>
+
+    <!-- ===== 导航 Tabs ===== -->
+    <section class="block" id="data">
+      <div class="sec-head"><h2>导航 · Tabs</h2><p>当前项商务蓝下划线，其余 muted。</p></div>
+      <div class="tabs">
+        <button class="active">总览</button>
+        <button>用量</button>
+        <button>账单</button>
+        <button>团队成员</button>
+      </div>
+
+      <!-- ===== 表格 ===== -->
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>客户</th><th>套餐</th><th>状态</th><th class="num">席位</th><th class="num">月费 (¥)</th></tr></thead>
+          <tbody>
+            <tr><td>北方数据集团</td><td>Enterprise</td><td><span class="badge badge-success">活跃</span></td><td class="num">240</td><td class="num">86,400.00</td></tr>
+            <tr><td>云帆科技</td><td>Business</td><td><span class="badge badge-info">试用</span></td><td class="num">32</td><td class="num">9,600.00</td></tr>
+            <tr><td>恒信保险</td><td>Enterprise</td><td><span class="badge badge-warning">待续费</span></td><td class="num">180</td><td class="num">64,800.00</td></tr>
+            <tr><td>明远制造</td><td>Business</td><td><span class="badge badge-danger">已暂停</span></td><td class="num">15</td><td class="num">4,500.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== 圆角 / 阴影 ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>圆角 / 阴影</h2><p>中性圆角，克制柔和的多层弱阴影。</p></div>
+      <div style="display:flex;gap:var(--ds-space-5);flex-wrap:wrap;margin-bottom:var(--ds-space-6)">
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--ds-primary);border-radius:var(--ds-radius-sm)"></div><div style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:6px">sm 6px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--ds-primary);border-radius:var(--ds-radius-md)"></div><div style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:6px">md 10px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--ds-primary);border-radius:var(--ds-radius-lg)"></div><div style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:6px">lg 16px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--ds-primary);border-radius:var(--ds-radius-full)"></div><div style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:6px">full</div></div>
+      </div>
+      <div class="shadow-grid">
+        <div class="shadow-box" style="box-shadow:var(--ds-shadow-sm)">shadow-sm</div>
+        <div class="shadow-box" style="box-shadow:var(--ds-shadow-md)">shadow-md</div>
+        <div class="shadow-box" style="box-shadow:var(--ds-shadow-lg)">shadow-lg</div>
+      </div>
+    </section>
+
+    <!-- ===== 面包屑 Breadcrumb ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>面包屑 Breadcrumb</h2><p>层级路径，链接 hover 转主色，当前项不可点。</p></div>
+      <nav class="crumb" aria-label="面包屑">
+        <a href="#">控制台</a>
+        <span class="sep">/</span>
+        <a href="#">组织管理</a>
+        <span class="sep">/</span>
+        <a href="#">团队成员</a>
+        <span class="sep">/</span>
+        <span class="current" aria-current="page">权限设置</span>
+      </nav>
+    </section>
+
+    <!-- ===== 步骤条 Stepper ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>步骤条 Stepper</h2><p>已完成（实底蓝）· 当前（蓝描边 + 焦点环）· 待办（灰）。</p></div>
+      <div class="stepper">
+        <div class="step done"><span class="dot"><svg class="ico-lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 12.5 3.5 3.5L18 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">企业信息</span></div>
+        <div class="step done"><span class="dot"><svg class="ico-lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 12.5 3.5 3.5L18 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">管理员账号</span></div>
+        <div class="step current"><span class="dot">3</span><span class="lbl">权限分配</span></div>
+        <div class="step"><span class="dot">4</span><span class="lbl">套餐确认</span></div>
+        <div class="step"><span class="dot">5</span><span class="lbl">完成</span></div>
+      </div>
+    </section>
+
+    <!-- ===== 分页 Pagination ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>分页 Pagination</h2><p>当前页实底蓝，hover 转主色描边，首尾禁用态。</p></div>
+      <nav class="pager" aria-label="分页">
+        <button disabled>‹ 上一页</button>
+        <button class="active" aria-current="page">1</button>
+        <button>2</button>
+        <button>3</button>
+        <span class="gap">…</span>
+        <button>12</button>
+        <button>下一页 ›</button>
+      </nav>
+    </section>
+
+    <!-- ===== 下拉 / 工具提示 / 模态 / Toast ===== -->
+    <section class="block">
+      <div class="sec-head"><h2>叠层组件 Overlays</h2><p>下拉菜单 · 工具提示 · 模态框 · Toast 通知，全部 <code>var(--ds-*)</code> 驱动。</p></div>
+
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;align-items:flex-start;margin-bottom:var(--ds-space-7)">
+        <!-- Dropdown -->
+        <div>
+          <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-subtle);margin-bottom:var(--ds-space-2)">下拉菜单 Dropdown</p>
+          <div class="dropdown" id="dd1">
+            <button class="btn btn-secondary" id="ddBtn" aria-haspopup="true" aria-expanded="false">操作 <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="menu" role="menu">
+              <button class="item selected" role="menuitem"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4 4L19 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> 查看详情</button>
+              <button class="item" role="menuitem"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4L18.5 9.5a2 2 0 0 0-2.83-2.83L5 17v3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg> 编辑</button>
+              <button class="item" role="menuitem"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 9h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.7"/><path d="M15 5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2" stroke="currentColor" stroke-width="1.7"/></svg> 复制链接</button>
+              <div class="div"></div>
+              <button class="item danger" role="menuitem"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M10 11v6M14 11v6M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> 删除</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tooltip -->
+        <div>
+          <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-subtle);margin-bottom:var(--ds-space-2)">工具提示 Tooltip（hover / focus）</p>
+          <span class="tip">
+            <button class="btn btn-secondary">悬停查看 SLA</button>
+            <span class="bubble" role="tooltip">承诺可用性 99.99%，季度结算</span>
+          </span>
+        </div>
+
+        <!-- Modal trigger -->
+        <div>
+          <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-subtle);margin-bottom:var(--ds-space-2)">模态框 Modal</p>
+          <button class="btn btn-primary" id="openModal">打开对话框</button>
+        </div>
+      </div>
+
+      <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-subtle);margin-bottom:var(--ds-space-3)">Toast 通知</p>
+      <div class="toast-stack">
+        <div class="toast success"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="body"><strong>保存成功</strong><span>权限配置已应用到 240 个席位。</span></div><button class="close" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+        <div class="toast"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg></span><div class="body"><strong>同步进行中</strong><span>正在与目录服务同步成员信息…</span></div><button class="close" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+        <div class="toast danger"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><div class="body"><strong>导出失败</strong><span>网络超时，请稍后重试。</span></div><button class="close" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+      </div>
+    </section>
+
+    <!-- ===== 移动端 Mobile ===== -->
+    <section class="block" id="mobile">
+      <div class="sec-head"><h2>移动端 Mobile · 响应式</h2><p>约 375px 手机框：折叠导航顶栏 + 卡片 + 主操作 + 列表。栅格 ≤640px 自动收一列。</p></div>
+      <div class="phone">
+        <div class="phone-bar">
+          <button class="menu-btn" aria-label="菜单"><svg class="ico-lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+          <span class="ttl">控制台</span>
+          <span style="flex:1"></span>
+          <span class="badge badge-info">企业版</span>
+        </div>
+        <div class="phone-body">
+          <nav class="crumb" aria-label="面包屑"><a href="#">首页</a><span class="sep">/</span><span class="current">团队</span></nav>
+          <div class="card" style="box-shadow:var(--ds-shadow-sm)">
+            <p style="color:var(--ds-fg-subtle);font-size:var(--ds-text-sm);margin-bottom:var(--ds-space-2)">本月活跃用户</p>
+            <div class="stat">48,290</div>
+            <p style="margin-top:var(--ds-space-2)"><span class="stat-up"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 17 12 9l3 3 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> 12.4%</span> <span style="color:var(--ds-fg-subtle);font-size:var(--ds-text-sm)">环比</span></p>
+          </div>
+          <button class="btn btn-primary btn-lg" style="width:100%">新建团队</button>
+          <div class="phone-list">
+            <div class="li"><span class="av">北</span><span class="tx"><b>北方数据集团</b><small>240 席位 · 活跃</small></span><span class="badge badge-success">活跃</span></div>
+            <div class="li"><span class="av">云</span><span class="tx"><b>云帆科技</b><small>32 席位 · 试用</small></span><span class="badge badge-info">试用</span></div>
+            <div class="li"><span class="av">恒</span><span class="tx"><b>恒信保险</b><small>180 席位 · 待续费</small></span><span class="badge badge-warning">待续费</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 模态框结构 ===== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modalTitle">确认升级套餐</h3>
+        <button class="x" id="closeModal" aria-label="关闭"><svg class="ico-lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <p>升级到 Enterprise 套餐后，将立即解锁单点登录、审计日志与多区域容灾。本次变更将在下个账单周期生效。</p>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" id="cancelModal">取消</button>
+        <button class="btn btn-primary" id="confirmModal">确认升级</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">Enterprise Design System · 基于 Geist 语义骨架 · 全部走 <code>var(--ds-*)</code> · 双击即开，离线可用</div>
+  </footer>
+
+<script>
+  // ---- 主题切换 ----
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var icon = document.getElementById('themeIcon');
+  var label = document.getElementById('themeLabel');
+  var ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:1em;height:1em;display:block"><path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+  var ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:1em;height:1em;display:block"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+  function setTheme(dark){
+    root.dataset.theme = dark ? 'dark' : '';
+    icon.innerHTML = dark ? ICON_SUN : ICON_MOON;
+    label.textContent = dark ? '亮色' : '暗色';
+  }
+  setTheme(false);
+  btn.addEventListener('click', function(){ setTheme(root.dataset.theme !== 'dark'); });
+
+  // ---- 自动生成色板 ----
+  function swatch(name){
+    var v = getComputedStyle(root).getPropertyValue('--ds-' + name).trim();
+    return '<div class="swatch"><div class="chip" style="background:var(--ds-'+name+')"></div>'
+         + '<div class="meta"><div class="name">'+name+'</div><div class="val">--ds-'+name+'</div></div></div>';
+  }
+  function render(){
+    document.getElementById('surfaceSwatches').innerHTML =
+      ['bg','bg-subtle','bg-elevated','bg-sunken','fg','fg-muted','fg-subtle','border','border-strong'].map(swatch).join('');
+    document.getElementById('brandSwatches').innerHTML =
+      ['primary','primary-hover','primary-active','accent'].map(swatch).join('');
+    document.getElementById('stateSwatches').innerHTML =
+      ['success','success-bg','warning','warning-bg','danger','danger-bg','info','info-bg'].map(swatch).join('');
+  }
+  render();
+
+  // ---- tabs 交互 ----
+  document.querySelectorAll('.tabs').forEach(function(group){
+    group.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        group.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+      });
+    });
+  });
+
+  // ---- dropdown 下拉菜单 ----
+  var dd = document.getElementById('dd1');
+  var ddBtn = document.getElementById('ddBtn');
+  ddBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dd.classList.toggle('open');
+    ddBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(){ dd.classList.remove('open'); ddBtn.setAttribute('aria-expanded','false'); });
+  dd.querySelector('.menu').addEventListener('click', function(e){ e.stopPropagation(); });
+
+  // ---- modal 模态框 ----
+  var overlay = document.getElementById('modalOverlay');
+  function openM(){ overlay.classList.add('open'); }
+  function closeM(){ overlay.classList.remove('open'); }
+  document.getElementById('openModal').addEventListener('click', openM);
+  document.getElementById('closeModal').addEventListener('click', closeM);
+  document.getElementById('cancelModal').addEventListener('click', closeM);
+  document.getElementById('confirmModal').addEventListener('click', closeM);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeM(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeM(); });
+
+  // ---- toast 关闭 ----
+  document.querySelectorAll('.toast .close').forEach(function(b){
+    b.addEventListener('click', function(){ b.closest('.toast').style.display = 'none'; });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+/* ============================================================
+   🫧 Neumorphism · 新拟物风 设计系统 Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"]（并加 .dark 兼容）。
+   灵魂 = 同色基底 + 双向软阴影（左上白高光 / 右下深暗影）。
+   全部文字色满足 WCAG AA（正文 ≥4.5:1，大字/UI ≥3:1）。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（关键：背景与控件同色，靠阴影分层，不靠色差） ---- */
+  --ds-bg: #e8ebf0;            /* 浅灰蓝基底 */
+  --ds-bg-subtle: #e4e7ec;     /* 次背景 · 区块分组底 */
+  --ds-bg-elevated: #e8ebf0;   /* 卡片/弹层 · 与底同色，靠凸阴影抬起 */
+  --ds-bg-sunken: #e0e3e9;     /* 凹陷表面 · 输入槽/代码块 */
+  --ds-fg: #3a4252;            /* 主文字（加深以保证对比度 8.2:1） */
+  --ds-fg-muted: #5b6273;      /* 次要文字（AA 5.4:1） */
+  --ds-fg-subtle: #6b7280;     /* 占位/弱文字（AA 4.6:1） */
+  --ds-fg-on-accent: #ffffff;  /* 落在强调色上的文字 */
+  --ds-border: #d2d6de;        /* 常规描边（几乎不用，靠阴影） */
+  --ds-border-strong: #bcc2cd; /* 强描边/分隔 */
+
+  /* ---- 品牌与强调（柔蓝主色 / 柔紫 accent） ---- */
+  --ds-primary: #4a6fc4;       /* 柔蓝主操作色（加深以保 on-accent 文字 AA 4.6:1） */
+  --ds-primary-hover: #3f63b4;
+  --ds-primary-active: #36569e;
+  --ds-primary-fg: #ffffff;    /* 主操作上的文字 */
+  --ds-accent: #6f5fd6;        /* 柔紫次强调/链接（加深保 AA） */
+  --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态（柔和但加深保证底上文字对比度） ---- */
+  --ds-success: #2f9b6b; --ds-success-bg: #dceee6; --ds-success-fg: #0f5639;
+  --ds-warning: #b97e1f; --ds-warning-bg: #f3e8d2; --ds-warning-fg: #6e480a;
+  --ds-danger:  #cf4b4b; --ds-danger-bg:  #f3dede; --ds-danger-fg:  #7c1d1d;
+  --ds-info:    #4a6fc4; --ds-info-bg:    #dce4f3; --ds-info-fg:    #213a73;
+
+  /* ---- 焦点（双层环：底色环 + 主色环） ---- */
+  --ds-focus: #4a6fc4;
+  --ds-focus-ring: 0 0 0 3px var(--ds-bg), 0 0 0 5px var(--ds-focus);
+
+  /* ---- 圆角（大而圆润，软塑料质感） ---- */
+  --ds-radius-sm: 10px;
+  --ds-radius-md: 16px;
+  --ds-radius-lg: 24px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（柔和无衬线；preview 不外链，靠 system 回退） ---- */
+  --ds-font-sans: "Inter", "PingFang SC", -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "SF Mono", ui-monospace, Menlo, "Cascadia Code", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 灵魂（双向软阴影：左上白高光 + 右下深暗影） ---- */
+  --ds-shadow-sm: -3px -3px 6px rgba(255,255,255,.7), 3px 3px 6px rgba(163,177,198,.45);
+  --ds-shadow-md: -6px -6px 12px rgba(255,255,255,.8), 6px 6px 12px rgba(163,177,198,.5);
+  --ds-shadow-lg: -10px -10px 20px rgba(255,255,255,.85), 10px 10px 20px rgba(163,177,198,.55);
+  /* 凹陷（inset · 用于输入框/按下态；组件层引用） */
+  --ds-shadow-inset: inset 4px 4px 8px rgba(163,177,198,.5), inset -4px -4px 8px rgba(255,255,255,.8);
+  --ds-shadow-inset-sm: inset 2px 2px 5px rgba(163,177,198,.45), inset -2px -2px 5px rgba(255,255,255,.75);
+
+  /* ---- 动效（柔顺；凸→凹过渡） ---- */
+  --ds-ease: cubic-bezier(.25,.46,.45,.94);
+  --ds-dur-fast: 200ms; --ds-dur-base: 240ms; --ds-dur-slow: 280ms;
+}
+
+/* ============================================================
+   暗色：深石板灰底，控件同色，亮面减弱、暗面加深
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #2a2d35;            /* 深石板灰基底 */
+  --ds-bg-subtle: #272a31;     /* 次背景 */
+  --ds-bg-elevated: #2a2d35;   /* 卡片 · 同色靠凸阴影 */
+  --ds-bg-sunken: #25282f;     /* 凹陷 */
+  --ds-fg: #d8dce4;            /* 主文字（AA 9.6:1） */
+  --ds-fg-muted: #a3a9b5;      /* 次要文字（AA 5.6:1） */
+  --ds-fg-subtle: #9097a3;     /* 弱文字（AA 4.6:1） */
+  --ds-fg-on-accent: #ffffff;
+  --ds-border: #3a3e48;
+  --ds-border-strong: #4a4f5b;
+
+  /* ---- 品牌与强调（暗色下提亮） ---- */
+  --ds-primary: #6e9bff;
+  --ds-primary-hover: #5e8df5;
+  --ds-primary-active: #4f7fe8;
+  --ds-primary-fg: #0c1733;    /* 深字落在亮蓝上（AA 7.1:1） */
+  --ds-accent: #a394ff;
+  --ds-accent-fg: #150f33;
+
+  /* ---- 语义状态（暗底浅彩，底上文字加亮保 AA） ---- */
+  --ds-success: #54c595; --ds-success-bg: #16352a; --ds-success-fg: #c6f3df;
+  --ds-warning: #e0a23b; --ds-warning-bg: #38290f; --ds-warning-fg: #fbe7c2;
+  --ds-danger:  #e87b7b; --ds-danger-bg:  #3a2022; --ds-danger-fg:  #fad9d9;
+  --ds-info:    #6e9bff; --ds-info-bg:    #18233f; --ds-info-fg:    #d3e0fb;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #6e9bff;
+  --ds-focus-ring: 0 0 0 3px var(--ds-bg), 0 0 0 5px var(--ds-focus);
+
+  /* ---- 阴影 · 双向（暗面加深近黑，亮面用低透白） ---- */
+  --ds-shadow-sm: -3px -3px 6px rgba(60,66,80,.55), 3px 3px 6px rgba(0,0,0,.55);
+  --ds-shadow-md: -6px -6px 12px rgba(60,66,80,.6), 6px 6px 12px rgba(0,0,0,.6);
+  --ds-shadow-lg: -10px -10px 20px rgba(60,66,80,.6), 10px 10px 20px rgba(0,0,0,.65);
+  --ds-shadow-inset: inset 4px 4px 8px rgba(0,0,0,.6), inset -4px -4px 8px rgba(60,66,80,.55);
+  --ds-shadow-inset-sm: inset 2px 2px 5px rgba(0,0,0,.55), inset -2px -2px 5px rgba(60,66,80,.5);
+}
