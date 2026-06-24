@@ -1,6 +1,6 @@
 <div align="center">
 
-# haha-design-system
+# 哈哈设计系统 · haha-design-system
 
 **一套基于 [Geist (Vercel Design System)](https://vercel.com/geist) 衍生的多风格设计系统库**
 16 套可复用风格 + 6 个开源项目的定制设计系统，共享同一 `--ds-*` Token 契约 — 换一份 `tokens.css` 即可整体换肤。
