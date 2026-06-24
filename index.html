@@ -15,7 +15,7 @@
   h2{margin:44px 32px 4px;font-size:15px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
   .sub{margin:0 32px 18px;color:var(--mut);font-size:13px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;padding:0 32px 8px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s;content-visibility:auto;contain-intrinsic-size:0 400px}
   .card:hover{border-color:#3a3a47;transform:translateY(-2px)}
   .card .ttl{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line)}
   .dot{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.05)}
@@ -87,8 +87,8 @@ function render(list, dir, mount){
     <div class="card">
       <div class="ttl"><span class="dot" style="background:${color}"></span><b>${name}</b><a href="${dir}/${slug}/preview.html" target="_blank">打开 preview</a></div>
       <div class="pair">
-        <figure><a class="zoom" href="screenshots/${f}.png" target="_blank"><img class="shot" src="screenshots/${f}.png" loading="lazy" alt="${name} 亮色"></a><figcaption>亮色 Light</figcaption></figure>
-        <figure><a class="zoom" href="screenshots/${f}--dark.png" target="_blank"><img class="shot" src="screenshots/${f}--dark.png" loading="lazy" alt="${name} 暗色"></a><figcaption>暗色 Dark</figcaption></figure>
+        <figure><a class="zoom" href="screenshots/${f}.png" target="_blank"><img class="shot" src="screenshots/thumbs/${f}.jpg" decoding="async" loading="lazy" alt="${name} 亮色"></a><figcaption>亮色 Light</figcaption></figure>
+        <figure><a class="zoom" href="screenshots/${f}--dark.png" target="_blank"><img class="shot" src="screenshots/thumbs/${f}--dark.jpg" decoding="async" loading="lazy" alt="${name} 暗色"></a><figcaption>暗色 Dark</figcaption></figure>
       </div>
     </div>`).join("");
 }
