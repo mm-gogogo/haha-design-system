@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 26 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 27 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 26 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 27 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -136,6 +136,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 26 报刊风 · Newspaper (Broadsheet) — `/styles/26-newspaper/`
 传统大报：衬线报头 + 日期线 + 多栏细线正文。primary 墨黑 `#1f1f1c`(黑底按钮) / accent 报红 `#a8201a` / bg 新闻纸 `#f2efe8`·elevated `#fbf9f3` / fg `#1a1a18`｜暗（夜刊）primary 纸白 `#e8e4d8`(黑字) / accent `#e0564e` / bg `#161512`·fg `#ece8dc`｜0·0·0（锐）｜Noto Serif 报头/标题/正文 + JetBrains Mono 日期线/眉标｜大报头 + 双线 + column-count 多栏细线 + 首字下沉 + 小型大写署名 + 灰度配图。与 07 极简编辑（舒适阅读）刻意区分（高密度多栏大报）。
+
+### 27 蒸汽波 · Synthwave (Outrun) — `/styles/27-synthwave/`（暗色优先）
+80s 复古未来：日落渐变 + 霓虹透视网格地平线 + 条纹太阳 + chrome 字 + 扫描线。`:root`=暗：bg 深紫夜 `#150a2a`·elevated `#251444` / fg `#f4ecff` / primary 品红 `#ff5fa2`(黑字) / accent 青 `#29e0e0`｜亮（Miami 粉彩日）bg `#fdf2f8` / primary `#c01f72` / accent `#0d6f7e` / fg `#2a1535`｜2·6·10｜Inter 重体 + JetBrains Mono｜日落渐变 hero + 透视网格 + 条纹太阳 + 霓虹辉光（reduced-motion 关）。与 13 赛博朋克（雨夜废托邦/粉色故障）刻意区分（日落网格乐观复古）。
 
 ---
 

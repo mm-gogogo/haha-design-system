@@ -1,0 +1,116 @@
+/**
+ * Synthwave / 蒸汽波 / 合成波（Outrun）— tokens.css
+ * ---------------------------------------------------------------------------
+ * 严格遵守 ds-token-contract@1：变量名固定，仅取值随风格变。
+ *
+ * 暗色优先：
+ *   :root                        = 暗色（默认，日落夜幕 + 霓虹网格）
+ *   [data-theme="light"], .light = 亮色覆盖（Miami pastel day）
+ *   [data-theme="dark"], .dark   = 显式暗色（与 :root 同值）
+ *
+ * 气质：magenta → purple → cyan/orange 日落、透视网格地平线、
+ * 复古条纹太阳、chrome/outline display 字、低透明扫描线与克制霓虹辉光。
+ */
+
+/* ============================================================ */
+/* :root —— 默认暗色（DARK FIRST）                              */
+/* ============================================================ */
+:root {
+  /* 表面与文字 */
+  --ds-bg:#150a2a; --ds-bg-subtle:#1d0f38; --ds-bg-elevated:#251444; --ds-bg-sunken:#0e0620;
+  --ds-fg:#f4ecff; --ds-fg-muted:#b9a8e0; --ds-fg-subtle:#8a76c0; --ds-fg-on-accent:#1a0820;
+  --ds-border:#3a2470; --ds-border-strong:#6a4ac0;
+
+  /* 品牌与强调 */
+  --ds-primary:#ff5fa2; --ds-primary-hover:#ff7db5; --ds-primary-active:#ee4a90; --ds-primary-fg:#1a0820;
+  --ds-accent:#29e0e0; --ds-accent-fg:#042020;
+
+  /* 语义状态 */
+  --ds-success:#3fd58f; --ds-success-bg:#06281c; --ds-success-fg:#c9f5dd;
+  --ds-warning:#ffc24d; --ds-warning-bg:#241803; --ds-warning-fg:#fff0c0;
+  --ds-danger:#ff5c72;  --ds-danger-bg:#2a0c14;  --ds-danger-fg:#ffd0d8;
+  --ds-info:#29e0e0;    --ds-info-bg:#04222a;    --ds-info-fg:#c0f5f5;
+
+  /* 焦点 */
+  --ds-focus:#ff5fa2;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus),0 0 16px -2px rgba(255,95,162,.6);
+
+  /* 圆角 */
+  --ds-radius-sm:2px; --ds-radius-md:6px; --ds-radius-lg:10px; --ds-radius-full:9999px;
+
+  /* 间距（4px 基，继承源 kit 尺度） */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* 字体（本地 fonts.css + 系统回退，无外部字体） */
+  --ds-font-sans: "Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif: "Inter",Georgia,"Songti SC",serif;
+  --ds-font-mono: "JetBrains Mono",monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.04em; --ds-tracking-normal: 0;
+
+  /* 阴影 + 霓虹辉光 */
+  --ds-shadow-sm:0 0 0 1px var(--ds-border),0 2px 10px -4px rgba(255,95,162,.3);
+  --ds-shadow-md:0 0 0 1px var(--ds-border),0 8px 28px -10px rgba(0,0,0,.7),0 0 24px -8px rgba(41,224,224,.3);
+  --ds-shadow-lg:0 0 0 1px var(--ds-border),0 16px 48px -14px rgba(0,0,0,.8),0 0 40px -10px rgba(255,95,162,.4);
+
+  /* 动效（继承源 kit 尺度） */
+  --ds-ease: cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 260ms;
+}
+
+/* ============================================================ */
+/* 亮色覆盖 —— Miami pastel day                                 */
+/* ============================================================ */
+[data-theme="light"],
+.light {
+  --ds-bg:#fdf2f8; --ds-bg-subtle:#f7e6f2; --ds-bg-elevated:#fffafd; --ds-bg-sunken:#f0d9ea;
+  --ds-fg:#2a1535; --ds-fg-muted:#6a4a78; --ds-fg-subtle:#8a6a98; --ds-fg-on-accent:#ffffff;
+  --ds-border:#f0cfe4; --ds-border-strong:#c44a9a;
+  --ds-primary:#c01f72; --ds-primary-hover:#a81a65; --ds-primary-active:#8f1556; --ds-primary-fg:#ffffff;
+  --ds-accent:#0d6f7e; --ds-accent-fg:#ffffff;
+  --ds-success:#1f8a5a; --ds-success-bg:#e2f4ec; --ds-success-fg:#0a3a26;
+  --ds-warning:#9a6a00; --ds-warning-bg:#f6eccf; --ds-warning-fg:#473006;
+  --ds-danger:#c01f3a;  --ds-danger-bg:#f9e0e4;  --ds-danger-fg:#5a0f1c;
+  --ds-info:#1f6f9a;    --ds-info-bg:#e2eef6;    --ds-info-fg:#0c2c40;
+  --ds-focus:#c01f72;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus),0 0 10px -3px rgba(192,31,114,.36);
+  --ds-shadow-sm:0 1px 2px rgba(120,40,90,.1);
+  --ds-shadow-md:0 8px 24px -10px rgba(120,40,90,.2);
+  --ds-shadow-lg:0 16px 40px -14px rgba(120,40,90,.26);
+}
+
+/* ============================================================ */
+/* [data-theme="dark"], .dark —— 显式暗色（与 :root 同值）       */
+/* ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg:#150a2a; --ds-bg-subtle:#1d0f38; --ds-bg-elevated:#251444; --ds-bg-sunken:#0e0620;
+  --ds-fg:#f4ecff; --ds-fg-muted:#b9a8e0; --ds-fg-subtle:#8a76c0; --ds-fg-on-accent:#1a0820;
+  --ds-border:#3a2470; --ds-border-strong:#6a4ac0;
+  --ds-primary:#ff5fa2; --ds-primary-hover:#ff7db5; --ds-primary-active:#ee4a90; --ds-primary-fg:#1a0820;
+  --ds-accent:#29e0e0; --ds-accent-fg:#042020;
+  --ds-success:#3fd58f; --ds-success-bg:#06281c; --ds-success-fg:#c9f5dd;
+  --ds-warning:#ffc24d; --ds-warning-bg:#241803; --ds-warning-fg:#fff0c0;
+  --ds-danger:#ff5c72;  --ds-danger-bg:#2a0c14;  --ds-danger-fg:#ffd0d8;
+  --ds-info:#29e0e0;    --ds-info-bg:#04222a;    --ds-info-fg:#c0f5f5;
+  --ds-focus:#ff5fa2;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus),0 0 16px -2px rgba(255,95,162,.6);
+  --ds-radius-sm:2px; --ds-radius-md:6px; --ds-radius-lg:10px; --ds-radius-full:9999px;
+  --ds-shadow-sm:0 0 0 1px var(--ds-border),0 2px 10px -4px rgba(255,95,162,.3);
+  --ds-shadow-md:0 0 0 1px var(--ds-border),0 8px 28px -10px rgba(0,0,0,.7),0 0 24px -8px rgba(41,224,224,.3);
+  --ds-shadow-lg:0 0 0 1px var(--ds-border),0 16px 48px -14px rgba(0,0,0,.8),0 0 40px -10px rgba(255,95,162,.4);
+}
+
+/* 关闭动效偏好：停掉网格漂移 / 扫描线 / 太阳辉光等装饰动效 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
