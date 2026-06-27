@@ -1,0 +1,114 @@
+/* ============================================================
+   Art Nouveau · 新艺术运动植物香氛温室 Kit Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"], .dark。
+   气质：暖羊皮纸、鼠尾草青绿、哑金、乌墨线稿、植物藤蔓与拱形框。
+   全部正文级色值按 WCAG AA 校验思路选取。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（暖羊皮纸 / sepia ink） ---- */
+  --ds-bg: #f5f0e6;
+  --ds-bg-subtle: #ede6d6;
+  --ds-bg-elevated: #fffdf6;
+  --ds-bg-sunken: #e5dcc8;
+  --ds-fg: #2a2820;
+  --ds-fg-muted: #514c3e;
+  --ds-fg-subtle: #756e5b;
+  --ds-fg-on-accent: #f5f0e6;
+  --ds-border: #ddd3bd;
+  --ds-border-strong: #3e3a2c;
+
+  /* ---- 品牌与强调（sage-teal + muted gold） ---- */
+  --ds-primary: #3e6b5e;
+  --ds-primary-hover: #345a4f;
+  --ds-primary-active: #284740;
+  --ds-primary-fg: #f5f0e6;
+  --ds-accent: #7d6212;
+  --ds-accent-fg: #f5f0e6;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #3e7a4e;
+  --ds-success-bg: #e6f1e6;
+  --ds-success-fg: #0e3a22;
+  --ds-warning: #8a6d18;
+  --ds-warning-bg: #f5ecce;
+  --ds-warning-fg: #42330a;
+  --ds-danger: #a8423a;
+  --ds-danger-bg: #f6e2df;
+  --ds-danger-fg: #561712;
+  --ds-info: #3a6478;
+  --ds-info-bg: #e2edf2;
+  --ds-info-fg: #16323e;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #3e6b5e;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（小控件克制，大框带拱形装饰） ---- */
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 10px;
+  --ds-radius-lg: 18px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（继承源 kit 的编辑节奏） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（本地 _fonts/fonts.css，无外链） ---- */
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", sans-serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 13px; --ds-text-sm: 14px; --ds-text-base: 17px; --ds-text-md: 19px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 38px; --ds-text-3xl: 52px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.85;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.015em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(42,40,32,.06);
+  --ds-shadow-md: 0 8px 22px -12px rgba(42,40,32,.2);
+  --ds-shadow-lg: 0 16px 40px -16px rgba(42,40,32,.24);
+
+  /* ---- 动效（继承源 kit 的温柔 ease-out） ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 160ms; --ds-dur-base: 240ms; --ds-dur-slow: 300ms;
+}
+
+[data-theme="dark"],
+.dark {
+  --ds-bg: #181c18;
+  --ds-bg-subtle: #1f241f;
+  --ds-bg-elevated: #252b25;
+  --ds-bg-sunken: #11140f;
+  --ds-fg: #ece4d2;
+  --ds-fg-muted: #aaa48f;
+  --ds-fg-subtle: #7e7866;
+  --ds-fg-on-accent: #11140f;
+  --ds-border: #353c33;
+  --ds-border-strong: #b89a4a;
+  --ds-primary: #6fae90;
+  --ds-primary-hover: #82bda0;
+  --ds-primary-active: #5e9a7e;
+  --ds-primary-fg: #11140f;
+  --ds-accent: #cba24e;
+  --ds-accent-fg: #1a1408;
+  --ds-success: #6fbf86;
+  --ds-success-bg: #0e2a1a;
+  --ds-success-fg: #cdeed7;
+  --ds-warning: #cba24e;
+  --ds-warning-bg: #241c08;
+  --ds-warning-fg: #f6e6be;
+  --ds-danger: #e08078;
+  --ds-danger-bg: #2a100e;
+  --ds-danger-fg: #f8d6d2;
+  --ds-info: #6fa6bd;
+  --ds-info-bg: #0e2530;
+  --ds-info-fg: #cfe7f2;
+  --ds-focus: #6fae90;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 8px 22px -12px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 16px 40px -16px rgba(0,0,0,.7);
+}

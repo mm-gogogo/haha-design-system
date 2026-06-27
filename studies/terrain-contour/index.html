@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mossline · Terrain Contour Effect Study</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<style>
+  :root{
+    --ground:#dfe6dc;
+    --ground-deep:#c9d4c6;
+    --ink:#213025;
+    --ink-soft:#536254;
+    --moss:#617b63;
+    --moss-deep:#39543f;
+    --stone:#eef2ea;
+    --line:rgba(42,67,47,.2);
+    --line-strong:rgba(42,67,47,.42);
+    --glass:rgba(246,249,242,.58);
+    --glass-strong:rgba(246,249,242,.78);
+    --shadow:rgba(42,67,47,.2);
+    --serif:"Noto Serif", Georgia, "Songti SC", serif;
+    --sans:"Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  *{box-sizing:border-box}
+
+  html{
+    min-height:100%;
+    background:var(--ground);
+    scroll-behavior:smooth;
+  }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(120% 90% at 20% 0%, rgba(255,255,255,.58), transparent 56%),
+      radial-gradient(95% 85% at 82% 10%, rgba(123,150,118,.25), transparent 48%),
+      radial-gradient(110% 100% at 50% 112%, rgba(75,98,73,.22), transparent 54%),
+      linear-gradient(135deg, #e8eee4 0%, #d6dfd3 48%, #c3d0c1 100%);
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    opacity:.28;
+    background:
+      repeating-linear-gradient(0deg, rgba(30,45,32,.035) 0 1px, transparent 1px 4px),
+      radial-gradient(80% 72% at 50% 10%, rgba(255,255,255,.34), transparent 60%);
+    mix-blend-mode:multiply;
+  }
+
+  a{color:inherit}
+  button{font:inherit}
+  svg{display:block}
+
+  .contour-stage{
+    position:fixed;
+    inset:-12vh -10vw;
+    z-index:0;
+    overflow:hidden;
+    pointer-events:none;
+  }
+
+  .contour-stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(70% 56% at 50% 46%, transparent 0 54%, rgba(72,89,70,.13) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.1), rgba(50,70,52,.08));
+  }
+
+  .contours{
+    position:absolute;
+    width:min(1320px, 128vw);
+    height:auto;
+    color:var(--moss-deep);
+    opacity:.7;
+    transform-box:fill-box;
+    transform-origin:center;
+  }
+
+  .contours path{
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.35;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
+  }
+
+  .contours .minor{opacity:.42;stroke-width:.9}
+  .contours .mid{opacity:.58}
+  .contours .major{opacity:.78;stroke-width:1.55}
+  .contours .ridge{opacity:.34;stroke-dasharray:2 12}
+
+  .contours-one{
+    left:50%;
+    top:44%;
+    transform:translate(-50%, -50%) rotate(-6deg) scale(1.06);
+  }
+
+  .contours-two{
+    width:min(980px, 98vw);
+    right:-8vw;
+    top:-12vh;
+    opacity:.48;
+    transform:rotate(11deg);
+  }
+
+  .contours-three{
+    width:min(780px, 92vw);
+    left:-12vw;
+    bottom:-14vh;
+    opacity:.38;
+    transform:rotate(-17deg);
+  }
+
+  .drift-a,
+  .drift-b,
+  .drift-c{
+    transform-box:fill-box;
+    transform-origin:center;
+    will-change:transform;
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .drift-a{animation:contour-drift-a 34s ease-in-out infinite alternate}
+    .drift-b{animation:contour-drift-b 42s ease-in-out infinite alternate}
+    .drift-c{animation:contour-drift-c 48s ease-in-out infinite alternate}
+    .glass-panel{animation:panel-settle .9s cubic-bezier(.16,1,.3,1) both}
+    .hero-copy{animation:copy-rise .9s cubic-bezier(.16,1,.3,1) both}
+  }
+
+  @keyframes contour-drift-a{
+    0%{transform:translate3d(-12px, 8px, 0) rotate(-.6deg) scale(1)}
+    100%{transform:translate3d(18px, -12px, 0) rotate(.8deg) scale(1.025)}
+  }
+
+  @keyframes contour-drift-b{
+    0%{transform:translate3d(10px, -10px, 0) rotate(.5deg)}
+    100%{transform:translate3d(-18px, 14px, 0) rotate(-.7deg)}
+  }
+
+  @keyframes contour-drift-c{
+    0%{transform:translate3d(-8px, -6px, 0) scale(1.02)}
+    100%{transform:translate3d(16px, 10px, 0) scale(.995)}
+  }
+
+  @keyframes panel-settle{
+    from{opacity:0;transform:translateY(18px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  @keyframes copy-rise{
+    from{opacity:0;transform:translateY(14px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  .page{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    overflow:hidden;
+  }
+
+  .topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:24px clamp(20px, 4vw, 52px);
+    color:var(--ink);
+  }
+
+  .brand{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    min-width:0;
+  }
+
+  .brand-mark{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(42,67,47,.3);
+    background:rgba(247,250,244,.44);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+  }
+
+  .brand-mark svg{
+    width:18px;
+    height:18px;
+    stroke:var(--moss-deep);
+  }
+
+  .brand-name{
+    font-family:var(--serif);
+    font-size:1.15rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  .nav-pills{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .nav-pills a{
+    text-decoration:none;
+    font:500 .72rem/1 var(--mono);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:10px 14px;
+    border:1px solid rgba(42,67,47,.17);
+    border-radius:999px;
+    background:rgba(247,250,244,.38);
+    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);
+  }
+
+  .hero{
+    min-height:100dvh;
+    display:grid;
+    place-items:center;
+    padding:112px clamp(20px, 5vw, 68px) 72px;
+  }
+
+  .hero-grid{
+    width:min(1180px, 100%);
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) minmax(280px, .48fr);
+    align-items:end;
+    gap:clamp(26px, 5vw, 76px);
+  }
+
+  .hero-copy{
+    max-width:760px;
+  }
+
+  .study-label{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 22px;
+    font:500 .68rem/1 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--moss-deep);
+  }
+
+  .study-label::before{
+    content:"";
+    width:42px;
+    height:1px;
+    background:var(--line-strong);
+  }
+
+  h1{
+    margin:0;
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(3.25rem, 8vw, 7.75rem);
+    line-height:.91;
+    letter-spacing:-.045em;
+    max-width:9.5ch;
+    text-wrap:balance;
+  }
+
+  .lead{
+    max-width:560px;
+    margin:26px 0 0;
+    color:var(--ink-soft);
+    font-size:clamp(1rem, 1.8vw, 1.25rem);
+    line-height:1.68;
+  }
+
+  .actions{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:12px;
+    margin-top:34px;
+  }
+
+  .button{
+    min-height:46px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:13px 19px;
+    border-radius:999px;
+    border:1px solid rgba(42,67,47,.26);
+    text-decoration:none;
+    font:600 .78rem/1 var(--mono);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    transition:transform .22s ease, background .22s ease, border-color .22s ease;
+  }
+
+  .button svg{
+    width:15px;
+    height:15px;
+  }
+
+  .button-primary{
+    color:#f6faf2;
+    background:var(--moss-deep);
+    border-color:var(--moss-deep);
+    box-shadow:0 16px 34px -20px rgba(22,38,25,.72);
+  }
+
+  .button-secondary{
+    color:var(--ink);
+    background:rgba(246,249,242,.42);
+    -webkit-backdrop-filter:blur(16px);
+    backdrop-filter:blur(16px);
+  }
+
+  .button:hover{transform:translateY(-2px)}
+  .button:active{transform:translateY(0)}
+
+  .glass-panel{
+    border:1px solid rgba(42,67,47,.19);
+    border-radius:22px;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.46), rgba(255,255,255,.16)),
+      var(--glass);
+    -webkit-backdrop-filter:blur(22px) saturate(145%);
+    backdrop-filter:blur(22px) saturate(145%);
+    box-shadow:
+      0 30px 80px -44px var(--shadow),
+      inset 0 1px 0 rgba(255,255,255,.82),
+      inset 0 -1px 0 rgba(73,91,70,.08);
+  }
+
+  .hero-panel{
+    padding:22px;
+    align-self:stretch;
+    min-height:420px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:24px;
+  }
+
+  .panel-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    font:500 .66rem/1.3 var(--mono);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--moss-deep);
+  }
+
+  .mini-map{
+    position:relative;
+    min-height:210px;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(42,67,47,.16);
+    background:
+      radial-gradient(circle at 34% 36%, rgba(247,250,244,.86), transparent 28%),
+      linear-gradient(140deg, rgba(112,136,107,.34), rgba(238,244,233,.42));
+  }
+
+  .mini-map svg{
+    position:absolute;
+    inset:-18%;
+    width:136%;
+    height:136%;
+    color:rgba(45,74,52,.54);
+  }
+
+  .panel-stat{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:14px;
+    align-items:end;
+    padding-top:18px;
+    border-top:1px solid rgba(42,67,47,.16);
+  }
+
+  .panel-stat strong{
+    font-family:var(--serif);
+    font-size:clamp(2rem, 5vw, 3.25rem);
+    line-height:.95;
+    font-weight:400;
+  }
+
+  .panel-stat span,
+  .panel-copy{
+    color:var(--ink-soft);
+    font-size:.9rem;
+  }
+
+  .content{
+    width:min(1180px, calc(100% - 40px));
+    margin:0 auto;
+    padding:0 0 132px;
+  }
+
+  .intro-band{
+    display:grid;
+    grid-template-columns:minmax(0, .75fr) minmax(0, 1fr);
+    gap:clamp(24px, 5vw, 68px);
+    align-items:center;
+    margin-top:-36px;
+    padding:clamp(22px, 4vw, 38px);
+  }
+
+  .intro-band h2,
+  .rituals h2,
+  .reserve h2{
+    margin:0;
+    font-family:var(--serif);
+    font-weight:400;
+    line-height:1;
+    letter-spacing:-.035em;
+    text-wrap:balance;
+  }
+
+  .intro-band h2{font-size:clamp(2.25rem, 5.4vw, 5rem)}
+
+  .intro-copy{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:clamp(1rem, 1.5vw, 1.16rem);
+    line-height:1.72;
+  }
+
+  .terrain-card{
+    margin-top:28px;
+    min-height:430px;
+    display:grid;
+    grid-template-columns:.92fr 1fr;
+    gap:0;
+    overflow:hidden;
+  }
+
+  .terrain-visual{
+    position:relative;
+    min-height:430px;
+    background:
+      radial-gradient(95% 76% at 38% 34%, rgba(245,249,241,.78), transparent 42%),
+      linear-gradient(150deg, rgba(83,107,80,.38), rgba(225,234,219,.4));
+    overflow:hidden;
+  }
+
+  .terrain-visual svg{
+    position:absolute;
+    inset:-12%;
+    width:124%;
+    height:124%;
+    color:rgba(35,67,42,.58);
+  }
+
+  .terrain-note{
+    padding:clamp(24px, 5vw, 54px);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:34px;
+  }
+
+  .terrain-note h3{
+    margin:0;
+    font-family:var(--serif);
+    font-size:clamp(2rem, 4vw, 4.35rem);
+    line-height:1;
+    letter-spacing:-.035em;
+    font-weight:400;
+    max-width:9ch;
+  }
+
+  .meta-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    overflow:hidden;
+    border-radius:16px;
+    border:1px solid rgba(42,67,47,.14);
+    background:rgba(42,67,47,.14);
+  }
+
+  .meta-grid div{
+    min-height:112px;
+    padding:18px;
+    background:rgba(247,250,244,.46);
+    -webkit-backdrop-filter:blur(16px);
+    backdrop-filter:blur(16px);
+  }
+
+  .meta-grid span{
+    display:block;
+    margin-bottom:18px;
+    font:500 .64rem/1.2 var(--mono);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--moss-deep);
+  }
+
+  .meta-grid strong{
+    display:block;
+    font-family:var(--serif);
+    font-size:1.24rem;
+    line-height:1.15;
+    font-weight:400;
+  }
+
+  .rituals{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:.55fr 1fr;
+    gap:clamp(24px, 4vw, 48px);
+    align-items:start;
+  }
+
+  .rituals h2{
+    position:sticky;
+    top:120px;
+    font-size:clamp(2.1rem, 4.5vw, 4.4rem);
+  }
+
+  .ritual-list{
+    display:grid;
+    gap:14px;
+  }
+
+  .ritual{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:18px;
+    padding:22px;
+    border:1px solid rgba(42,67,47,.15);
+    border-radius:20px;
+    background:rgba(247,250,244,.38);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+  }
+
+  .ritual-icon{
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:1px solid rgba(42,67,47,.18);
+    background:rgba(255,255,255,.38);
+  }
+
+  .ritual-icon svg{
+    width:22px;
+    height:22px;
+    stroke:var(--moss-deep);
+  }
+
+  .ritual h3{
+    margin:0 0 7px;
+    font-family:var(--serif);
+    font-size:1.55rem;
+    line-height:1.1;
+    font-weight:400;
+  }
+
+  .ritual p{
+    margin:0;
+    color:var(--ink-soft);
+    line-height:1.62;
+  }
+
+  .reserve{
+    margin-top:30px;
+    padding:clamp(28px, 5vw, 58px);
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:24px;
+    align-items:end;
+  }
+
+  .reserve h2{
+    font-size:clamp(2.35rem, 5.6vw, 5.6rem);
+    max-width:10ch;
+  }
+
+  .reserve p{
+    margin:20px 0 0;
+    max-width:540px;
+    color:var(--ink-soft);
+    font-size:1.02rem;
+    line-height:1.68;
+  }
+
+  .reserve .button{
+    align-self:end;
+  }
+
+  @media (max-width:920px){
+    .hero-grid,
+    .intro-band,
+    .terrain-card,
+    .rituals,
+    .reserve{
+      grid-template-columns:1fr;
+    }
+
+    .hero{
+      align-items:start;
+      padding-top:104px;
+    }
+
+    h1{
+      max-width:10ch;
+    }
+
+    .hero-panel{
+      min-height:360px;
+    }
+
+    .intro-band{
+      margin-top:0;
+    }
+
+    .rituals h2{
+      position:static;
+    }
+
+    .reserve .button{
+      justify-self:start;
+    }
+  }
+
+  @media (max-width:680px){
+    .topbar{
+      position:absolute;
+      padding:18px 18px 0;
+    }
+
+    .brand-name{
+      font-size:.96rem;
+      letter-spacing:.11em;
+    }
+
+    .nav-pills a:not(:last-child){
+      display:none;
+    }
+
+    .nav-pills a{
+      padding:9px 12px;
+      font-size:.63rem;
+    }
+
+    .hero{
+      min-height:auto;
+      padding:100px 18px 42px;
+    }
+
+    .hero-grid{
+      gap:22px;
+    }
+
+    .study-label{
+      font-size:.61rem;
+      letter-spacing:.12em;
+      margin-bottom:16px;
+    }
+
+    .study-label::before{
+      width:26px;
+    }
+
+    h1{
+      font-size:clamp(2.7rem, 16vw, 4.15rem);
+      line-height:.94;
+    }
+
+    .lead{
+      margin-top:20px;
+      font-size:.98rem;
+    }
+
+    .actions{
+      align-items:stretch;
+    }
+
+    .button{
+      width:100%;
+      min-width:0;
+      padding-inline:16px;
+    }
+
+    .hero-panel,
+    .intro-band,
+    .terrain-note,
+    .reserve{
+      border-radius:18px;
+    }
+
+    .panel-stat{
+      grid-template-columns:1fr;
+    }
+
+    .content{
+      width:calc(100% - 28px);
+      padding-bottom:128px;
+    }
+
+    .terrain-visual{
+      min-height:300px;
+    }
+
+    .meta-grid{
+      grid-template-columns:1fr;
+    }
+
+    .meta-grid div{
+      min-height:96px;
+    }
+
+    .ritual{
+      grid-template-columns:1fr;
+    }
+
+    .reserve{
+      margin-bottom:24px;
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,
+    *::before,
+    *::after{
+      animation:none!important;
+      transition:none!important;
+      scroll-behavior:auto!important;
+    }
+
+    .drift-a,
+    .drift-b,
+    .drift-c{
+      transform:none!important;
+      will-change:auto;
+    }
+  }
+
+  @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+</style>
+</head>
+<body>
+  <div class="contour-stage" aria-hidden="true">
+    <svg class="contours contours-one" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid meet">
+      <g class="drift-a">
+        <path class="major" d="M125 455C111 373 158 286 248 235C331 188 425 195 489 250C550 303 634 302 715 329C815 362 887 443 876 540C864 642 767 718 650 728C545 737 486 674 417 641C347 607 262 650 198 610C152 581 134 514 125 455Z"/>
+        <path class="mid" d="M184 462C175 398 214 334 281 295C346 257 416 264 469 307C524 352 596 345 666 371C742 399 797 464 788 540C778 616 704 668 615 676C535 683 489 635 432 609C373 582 303 613 254 586C213 563 191 513 184 462Z"/>
+        <path class="mid" d="M239 467C232 420 262 374 313 343C365 312 418 318 458 350C501 384 559 380 612 399C672 421 714 472 707 530C700 589 642 629 575 636C513 642 478 603 434 586C389 568 334 592 297 570C264 551 244 506 239 467Z"/>
+        <path class="minor" d="M292 469C287 438 307 406 342 383C378 360 415 365 444 388C475 413 516 411 553 424C597 440 628 477 624 518C620 562 578 592 529 597C484 601 459 573 428 560C396 547 358 564 330 549C307 536 296 498 292 469Z"/>
+        <path class="minor" d="M345 470C342 450 357 431 381 416C405 401 430 404 450 420C471 437 499 436 524 445C553 455 574 481 571 509C568 536 540 558 507 561C477 564 461 545 439 537C417 528 391 539 372 529C356 520 348 489 345 470Z"/>
+        <path class="minor" d="M397 472C396 461 404 450 417 442C431 433 445 435 456 444C468 453 483 453 497 458C514 464 526 478 525 494C523 511 508 523 489 525C472 526 462 516 450 511C438 506 423 512 412 506C403 501 398 483 397 472Z"/>
+        <path class="ridge" d="M42 566C113 538 179 532 239 548C306 566 353 628 430 662C489 688 554 716 637 708C718 700 790 655 854 608C912 566 971 544 1054 551"/>
+        <path class="ridge" d="M74 298C149 316 222 307 287 269C354 231 414 203 486 229C553 253 591 306 659 318C728 331 802 313 890 351"/>
+      </g>
+    </svg>
+
+    <svg class="contours contours-two" viewBox="0 0 900 720" preserveAspectRatio="xMidYMid meet">
+      <g class="drift-b">
+        <path class="major" d="M188 276C218 177 322 110 433 128C536 145 611 219 640 314C670 411 620 501 536 550C450 600 344 591 265 528C189 468 158 374 188 276Z"/>
+        <path class="mid" d="M246 293C268 220 343 172 424 184C499 196 556 251 577 322C598 392 561 460 499 497C436 535 357 528 299 482C243 438 224 365 246 293Z"/>
+        <path class="mid" d="M303 310C318 262 367 230 420 237C470 244 508 282 522 329C536 375 511 421 470 445C429 470 378 465 340 435C303 406 288 357 303 310Z"/>
+        <path class="minor" d="M356 326C365 299 394 281 425 285C454 289 476 312 484 338C492 365 477 392 453 406C429 421 398 418 376 400C354 383 347 352 356 326Z"/>
+        <path class="minor" d="M407 342C410 333 420 327 431 329C441 330 449 338 452 348C454 357 449 367 441 372C432 377 422 376 414 370C407 364 404 351 407 342Z"/>
+        <path class="ridge" d="M88 394C151 349 211 332 269 347C327 362 371 412 433 427C500 443 564 413 625 371C686 330 748 307 826 322"/>
+      </g>
+    </svg>
+
+    <svg class="contours contours-three" viewBox="0 0 760 640" preserveAspectRatio="xMidYMid meet">
+      <g class="drift-c">
+        <path class="major" d="M125 368C90 289 116 201 190 154C267 106 366 117 431 176C496 235 553 283 558 368C563 455 495 527 405 545C314 563 225 529 171 464C148 436 139 400 125 368Z"/>
+        <path class="mid" d="M178 365C153 306 174 242 229 207C286 171 359 180 408 224C456 268 499 306 503 368C506 432 457 484 389 497C322 510 257 486 218 438C200 416 189 391 178 365Z"/>
+        <path class="mid" d="M230 362C214 326 229 285 263 263C299 240 346 246 376 274C407 302 436 326 438 367C441 408 409 440 365 449C323 458 280 442 254 411C242 396 237 378 230 362Z"/>
+        <path class="minor" d="M283 360C274 340 282 317 302 304C322 291 349 294 367 310C384 326 400 341 401 365C402 389 383 407 358 412C334 417 309 408 295 390C288 382 287 369 283 360Z"/>
+        <path class="minor" d="M333 360C331 353 333 346 340 342C347 337 357 339 363 344C369 350 375 355 375 364C376 372 369 379 360 381C352 382 344 379 339 373C335 369 335 363 333 360Z"/>
+        <path class="ridge" d="M39 468C102 450 159 458 209 494C270 539 344 580 428 548C511 517 557 453 626 430C663 418 696 418 724 430"/>
+      </g>
+    </svg>
+  </div>
+
+  <main class="page">
+    <nav class="topbar" aria-label="Mossline navigation">
+      <a class="brand" href="#top" aria-label="Mossline home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 15.5c3.8-6.4 8.7-7.9 14-6.6"/>
+            <path d="M7.2 17.8c2.7-2.8 6.2-3.7 10.1-2.6"/>
+            <path d="M9.8 11.5c1.1-2.4 2.7-4 4.8-4.8"/>
+          </svg>
+        </span>
+        <span class="brand-name">Mossline</span>
+      </a>
+      <div class="nav-pills" aria-label="Section links">
+        <a href="#method">Method</a>
+        <a href="#rituals">Rituals</a>
+        <a href="#reserve">Reserve</a>
+      </div>
+    </nav>
+
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="study-label">Effect study terrain map</p>
+          <h1 id="hero-title">A quieter way back outside.</h1>
+          <p class="lead">Mossline pairs guided breathwork with slow ridge walks, thermal rest, and private woodland cabins built for deep recovery.</p>
+          <div class="actions">
+            <a class="button button-primary" href="#reserve">
+              Reserve a day
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 9h10"/>
+                <path d="M10 5l4 4-4 4"/>
+              </svg>
+            </a>
+            <a class="button button-secondary" href="#method">
+              View terrain
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 13c2.5-4 5.1-5.1 8-3.2"/>
+                <path d="M7 15c1.9-2 4.2-2.5 6.8-1.4"/>
+                <path d="M5 8c2.2-3 5-4.2 8.4-3.6"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <aside class="glass-panel hero-panel" aria-label="Retreat terrain summary">
+          <div class="panel-top">
+            <span>Cabin ridge</span>
+            <span>Elevation rest</span>
+          </div>
+          <div class="mini-map" aria-hidden="true">
+            <svg viewBox="0 0 520 420" preserveAspectRatio="xMidYMid meet">
+              <g class="drift-b">
+                <path class="major" d="M92 223C85 168 120 116 178 96C235 76 289 99 323 138C354 174 408 170 435 215C462 262 438 320 391 350C341 382 278 367 241 329C205 293 159 310 124 285C105 271 96 246 92 223Z"/>
+                <path class="mid" d="M132 225C128 187 153 151 193 137C234 123 272 139 296 166C319 191 358 190 378 221C397 254 381 294 347 316C311 338 267 328 240 302C214 277 181 289 156 270C142 260 135 242 132 225Z"/>
+                <path class="minor" d="M174 226C171 205 187 185 210 177C234 169 255 178 270 193C283 207 306 206 318 225C329 244 320 268 300 281C280 294 254 288 239 273C224 259 205 266 190 255C181 249 176 236 174 226Z"/>
+                <path class="minor" d="M214 226C213 217 220 209 230 206C240 202 249 206 256 212C262 219 272 219 277 227C282 235 278 246 269 251C261 257 249 254 243 248C236 242 228 245 221 240C217 237 215 231 214 226Z"/>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <p class="panel-copy">The retreat traces three soft loops through moss, stone, and cedar. Each route closes with warm water and quiet rooms.</p>
+            <div class="panel-stat">
+              <strong>3 loops</strong>
+              <span>Mapped for morning, dusk, and low-light walks.</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="content">
+      <section class="glass-panel intro-band" id="method" aria-labelledby="method-title">
+        <h2 id="method-title">Contours become a calm backdrop.</h2>
+        <p class="intro-copy">The map lines drift like slow weather behind translucent panels. The page stays still enough to read, while the terrain quietly gives the layout depth.</p>
+      </section>
+
+      <section class="glass-panel terrain-card" aria-label="Contour map method">
+        <div class="terrain-visual" aria-hidden="true">
+          <svg viewBox="0 0 680 560" preserveAspectRatio="xMidYMid meet">
+            <g class="drift-a">
+              <path class="major" d="M102 292C88 218 132 145 210 112C287 80 364 100 415 154C463 205 541 206 584 270C628 336 606 430 539 481C472 532 377 523 322 467C272 416 202 430 154 390C127 368 110 326 102 292Z"/>
+              <path class="mid" d="M154 295C145 242 178 191 233 168C290 144 347 160 385 200C420 237 479 238 511 285C543 334 525 401 477 438C428 475 359 468 319 427C282 390 231 401 196 371C176 354 160 319 154 295Z"/>
+              <path class="mid" d="M207 298C201 265 222 233 257 218C294 203 331 213 355 239C378 262 416 263 436 293C456 325 445 367 414 391C383 415 339 410 313 384C290 360 257 367 234 348C221 337 211 313 207 298Z"/>
+              <path class="minor" d="M259 299C256 284 266 269 283 262C300 255 317 260 328 271C339 282 356 283 366 297C375 312 370 332 356 343C341 354 321 352 309 340C298 329 282 332 272 323C266 318 261 306 259 299Z"/>
+              <path class="minor" d="M312 300C311 295 315 290 320 288C326 286 332 288 336 292C340 296 346 296 349 301C352 306 350 313 345 317C340 321 333 320 329 316C325 312 319 313 316 310C314 308 312 303 312 300Z"/>
+              <path class="ridge" d="M44 390C115 356 181 356 242 390C297 421 346 472 424 461C501 450 546 393 604 366C637 351 672 346 710 352"/>
+              <path class="ridge" d="M68 176C130 201 193 196 256 161C329 121 382 124 438 172C483 211 538 222 606 203"/>
+            </g>
+          </svg>
+        </div>
+        <div class="terrain-note">
+          <h3>Field rhythm without the noise.</h3>
+          <p class="intro-copy">Each contour ring is drawn as an original SVG path, layered at different opacity levels, then moved only by transform for a soft drift.</p>
+          <div class="meta-grid">
+            <div>
+              <span>Surface</span>
+              <strong>Sage glass</strong>
+            </div>
+            <div>
+              <span>Motion</span>
+              <strong>Slow contour drift</strong>
+            </div>
+            <div>
+              <span>Type</span>
+              <strong>Serif and quiet mono</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="rituals" id="rituals" aria-labelledby="rituals-title">
+        <h2 id="rituals-title">Three simple rituals shape the stay.</h2>
+        <div class="ritual-list">
+          <article class="ritual">
+            <div class="ritual-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 17c3.5-5.8 8-7 13.5-3.8"/>
+                <path d="M7 20c2.4-2.8 5.7-3.6 9.8-2.4"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Ridge walk</h3>
+              <p>Gentle paths keep the pace conversational, with pauses at marked overlooks and sheltered cedar benches.</p>
+            </div>
+          </article>
+          <article class="ritual">
+            <div class="ritual-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 18c-2-2-2-4.2 0-6.4"/>
+                <path d="M12 19c-2.6-2.8-2.6-6.1 0-9.9"/>
+                <path d="M16 18c2-2 2-4.2 0-6.4"/>
+                <path d="M6 21h12"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Thermal reset</h3>
+              <p>Warm stone rooms and cool rinses create a steady pattern before the evening meal.</p>
+            </div>
+          </article>
+          <article class="ritual">
+            <div class="ritual-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12c3.2-4.2 6.8-4.2 10.8 0"/>
+                <path d="M8 16c2-2.4 4.4-2.4 7.2 0"/>
+                <path d="M18 9v10"/>
+                <path d="M15 19h6"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Quiet cabin</h3>
+              <p>Rooms face the contour garden, with low lamps, linen bedding, and a writing shelf by the window.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="glass-panel reserve" id="reserve" aria-labelledby="reserve-title">
+        <div>
+          <h2 id="reserve-title">Hold a quiet day.</h2>
+          <p>Choose a single-day pass or a two-night stay. The setting is fictional for this study, and all copy is original placeholder content.</p>
+        </div>
+        <a class="button button-primary" href="mailto:hello@example.com">
+          Start request
+          <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 9h10"/>
+            <path d="M10 5l4 4-4 4"/>
+          </svg>
+        </a>
+      </section>
+    </div>
+  </main>
+
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Terrain Wellness Landing》 by kayvon00656 · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

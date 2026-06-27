@@ -61,7 +61,7 @@
 <body>
 <header>
   <h1>哈哈设计系统 · 截图总览</h1>
-  <p>基于 Geist / Vercel 衍生 — 24 套通用风格 + 6 个开源项目定制，每套含亮 / 暗两态，hero 大图 + 图片/图标用法 + 桌面与 iPhone 17 Pro Max 移动布局。点缩略图看大图，点「打开」查看可交互 preview。</p>
+  <p>基于 Geist / Vercel 衍生 — 25 套通用风格 + 6 个开源项目定制，每套含亮 / 暗两态，hero 大图 + 图片/图标用法 + 桌面与 iPhone 17 Pro Max 移动布局。点缩略图看大图，点「打开」查看可交互 preview。</p>
   <div class="bar">
     <a class="btn-md" href="design.md">design.md<span>· 一行加载成 skill</span></a>
     <code class="curl">curl design.hahaha.chat/design.md</code>
@@ -74,7 +74,7 @@
 </header>
 
 <div class="wrap">
-  <h2>通用风格库 · 24 套</h2>
+  <h2>通用风格库 · 25 套</h2>
   <p class="sub">可复用 — 共享 <code>--ds-*</code> Token 契约，换一份 tokens.css 即可整体换肤</p>
   <div class="grid" id="styles"></div>
 
@@ -91,7 +91,7 @@
   <div class="grid" id="studies"></div>
 </div>
 
-<footer><code>~/mineproj/designsystem</code> · 24 套通用风格 + 6 项目定制 + 效果临摹 8 例 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
+<footer><code>~/mineproj/designsystem</code> · 25 套通用风格 + 6 项目定制 + 效果临摹 9 例 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
 
 <script>
 const styles = [
@@ -119,6 +119,7 @@ const styles = [
   ["style-22-risograph","22-risograph","孔版印刷 Risograph","#e8407f"],
   ["style-23-bauhaus","23-bauhaus","包豪斯 Bauhaus","#1b3fae"],
   ["style-24-memphis","24-memphis","孟菲斯 Memphis","#d61f69"],
+  ["style-25-art-nouveau","25-art-nouveau","新艺术运动 Art Nouveau","#3e6b5e"],
 ];
 const projects = [
   ["proj-hahatool","hahatool","hahatool · 企业 + 4 主题","#7c3aed"],
@@ -151,6 +152,7 @@ const studies = [
   ["study-3d-shelf","3d-shelf","3D 立体唱片货架","《3D Shelf Life》 by melisavadenja","#9a7cff"],
   ["study-book-flip","book-flip","3D 翻书动效阅读器","《Book Page Animation》 by chwl1202","#c9a86a"],
   ["study-liquid-glass","liquid-glass","流体玻璃组件变体","《Liquid Glass Variations》 by matthewwhe3204","#b48cff"],
+  ["study-terrain-contour","terrain-contour","地形等高线康养落地页","《Terrain Wellness Landing》 by kayvon00656","#6b8e6b"],
 ];
 document.getElementById("studies").innerHTML = studies.map(([f,slug,name,cite,color])=>`
   <div class="card">

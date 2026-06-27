@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 24 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 25 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 24 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 25 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -130,6 +130,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 24 孟菲斯 · Memphis (80s 后现代) — `/styles/24-memphis/`
 糖果撞色 + 纸屑几何 + 黑粗描边。primary 蓝绿 `#0a7575` / accent 桃红 `#d61f69` / 黄 `#f5c518` + 陶土 `#e8590c`(仅装饰) / bg 暖白 `#f7f3ec` / fg `#15151a`｜暗（夜店）primary `#2bc4c4` / accent `#ff5c9d` / bg `#16151c`·fg `#f3eee4`｜6·12·20｜Quicksand 圆体｜波浪/锯齿/波点/三角/blob 纸屑 + 波点/斜纹/水磨石图案 + 黑粗描边，非对称欢乐。与 23 包豪斯（克制原色几何）、01 可爱（柔粉）刻意区分（撞色混乱图案）。
+
+### 25 新艺术运动 · Art Nouveau (Mucha) — `/styles/25-art-nouveau/`
+有机曲线、植物线描、鞭线藤蔓。primary 鼠尾草青 `#3e6b5e` / accent 哑金 `#7d6212` / bg 暖羊皮纸 `#f5f0e6`·elevated `#fffdf6` / fg 棕墨 `#2a2820`｜暗（夜园）primary `#6fae90` / accent 金 `#cba24e` / bg 森绿黑 `#181c18`·fg `#ece4d2`｜4·10·18｜Noto Serif 流动标题 + Inter｜鞭线 S 曲线/藤蔓/百合鸢尾孔雀线描 + 拱形装饰框 + 金色细线纹样。与 21 装饰艺术（几何对称）刻意区分（有机曲线植物）。
 
 ---
 
