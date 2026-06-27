@@ -1,0 +1,122 @@
+/* ============================================================
+   Aqua · Y2K / 千禧水光（Frutiger Aero）设计系统 Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"]（并加 .dark 兼容）。
+   灵魂 = 千禧年水光质感：晴空蓝 + 水绿 + 一缕薄荷青，
+   亮泽果冻渐变（顶高光 + 内辉光）、水珠 / 气泡、克制的虹彩薄光、
+   玻璃 / 镀铬表面、很圆的圆角。GLOSSY 亮泽 —— 不磨砂、不哑光。
+   关键：浅天蓝底上文字仍 ≥4.5:1（WCAG AA），muted/subtle 已为浅底校准。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（浅天蓝系；卡片是亮白带顶高光，不是磨砂玻璃） ---- */
+  --ds-bg: #eef7fe;             /* 晴空浅蓝主背景 */
+  --ds-bg-subtle: #dceffb;      /* 次背景 · 区块分组底 */
+  --ds-bg-elevated: #ffffff;    /* 抬起表面 · 卡片 / 弹层（亮泽白，顶白高光是灵魂） */
+  --ds-bg-sunken: #d2e8f7;      /* 凹陷表面 · 输入槽 / 代码块（水光凹陷） */
+  --ds-fg: #0b2942;             /* 主文字 · 深海蓝墨（浅底 ≈13:1） */
+  --ds-fg-muted: #345a7d;       /* 次要文字（浅底 ≈6.2:1） */
+  --ds-fg-subtle: #5a7d9c;      /* 占位 / 弱文字（浅底 ≈4.5:1，仅大字或占位） */
+  --ds-fg-on-accent: #ffffff;   /* 落在强调色上的文字 */
+  --ds-border: #b9dcf2;         /* 常规水蓝描边 */
+  --ds-border-strong: #8fc4e8;  /* 强描边 / 分隔 */
+
+  /* ---- 品牌与强调（晴空蓝 primary / 水绿 accent；AA 已校准） ---- */
+  --ds-primary: #00709f;        /* 晴空深蓝主操作色（白字 5.0:1） */
+  --ds-primary-hover: #0a82b5;
+  --ds-primary-active: #005a82;
+  --ds-primary-fg: #ffffff;     /* 主操作上的文字 */
+  --ds-accent: #0a7d50;         /* 水绿次强调 / 链接（白字 4.6:1） */
+  --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态（主色 + 浅水底 + 底上文字，全部 AA） ---- */
+  --ds-success: #0c7e44; --ds-success-bg: #e2f7ec; --ds-success-fg: #063d23;
+  --ds-warning: #b07908; --ds-warning-bg: #fdf2d6; --ds-warning-fg: #523808;
+  --ds-danger:  #d83b37; --ds-danger-bg:  #fde4e3; --ds-danger-fg:  #5e1310;
+  --ds-info:    #0086c4; --ds-info-bg:    #e0f2fd; --ds-info-fg:    #003a5c;
+
+  /* ---- 焦点（底色环 + 主色环） ---- */
+  --ds-focus: #00709f;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（千禧水光偏大而圆润：8/14/22） ---- */
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 14px;
+  --ds-radius-lg: 22px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（Quicksand 圆体上镜 + Inter 正文兜底；中文走系统 PingFang 回退） ---- */
+  --ds-font-sans: "Quicksand", "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Quicksand", "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 水光柔影（漂在浅蓝底上的轻投影 + 顶部内白高光，是亮泽果冻的灵魂） ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(10,60,90,.12);
+  --ds-shadow-md: 0 6px 16px -6px rgba(10,80,120,.26), 0 1px 0 rgba(255,255,255,.7) inset;
+  --ds-shadow-lg: 0 16px 34px -10px rgba(10,80,120,.32), 0 1px 0 rgba(255,255,255,.7) inset;
+  /* 水光专用（组件层引用）：果冻顶高光 + 极轻 blur（点缀镀铬感，非磨砂） */
+  --ds-gloss-top: inset 0 1px 0 rgba(255,255,255,.6);     /* 果冻顶高光 */
+  --ds-gloss-blur: 6px;                                    /* 极轻 blur，仅镀铬 / 弹层点缀，不磨砂 */
+  --ds-gloss-blur-sm: 4px;
+
+  /* ---- 动效（水珠般顺滑） ---- */
+  --ds-ease: cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast: 140ms; --ds-dur-base: 220ms; --ds-dur-slow: 360ms;
+
+  /* ---- 语义层级（替代魔法值） ---- */
+  --ds-z-dropdown: 1000; --ds-z-sticky: 1100; --ds-z-modal-backdrop: 1200;
+  --ds-z-modal: 1300; --ds-z-toast: 1400; --ds-z-tooltip: 1500;
+}
+
+/* ============================================================
+   暗色：「夜海 / 深海水光」—— 深海蓝底 + 提亮水蓝青，
+   亮泽顶高光减弱但仍在（保持果冻质感，不变哑光）。
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #061a26;             /* 深海蓝主背景 */
+  --ds-bg-subtle: #0a2533;      /* 次背景 */
+  --ds-bg-elevated: #0f303f;    /* 抬起表面 · 卡片 */
+  --ds-bg-sunken: #04141d;      /* 凹陷表面 · 输入槽 */
+  --ds-fg: #dff1fb;             /* 主文字（深底 ≈14:1） */
+  --ds-fg-muted: #94b6ca;       /* 次要文字（深底 ≈6.5:1） */
+  --ds-fg-subtle: #6a8ca2;      /* 弱文字（深底 ≈4.6:1） */
+  --ds-fg-on-accent: #042330;
+  --ds-border: #1b3d4f;         /* 深海描边 */
+  --ds-border-strong: #2c5568;
+
+  /* ---- 品牌与强调（深底提亮的发光水蓝 / 水绿） ---- */
+  --ds-primary: #2bb7ef;        /* 发光晴空蓝 */
+  --ds-primary-hover: #4ac4f2;
+  --ds-primary-active: #1ba2db;
+  --ds-primary-fg: #042330;     /* 深字落在亮蓝上（≈6.6:1） */
+  --ds-accent: #45d99a;         /* 发光水绿 */
+  --ds-accent-fg: #052618;      /* 深字落在亮绿上 */
+
+  /* ---- 语义状态（深水底 + 浅彩文字，全部 AA） ---- */
+  --ds-success: #3fd587; --ds-success-bg: #0a2a1a; --ds-success-fg: #c9f5dd;
+  --ds-warning: #efc05a; --ds-warning-bg: #2a1f06; --ds-warning-fg: #f8e8c0;
+  --ds-danger:  #ff6b66; --ds-danger-bg:  #2c0f0e; --ds-danger-fg:  #ffd6d4;
+  --ds-info:    #45b6ef; --ds-info-bg:    #06243a; --ds-info-fg:    #cfeafd;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #2bb7ef;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（深底加深近黑，顶高光减弱但保留果冻感） ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 8px 20px -8px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.08) inset;
+  --ds-shadow-lg: 0 18px 40px -12px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.1) inset;
+  --ds-gloss-top: inset 0 1px 0 rgba(255,255,255,.12);
+}
