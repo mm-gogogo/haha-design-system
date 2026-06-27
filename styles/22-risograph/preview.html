@@ -1,0 +1,1203 @@
+<!doctype html>
+<!-- ============================================================================
+     Risograph / 孔版印刷风 (Riso Print) — Design System Preview
+     2 色孔版印刷：荧光粉 + 孔版蓝 · 网点半调 · 颗粒噪点 · multiply 叠印（粉+蓝→紫）
+     · 轻微套印偏移 · 暖再生纸底 · 平面无写实阴影。全量 --ds-* token · WCAG AA。
+     虚构品牌：RISOFARM PRESS（独立孔版印刷工作室 / zine 小厂牌）。仅作灵感，原创文案。
+     ============================================================================ -->
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Risograph / 孔版印刷风 — Design System Preview</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css">
+<style>
+/* ====================================================================
+   TOKENS（内联，与 tokens.css 同步；preview 自包含、双击即开、无外链）
+   ==================================================================== */
+:root{
+  --ds-bg:#f4efe4; --ds-bg-subtle:#ece5d4; --ds-bg-elevated:#faf6ec; --ds-bg-sunken:#e4dcc8;
+  --ds-fg:#1c1a17; --ds-fg-muted:#55504a; --ds-fg-subtle:#736d62; --ds-fg-on-accent:#ffffff;
+  --ds-border:#d8d0bd; --ds-border-strong:#1c1a17;
+  --ds-primary:#cf2e6a; --ds-primary-hover:#b82659; --ds-primary-active:#991f4d; --ds-primary-fg:#ffffff;
+  --ds-accent:#2348a8; --ds-accent-fg:#ffffff;
+  --ds-success:#1f7a4d; --ds-success-bg:#e2f1e8; --ds-success-fg:#0a3a24;
+  --ds-warning:#8a5e10; --ds-warning-bg:#f6eccf; --ds-warning-fg:#43300a;
+  --ds-danger:#c42d2d; --ds-danger-bg:#f7e2df; --ds-danger-fg:#54130f;
+  --ds-info:#2348a8; --ds-info-bg:#e2e8f6; --ds-info-fg:#0e2150;
+  --ds-focus:#cf2e6a;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+  --ds-radius-sm:2px; --ds-radius-md:3px; --ds-radius-lg:4px; --ds-radius-full:9999px;
+  --ds-space-1:4px; --ds-space-2:8px; --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+  --ds-font-sans:"Inter",-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --ds-font-serif:"Inter",Georgia,"Songti SC",serif;
+  --ds-font-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --ds-text-xs:12px; --ds-text-sm:14px; --ds-text-base:16px; --ds-text-md:19px;
+  --ds-text-lg:24px; --ds-text-xl:34px; --ds-text-2xl:52px; --ds-text-3xl:76px;
+  --ds-leading-tight:1.02; --ds-leading-normal:1.5; --ds-leading-relaxed:1.7;
+  --ds-weight-normal:400; --ds-weight-medium:600; --ds-weight-bold:800;
+  --ds-tracking-tight:-0.04em; --ds-tracking-normal:0;
+  --ds-shadow-sm:2px 2px 0 rgba(35,72,168,.16);
+  --ds-shadow-md:3px 3px 0 rgba(207,46,106,.18);
+  --ds-shadow-lg:5px 5px 0 rgba(35,72,168,.22);
+  --ds-ease:cubic-bezier(.2,0,0,1);
+  --ds-dur-fast:80ms; --ds-dur-base:140ms; --ds-dur-slow:240ms;
+  /* 语义 z-index（禁止魔法值 9999） */
+  --ds-z-dropdown:1000; --ds-z-sticky:1010; --ds-z-modal-backdrop:1030;
+  --ds-z-modal:1040; --ds-z-toast:1050; --ds-z-tooltip:1060;
+  /* 孔版油墨（更饱和，仅用于装饰性网点/色块，非正文） */
+  --riso-pink:#ff3d8b; --riso-blue:#1f5fd6;
+}
+[data-theme="dark"], .dark{
+  --ds-bg:#16151a; --ds-bg-subtle:#1e1d23; --ds-bg-elevated:#232228; --ds-bg-sunken:#100f13;
+  --ds-fg:#f0ebe0; --ds-fg-muted:#b0a99c; --ds-fg-subtle:#8c8576; --ds-fg-on-accent:#16151a;
+  --ds-border:#34323a; --ds-border-strong:#f0ebe0;
+  --ds-primary:#ff5c93; --ds-primary-hover:#ff7aa8; --ds-primary-active:#ee4d84; --ds-primary-fg:#16151a;
+  --ds-accent:#6f8fff; --ds-accent-fg:#0a1228;
+  --ds-success:#5fcf95; --ds-success-bg:#0c2a1c; --ds-success-fg:#cdf2dd;
+  --ds-warning:#e6c05a; --ds-warning-bg:#241c08; --ds-warning-fg:#f8ead0;
+  --ds-danger:#ff7a72; --ds-danger-bg:#2a100e; --ds-danger-fg:#ffd6d2;
+  --ds-info:#6f8fff; --ds-info-bg:#0e1838; --ds-info-fg:#d6deff;
+  --ds-focus:#ff5c93;
+  --ds-shadow-sm:2px 2px 0 rgba(111,143,255,.3);
+  --ds-shadow-md:3px 3px 0 rgba(255,92,147,.3);
+  --ds-shadow-lg:5px 5px 0 rgba(111,143,255,.34);
+  --riso-pink:#ff5c93; --riso-blue:#6f8fff;
+}
+
+/* ====================================================================
+   BASE
+   ==================================================================== */
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--ds-bg);
+  color:var(--ds-fg);
+  font-family:var(--ds-font-sans);
+  font-size:var(--ds-text-base);
+  line-height:var(--ds-leading-normal);
+  font-weight:var(--ds-weight-normal);
+  /* 极淡的网点半调底纹（孔版网点的纸面气质，纯 CSS，不外链） */
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--ds-fg) 6%, transparent) 1px, transparent 1.4px);
+  background-size:14px 14px;
+  -webkit-font-smoothing:antialiased;
+}
+/* ---- GRAIN OVERLAY：全页 feTurbulence 噪点层（这就是孔版气质，刻意保留，保持克制 ~0.06） ---- */
+.riso-grain{position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.06;mix-blend-mode:multiply}
+[data-theme="dark"] .riso-grain{mix-blend-mode:screen;opacity:.07}
+.riso-grain svg{width:100%;height:100%;display:block}
+
+h1,h2,h3,h4{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight);line-height:var(--ds-leading-tight);margin:0;overflow-wrap:anywhere}
+a{color:var(--ds-accent);font-weight:var(--ds-weight-medium)}
+[data-theme="light"] a{color:var(--ds-accent)} /* 亮色链接用孔版蓝保 AA */
+code{font-family:var(--ds-font-mono);font-size:.85em;background:var(--ds-bg-sunken);border:1.5px solid var(--ds-border);padding:2px 6px;border-radius:var(--ds-radius-sm);overflow-wrap:anywhere}
+img{display:block;max-width:100%}
+.display{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight);line-height:var(--ds-leading-tight);overflow-wrap:anywhere}
+.d-3xl{font-size:var(--ds-text-3xl)} .d-2xl{font-size:var(--ds-text-2xl)} .d-xl{font-size:var(--ds-text-xl)}
+
+/* ====================================================================
+   RISO 工具类：网点半调填充 · 套印偏移标题 · multiply 叠印
+   ==================================================================== */
+/* 网点半调填充（孔版招牌纹理：tiled radial-gradient 点阵；仅做装饰背景，不承载正文） */
+.riso-halftone-pink{background-image:radial-gradient(circle, var(--riso-pink) 1.2px, transparent 1.6px);background-size:7px 7px}
+.riso-halftone-blue{background-image:radial-gradient(circle, var(--riso-blue) 1.2px, transparent 1.6px);background-size:7px 7px}
+.riso-halftone-fg{background-image:radial-gradient(circle, color-mix(in srgb,var(--ds-fg) 22%,transparent) 1px, transparent 1.5px);background-size:8px 8px}
+
+/* 套印偏移标题（"slightly off-press"：主标题 + 第二油墨色的偏移幽灵复本） */
+.riso-misreg{position:relative;display:inline-block;color:var(--ds-accent)}
+.riso-misreg::before{content:attr(data-ghost);position:absolute;left:-3px;top:2px;color:var(--riso-pink);z-index:-1;opacity:.85;-webkit-text-stroke:0}
+[data-theme="dark"] .riso-misreg{color:var(--ds-accent)}
+[data-theme="dark"] .riso-misreg::before{color:var(--ds-primary);opacity:.7}
+
+/* multiply 叠印油墨色块（粉块 + 蓝块重叠处 → 紫，刻意展示在 hero） */
+.riso-blob{position:absolute;border-radius:var(--ds-radius-full);mix-blend-mode:multiply;pointer-events:none}
+[data-theme="dark"] .riso-blob{mix-blend-mode:screen}
+
+.wrap{max-width:1120px;margin:0 auto;padding:var(--ds-space-7) var(--ds-space-5) var(--ds-space-12)}
+section{margin-top:var(--ds-space-11)}
+.sec-title{font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);letter-spacing:.04em;text-transform:uppercase;border-bottom:2px solid var(--ds-border-strong);padding-bottom:var(--ds-space-3);margin-bottom:var(--ds-space-6);display:flex;align-items:center;gap:var(--ds-space-3);overflow-wrap:anywhere}
+.sec-title .en{color:var(--ds-fg-subtle);font-weight:var(--ds-weight-normal)}
+.muted{color:var(--ds-fg-muted)} .subtle{color:var(--ds-fg-subtle)}
+.lead{max-width:70ch;line-height:var(--ds-leading-normal)}
+.row{display:flex;flex-wrap:wrap;gap:var(--ds-space-4);align-items:flex-end}
+.grid{display:grid;gap:var(--ds-space-5)}
+.mono{font-family:var(--ds-font-mono)}
+.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums}
+
+/* svg helper（统一粗线条：currentColor、stroke 2、viewBox 24） */
+.ico{width:1.25em;height:1.25em;display:inline-block;vertical-align:-0.2em;flex:0 0 auto}
+.ico svg{display:block;width:100%;height:100%}
+
+/* ---- TOPBAR ---- */
+.topbar{
+  position:sticky;top:0;z-index:var(--ds-z-sticky);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-4);
+  background:var(--ds-bg-elevated);
+  border-bottom:2px solid var(--ds-border-strong);
+  padding:var(--ds-space-3) var(--ds-space-5);
+  color:var(--ds-fg);
+}
+.brand{display:flex;align-items:center;gap:var(--ds-space-3);font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);letter-spacing:var(--ds-tracking-tight)}
+.brand .tagline{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-normal);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);letter-spacing:0}
+/* 品牌标记：粉/蓝双色网点叠印小方块（油墨色块 + 半调点） */
+.brand-mark{position:relative;width:34px;height:34px;flex:0 0 34px;display:block;border:2px solid var(--ds-border-strong);background:var(--ds-primary);color:var(--ds-fg);border-radius:var(--ds-radius-sm);overflow:hidden;box-shadow:var(--ds-shadow-sm)}
+.brand-mark::after{content:"";position:absolute;right:-6px;bottom:-6px;width:24px;height:24px;border-radius:var(--ds-radius-full);background:var(--ds-accent);mix-blend-mode:multiply}
+[data-theme="dark"] .brand-mark{background:var(--ds-primary)}
+[data-theme="dark"] .brand-mark::after{mix-blend-mode:screen}
+
+/* ---- BUTTONS（孔版"印章"按钮：墨边 + 彩色偏移阴影 + 轻微套印位移） ---- */
+.btn{
+  font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);
+  font-size:var(--ds-text-sm);line-height:1;text-transform:uppercase;letter-spacing:.03em;
+  white-space:nowrap;
+  border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);
+  background:var(--ds-bg-elevated);color:var(--ds-fg);
+  height:44px;padding:0 20px;cursor:pointer;
+  box-shadow:var(--ds-shadow-sm);
+  transition:transform var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--ds-space-2);
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:var(--ds-shadow-md)}
+.btn:active{transform:translate(2px,2px);box-shadow:0 0 0 0 transparent}
+.btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;box-shadow:none;transform:none}
+.btn .ico{width:18px;height:18px}
+.btn-primary{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:var(--ds-border-strong)}
+.btn-primary:hover{background:var(--ds-primary-hover)}
+.btn-primary:active{background:var(--ds-primary-active)}
+.btn-secondary{background:var(--ds-bg-elevated);color:var(--ds-fg)}
+.btn-tertiary{background:transparent;color:var(--ds-fg);border-color:transparent;box-shadow:none}
+.btn-tertiary:hover{border-color:var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.btn-danger{background:var(--ds-danger);color:#ffffff}
+.btn-accent{background:var(--ds-accent);color:var(--ds-accent-fg)}
+.btn-sm{height:36px;padding:0 14px;font-size:var(--ds-text-xs)}
+.btn-lg{height:52px;padding:0 28px;font-size:var(--ds-text-base)}
+.btn-icon{width:44px;height:44px;padding:0}
+.btn-icon .ico{width:20px;height:20px}
+
+/* ---- SWATCHES ---- */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--ds-space-4)}
+.sw{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);overflow:hidden;background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.sw .chip{height:64px;border-bottom:1.5px solid var(--ds-border-strong)}
+.sw .meta{padding:var(--ds-space-2) var(--ds-space-3);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);line-height:1.6}
+.sw .meta .nm{display:block;overflow-wrap:anywhere;font-weight:var(--ds-weight-bold)}
+.sw .meta .hx{color:var(--ds-fg-muted)}
+
+/* ---- TYPE SCALE ---- */
+.type-row{display:flex;align-items:baseline;gap:var(--ds-space-5);padding:var(--ds-space-3) 0;border-bottom:1.5px solid var(--ds-border)}
+.type-row .tag{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted);width:96px;flex:0 0 96px}
+
+/* ---- CARDS ---- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--ds-space-6)}
+.card{background:var(--ds-bg-elevated);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-md);padding:var(--ds-space-6);display:flex;flex-direction:column;gap:var(--ds-space-3);color:var(--ds-fg)}
+.card h3{font-size:var(--ds-text-lg)}
+.card p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+.card .actions{display:flex;gap:var(--ds-space-3);margin-top:var(--ds-space-2);flex-wrap:wrap}
+
+/* ---- FORM ---- */
+.field{display:flex;flex-direction:column;gap:var(--ds-space-2);margin-bottom:var(--ds-space-4)}
+.field label{font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);text-transform:uppercase;letter-spacing:.03em}
+.input,.textarea,.select{
+  font-family:var(--ds-font-sans);font-size:var(--ds-text-base);color:var(--ds-fg);
+  background:var(--ds-bg-sunken);
+  border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);
+  height:44px;padding:0 14px;width:100%;
+}
+.textarea{height:auto;padding:12px 14px;min-height:96px;resize:vertical;font-family:var(--ds-font-sans)}
+.input::placeholder,.textarea::placeholder{color:var(--ds-fg-subtle)}
+.input:focus,.textarea:focus,.select:focus{outline:none;box-shadow:var(--ds-focus-ring);border-color:var(--ds-border-strong)}
+.select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ds-fg) 50%),linear-gradient(135deg,var(--ds-fg) 50%,transparent 50%);background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.input-grp{display:flex;align-items:stretch;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);overflow:hidden;background:var(--ds-bg-sunken);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.input-grp .pre{display:inline-flex;align-items:center;padding:0 12px;border-right:1.5px solid var(--ds-border-strong);background:var(--ds-bg-elevated)}
+.input-grp .pre .ico{width:18px;height:18px;color:var(--ds-fg-muted)}
+.input-grp input{flex:1;border:none;background:transparent;height:42px;padding:0 12px;font-family:var(--ds-font-sans);font-size:var(--ds-text-base);color:var(--ds-fg)}
+.input-grp input:focus{outline:none}
+.input-grp:focus-within{box-shadow:var(--ds-focus-ring)}
+
+/* checkbox / radio / switch */
+.opt{display:flex;align-items:center;gap:var(--ds-space-3);margin-bottom:var(--ds-space-3);cursor:pointer;font-size:var(--ds-text-base)}
+.opt input{position:absolute;opacity:0;width:0;height:0}
+.box{width:24px;height:24px;flex:0 0 24px;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-sm);background:var(--ds-bg-elevated);display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.box.rd{border-radius:var(--ds-radius-full)}
+.opt input:focus-visible + .box{box-shadow:var(--ds-focus-ring)}
+.opt input:checked + .box.cb{background:var(--ds-primary)}
+.opt input:checked + .box.cb::after{content:"";width:10px;height:10px;border-radius:var(--ds-radius-sm);background:var(--ds-primary-fg)}
+.opt input:checked + .box.rd::after{content:"";width:10px;height:10px;border-radius:var(--ds-radius-full);background:var(--ds-primary)}
+.switch{width:52px;height:28px;flex:0 0 52px;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);background:var(--ds-bg-sunken);position:relative;box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.switch::after{content:"";position:absolute;top:1px;left:1px;width:21px;height:21px;border-radius:var(--ds-radius-full);background:var(--ds-fg-subtle);transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease)}
+.opt input:checked + .switch{background:var(--ds-primary)}
+.opt input:checked + .switch::after{transform:translateX(24px);background:var(--ds-primary-fg)}
+.opt input:focus-visible + .switch{box-shadow:var(--ds-focus-ring)}
+
+/* ---- BADGES ---- */
+.badges{display:flex;flex-wrap:wrap;gap:var(--ds-space-3)}
+.badge{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;padding:5px 10px;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);white-space:nowrap;color:var(--ds-fg)}
+.badge.b-success{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success)}
+.badge.b-warning{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning)}
+.badge.b-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger)}
+.badge.b-info{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info)}
+.badge.b-neutral{background:var(--ds-bg-elevated)}
+.badge.b-accent{background:var(--ds-accent);color:var(--ds-accent-fg);border-color:var(--ds-border-strong)}
+
+/* ---- ALERTS（前置语义 SVG + 浅底 + 墨边全描边，无侧边色条） ---- */
+.alerts{display:grid;gap:var(--ds-space-4)}
+.alert{display:flex;gap:var(--ds-space-3);align-items:flex-start;padding:var(--ds-space-4);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm)}
+.alert .ico{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.alert h4{font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}
+.alert p{margin:0;font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+.a-success{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success)}
+.a-warning{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning)}
+.a-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger)}
+.a-info{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info)}
+.a-success .ico{color:var(--ds-success)} .a-warning .ico{color:var(--ds-warning)}
+.a-danger .ico{color:var(--ds-danger)} .a-info .ico{color:var(--ds-info)}
+
+/* ---- TABS ---- */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--ds-border-strong);flex-wrap:wrap}
+.tab{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);text-transform:uppercase;letter-spacing:.03em;background:transparent;border:1.5px solid transparent;border-bottom:none;color:var(--ds-fg-muted);padding:12px 18px;cursor:pointer;min-height:44px;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ds-fg);background:var(--ds-bg-elevated);border-color:var(--ds-border-strong);border-bottom:3px solid var(--ds-primary);margin-bottom:-2px}
+.tab:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+
+/* ---- TABLE ---- */
+.table-wrap{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);background:var(--ds-bg-elevated);overflow-x:auto;color:var(--ds-fg)}
+table{border-collapse:collapse;width:100%;font-size:var(--ds-text-base)}
+thead th{font-family:var(--ds-font-sans);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);letter-spacing:.03em;text-transform:uppercase;text-align:left;background:var(--ds-bg-subtle);color:var(--ds-fg);padding:12px 16px;border-bottom:2px solid var(--ds-border-strong);white-space:nowrap}
+tbody td{padding:11px 16px;border-bottom:1.5px solid var(--ds-border)}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right}
+.dot{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:middle;border-radius:var(--ds-radius-full);border:1.5px solid var(--ds-border-strong)}
+
+/* ====================================================================
+   HERO
+   ==================================================================== */
+.hero{margin-top:var(--ds-space-7);border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);overflow:hidden;box-shadow:var(--ds-shadow-lg);background:var(--ds-bg-elevated);color:var(--ds-fg);display:grid;grid-template-columns:1.15fr .85fr}
+.hero .h-left{position:relative;padding:var(--ds-space-9) var(--ds-space-8);display:flex;flex-direction:column;justify-content:center;gap:var(--ds-space-5);border-right:2px solid var(--ds-border-strong);overflow:hidden}
+/* 左栏角落网点半调（孔版招牌纹理；纯装饰，正文落在实色纸上） */
+.hero .h-left::after{content:"";position:absolute;right:-30px;bottom:-30px;width:200px;height:200px;background-image:radial-gradient(circle, color-mix(in srgb,var(--ds-accent) 32%,transparent) 1.4px, transparent 1.8px);background-size:9px 9px;-webkit-mask-image:radial-gradient(circle at 70% 70%, #000 30%, transparent 72%);mask-image:radial-gradient(circle at 70% 70%, #000 30%, transparent 72%);pointer-events:none}
+.hero .kicker{position:relative;z-index:1;font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);text-transform:uppercase;letter-spacing:.04em;display:inline-flex;align-items:center;gap:var(--ds-space-2);align-self:flex-start;background:var(--ds-accent);color:var(--ds-accent-fg);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);padding:5px 12px;box-shadow:var(--ds-shadow-sm)}
+.hero h1{position:relative;z-index:1;font-size:var(--ds-text-3xl)}
+.hero h1 mark{background:var(--ds-primary);color:var(--ds-primary-fg);padding:0 6px;border-radius:var(--ds-radius-sm)}
+.hero .h-sub{position:relative;z-index:1;color:var(--ds-fg-muted);font-size:var(--ds-text-md);max-width:46ch;line-height:var(--ds-leading-normal)}
+.hero .h-cta{position:relative;z-index:1;display:flex;gap:var(--ds-space-3);flex-wrap:wrap}
+.hero .h-stats{position:relative;z-index:1;display:flex;gap:var(--ds-space-7);flex-wrap:wrap;border-top:1.5px solid var(--ds-border);padding-top:var(--ds-space-4);margin-top:var(--ds-space-2)}
+.hero .h-stats .st .v{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-xl);letter-spacing:var(--ds-tracking-tight);display:block}
+.hero .h-stats .st .l{font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+/* 右栏：双色油墨叠印池（粉 blob + 蓝 blob 重叠 multiply → 紫）+ 网点 + 双色调照片 */
+.hero .h-right{position:relative;overflow:hidden;min-height:420px;background:var(--ds-bg-subtle);background-image:radial-gradient(circle, color-mix(in srgb,var(--ds-fg) 9%,transparent) 1px, transparent 1.5px);background-size:8px 8px}
+.hero .h-right .riso-blob.b-pink{width:230px;height:230px;left:8%;top:14%;background:var(--riso-pink)}
+.hero .h-right .riso-blob.b-blue{width:210px;height:210px;left:34%;top:36%;background:var(--riso-blue)}
+.hero .h-photo{position:absolute;right:18px;bottom:18px;width:54%;aspect-ratio:3/4;border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);overflow:hidden}
+/* 双色调照片处理（CSS filter 去饱和 + 粉/蓝 multiply 叠加层，模拟 2 色孔版分色） */
+.riso-duo{position:relative}
+.riso-duo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.25) brightness(1.08)}
+.riso-duo::before{content:"";position:absolute;inset:0;background:var(--riso-blue);mix-blend-mode:screen;pointer-events:none}
+.riso-duo::after{content:"";position:absolute;inset:0;background:var(--riso-pink);mix-blend-mode:multiply;opacity:.7;pointer-events:none}
+[data-theme="dark"] .riso-duo img{filter:grayscale(1) contrast(1.15) brightness(.9)}
+[data-theme="dark"] .riso-duo::before{mix-blend-mode:screen;opacity:.55}
+[data-theme="dark"] .riso-duo::after{mix-blend-mode:screen;opacity:.5}
+
+/* riso image treatment（身份：双色调倾向 + 墨边 + 彩色偏移 + 小圆角；hover 回原色） */
+.bru-img{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);background:var(--ds-bg-elevated);overflow:hidden}
+.bru-img img{filter:grayscale(.55) contrast(1.08) sepia(.12);transition:filter var(--ds-dur-base) var(--ds-ease)}
+.bru-img:hover img{filter:grayscale(0) contrast(1.04)}
+
+/* ---- IMAGE USAGE ---- */
+.ratios{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--ds-space-5)}
+.ratios figure{margin:0;display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.ratios .frame{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);overflow:hidden}
+.ratios .frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.08) sepia(.12)}
+.r-16-9{aspect-ratio:16/9} .r-4-3{aspect-ratio:4/3} .r-1-1{aspect-ratio:1/1} .r-3-4{aspect-ratio:3/4}
+.ratios figcaption{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+
+.media-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--ds-space-6)}
+.mcard{background:var(--ds-bg-elevated);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);overflow:hidden;box-shadow:var(--ds-shadow-md);color:var(--ds-fg);display:flex;flex-direction:column}
+.mcard .m-img{aspect-ratio:16/10;border-bottom:1.5px solid var(--ds-border-strong);overflow:hidden}
+.mcard .m-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.08) sepia(.12);transition:filter var(--ds-dur-base) var(--ds-ease)}
+.mcard:hover .m-img img{filter:grayscale(0) contrast(1.04)}
+.mcard .m-body{padding:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.mcard h4{font-size:var(--ds-text-md)}
+.mcard p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm);line-height:var(--ds-leading-normal)}
+.mcard .m-foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--ds-space-2)}
+
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--ds-space-4)}
+.gallery .g-item{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);overflow:hidden;aspect-ratio:1/1}
+.gallery .g-item img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.08) sepia(.12);transition:filter var(--ds-dur-base) var(--ds-ease)}
+.gallery .g-item:hover img{filter:grayscale(0) contrast(1.04)}
+.gallery .g-item.wide{grid-column:span 2}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-7);align-items:center}
+.split .s-img{aspect-ratio:4/3;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);overflow:hidden}
+.split h3{font-size:var(--ds-text-xl);margin-bottom:var(--ds-space-3)}
+.split p{color:var(--ds-fg-muted);line-height:var(--ds-leading-normal);margin:0 0 var(--ds-space-3)}
+
+.overlay{position:relative;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);overflow:hidden;aspect-ratio:21/9}
+.overlay img{width:100%;height:100%;object-fit:cover;filter:grayscale(.8) contrast(1.2)}
+.overlay .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,16,28,.9) 0%,rgba(20,16,28,.38) 55%,transparent 100%)}
+.overlay .o-text{position:absolute;left:0;bottom:0;padding:var(--ds-space-7);color:#f4efe4}
+.overlay .o-text .ot-kicker{font-family:var(--ds-font-sans);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;letter-spacing:.04em;background:var(--ds-accent);color:var(--ds-accent-fg);border:1.5px solid var(--ds-accent);border-radius:var(--ds-radius-full);padding:3px 10px;display:inline-block;margin-bottom:var(--ds-space-3)}
+.overlay .o-text h3{font-size:var(--ds-text-2xl);color:#fff}
+.overlay .o-text p{margin:var(--ds-space-2) 0 0;color:#ece4d4;max-width:50ch}
+
+/* avatars */
+.avatar-sizes{display:flex;align-items:flex-end;gap:var(--ds-space-5);flex-wrap:wrap}
+.avatar{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);overflow:hidden;background:var(--ds-bg-sunken)}
+.avatar img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.1) sepia(.1)}
+.av-24{width:24px;height:24px} .av-32{width:32px;height:32px} .av-40{width:40px;height:40px} .av-48{width:48px;height:48px}
+.avatar-stack{display:flex}
+.avatar-stack .avatar{margin-left:-10px;width:44px;height:44px}
+.avatar-stack .avatar:first-child{margin-left:0}
+.avatar-stack .more{margin-left:-10px;width:44px;height:44px;border-radius:var(--ds-radius-full);border:1.5px solid var(--ds-border-strong);background:var(--ds-accent);color:var(--ds-accent-fg);display:inline-flex;align-items:center;justify-content:center;font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);box-shadow:var(--ds-shadow-sm)}
+.user-row{display:flex;align-items:center;gap:var(--ds-space-3);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-3) var(--ds-space-4);max-width:360px}
+.user-row .u-meta{display:flex;flex-direction:column}
+.user-row .u-name{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-base)}
+.user-row .u-sign{font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+
+/* full-bleed bg image block（双色调照片 + 孔版蓝半透叠印遮罩，保证白字对比） */
+.bgblock{position:relative;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);color:var(--ds-fg);overflow:hidden}
+.bgblock img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.3)}
+.bgblock .bg-scrim{position:absolute;inset:0;background:linear-gradient(135deg,rgba(35,72,168,.86),rgba(207,46,106,.74))}
+.bgblock .bg-inner{position:relative;padding:var(--ds-space-10) var(--ds-space-8);color:#fff;display:flex;flex-direction:column;gap:var(--ds-space-4);align-items:flex-start}
+.bgblock .bg-inner h3{color:#fff;font-size:var(--ds-text-2xl)}
+.bgblock .bg-inner p{margin:0;max-width:54ch;color:#fbeef4}
+
+/* ---- ICON USAGE ---- */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--ds-space-3)}
+.icon-cell{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-4);display:flex;flex-direction:column;align-items:center;gap:var(--ds-space-2);text-align:center}
+.icon-cell .ico{width:28px;height:28px}
+.icon-cell .nm{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.icon-scale{display:flex;align-items:flex-end;gap:var(--ds-space-6);flex-wrap:wrap;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-5)}
+.icon-scale .is{display:flex;flex-direction:column;align-items:center;gap:6px}
+.icon-scale .is .lab{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.is-16 .ico{width:16px;height:16px} .is-20 .ico{width:20px;height:20px} .is-24 .ico{width:24px;height:24px} .is-32 .ico{width:32px;height:32px}
+.list-icons{list-style:none;margin:0;padding:0;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);overflow:hidden;background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);max-width:420px}
+.list-icons li{display:flex;align-items:center;gap:var(--ds-space-3);padding:12px 16px;border-bottom:1.5px solid var(--ds-border)}
+.list-icons li:last-child{border-bottom:none}
+.list-icons .ico{width:20px;height:20px;color:var(--ds-fg-muted)}
+.badge-ico{position:relative;display:inline-flex;width:44px;height:44px;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);align-items:center;justify-content:center}
+.badge-ico .ico{width:22px;height:22px}
+.badge-ico .count{position:absolute;top:-9px;right:-9px;min-width:22px;height:22px;padding:0 5px;border-radius:var(--ds-radius-full);background:var(--ds-danger);color:#fff;border:1.5px solid var(--ds-border-strong);font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+
+/* ---- BROWSER FRAME (desktop layouts) ---- */
+.frame{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);background:var(--ds-bg-elevated);color:var(--ds-fg);overflow:hidden;margin-bottom:var(--ds-space-8)}
+.frame .chrome{display:flex;align-items:center;gap:var(--ds-space-3);background:var(--ds-bg-subtle);border-bottom:1.5px solid var(--ds-border-strong);padding:10px 14px}
+.frame .dots{display:flex;gap:6px}
+.frame .dots i{width:13px;height:13px;border-radius:var(--ds-radius-full);border:1.5px solid var(--ds-border-strong);display:block}
+.frame .dots i:nth-child(1){background:var(--ds-primary)} .frame .dots i:nth-child(2){background:var(--ds-warning)} .frame .dots i:nth-child(3){background:var(--ds-accent)}
+.frame .addr{flex:1;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);background:var(--ds-bg-elevated);border:1.5px solid var(--ds-border);border-radius:var(--ds-radius-full);padding:5px 12px;color:var(--ds-fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frame .flabel{font-family:var(--ds-font-sans);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;letter-spacing:.03em;background:var(--ds-accent);color:var(--ds-accent-fg);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);padding:3px 10px}
+
+/* dashboard mock */
+.dash{display:grid;grid-template-columns:200px 1fr;min-height:380px}
+.dash .side{background:var(--ds-bg-subtle);border-right:1.5px solid var(--ds-border-strong);padding:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.dash .side .s-brand{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);letter-spacing:var(--ds-tracking-tight);margin-bottom:var(--ds-space-3)}
+.dash .nav-i{display:flex;align-items:center;gap:var(--ds-space-3);padding:10px 12px;border:1.5px solid transparent;border-radius:var(--ds-radius-md);font-family:var(--ds-font-sans);font-weight:var(--ds-weight-medium);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);cursor:pointer}
+.dash .nav-i .ico{width:18px;height:18px}
+.dash .nav-i.on{background:var(--ds-bg-elevated);border-color:var(--ds-border-strong);color:var(--ds-fg);box-shadow:var(--ds-shadow-sm)}
+.dash .main{padding:var(--ds-space-6);display:flex;flex-direction:column;gap:var(--ds-space-5)}
+.dash .d-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-4);flex-wrap:wrap}
+.dash .d-top h3{font-size:var(--ds-text-xl)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-4)}
+.kpi{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-4)}
+.kpi .k-l{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-medium);font-size:var(--ds-text-xs);text-transform:uppercase;letter-spacing:.03em;color:var(--ds-fg-muted)}
+.kpi .k-v{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-xl);letter-spacing:var(--ds-tracking-tight);margin-top:4px}
+.kpi .k-d{font-size:var(--ds-text-sm);color:var(--ds-success);margin-top:2px}
+.chart{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-4)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px;margin-top:var(--ds-space-3)}
+.bars i{flex:1;background:var(--ds-primary);border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 0 0;display:block}
+.bars i:nth-child(even){background:var(--ds-accent)}
+
+/* landing mock */
+.land{padding:var(--ds-space-7)}
+.land .l-hero{display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-6);align-items:center;border-bottom:1.5px solid var(--ds-border-strong);padding-bottom:var(--ds-space-7);margin-bottom:var(--ds-space-7)}
+.land .l-hero h2{font-size:var(--ds-text-2xl)}
+.land .l-hero p{color:var(--ds-fg-muted);margin:var(--ds-space-3) 0 var(--ds-space-5);line-height:var(--ds-leading-normal)}
+.land .l-img{aspect-ratio:4/3;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);overflow:hidden}
+.feat3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-5)}
+.feat{border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.feat .f-ic{width:44px;height:44px;border-radius:var(--ds-radius-md);border:1.5px solid var(--ds-border-strong);background:var(--ds-accent);color:var(--ds-accent-fg);display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--ds-shadow-sm);margin-bottom:var(--ds-space-2)}
+.feat .f-ic .ico{width:22px;height:22px}
+.feat h4{font-size:var(--ds-text-md)}
+.feat p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm);line-height:var(--ds-leading-normal)}
+
+/* list-detail mock */
+.ld{display:grid;grid-template-columns:260px 1fr;min-height:380px}
+.ld .ld-list{border-right:1.5px solid var(--ds-border-strong);background:var(--ds-bg-subtle);overflow:hidden}
+.ld .ld-row{display:flex;gap:var(--ds-space-3);align-items:center;padding:12px 14px;border-bottom:1.5px solid var(--ds-border);cursor:pointer}
+.ld .ld-row.on{background:var(--ds-bg-elevated);box-shadow:inset 4px 0 0 0 var(--ds-primary)}
+.ld .ld-thumb{width:48px;height:48px;flex:0 0 48px;border-radius:var(--ds-radius-md);border:1.5px solid var(--ds-border-strong);overflow:hidden;color:var(--ds-fg)}
+.ld .ld-thumb img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.08) sepia(.12)}
+.ld .ld-row .t{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm)}
+.ld .ld-row .s{font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.ld .ld-detail{padding:var(--ds-space-6);display:flex;flex-direction:column;gap:var(--ds-space-4)}
+.ld .ld-big{aspect-ratio:16/9;border:1.5px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);overflow:hidden}
+.ld .ld-big img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) contrast(1.15) sepia(.1)}
+.ld .ld-meta{display:flex;gap:var(--ds-space-3);flex-wrap:wrap}
+
+/* ---- MOBILE（iPhone 17 Pro Max 套壳：外壳走 device.css，屏内沿用粗野身份） ---- */
+.phone-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-9);align-items:flex-start}
+/* 屏内布局占满设备屏：纵列 flex，主区 flex:1 撑满，消除底部留白，tabbar margin-top:auto 贴底 */
+.dvc-body .ph-screen{display:flex;flex-direction:column;min-height:100%}
+.dvc-body .ph-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border-bottom:1.5px solid var(--ds-border-strong);padding:10px 14px;min-height:54px}
+.dvc-body .ph-top .ph-title{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);letter-spacing:var(--ds-tracking-tight)}
+.dvc-body .ph-burger{width:44px;height:44px;border-radius:var(--ds-radius-md);border:1.5px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ds-fg)}
+.dvc-body .ph-burger .ico{width:20px;height:20px}
+.dvc-body .ph-burger:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+/* 主内容区撑满剩余高度，消除底部留白 */
+.dvc-body .ph-body{flex:1 1 auto;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-4)}
+/* 屏内触控目标 ≥44px：本地化 btn-sm 高度，不影响桌面区 */
+.dvc-body .btn{height:44px}
+.dvc-body .btn-sm{height:44px;font-size:var(--ds-text-sm)}
+.dvc-body .ph-hero{aspect-ratio:2/1;border-radius:var(--ds-radius-md);border:1.5px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);overflow:hidden}
+.dvc-body .ph-hero img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) contrast(1.15) sepia(.1)}
+.dvc-body .ph-card{background:var(--ds-bg-elevated);border-radius:var(--ds-radius-md);border:1.5px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.dvc-body .ph-card h4{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-base)}
+.dvc-body .ph-card p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm);line-height:var(--ds-leading-normal)}
+.dvc-body .ph-list{list-style:none;margin:0;padding:0;border-radius:var(--ds-radius-md);overflow:hidden;border:1.5px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.dvc-body .ph-list li{display:flex;align-items:center;gap:var(--ds-space-3);padding:12px 14px;border-bottom:1.5px solid var(--ds-border);font-size:var(--ds-text-sm)}
+.dvc-body .ph-list li:last-child{border-bottom:none}
+.dvc-body .ph-list .avatar{width:40px;height:40px;flex:0 0 40px}
+.dvc-body .ph-list .li-meta{flex:1}
+.dvc-body .ph-list .li-name{font-family:var(--ds-font-sans);font-weight:var(--ds-weight-bold)}
+.dvc-body .ph-list .li-sub{color:var(--ds-fg-muted);font-size:var(--ds-text-xs)}
+.dvc-body .ph-tabbar{display:flex;border-top:1.5px solid var(--ds-border-strong);background:var(--ds-bg-elevated);margin-top:auto;padding-bottom:20px}
+.dvc-body .ph-tabbar button{flex:1;font-family:var(--ds-font-sans);font-size:11px;font-weight:var(--ds-weight-bold);text-transform:uppercase;border:none;border-right:1.5px solid var(--ds-border);background:transparent;color:var(--ds-fg-muted);padding:10px 4px;cursor:pointer;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;letter-spacing:.02em}
+.dvc-body .ph-tabbar button .ico{width:18px;height:18px}
+.dvc-body .ph-tabbar button:last-child{border-right:none}
+.dvc-body .ph-tabbar button[aria-current="page"]{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.dvc-body .ph-tabbar button:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);position:relative;z-index:1}
+.dvc-body .ph-prof-hero{position:relative;aspect-ratio:3/2;border-bottom:1.5px solid var(--ds-border-strong);overflow:hidden;color:var(--ds-fg)}
+.dvc-body .ph-prof-hero img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) contrast(1.15) sepia(.1)}
+/* 顶部深色 scrim：保证 sb-light 白色状态栏文字/图标在任意亮图上 ≥AA 对比 */
+.dvc-body .ph-prof-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:96px;background:linear-gradient(180deg,rgba(20,16,28,.72) 0%,rgba(20,16,28,.36) 52%,transparent 100%);pointer-events:none;z-index:1}
+.dvc-body .ph-prof-av{position:absolute;left:var(--ds-space-4);bottom:-26px;width:72px;height:72px;border-radius:var(--ds-radius-full);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);overflow:hidden;background:var(--ds-bg-elevated);z-index:1}
+.dvc-body .ph-prof-av img{width:100%;height:100%;object-fit:cover;filter:grayscale(.45) contrast(1.1) sepia(.1)}
+.dvc-body .ph-prof-body{padding:var(--ds-space-7) var(--ds-space-4) var(--ds-space-4)}
+
+/* ====================================================================
+   RESPONSIVE
+   ==================================================================== */
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .hero .h-left{border-right:none;border-bottom:2px solid var(--ds-border-strong)}
+  .hero h1{font-size:var(--ds-text-2xl)}
+  .split{grid-template-columns:1fr}
+  .land .l-hero{grid-template-columns:1fr}
+  .dash{grid-template-columns:1fr}
+  .dash .side{flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:2px solid var(--ds-border-strong)}
+  .ld{grid-template-columns:1fr}
+  .ld .ld-list{border-right:none;border-bottom:2px solid var(--ds-border-strong);max-height:240px;overflow-y:auto}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .wrap{padding:var(--ds-space-5) var(--ds-space-4) var(--ds-space-10)}
+  body{background-size:11px 11px}
+  .cards,.media-cards{grid-template-columns:1fr}
+  .kpis,.feat3{grid-template-columns:1fr}
+  .topbar{flex-wrap:wrap;gap:var(--ds-space-3)}
+  .brand .tagline{display:none}
+  .hero h1{font-size:var(--ds-text-xl)}
+  .display.d-3xl{font-size:var(--ds-text-2xl)}
+}
+/* 极窄视口：等比缩小 iPhone 17 Pro Max 套壳，避免超出屏宽 */
+@media (max-width:460px){
+  .phone-row{justify-content:center}
+  .phone-row .dvc17{--dvc-w:320px}
+  .phone-row .dvc17 .scr{height:666px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+}
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<!-- GRAIN OVERLAY：全页颗粒噪点（feTurbulence，刻意保留的孔版气质，pointer-events:none、保持克制） -->
+<div class="riso-grain" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg"><filter id="risoGrain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#risoGrain)"/></svg>
+</div>
+
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span>RISOFARM&nbsp;PRESS</span>
+    <span class="tagline">孔版印刷设计系统 · Pink &amp; Blue, On Paper</span>
+  </div>
+  <button class="btn btn-secondary" id="themeToggle" aria-label="切换亮暗主题">
+    <span class="ico" id="themeIco" aria-hidden="true"></span><span id="themeTxt">LIGHT</span>
+  </button>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO（孔版招牌：套印偏移标题 + 双色油墨叠印 multiply blob + 双色调照片） -->
+  <header class="hero">
+    <div class="h-left">
+      <span class="kicker"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="7" cy="9" r="3"/><circle cx="15" cy="9" r="3"/><circle cx="11" cy="16" r="3"/></svg></span>2 色孔版印刷 · DUOTONE INK</span>
+      <h1><span class="riso-misreg" data-ghost="印两遍。">印两遍。</span><br>叠出<mark>第三种色</mark>。</h1>
+      <p class="h-sub">荧光粉 + 孔版蓝两版油墨，网点半调铺底、颗粒纸感、重叠处 multiply 叠印成紫，再加一点点套印偏移——给独立 zine、市集小报与文化厂牌的设计系统。所有取值走 <code>var(--ds-*)</code>，亮暗双主题满足 WCAG AA。</p>
+      <div class="h-cta">
+        <button class="btn btn-primary btn-lg">开印一版 <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></button>
+        <button class="btn btn-secondary btn-lg">看色样手册</button>
+      </div>
+      <div class="h-stats">
+        <div class="st"><span class="v num">2</span><span class="l">套色油墨</span></div>
+        <div class="st"><span class="v num">×</span><span class="l">multiply 叠印</span></div>
+        <div class="st"><span class="v num">AA+</span><span class="l">对比达标</span></div>
+        <div class="st"><span class="v num">14+</span><span class="l">核心组件</span></div>
+      </div>
+    </div>
+    <div class="h-right">
+      <span class="riso-blob b-pink" aria-hidden="true"></span>
+      <span class="riso-blob b-blue" aria-hidden="true"></span>
+      <figure class="h-photo riso-duo" style="margin:0">
+        <img src="../../_assets/photos/desk.jpg" alt="工作台俯拍：纸张、油墨与样张，经双色调孔版处理" loading="lazy" />
+      </figure>
+    </div>
+  </header>
+
+  <!-- INTRO / PALETTE -->
+  <section style="margin-top:var(--ds-space-10)">
+    <h2 class="sec-title">色板 <span class="en">/ Palette</span></h2>
+    <p class="lead muted" style="margin-bottom:var(--ds-space-6)">暖再生纸 / 油墨近黑 / 荧光粉 / 孔版蓝。粉与蓝是两版油墨——重叠处 multiply 叠印偏紫。正文与小字一律落在实色纸面（bg / elevated），<b>绝不</b>压在网点或颗粒上。点右上角切换亮 / 暗主题（暗色是反相暗房，油墨发光）。</p>
+    <div class="swatches" id="swatches"></div>
+  </section>
+
+  <!-- TYPE -->
+  <section>
+    <h2 class="sec-title">字体 <span class="en">/ Type Scale</span></h2>
+    <div class="type-row"><span class="tag">3xl 76</span><span class="display d-3xl">RISO</span></div>
+    <div class="type-row"><span class="tag">2xl 52</span><span class="display d-2xl">孔版 Zine</span></div>
+    <div class="type-row"><span class="tag">xl 34</span><span class="display d-xl">网点半调 Halftone</span></div>
+    <div class="type-row"><span class="tag">lg 24</span><span style="font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold)">叠印成紫 Overprint</span></div>
+    <div class="type-row"><span class="tag">md 19</span><span style="font-size:var(--ds-text-md)">正文标题 Body heading</span></div>
+    <div class="type-row"><span class="tag">base 16</span><span style="font-size:var(--ds-text-base)">正文 The quick brown fox jumps 0123456789</span></div>
+    <div class="type-row"><span class="tag">sm 14</span><span style="font-size:var(--ds-text-sm)" class="muted">次要说明 Secondary copy</span></div>
+    <div class="type-row"><span class="tag">xs 12</span><span style="font-size:var(--ds-text-xs)" class="subtle">弱化 / 标签 Caption label</span></div>
+    <p class="muted" style="margin-top:var(--ds-space-4)">标题用粗 <b>Inter</b>（chunky zine 气质，字距 −0.04em 守住下限）｜ 数据 / 价签用 <b class="mono">JetBrains Mono</b>（tabular 数字）｜ 字重 normal 400 · <b style="font-weight:600">medium 600</b> · <b style="font-weight:800">bold 800</b></p>
+  </section>
+
+  <!-- BUTTONS -->
+  <section>
+    <h2 class="sec-title">按钮 <span class="en">/ Buttons</span></h2>
+    <div class="row" style="margin-bottom:var(--ds-space-5)">
+      <button class="btn btn-primary">PRIMARY</button>
+      <button class="btn btn-secondary">SECONDARY</button>
+      <button class="btn btn-tertiary">TERTIARY</button>
+      <button class="btn btn-accent">ACCENT</button>
+      <button class="btn btn-danger">DANGER</button>
+      <button class="btn btn-primary" disabled>DISABLED</button>
+    </div>
+    <div class="row" style="margin-bottom:var(--ds-space-5)">
+      <button class="btn btn-primary btn-sm">SMALL</button>
+      <button class="btn btn-primary">MEDIUM</button>
+      <button class="btn btn-primary btn-lg">LARGE</button>
+      <button class="btn btn-secondary btn-icon" aria-label="搜索"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></button>
+      <button class="btn btn-secondary">前置 <span class="ico" aria-hidden="true" style="order:-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></button>
+    </div>
+    <p class="muted" style="font-size:var(--ds-text-sm)">墨边 + 彩色硬偏移阴影（无模糊）。hover 抬起 translate(−1,−1) 并加深偏移；active 按下 translate(2,2) 吃掉偏移，像盖章压平。</p>
+  </section>
+
+  <!-- FORM -->
+  <section>
+    <h2 class="sec-title">表单 <span class="en">/ Form</span></h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div>
+        <div class="field"><label for="i1">印件名 Job</label><input class="input" id="i1" placeholder="如：六月市集小报…"></div>
+        <div class="field"><label for="i2">印件类型 Type</label>
+          <select class="select" id="i2"><option>独立刊物 Zine</option><option>海报 Poster</option><option>市集小报 Market paper</option><option>厂牌套装 Label kit</option></select>
+        </div>
+        <div class="field"><label for="i3">工作室站点 URL</label>
+          <div class="input-grp"><span class="pre" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg></span></span><input id="i3" placeholder="risofarm.press"></div>
+        </div>
+        <div class="field"><label for="i4">备注 Brief</label><textarea class="textarea" id="i4" placeholder="一句话说清这版想要的色与味…"></textarea></div>
+      </div>
+      <div>
+        <label class="opt"><input type="checkbox" checked><span class="box cb"></span><span>网点半调铺底 Halftone fill</span></label>
+        <label class="opt"><input type="checkbox" checked><span class="box cb"></span><span>颗粒纸感 Grain overlay</span></label>
+        <div style="height:8px"></div>
+        <label class="opt"><input type="radio" name="th" checked><span class="box rd"></span><span>第一版油墨：荧光粉 Fluoro pink</span></label>
+        <label class="opt"><input type="radio" name="th"><span class="box rd"></span><span>第一版油墨：孔版蓝 Riso blue</span></label>
+        <div style="height:8px"></div>
+        <label class="opt"><input type="checkbox" checked><span class="switch"></span><span>叠印 multiply Overprint</span></label>
+        <label class="opt"><input type="checkbox"><span class="switch"></span><span>暗房模式 Darkroom mode</span></label>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin-top:var(--ds-space-3)">聚焦任意控件可见双层焦点环（底环 + 荧光焦点色环）。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section>
+    <h2 class="sec-title">卡片 <span class="en">/ Cards</span></h2>
+    <div class="cards">
+      <div class="card">
+        <h3>两版油墨</h3>
+        <p>卡片靠墨边 + 彩色硬偏移阴影从纸面抬起，绝不用模糊柔影。粉与蓝两版套印，重叠处叠成紫。</p>
+        <div class="badges"><span class="badge b-info">DUOTONE</span><span class="badge b-accent">×2 INK</span></div>
+        <div class="actions"><button class="btn btn-primary btn-sm">选色</button><button class="btn btn-secondary btn-sm">详情</button></div>
+      </div>
+      <div class="card">
+        <h3>价签 · tabular</h3>
+        <p>小报、市集价目用等宽 tabular 数字对齐，像油印出来的清单。数字落在实色纸上，不压网点。</p>
+        <div class="num" style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight)">¥ 38.00</div>
+        <div class="actions"><button class="btn btn-accent btn-sm">加入印单</button></div>
+      </div>
+      <div class="card">
+        <h3>网点纸感</h3>
+        <p>网点半调铺底、颗粒覆层做装饰纹理；正文一律坐在实色 elevated 纸面，对比 ≥4.5:1。亮暗自动翻色。</p>
+        <div class="actions"><button class="btn btn-secondary btn-sm">预览</button><button class="btn btn-tertiary btn-sm">分享</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section>
+    <h2 class="sec-title">徽章 <span class="en">/ Badges</span></h2>
+    <div class="badges">
+      <span class="badge b-neutral">NEUTRAL</span>
+      <span class="badge b-accent">ACCENT</span>
+      <span class="badge b-success">SUCCESS</span>
+      <span class="badge b-warning">WARNING</span>
+      <span class="badge b-danger">DANGER</span>
+      <span class="badge b-info">INFO</span>
+    </div>
+  </section>
+
+  <!-- ALERTS -->
+  <section>
+    <h2 class="sec-title">提示条 <span class="en">/ Alerts</span></h2>
+    <div class="alerts">
+      <div class="alert a-success"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l6 6L21 6"/></svg></span><div><h4>SUCCESS</h4><p>套印对齐通过，两版油墨已开印。</p></div></div>
+      <div class="alert a-warning"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3L1 21h22L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg></span><div><h4>WARNING</h4><p>粉版墨量偏低，建议补墨后再印长版。</p></div></div>
+      <div class="alert a-danger"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span><div><h4>DANGER</h4><p>套印严重偏移——两版错位超过 4mm，已停机。</p></div></div>
+      <div class="alert a-info"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div><h4>INFO</h4><p>新色样手册 v1.0 已上架，刷新即可查看。</p></div></div>
+    </div>
+    <p class="subtle" style="font-size:var(--ds-text-sm);margin-top:var(--ds-space-3)">前置语义 SVG 图标（语义色）+ 浅底 *-bg + 墨边全描边 + 彩色偏移阴影，无侧边色条。</p>
+  </section>
+
+  <!-- TABS -->
+  <section>
+    <h2 class="sec-title">导航 <span class="en">/ Tabs</span></h2>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true">印件</button>
+      <button class="tab" role="tab" aria-selected="false">色样</button>
+      <button class="tab" role="tab" aria-selected="false">Token</button>
+      <button class="tab" role="tab" aria-selected="false">设置</button>
+    </div>
+    <p class="muted" style="margin-top:var(--ds-space-4)">选中页签：纸面提亮 + 墨边 + 底部 3px 荧光粉实线指示。</p>
+  </section>
+
+  <!-- TABLE -->
+  <section>
+    <h2 class="sec-title">表格 <span class="en">/ Table</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>印件 JOB</th><th>主理 OWNER</th><th>状态 STATUS</th><th class="num">印数 RUN</th><th class="num">用纸 PAPER</th></tr></thead>
+        <tbody>
+          <tr><td>六月市集小报</td><td>A. 林</td><td><span class="dot" style="background:var(--ds-success)"></span>已开印</td><td class="num">1,284</td><td class="num">120 g</td></tr>
+          <tr><td>夜班电台 zine</td><td>K. 森</td><td><span class="dot" style="background:var(--ds-warning)"></span>补墨中</td><td class="num">0,972</td><td class="num">100 g</td></tr>
+          <tr><td>厂牌套装 No.7</td><td>R. 迪亚兹</td><td><span class="dot" style="background:var(--ds-danger)"></span>套印偏移</td><td class="num">0,061</td><td class="num">— —</td></tr>
+          <tr><td>蕨类植物海报</td><td>L. 陈</td><td><span class="dot" style="background:var(--ds-info)"></span>排版中</td><td class="num">0,345</td><td class="num">157 g</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subtle" style="font-size:var(--ds-text-sm);margin-top:var(--ds-space-3)">等宽 tabular 数字右对齐 ｜ 行分隔墨色实线 ｜ 表头 2px 强描边。</p>
+  </section>
+
+  <!-- ============ IMAGE USAGE（v2 新区块） ============ -->
+  <section>
+    <h2 class="sec-title">图片用法 <span class="en">/ Image Usage</span></h2>
+    <p class="lead muted" style="margin-bottom:var(--ds-space-6)">本风格图片统一处理：<b>偏单色高对比（去饱和 + 微 sepia 暖调）+ 墨边 + 彩色偏移阴影 + 小圆角</b>，靠近 2 色孔版分色的纸感。hover 时回到原色，制造"翻样"感。下方 hero 里另演示了 <b>双色调叠印（duotone）</b>。全部图片来自本地 <code>_assets/</code>，<code>loading=lazy</code> + 有意义 alt。</p>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">宽高比 Aspect ratios</h3>
+    <div class="ratios" style="margin-bottom:var(--ds-space-9)">
+      <figure><div class="frame bru-img r-16-9"><img src="../../_assets/photos/architecture.jpg" alt="建筑外立面" loading="lazy"></div><figcaption>16 : 9</figcaption></figure>
+      <figure><div class="frame bru-img r-4-3"><img src="../../_assets/photos/city.jpg" alt="城市街景" loading="lazy"></div><figcaption>4 : 3</figcaption></figure>
+      <figure><div class="frame bru-img r-1-1"><img src="../../_assets/photos/tech.jpg" alt="科技设备特写" loading="lazy"></div><figcaption>1 : 1</figcaption></figure>
+      <figure><div class="frame bru-img r-3-4"><img src="../../_assets/photos/street.jpg" alt="街道人文" loading="lazy"></div><figcaption>3 : 4</figcaption></figure>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">媒体卡 Media cards</h3>
+    <div class="media-cards" style="margin-bottom:var(--ds-space-9)">
+      <article class="mcard">
+        <div class="m-img"><img src="../../_assets/photos/workspace.jpg" alt="排版工作台俯拍" loading="lazy"></div>
+        <div class="m-body"><h4>开工流程 Workflow</h4><p>从 token 到组件，一套变量驱动亮暗双主题，零硬编码颜色。</p>
+          <div class="m-foot"><span class="badge b-info">指南</span><button class="btn btn-tertiary btn-sm">阅读 →</button></div></div>
+      </article>
+      <article class="mcard">
+        <div class="m-img"><img src="../../_assets/photos/desk.jpg" alt="样张与油墨笔记" loading="lazy"></div>
+        <div class="m-body"><h4>色样库 Swatches</h4><p>14+ 组件，全部墨边、彩色偏移、小圆角、网点纸感，可直接复制。</p>
+          <div class="m-foot"><span class="badge b-accent">组件</span><button class="btn btn-tertiary btn-sm">浏览 →</button></div></div>
+      </article>
+      <article class="mcard">
+        <div class="m-img"><img src="../../_assets/photos/coffee.jpg" alt="咖啡与刚印好的样张" loading="lazy"></div>
+        <div class="m-body"><h4>印件展示 Showcase</h4><p>市集小报、zine、厂牌套装——孔版风在真实印件里的样子。</p>
+          <div class="m-foot"><span class="badge b-success">案例</span><button class="btn btn-tertiary btn-sm">查看 →</button></div></div>
+      </article>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">画廊 Gallery</h3>
+    <div class="gallery" style="margin-bottom:var(--ds-space-9)">
+      <div class="g-item wide"><img src="../../_assets/photos/mountain.jpg" alt="山脉" loading="lazy"></div>
+      <div class="g-item"><img src="../../_assets/photos/ocean.jpg" alt="海洋" loading="lazy"></div>
+      <div class="g-item"><img src="../../_assets/photos/forest.jpg" alt="森林" loading="lazy"></div>
+      <div class="g-item"><img src="../../_assets/photos/food.jpg" alt="食物" loading="lazy"></div>
+      <div class="g-item"><img src="../../_assets/photos/travel.jpg" alt="旅行" loading="lazy"></div>
+      <div class="g-item"><img src="../../_assets/photos/square1.jpg" alt="方形图一" loading="lazy"></div>
+      <div class="g-item wide"><img src="../../_assets/photos/square2.jpg" alt="方形图二" loading="lazy"></div>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">图文混排 Split</h3>
+    <div class="split" style="margin-bottom:var(--ds-space-9)">
+      <div class="s-img riso-duo"><img src="../../_assets/photos/hero-studio.jpg" alt="孔版印刷工作室空间，经双色调处理" loading="lazy"></div>
+      <div>
+        <h3>把照片印成两版</h3>
+        <p>左图是 <b>双色调（duotone）</b>示范：CSS 去饱和后叠一层孔版蓝、再 multiply 一层荧光粉，模拟两版油墨分色。颗粒与网点保留，画面与排版一样有"纸味"。</p>
+        <p>图片右侧的正文坐在实色纸面，守住 ≤75ch 行宽与 AA 对比；hover 普通图片回到原色，制造"翻样"反馈。</p>
+        <button class="btn btn-primary btn-sm">了解处理规范</button>
+      </div>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">图上叠字 Overlay</h3>
+    <div class="overlay" style="margin-bottom:var(--ds-space-9)">
+      <img src="../../_assets/photos/hero-summit.jpg" alt="山野全景背景" loading="lazy">
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="o-text">
+        <span class="ot-kicker">FEATURED</span>
+        <h3>印两遍，叠成紫。</h3>
+        <p>渐变 scrim 压暗底部，保证白字在任意图片上都 ≥4.5:1。标题用粗 chunky 字体，与孔版的纸感呼应。</p>
+      </div>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">头像用法 Avatars</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-bottom:var(--ds-space-7)">
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">尺寸阶 24 / 32 / 40 / 48</p>
+        <div class="avatar-sizes">
+          <span class="avatar av-24"><img src="../../_assets/avatars/a1.jpg" alt="用户 A1" loading="lazy"></span>
+          <span class="avatar av-32"><img src="../../_assets/avatars/a5.jpg" alt="用户 A5" loading="lazy"></span>
+          <span class="avatar av-40"><img src="../../_assets/avatars/a8.jpg" alt="用户 A8" loading="lazy"></span>
+          <span class="avatar av-48"><img src="../../_assets/avatars/a12.jpg" alt="用户 A12" loading="lazy"></span>
+        </div>
+      </div>
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">头像组 Stack</p>
+        <div class="avatar-stack">
+          <span class="avatar"><img src="../../_assets/avatars/a15.jpg" alt="协作者" loading="lazy"></span>
+          <span class="avatar"><img src="../../_assets/avatars/a23.jpg" alt="协作者" loading="lazy"></span>
+          <span class="avatar"><img src="../../_assets/avatars/a33.jpg" alt="协作者" loading="lazy"></span>
+          <span class="avatar"><img src="../../_assets/avatars/a47.jpg" alt="协作者" loading="lazy"></span>
+          <span class="more" aria-label="另有 8 人">+8</span>
+        </div>
+      </div>
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">用户行 User row</p>
+        <div class="user-row">
+          <span class="avatar av-48"><img src="../../_assets/avatars/a1.jpg" alt="Anya Voss 头像" loading="lazy"></span>
+          <span class="u-meta"><span class="u-name">Anya Voss</span><span class="u-sign">设计负责人 · @anyav</span></span>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">背景大图区 Full-bleed</h3>
+    <div class="bgblock">
+      <img src="../../_assets/photos/hero-gallery.jpg" alt="画廊空间背景" loading="lazy">
+      <div class="bg-scrim" aria-hidden="true"></div>
+      <div class="bg-inner">
+        <span class="badge b-accent">CALL TO ACTION</span>
+        <h3>把你的下一个项目盖成混凝土。</h3>
+        <p>full-bleed 背景图叠电光蓝半透明遮罩，保证内容对比；粗白边 + 硬阴影框住整块。</p>
+        <button class="btn btn-accent btn-lg">立即开始</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ICON USAGE（v2 新区块） ============ -->
+  <section>
+    <h2 class="sec-title">图标用法 <span class="en">/ Icon Usage</span></h2>
+    <p class="lead muted" style="margin-bottom:var(--ds-space-6)">统一内联 SVG、<code>viewBox="0 0 24 24"</code>、<b>粗线条 stroke 2–2.5</b>、<code>currentColor</code>、零 emoji。线条硬朗、端点方正，呼应粗黑边气质。</p>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">图标集 Icon set</h3>
+    <div class="icon-grid" id="iconGrid" style="margin-bottom:var(--ds-space-8)"></div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">尺寸阶 / 线性 vs 实心</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:var(--ds-space-8)">
+      <div class="icon-scale">
+        <div class="is is-16"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span><span class="lab">16</span></div>
+        <div class="is is-20"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span><span class="lab">20</span></div>
+        <div class="is is-24"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span><span class="lab">24</span></div>
+        <div class="is is-32"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span><span class="lab">32</span></div>
+      </div>
+      <div class="icon-scale">
+        <div class="is is-32"><span class="ico" aria-hidden="true" style="color:var(--ds-fg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></span><span class="lab">线性</span></div>
+        <div class="is is-32"><span class="ico" aria-hidden="true" style="color:var(--ds-fg)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></span><span class="lab">实心</span></div>
+        <div class="is is-32"><span class="ico" aria-hidden="true" style="color:var(--ds-fg)"><svg viewBox="0 0 24 24" fill="var(--ds-accent)" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></span><span class="lab">双色</span></div>
+      </div>
+    </div>
+
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">在场景里 In context</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">图标按钮 / 带数字徽标</p>
+        <div class="row" style="align-items:center">
+          <button class="btn btn-secondary btn-icon" aria-label="设置"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span></button>
+          <button class="btn btn-primary btn-icon" aria-label="添加"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <span class="badge-ico" role="img" aria-label="通知 5 条"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9a6 6 0 0112 0c0 6 2 8 2 8H4s2-2 2-8z"/><path d="M10 21a2 2 0 004 0"/></svg></span><span class="count num">5</span></span>
+        </div>
+      </div>
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">输入框前/后置图标</p>
+        <div class="input-grp"><span class="pre" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></span><input placeholder="搜索组件…" aria-label="搜索组件"></div>
+      </div>
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">列表项前导 + 状态图标（语义色）</p>
+        <ul class="list-icons">
+          <li><span class="ico" aria-hidden="true" style="color:var(--ds-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l6 6L21 6"/></svg></span>构建通过 <span style="margin-left:auto" class="badge b-success">PASS</span></li>
+          <li><span class="ico" aria-hidden="true" style="color:var(--ds-warning)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3L1 21h22L12 3z"/><path d="M12 10v5M12 18h.01"/></svg></span>体积告警 <span style="margin-left:auto" class="badge b-warning">WARN</span></li>
+          <li><span class="ico" aria-hidden="true" style="color:var(--ds-danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>部署失败 <span style="margin-left:auto" class="badge b-danger">FAIL</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DESKTOP LAYOUTS（v2 新区块，≥2） ============ -->
+  <section>
+    <h2 class="sec-title">桌面布局 <span class="en">/ Desktop Layouts</span></h2>
+
+    <!-- 1) Dashboard -->
+    <div class="frame">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">https://app.brutal.studio/dashboard</span><span class="flabel">仪表盘 Dashboard</span></div>
+      <div class="dash">
+        <aside class="side">
+          <div class="s-brand">BRUTAL/DS</div>
+          <div class="nav-i on"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>概览</div>
+          <div class="nav-i"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19V5M4 19h16M8 16V9M13 16V6M18 16v-4"/></svg></span>分析</div>
+          <div class="nav-i"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18"/></svg></span>项目</div>
+          <div class="nav-i"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span>设置</div>
+        </aside>
+        <div class="main">
+          <div class="d-top"><h3>项目概览</h3><button class="btn btn-primary btn-sm">新建项目 <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></button></div>
+          <div class="kpis">
+            <div class="kpi"><div class="k-l">总构建</div><div class="k-v num">12,840</div><div class="k-d">+12.4% ↑</div></div>
+            <div class="kpi"><div class="k-l">上线站点</div><div class="k-v num">48</div><div class="k-d">+3 本周</div></div>
+            <div class="kpi"><div class="k-l">平均体积</div><div class="k-v num">142 KB</div><div class="k-d">−8.1% ↓</div></div>
+          </div>
+          <div class="chart">
+            <div class="d-top"><span class="mono" style="font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);text-transform:uppercase">每周构建量</span><span class="badge b-info">近 8 周</span></div>
+            <div class="bars" aria-hidden="true"><i style="height:40%"></i><i style="height:62%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:68%"></i><i style="height:90%"></i><i style="height:74%"></i><i style="height:100%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2) Landing -->
+    <div class="frame">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">https://brutal.studio</span><span class="flabel">落地页 Landing</span></div>
+      <div class="land">
+        <div class="l-hero">
+          <div>
+            <span class="badge b-accent" style="margin-bottom:var(--ds-space-3);display:inline-block">v1.0 现已发布</span>
+            <h2>构建有态度的网站。</h2>
+            <p>粗野主义设计系统：粗黑边、零圆角、硬偏移阴影、等宽巨标题。开箱即用，亮暗双主题。</p>
+            <div class="row"><button class="btn btn-primary">免费开始</button><button class="btn btn-secondary">看示例</button></div>
+          </div>
+          <div class="l-img"><img src="../../_assets/photos/hero-studio.jpg" alt="工作室落地页主图" loading="lazy"></div>
+        </div>
+        <div class="feat3">
+          <div class="feat"><span class="f-ic" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18M9 21V9"/></svg></span></span><h4>暴露栅格</h4><p>分隔线、列边、基线可见，结构即装饰。</p></div>
+          <div class="feat"><span class="f-ic" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h12v12H4z"/><path d="M9 9h11v11H9z"/></svg></span></span><h4>硬偏移阴影</h4><p>实色块阴影，绝不模糊；交互靠位移。</p></div>
+          <div class="feat"><span class="f-ic" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span></span><h4>亮暗双主题</h4><p>一套变量驱动，主色亮蓝暗黄自动翻转。</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3) List-detail -->
+    <div class="frame">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">https://app.brutal.studio/inbox</span><span class="flabel">列表-详情 List · Detail</span></div>
+      <div class="ld">
+        <div class="ld-list">
+          <div class="ld-row on"><span class="ld-thumb"><img src="../../_assets/photos/architecture.jpg" alt="项目封面" loading="lazy"></span><span><span class="t">brutal.studio</span><br><span class="s">已上线 · 142 KB</span></span></div>
+          <div class="ld-row"><span class="ld-thumb"><img src="../../_assets/photos/city.jpg" alt="项目封面" loading="lazy"></span><span><span class="t">concrete-os</span><br><span class="s">构建中 · 208 KB</span></span></div>
+          <div class="ld-row"><span class="ld-thumb"><img src="../../_assets/photos/tech.jpg" alt="项目封面" loading="lazy"></span><span><span class="t">grid-archive</span><br><span class="s">失败 · —</span></span></div>
+          <div class="ld-row"><span class="ld-thumb"><img src="../../_assets/photos/desk.jpg" alt="项目封面" loading="lazy"></span><span><span class="t">acid-press</span><br><span class="s">排队 · 97 KB</span></span></div>
+        </div>
+        <div class="ld-detail">
+          <div class="d-top"><h3>brutal.studio</h3><div class="row"><button class="btn btn-secondary btn-sm">编辑</button><button class="btn btn-primary btn-sm">重新部署</button></div></div>
+          <div class="ld-big"><img src="../../_assets/photos/hero-gallery.jpg" alt="项目详情大图" loading="lazy"></div>
+          <div class="ld-meta"><span class="badge b-success">已上线</span><span class="badge b-neutral">142 KB</span><span class="badge b-info">1,284 构建</span><span class="badge b-accent">v1.0</span></div>
+          <p class="muted" style="margin:0;line-height:var(--ds-leading-normal)">独立设计工作室主站，全站采用粗野主义规范：粗黑边、零圆角、硬偏移阴影。大图详情区 16:9，元信息用徽章成行排布。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MOBILE LAYOUTS（iPhone 17 Pro Max 套壳，≥2） ============ -->
+  <section>
+    <h2 class="sec-title">移动布局 <span class="en">/ Mobile Layouts</span></h2>
+    <div class="phone-row">
+
+      <!-- App home — iPhone 17 Pro Max -->
+      <div class="dvc17" aria-label="移动端 App 首页">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="ph-screen">
+            <div class="ph-top">
+              <span class="ph-title">FEED</span>
+              <button class="ph-burger" aria-label="菜单"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg></span></button>
+            </div>
+            <div class="ph-body">
+              <div class="ph-hero"><img src="../../_assets/photos/architecture.jpg" alt="特色项目封面" loading="lazy"></div>
+              <div class="ph-card">
+                <h4>本周精选</h4>
+                <p>独立厂牌站点合集，全部使用粗野主义规范。窄屏下卡片占满整列、硬边硬影。</p>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start">查看合集 →</button>
+              </div>
+              <ul class="ph-list">
+                <li><span class="avatar"><img src="../../_assets/avatars/a8.jpg" alt="作者" loading="lazy"></span><span class="li-meta"><span class="li-name">K. Mori</span><br><span class="li-sub">发布了 concrete-os</span></span><span class="badge b-info">新</span></li>
+                <li><span class="avatar"><img src="../../_assets/avatars/a23.jpg" alt="作者" loading="lazy"></span><span class="li-meta"><span class="li-name">R. Diaz</span><br><span class="li-sub">更新了 grid-archive</span></span></li>
+                <li><span class="avatar"><img src="../../_assets/avatars/a47.jpg" alt="作者" loading="lazy"></span><span class="li-meta"><span class="li-name">L. Chen</span><br><span class="li-sub">上线了 acid-press</span></span></li>
+              </ul>
+            </div>
+            <nav class="ph-tabbar" aria-label="底部导航">
+              <button aria-current="page"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span>首页</button>
+              <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>搜索</button>
+              <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9a6 6 0 0112 0c0 6 2 8 2 8H4s2-2 2-8z"/><path d="M10 21a2 2 0 004 0"/></svg></span>通知</button>
+              <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>我的</button>
+            </nav>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <!-- Profile / detail — iPhone 17 Pro Max（顶部深色 hero，状态栏转白） -->
+      <div class="dvc17 sb-light" aria-label="移动端个人页">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body" style="padding-top:0">
+            <div class="ph-screen">
+            <div class="ph-prof-hero">
+              <img src="../../_assets/photos/hero-summit.jpg" alt="个人页封面" loading="lazy">
+              <span class="ph-prof-av"><img src="../../_assets/avatars/a1.jpg" alt="Anya Voss 头像" loading="lazy"></span>
+            </div>
+            <div class="ph-prof-body">
+              <h3 style="font-size:var(--ds-text-lg)">Anya Voss</h3>
+              <p class="muted" style="margin:var(--ds-space-1) 0 var(--ds-space-4);font-size:var(--ds-text-sm)">设计负责人 · BRUTAL/DS · 上海</p>
+              <div class="row" style="margin-bottom:var(--ds-space-4)">
+                <button class="btn btn-primary btn-sm" style="flex:1">关注</button>
+                <button class="btn btn-secondary btn-sm" style="flex:1">私信</button>
+              </div>
+              <div class="ph-card">
+                <h4>关于</h4>
+                <p>把混凝土的诚实搬到屏幕上。专注独立产品、作品集与文化厂牌的视觉系统。</p>
+              </div>
+              <div class="row" style="margin-top:var(--ds-space-4);gap:var(--ds-space-3)">
+                <div class="kpi" style="flex:1;box-shadow:var(--ds-shadow-sm)"><div class="k-l">项目</div><div class="k-v num">48</div></div>
+                <div class="kpi" style="flex:1;box-shadow:var(--ds-shadow-sm)"><div class="k-l">关注者</div><div class="k-v num">12.4k</div></div>
+              </div>
+            </div>
+            <nav class="ph-tabbar" aria-label="底部导航">
+              <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span>首页</button>
+              <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>项目</button>
+              <button aria-current="page"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>我的</button>
+            </nav>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <p class="muted" style="max-width:34ch">iPhone 17 Pro Max 真实钛金壳（device.css）：灵动岛 + 状态栏 + home 条。屏内沿用粗野身份——粗黑边 / 0 圆角 / 硬偏移阴影，触控目标 ≥48px。个人页顶部深色 hero 故用 <code>sb-light</code>。</p>
+    </div>
+  </section>
+
+  <!-- ============ 更多组件 ============ -->
+  <section>
+    <h2 class="sec-title">更多组件 <span class="en">/ More Components</span></h2>
+
+    <!-- BREADCRUMB -->
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">面包屑 Breadcrumb</h3>
+    <nav class="crumbs" aria-label="面包屑" style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-2);font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);margin-bottom:var(--ds-space-8)">
+      <a href="#" style="text-decoration:none;border:2px solid transparent;padding:4px 8px">首页</a>
+      <span class="subtle" aria-hidden="true">/</span>
+      <a href="#" style="text-decoration:none;border:2px solid transparent;padding:4px 8px">项目</a>
+      <span class="subtle" aria-hidden="true">/</span>
+      <span aria-current="page" style="background:var(--ds-bg-sunken);border:2px solid var(--ds-border-strong);padding:4px 8px;color:var(--ds-fg);font-weight:var(--ds-weight-bold)">brutal.studio</span>
+    </nav>
+
+    <!-- DROPDOWN + TOOLTIP -->
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:var(--ds-space-8)">
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">下拉菜单 Dropdown</h3>
+        <div style="position:relative;display:inline-block">
+          <button class="btn btn-secondary" aria-haspopup="true" aria-expanded="true">操作 <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <ul role="menu" style="list-style:none;margin:var(--ds-space-2) 0 0;padding:0;min-width:220px;background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);position:relative;z-index:var(--ds-z-dropdown)">
+            <li style="border-bottom:2px solid var(--ds-border)"><a role="menuitem" aria-current="true" style="display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);padding:11px 14px;text-decoration:none;color:var(--ds-fg);background:var(--ds-bg-sunken)"><span style="display:inline-flex;align-items:center;gap:8px"><span class="ico" style="width:18px;height:18px;color:var(--ds-primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l6 6L21 6"/></svg></span>重新部署</span><span class="mono subtle" style="font-size:var(--ds-text-xs)">⌘R</span></a></li>
+            <li style="border-bottom:2px solid var(--ds-border)"><a role="menuitem" style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;text-decoration:none;color:var(--ds-fg)">编辑配置 <span class="mono subtle" style="font-size:var(--ds-text-xs)">E</span></a></li>
+            <li style="border-bottom:3px solid var(--ds-border-strong)"></li>
+            <li><a role="menuitem" style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;text-decoration:none;color:var(--ds-danger)">删除项目 <span class="mono" style="font-size:var(--ds-text-xs)">⌫</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">工具提示 Tooltip</h3>
+        <div class="tip" style="position:relative;display:inline-block">
+          <button class="btn btn-primary">悬停我</button>
+          <span role="tooltip" style="position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%);background:var(--ds-fg);color:var(--ds-bg);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;padding:7px 10px;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);white-space:nowrap;z-index:var(--ds-z-tooltip)">硬边气泡 · 反色底</span>
+        </div>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin-top:var(--ds-space-5)">提示常驻演示；实战用 hover / focus-within 触发，无模糊。</p>
+      </div>
+    </div>
+
+    <!-- STEPPER + PAGINATION -->
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:var(--ds-space-8)">
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">步进器 Stepper</h3>
+        <div role="group" aria-label="数量" style="display:inline-flex;align-items:stretch;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);background:var(--ds-bg-elevated);color:var(--ds-fg)">
+          <button type="button" aria-label="减少" class="btn btn-secondary" style="border:none;box-shadow:none;width:44px;padding:0;border-right:2px solid var(--ds-border-strong)">−</button>
+          <span class="val num" aria-live="polite" style="min-width:64px;display:inline-flex;align-items:center;justify-content:center;background:var(--ds-bg-sunken);font-weight:var(--ds-weight-bold)">03</span>
+          <button type="button" aria-label="增加" class="btn btn-secondary" style="border:none;box-shadow:none;width:44px;padding:0;border-left:2px solid var(--ds-border-strong)">+</button>
+        </div>
+      </div>
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">分页 Pagination</h3>
+        <nav aria-label="分页" style="display:flex;flex-wrap:wrap;gap:var(--ds-space-2)">
+          <button class="btn btn-secondary btn-icon" disabled aria-label="上一页">‹</button>
+          <button class="btn btn-primary btn-icon" aria-current="page">1</button>
+          <button class="btn btn-secondary btn-icon">2</button>
+          <button class="btn btn-secondary btn-icon">3</button>
+          <span class="subtle" style="display:inline-flex;align-items:center;padding:0 4px">…</span>
+          <button class="btn btn-secondary btn-icon">9</button>
+          <button class="btn btn-secondary btn-icon" aria-label="下一页">›</button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">通知 Toast</h3>
+    <div style="display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:420px;margin-bottom:var(--ds-space-8)">
+      <div role="status" style="display:flex;align-items:flex-start;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);padding:var(--ds-space-3) var(--ds-space-4)">
+        <span class="ico" aria-hidden="true" style="width:20px;height:20px;margin-top:2px;color:var(--ds-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l6 6L21 6"/></svg></span>
+        <div style="flex:1"><div class="mono" style="font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);text-transform:uppercase">已部署</div><div class="muted" style="font-size:var(--ds-text-sm)">brutal.studio 已上线，142 KB。</div></div>
+        <button class="btn btn-tertiary btn-sm" aria-label="关闭" style="box-shadow:none;padding:0 8px">×</button>
+      </div>
+      <div role="alert" style="display:flex;align-items:flex-start;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);padding:var(--ds-space-3) var(--ds-space-4)">
+        <span class="ico" aria-hidden="true" style="width:20px;height:20px;margin-top:2px;color:var(--ds-danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>
+        <div style="flex:1"><div class="mono" style="font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);text-transform:uppercase">连接中断</div><div class="muted" style="font-size:var(--ds-text-sm)">与构建服务器断线，正在重连…</div></div>
+        <button class="btn btn-tertiary btn-sm" aria-label="关闭" style="box-shadow:none;padding:0 8px">×</button>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">模态框 Modal</h3>
+    <div style="border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);background:var(--ds-bg-subtle);background-image:repeating-linear-gradient(45deg,transparent 0 8px,color-mix(in srgb,var(--ds-fg) 6%,transparent) 8px 10px);padding:var(--ds-space-8);display:flex;align-items:center;justify-content:center">
+      <div role="dialog" aria-modal="true" aria-labelledby="mdl-t" style="width:min(440px,100%);background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);color:var(--ds-fg);position:relative;z-index:var(--ds-z-modal)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-primary);color:var(--ds-primary-fg);border-bottom:3px solid var(--ds-border-strong);padding:12px 16px"><span id="mdl-t" class="mono" style="font-weight:var(--ds-weight-bold);text-transform:uppercase;letter-spacing:var(--ds-tracking-tight)">删除项目？</span><button aria-label="关闭" class="btn btn-icon" style="width:30px;height:30px;background:var(--ds-bg-elevated);color:var(--ds-fg);box-shadow:none">×</button></div>
+        <div style="padding:var(--ds-space-6)">
+          <p class="muted" style="margin:0 0 var(--ds-space-5);line-height:var(--ds-leading-normal)">此操作不可撤销。项目 <code>grid-archive</code> 的所有构建产物与配置将被永久删除。</p>
+          <div style="display:flex;gap:var(--ds-space-3);justify-content:flex-end"><button class="btn btn-secondary btn-sm">取消</button><button class="btn btn-danger btn-sm">永久删除</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:var(--ds-space-12);border-top:3px solid var(--ds-border-strong);padding-top:var(--ds-space-6);color:var(--ds-fg-muted);font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);line-height:1.7;overflow-wrap:anywhere">
+    <span style="font-weight:var(--ds-weight-bold);color:var(--ds-fg)">BRUTAL/DS</span> — 粗野主义设计系统 · 高对比 / 粗黑边 / 0 圆角 / 硬偏移阴影 · 全量 <code>--ds-*</code> token · WCAG AA
+  </footer>
+
+</div>
+
+<script>
+/* ---- 亮暗切换 ---- */
+var root=document.documentElement, tIco=document.getElementById('themeIco'), tTxt=document.getElementById('themeTxt');
+var SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>';
+var MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 13a8.5 8.5 0 11-10-10 6.5 6.5 0 0010 10z"/></svg>';
+tIco.innerHTML=SUN;
+document.getElementById('themeToggle').addEventListener('click',function(){
+  var dark=root.dataset.theme==='dark';
+  root.dataset.theme=dark?'light':'dark';
+  tIco.innerHTML=dark?SUN:MOON;
+  tTxt.textContent=dark?'LIGHT':'DARK';
+});
+
+/* ---- 动态色板（变量名 + 当前计算 hex） ---- */
+var tokens=['bg','bg-subtle','bg-elevated','bg-sunken','fg','fg-muted','fg-subtle','border',
+  'primary','primary-hover','primary-active','accent','success','warning','danger','info','focus'];
+var cont=document.getElementById('swatches');
+function rgb2hex(c){var m=c.match(/\d+/g);if(!m)return c;return '#'+m.slice(0,3).map(function(n){return ('0'+(+n).toString(16)).slice(-2)}).join('')}
+function render(){
+  cont.innerHTML='';var cs=getComputedStyle(root);
+  tokens.forEach(function(t){
+    var val=cs.getPropertyValue('--ds-'+t).trim();
+    var el=document.createElement('div');el.className='sw';
+    el.innerHTML='<div class="chip" style="background:var(--ds-'+t+')"></div>'+
+      '<div class="meta"><span class="nm">--ds-'+t+'</span><span class="hx">'+rgb2hex(val)+'</span></div>';
+    cont.appendChild(el);
+  });
+}
+render();
+new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---- 图标集（≥12 个粗线条内联 SVG，带名） ---- */
+var ICONS=[
+  ['home','<path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/>'],
+  ['search','<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>'],
+  ['settings','<circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>'],
+  ['bell','<path d="M6 9a6 6 0 0112 0c0 6 2 8 2 8H4s2-2 2-8z"/><path d="M10 21a2 2 0 004 0"/>'],
+  ['user','<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'],
+  ['grid','<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>'],
+  ['plus','<path d="M12 5v14M5 12h14"/>'],
+  ['check','<path d="M3 12l6 6L21 6"/>'],
+  ['close','<path d="M5 5l14 14M19 5L5 19"/>'],
+  ['arrow','<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>'],
+  ['chart','<path d="M4 19V5M4 19h16M8 16V9M13 16V6M18 16v-4"/>'],
+  ['folder','<path d="M3 7l0 12h18V9H11L9 7z"/>'],
+  ['code','<path d="M9 8l-5 4 5 4M15 8l5 4-5 4"/>'],
+  ['heart','<path d="M12 21C5 16 2 12 2 8a4.5 4.5 0 018.5-2A4.5 4.5 0 0119 8c0 4-3 8-7 13z"/>'],
+  ['download','<path d="M12 3v12M7 11l5 4 5-4M4 20h16"/>'],
+  ['lock','<rect x="5" y="11" width="14" height="9"/><path d="M8 11V8a4 4 0 018 0v3"/>'],
+  ['globe','<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/>'],
+  ['bolt','<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>']
+];
+var ig=document.getElementById('iconGrid');
+ICONS.forEach(function(ic){
+  var el=document.createElement('div');el.className='icon-cell';
+  el.innerHTML='<span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">'+ic[1]+'</svg></span><span class="nm">'+ic[0]+'</span>';
+  ig.appendChild(el);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wax & Groove · 3D 唱片架 · 效果临摹</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<style>
+  :root{
+    /* 背景与“墙面” */
+    --room-1:#241a2e;
+    --room-2:#160f1f;
+    --room-3:#0c0812;
+    /* 木质货架三个面 */
+    --wood-face:#3a2614;
+    --wood-top:#52371d;
+    --wood-side:#281708;
+    --wood-edge:#6b4a26;
+    /* 文本 */
+    --ink:#f3ecff;
+    --ink-2:rgba(243,236,255,.62);
+    --ink-3:rgba(243,236,255,.40);
+    /* 强调 */
+    --accent:#ffcf5c;
+    --accent-2:#ff7ea8;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --r-app:42px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  html,body{height:100%;}
+
+  body{
+    font-family:"Inter",system-ui,-apple-system,"PingFang SC",sans-serif;
+    color:var(--ink);
+    min-height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:46px 20px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(closest-side at 24% 16%, rgba(167,99,255,.42), transparent 66%),
+      radial-gradient(closest-side at 82% 12%, rgba(255,126,168,.32), transparent 64%),
+      radial-gradient(closest-side at 70% 92%, rgba(72,150,255,.30), transparent 68%),
+      radial-gradient(closest-side at 18% 88%, rgba(255,176,84,.22), transparent 70%),
+      linear-gradient(160deg, var(--room-1) 0%, var(--room-2) 52%, var(--room-3) 100%);
+  }
+  /* 背景暗角 */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(130% 120% at 50% 0%, transparent 52%, rgba(0,0,0,.55) 100%);
+  }
+
+  /* ============ 手机外壳 ============ */
+  .phone{
+    position:relative;z-index:1;
+    width:min(384px,calc(100vw - 40px));
+    aspect-ratio:384 / 812;
+    max-height:calc(100dvh - 64px);
+    border-radius:var(--r-app);
+    padding:11px;
+    background:linear-gradient(150deg,#2c2438,#14101c);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.10) inset,
+      0 0 0 1px rgba(255,255,255,.06),
+      0 50px 90px -30px rgba(0,0,0,.85),
+      0 22px 44px -22px rgba(0,0,0,.7);
+  }
+  .screen{
+    position:relative;height:100%;width:100%;
+    border-radius:calc(var(--r-app) - 11px);
+    overflow:hidden;
+    /* 房间墙面：顶部聚光 + 暖色渐变 */
+    background:
+      radial-gradient(120% 70% at 50% -6%, rgba(255,214,153,.18) 0%, transparent 58%),
+      linear-gradient(178deg, #2a2034 0%, #1b1426 46%, #120c1b 100%);
+    display:flex;flex-direction:column;
+  }
+  /* 刘海 */
+  .notch{
+    position:absolute;top:9px;left:50%;transform:translateX(-50%);
+    width:118px;height:28px;border-radius:0 0 16px 16px;
+    background:#0a0710;z-index:40;
+  }
+  .notch::after{
+    content:"";position:absolute;right:18px;top:50%;transform:translateY(-50%);
+    width:8px;height:8px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #4a3d63, #15101f);
+  }
+
+  /* ============ 顶栏 ============ */
+  .statusbar{
+    flex:0 0 auto;height:46px;display:flex;align-items:flex-end;
+    justify-content:space-between;padding:0 26px 6px;
+    font:600 13px/1 var(--mono);color:var(--ink);z-index:30;
+  }
+  .statusbar .right{display:flex;gap:7px;align-items:center;}
+  .statusbar svg{display:block;opacity:.9;}
+
+  .topbar{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+    padding:4px 22px 14px;z-index:30;
+  }
+  .brand{display:flex;flex-direction:column;gap:3px;}
+  .brand .kicker{
+    font:600 10px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);
+  }
+  .brand h1{
+    font-size:23px;font-weight:700;letter-spacing:-.01em;line-height:1;
+    background:linear-gradient(180deg,#fff,#cbbce8);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .iconbtn{
+    width:38px;height:38px;border-radius:50%;flex:0 0 auto;
+    display:grid;place-items:center;
+    color:var(--ink);
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 1px 0 rgba(255,255,255,.10) inset;
+  }
+
+  /* ============ 3D 舞台 ============ */
+  .stage{
+    flex:1 1 auto;position:relative;
+    overflow-y:auto;overflow-x:hidden;
+    padding:8px 0 110px;
+    perspective:1300px;
+    perspective-origin:50% 38%;
+    scrollbar-width:none;
+  }
+  .stage::-webkit-scrollbar{display:none;}
+
+  /* 自动微微摆动的 3D 世界 */
+  .world{
+    transform-style:preserve-3d;
+    transform:rotateX(8deg);
+    animation:sway 11s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @keyframes sway{
+    from{transform:rotateX(9deg) rotateY(-7deg);}
+    to  {transform:rotateX(7deg) rotateY(7deg);}
+  }
+
+  /* —— 一层货架 —— */
+  .row{
+    transform-style:preserve-3d;
+    position:relative;
+    margin:0 18px 64px;
+    padding-bottom:26px;        /* 给木板厚度留位 */
+  }
+  .row-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin:0 4px 14px;
+  }
+  .row-head .label{font-size:14px;font-weight:600;color:var(--ink);}
+  .row-head .meta{font:500 10px/1 var(--mono);color:var(--ink-3);letter-spacing:.08em;}
+
+  /* 唱片在架上排开 */
+  .records{
+    display:flex;gap:14px;
+    transform-style:preserve-3d;
+    padding:0 4px 6px;
+  }
+
+  /* —— 单张唱片封套（3D 立起 + 反光）—— */
+  .rec{
+    flex:0 0 auto;width:108px;
+    transform-style:preserve-3d;
+    transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+    cursor:pointer;
+  }
+  .sleeve{
+    position:relative;width:108px;height:108px;border-radius:7px;
+    overflow:hidden;
+    transform-style:preserve-3d;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.18) inset,
+      0 18px 26px -12px rgba(0,0,0,.7);
+  }
+  /* 封套上的高光斜扫 */
+  .sleeve::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(125deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,0) 34%, rgba(0,0,0,.18) 100%);
+    mix-blend-mode:screen;pointer-events:none;
+  }
+  /* 露在封套外的黑胶圆盘 */
+  .vinyl{
+    position:absolute;top:50%;right:-26px;transform:translateY(-50%);
+    width:96px;height:96px;border-radius:50%;
+    background:
+      repeating-radial-gradient(circle at 50% 50%, #0c0c10 0 1.4px, #17171d 1.4px 2.8px),
+      radial-gradient(circle at 38% 32%, rgba(255,255,255,.16), transparent 42%);
+    box-shadow:0 8px 16px -6px rgba(0,0,0,.7);
+    transform:translateY(-50%) translateZ(-8px);
+    z-index:-1;
+  }
+  .vinyl::after{
+    content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:30px;height:30px;border-radius:50%;
+  }
+  /* 唱片说明 */
+  .rec .cap{padding:9px 2px 0;transform:translateZ(2px);}
+  .rec .cap .t{font-size:12.5px;font-weight:600;line-height:1.2;color:var(--ink);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .rec .cap .a{font-size:10.5px;color:var(--ink-2);margin-top:2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  /* 倒影 */
+  .rec .reflect{
+    margin-top:6px;width:108px;height:30px;border-radius:7px;
+    overflow:hidden;opacity:.34;
+    transform:translateZ(-1px) scaleY(-1);
+    -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), transparent 90%);
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), transparent 90%);
+  }
+  .rec .reflect .fill{width:108px;height:108px;border-radius:7px;}
+
+  .rec:hover{transform:translateZ(46px) translateY(-4px);}
+  .rec:focus-visible{outline:none;transform:translateZ(46px) translateY(-4px);}
+
+  /* —— 木板（三个面构成厚度感）—— */
+  .plank{
+    position:absolute;left:-10px;right:-10px;bottom:0;height:14px;
+    transform-style:preserve-3d;
+    pointer-events:none;
+  }
+  /* 正面 */
+  .plank .front{
+    position:absolute;inset:0;border-radius:3px;
+    background:linear-gradient(180deg, var(--wood-edge) 0%, var(--wood-face) 40%, var(--wood-side) 100%);
+    box-shadow:0 14px 28px -10px rgba(0,0,0,.7);
+  }
+  /* 顶面（向后掀起，唱片“站”在上面）*/
+  .plank .top{
+    position:absolute;left:0;right:0;top:0;height:34px;
+    transform-origin:top;transform:rotateX(-78deg);
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 2px, transparent 2px 26px),
+      linear-gradient(180deg, var(--wood-top), var(--wood-face));
+    border-radius:3px 3px 0 0;
+  }
+  .plank .top::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,.10), transparent 60%);
+  }
+
+  /* 卡片封面渐变（无外链图片时） */
+  .c1{background:linear-gradient(150deg,#ff8fb1,#7a4dff);}
+  .c2{background:linear-gradient(150deg,#5ee0c7,#1f7a8c);}
+  .c3{background:linear-gradient(150deg,#ffd166,#ff6f59);}
+  .c4{background:linear-gradient(150deg,#8ab6ff,#3a3897);}
+  .c5{background:linear-gradient(150deg,#caa6ff,#5b2a86);}
+  .c6{background:linear-gradient(150deg,#9ef0a0,#2f7d4f);}
+  .c7{background:linear-gradient(150deg,#ffb38a,#b5452f);}
+  .c8{background:linear-gradient(150deg,#a0e9ff,#2b5d8c);}
+  /* 真实封面图（按需） */
+  .img-shoe{background:#1a1a22 url("../../_assets/gen/product-shoe.jpg") center/cover no-repeat;}
+  .img-watch{background:#1a1a22 url("../../_assets/gen/product-watch.jpg") center/cover no-repeat;}
+
+  /* 封套上的小字 */
+  .sleeve .glyph{
+    position:absolute;left:9px;bottom:8px;z-index:2;
+    font:700 11px/1.1 var(--mono);letter-spacing:.04em;
+    color:rgba(255,255,255,.92);text-shadow:0 1px 2px rgba(0,0,0,.5);
+  }
+  .sleeve .corner{
+    position:absolute;right:8px;top:8px;z-index:2;
+    width:18px;height:18px;border-radius:50%;
+    border:1.5px solid rgba(255,255,255,.7);
+    display:grid;place-items:center;
+    color:rgba(255,255,255,.9);
+  }
+
+  /* ============ 底部 Dock ============ */
+  .dock{
+    position:absolute;left:14px;right:14px;bottom:14px;z-index:35;
+    height:64px;border-radius:24px;
+    display:flex;align-items:center;justify-content:space-around;
+    padding:0 14px;
+    background:rgba(20,14,28,.66);
+    -webkit-backdrop-filter:blur(16px) saturate(1.3);
+    backdrop-filter:blur(16px) saturate(1.3);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 1px 0 rgba(255,255,255,.12) inset, 0 18px 40px -16px rgba(0,0,0,.8);
+  }
+  .dock a{
+    width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+    color:var(--ink-2);text-decoration:none;transition:.2s;
+  }
+  .dock a.on{color:#1a1020;background:var(--accent);
+    box-shadow:0 8px 18px -6px rgba(255,207,92,.6);}
+  .dock a:hover{color:var(--ink);}
+
+  /* “正在播放”悬浮条 */
+  .nowplaying{
+    position:absolute;left:14px;right:14px;bottom:88px;z-index:34;
+    height:54px;border-radius:18px;display:flex;align-items:center;gap:11px;
+    padding:0 10px;
+    background:linear-gradient(120deg, rgba(167,99,255,.30), rgba(255,126,168,.20));
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 12px 30px -14px rgba(0,0,0,.7);
+  }
+  .nowplaying .disc{
+    width:38px;height:38px;border-radius:50%;flex:0 0 auto;
+    background:
+      repeating-radial-gradient(circle at 50% 50%, #0c0c10 0 1.2px, #1a1a20 1.2px 2.4px);
+    animation:spin 4s linear infinite;
+  }
+  .nowplaying .disc::after{content:"";position:absolute;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .nowplaying .np-txt{flex:1 1 auto;min-width:0;}
+  .nowplaying .np-txt .nt{font-size:12.5px;font-weight:600;color:var(--ink);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .nowplaying .np-txt .na{font-size:10.5px;color:var(--ink-2);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .nowplaying .play{
+    width:34px;height:34px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+    background:#fff;color:#1a1020;
+  }
+
+  /* ============ 减弱动效 ============ */
+  @media (prefers-reduced-motion: reduce){
+    .world{animation:none;transform:rotateX(8deg) rotateY(-5deg);}
+    .nowplaying .disc{animation:none;}
+    .rec{transition:none;}
+  }
+
+  /* ============ 小屏防溢出 ============ */
+  @media (max-width:680px){
+    html{overflow-x:hidden!important;}
+    body{overflow-x:clip!important;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch"></div>
+
+      <!-- 状态栏 -->
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="right">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="1.5" width="3" height="10.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".4"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 4.5C3 2.5 5.4 1.5 8 1.5s5 1 7 3M3.2 7C4.5 5.8 6.2 5.2 8 5.2s3.5.6 4.8 1.8M5.6 9.4C6.3 8.8 7.1 8.5 8 8.5s1.7.3 2.4.9"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x="1" y="1" width="20" height="10" rx="2.5" stroke="currentColor" stroke-width="1.2" opacity=".5"/><rect x="2.6" y="2.6" width="15" height="6.8" rx="1.4" fill="currentColor"/><rect x="22.4" y="4" width="1.6" height="4" rx="1" fill="currentColor" opacity=".6"/></svg>
+        </span>
+      </div>
+
+      <!-- 顶栏 -->
+      <div class="topbar">
+        <div class="brand">
+          <span class="kicker">本地黑胶收藏</span>
+          <h1>Wax &amp; Groove</h1>
+        </div>
+        <button class="iconbtn" aria-label="搜索唱片">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+      </div>
+
+      <!-- 3D 舞台 -->
+      <div class="stage">
+        <div class="world">
+
+          <!-- 第一层货架 -->
+          <section class="row">
+            <div class="row-head">
+              <span class="label">本周轮播</span>
+              <span class="meta">12 LP</span>
+            </div>
+            <div class="records">
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c1" style="position:absolute;inset:0"></div>
+                  <span class="glyph">夜航 / A1</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">霓虹夜航</div><div class="a">琥珀回声乐团</div></div>
+                <div class="reflect"><div class="fill c1"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c2" style="position:absolute;inset:0"></div>
+                  <span class="glyph">潮汐 / B2</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">青苔潮汐</div><div class="a">浅滩四人组</div></div>
+                <div class="reflect"><div class="fill c2"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c3" style="position:absolute;inset:0"></div>
+                  <span class="glyph">落日 / C1</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">橙色落日</div><div class="a">沙丘与铜管</div></div>
+                <div class="reflect"><div class="fill c3"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c4" style="position:absolute;inset:0"></div>
+                  <span class="glyph">极地 / D3</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">极地慢车</div><div class="a">蓝调旅人</div></div>
+                <div class="reflect"><div class="fill c4"></div></div>
+              </div>
+
+            </div>
+            <div class="plank"><div class="top"></div><div class="front"></div></div>
+          </section>
+
+          <!-- 第二层货架 -->
+          <section class="row">
+            <div class="row-head">
+              <span class="label">爵士黑胶</span>
+              <span class="meta">08 LP</span>
+            </div>
+            <div class="records">
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c5" style="position:absolute;inset:0"></div>
+                  <span class="glyph">午夜 / E2</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">午夜独奏</div><div class="a">铜管小馆</div></div>
+                <div class="reflect"><div class="fill c5"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="img-watch" style="position:absolute;inset:0"></div>
+                  <span class="glyph">齿轮 / F4</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">机械摇摆</div><div class="a">发条乐队</div></div>
+                <div class="reflect"><div class="fill img-watch"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c6" style="position:absolute;inset:0"></div>
+                  <span class="glyph">薄荷 / G1</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">薄荷散步</div><div class="a">青草小调</div></div>
+                <div class="reflect"><div class="fill c6"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c7" style="position:absolute;inset:0"></div>
+                  <span class="glyph">余烬 / H2</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">壁炉余烬</div><div class="a">慢火三重奏</div></div>
+                <div class="reflect"><div class="fill c7"></div></div>
+              </div>
+
+            </div>
+            <div class="plank"><div class="top"></div><div class="front"></div></div>
+          </section>
+
+          <!-- 第三层货架 -->
+          <section class="row">
+            <div class="row-head">
+              <span class="label">电子合成</span>
+              <span class="meta">15 LP</span>
+            </div>
+            <div class="records">
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c8" style="position:absolute;inset:0"></div>
+                  <span class="glyph">脉冲 / I3</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">电离脉冲</div><div class="a">合成器边境</div></div>
+                <div class="reflect"><div class="fill c8"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="img-shoe" style="position:absolute;inset:0"></div>
+                  <span class="glyph">奔跑 / J1</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">夜跑节拍</div><div class="a">城市心率</div></div>
+                <div class="reflect"><div class="fill img-shoe"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c1" style="position:absolute;inset:0"></div>
+                  <span class="glyph">紫晶 / K2</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">紫晶矩阵</div><div class="a">棱镜工坊</div></div>
+                <div class="reflect"><div class="fill c1"></div></div>
+              </div>
+
+              <div class="rec" tabindex="0">
+                <div class="sleeve">
+                  <div class="vinyl"></div>
+                  <div class="c4" style="position:absolute;inset:0"></div>
+                  <span class="glyph">轨道 / L4</span>
+                  <span class="corner"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="cap"><div class="t">低轨漫游</div><div class="a">卫星合唱</div></div>
+                <div class="reflect"><div class="fill c4"></div></div>
+              </div>
+
+            </div>
+            <div class="plank"><div class="top"></div><div class="front"></div></div>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- 正在播放 -->
+      <div class="nowplaying">
+        <div class="disc"></div>
+        <div class="np-txt">
+          <div class="nt">霓虹夜航 · A 面</div>
+          <div class="na">琥珀回声乐团</div>
+        </div>
+        <button class="play" aria-label="暂停">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        </button>
+      </div>
+
+      <!-- 底部导航 -->
+      <nav class="dock" aria-label="主导航">
+        <a href="#" class="on" aria-label="唱片架" aria-current="page">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 4v16"/></svg>
+        </a>
+        <a href="#" aria-label="搜索">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </a>
+        <a href="#" aria-label="正在播放">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </a>
+        <a href="#" aria-label="收藏夹">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </a>
+      </nav>
+
+    </div>
+  </div>
+
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《3D Shelf Life》 by melisavadenja · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

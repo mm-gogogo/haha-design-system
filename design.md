@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 21 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 22 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 21 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 22 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -121,6 +121,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 21 装饰艺术 · Art Deco — `/styles/21-art-deco/`
 1920s Gatsby、象牙底 + 祖母绿 + 金、装饰几何。primary 祖母绿 `#0f5a44` / accent 金 `#8a6816` / bg 象牙 `#f6f1e7`·elevated `#fffdf8` / fg `#1a2420`·muted `#41514a` / border-strong `#2a3a33`｜暗（祖母绿之夜）primary 金 `#d8b25a`(黑字) / accent 玉 `#5fb89a` / bg `#0d1714`·fg `#ede6d2`｜0·2·3（锐利）｜Noto Serif 标题 + 宽字距大写 Inter 标签｜金色日芒/扇形、人字纹/锯齿带、阶梯切角、双金细线、对称。与 11 奢侈（极简炭金、暗优先、大留白）刻意区分（更装饰、更对称、祖母绿前置）。
+
+### 22 孔版印刷 · Risograph (Riso Print) — `/styles/22-risograph/`
+两版油墨印在暖纸上：荧光粉 + 孔版蓝、网点半调、颗粒、重叠 multiply 套印成紫、套印偏移。primary 荧光粉 `#cf2e6a` / accent 孔版蓝 `#2348a8` / bg 暖纸 `#f4efe4`·elevated `#faf6ec` / fg `#1c1a17`｜暗（暗房）primary `#ff5c93`(黑字) / accent `#6f8fff` / bg `#16151a`·fg `#f0ebe0`｜2·3·4｜Inter 粗体｜半调网点 + feTurbulence 颗粒 + mix-blend multiply 套印 + 错位偏移；正文落实色面不压网点。与 12 粗野（粗黑边/硬影/黄蓝）、02 像素刻意区分（油墨纸感）。
 
 ---
 

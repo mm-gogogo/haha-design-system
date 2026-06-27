@@ -1,0 +1,108 @@
+/* ============================================================================
+   Risograph / 孔版印刷风 (Riso Print) Design System — tokens.css
+   ----------------------------------------------------------------------------
+   Token 契约 100% 遵守（--ds-* 全量）。亮色 :root + 暗色 [data-theme="dark"]
+   与 .dark 兼容。气质：2 色孔版印刷（荧光粉 + 孔版蓝）/ 网点半调填充 /
+   颗粒噪点 / 油墨叠印 multiply（粉+蓝→紫）/ 轻微套印偏移 / 平面无写实阴影 /
+   暖色再生纸底。身份红线：双色油墨·网点·颗粒·彩色硬偏移阴影不可被抹平成普通扁平粉。
+   ============================================================================ */
+
+:root {
+  /* ---- 表面与文字（亮：暖再生纸 + 油墨近黑） ----------------------------- */
+  --ds-bg:           #f4efe4;   /* 主背景：暖再生纸 */
+  --ds-bg-subtle:    #ece5d4;   /* 次背景：区块/分组底 */
+  --ds-bg-elevated:  #faf6ec;   /* 抬起表面：更亮的纸（卡片/弹层） */
+  --ds-bg-sunken:    #e4dcc8;   /* 凹陷：输入槽/代码块 */
+  --ds-fg:           #1c1a17;   /* 主文字：油墨近黑 */
+  --ds-fg-muted:     #55504a;   /* 次要文字 (AA on bg) */
+  --ds-fg-subtle:    #736d62;   /* 弱/占位 (≥4.5:1 on bg) */
+  --ds-fg-on-accent: #ffffff;   /* 落在强调色上的文字 */
+  --ds-border:       #d8d0bd;   /* 常规描边：浅油墨纸边 */
+  --ds-border-strong:#1c1a17;   /* 强描边：油墨近黑 */
+
+  /* ---- 品牌与强调（荧光粉主色 + 孔版蓝强调） ----------------------------- */
+  --ds-primary:        #cf2e6a; /* 荧光粉（孔版油墨） */
+  --ds-primary-hover:  #b82659;
+  --ds-primary-active: #991f4d;
+  --ds-primary-fg:     #ffffff; /* 粉上白字 (AA) */
+  --ds-accent:         #2348a8; /* 孔版蓝（链接/次强调） */
+  --ds-accent-fg:      #ffffff; /* 蓝上白字 (AA) */
+
+  /* ---- 语义状态（主 / -bg 浅底 / -fg 底上文字；全部 AA） ------------------ */
+  --ds-success:    #1f7a4d; --ds-success-bg: #e2f1e8; --ds-success-fg: #0a3a24;
+  --ds-warning:    #8a5e10; --ds-warning-bg: #f6eccf; --ds-warning-fg: #43300a;
+  --ds-danger:     #c42d2d; --ds-danger-bg:  #f7e2df; --ds-danger-fg:  #54130f;
+  --ds-info:       #2348a8; --ds-info-bg:    #e2e8f6; --ds-info-fg:    #0e2150;
+
+  /* ---- 焦点（荧光粉环） --------------------------------------------------- */
+  --ds-focus: #cf2e6a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（孔版印刷：极小圆角，纸上裁切感） --------------------------- */
+  --ds-radius-sm: 2px;
+  --ds-radius-md: 3px;
+  --ds-radius-lg: 4px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基；承自 12，硬节奏） ----------------------------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（粗 Inter 做 chunky zine 标题 + 等宽 JetBrains Mono 做数据） -- */
+  --ds-font-sans: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* 字号大：base 16，标题层级猛拉（承自 12） */
+  --ds-text-xs: 12px; --ds-text-sm: 14px; --ds-text-base: 16px; --ds-text-md: 19px;
+  --ds-text-lg: 24px; --ds-text-xl: 34px; --ds-text-2xl: 52px; --ds-text-3xl: 76px;
+  --ds-leading-tight: 1.02; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 600; --ds-weight-bold: 800;
+  /* 字距紧但守住 -0.04em 下限 */
+  --ds-tracking-tight: -0.04em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影（彩色硬偏移，绝不模糊；蓝/粉油墨偏移，平面叠印感） ---------- */
+  --ds-shadow-sm: 2px 2px 0 rgba(35,72,168,.16);
+  --ds-shadow-md: 3px 3px 0 rgba(207,46,106,.18);
+  --ds-shadow-lg: 5px 5px 0 rgba(35,72,168,.22);
+
+  /* ---- 动效（短、近线性；承自 12） ------------------------------------- */
+  --ds-ease: cubic-bezier(.2,0,0,1);
+  --ds-dur-fast: 80ms; --ds-dur-base: 140ms; --ds-dur-slow: 240ms;
+}
+
+/* ============================================================================
+   暗色主题：暗房 / 反相孔版，油墨在暗底上发光
+   ============================================================================ */
+[data-theme="dark"], .dark {
+  --ds-bg:           #16151a;   /* 暗房底 */
+  --ds-bg-subtle:    #1e1d23;
+  --ds-bg-elevated:  #232228;
+  --ds-bg-sunken:    #100f13;
+  --ds-fg:           #f0ebe0;   /* 主文字：暖纸白 */
+  --ds-fg-muted:     #b0a99c;
+  --ds-fg-subtle:    #8c8576;   /* (≥4.5:1 on bg) */
+  --ds-fg-on-accent: #16151a;   /* 落在亮荧光油墨上的暗字 */
+  --ds-border:       #34323a;
+  --ds-border-strong:#f0ebe0;
+
+  --ds-primary:        #ff5c93; /* 亮荧光粉（暗底发光，配暗字保 AA） */
+  --ds-primary-hover:  #ff7aa8;
+  --ds-primary-active: #ee4d84;
+  --ds-primary-fg:     #16151a; /* 荧光粉上暗字 (AA) */
+  --ds-accent:         #6f8fff; /* 亮孔版蓝 */
+  --ds-accent-fg:      #0a1228; /* 蓝上暗字 */
+
+  --ds-success:    #5fcf95; --ds-success-bg: #0c2a1c; --ds-success-fg: #cdf2dd;
+  --ds-warning:    #e6c05a; --ds-warning-bg: #241c08; --ds-warning-fg: #f8ead0;
+  --ds-danger:     #ff7a72; --ds-danger-bg:  #2a100e; --ds-danger-fg:  #ffd6d2;
+  --ds-info:       #6f8fff; --ds-info-bg:    #0e1838; --ds-info-fg:    #d6deff;
+
+  --ds-focus: #ff5c93;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* 暗色彩色硬偏移（荧光油墨在暗底上偏移更亮） */
+  --ds-shadow-sm: 2px 2px 0 rgba(111,143,255,.3);
+  --ds-shadow-md: 3px 3px 0 rgba(255,92,147,.3);
+  --ds-shadow-lg: 5px 5px 0 rgba(111,143,255,.34);
+}

@@ -3,13 +3,13 @@
 # 哈哈设计系统 · haha-design-system
 
 **一套基于 [Geist (Vercel Design System)](https://vercel.com/geist) 衍生的多风格设计系统库**
-21 套可复用风格 + 6 个开源项目的定制设计系统，共享同一 `--ds-*` Token 契约 — 换一份 `tokens.css` 即可整体换肤。
+22 套可复用风格 + 6 个开源项目的定制设计系统，共享同一 `--ds-*` Token 契约 — 换一份 `tokens.css` 即可整体换肤。
 
-*A multi-flavor design-system library derived from Geist. 21 reusable style packs + 6 open-source project kits, all sharing one `--ds-*` token contract — swap a single `tokens.css` to re-skin everything.*
+*A multi-flavor design-system library derived from Geist. 22 reusable style packs + 6 open-source project kits, all sharing one `--ds-*` token contract — swap a single `tokens.css` to re-skin everything.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
 [![Live Demo](https://img.shields.io/badge/Live-design.hahaha.chat-006bff.svg)](https://design.hahaha.chat)
-[![Styles](https://img.shields.io/badge/Styles-21-7c3aed.svg)](#21-套通用风格)
+[![Styles](https://img.shields.io/badge/Styles-22-7c3aed.svg)](#22-套通用风格)
 [![Projects](https://img.shields.io/badge/Custom%20kits-6-f59e0b.svg)](#6-个开源项目定制)
 [![WCAG AA](https://img.shields.io/badge/Contrast-WCAG%20AA-16a34a.svg)](#)
 
@@ -21,7 +21,7 @@
 
 ## 这是什么
 
-每套设计系统都继承 Geist 的骨架与思想 —— **语义分层、比例尺驱动、状态色成对、可见焦点环、明暗双主题** —— 但替换了色彩气质、字体性格、圆角/阴影的软硬、动效个性与组件造型，形成 21 种截然不同的视觉风格；再以这些风格为底，为 6 个开源项目做了逐个定制。
+每套设计系统都继承 Geist 的骨架与思想 —— **语义分层、比例尺驱动、状态色成对、可见焦点环、明暗双主题** —— 但替换了色彩气质、字体性格、圆角/阴影的软硬、动效个性与组件造型，形成 22 种截然不同的视觉风格；再以这些风格为底，为 6 个开源项目做了逐个定制。
 
 每套 Kit 都是**完整可落地的作品级展示**：
 
@@ -32,7 +32,7 @@
 
 所有 Kit 共享同一套 **Token 契约**（见 [`_base/KIT-TEMPLATE.md`](./_base/KIT-TEMPLATE.md)），**任意项目都能无痛切换风格**。图标全部内联 SVG（零 emoji），图片走本地素材（gpt-image-2 生成的风格美术图 + 无版权照片），全部色彩对满足 **WCAG AA**。
 
-## 21 套通用风格
+## 22 套通用风格
 
 <table>
 <tr>
@@ -77,7 +77,7 @@
 </tr>
 <tr>
 <td><b>装饰艺术 Art Deco</b><br><img src="screenshots/style-21-art-deco.png" alt="装饰艺术"></td>
-<td valign="top"><b>更多风格持续扩展中…</b><br><sub>接下来：蒸汽波、有机植物、包豪斯、孔版印刷…</sub></td>
+<td><b>孔版印刷 Risograph (Riso Print)</b><br><img src="screenshots/style-22-risograph.png" alt="孔版印刷"></td>
 </tr>
 </table>
 
@@ -128,7 +128,7 @@ module.exports = { presets: [require('./styles/03-enterprise/tailwind.preset.js'
 ├── _base/                     # geist-base · KIT-TEMPLATE · SHOWCASE-SPEC · POLISH-SPEC · DEVICE-FRAME · shoot.js
 ├── _fonts/                    # 本地 OFL 开源字体 (woff2) + fonts.css
 ├── _assets/                   # 共享素材：gpt-image-2 风格美术图 + 无版权照片/头像 + device.css(iPhone 套壳)
-├── styles/                    # 21 套可复用风格
+├── styles/                    # 22 套可复用风格
 │   └── <kit>/  README.md · tokens.css · tokens.json · tailwind.preset.js · preview.html
 ├── projects/                  # 6 个开源项目定制
 │   └── <kit>/  README.md · tokens.css · tailwind.preset.js · preview.html
