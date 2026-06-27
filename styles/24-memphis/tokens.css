@@ -1,0 +1,143 @@
+/* ============================================================
+   Memphis · 孟菲斯风 Design System Tokens
+   Contract: all core variable names stay fixed as --ds-*.
+   Light-first :root plus [data-theme="dark"] and .dark compatibility.
+   ============================================================ */
+
+:root {
+  /* Surfaces and text */
+  --ds-bg: #f7f3ec;
+  --ds-bg-subtle: #efe9dd;
+  --ds-bg-elevated: #fffdf8;
+  --ds-bg-sunken: #e8e0d0;
+  --ds-fg: #15151a;
+  --ds-fg-muted: #4a4954;
+  --ds-fg-subtle: #6e6c78;
+  --ds-fg-on-accent: #ffffff;
+  --ds-border: #ddd5c5;
+  --ds-border-strong: #15151a;
+
+  /* Brand and accent */
+  --ds-primary: #0a7575;
+  --ds-primary-hover: #086565;
+  --ds-primary-active: #064f4f;
+  --ds-primary-fg: #ffffff;
+  --ds-accent: #d61f69;
+  --ds-accent-fg: #ffffff;
+
+  /* Semantic states */
+  --ds-success: #1f8a4d;
+  --ds-success-bg: #e2f4e9;
+  --ds-success-fg: #0a3a24;
+  --ds-warning: #b06a00;
+  --ds-warning-bg: #fbeccf;
+  --ds-warning-fg: #4a2e00;
+  --ds-danger: #d4322d;
+  --ds-danger-bg: #f9e3e1;
+  --ds-danger-fg: #5a1310;
+  --ds-info: #1d6fd0;
+  --ds-info-bg: #e3edf9;
+  --ds-info-fg: #0e2a55;
+
+  /* Focus */
+  --ds-focus: #0a7575;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* Radius */
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 20px;
+  --ds-radius-full: 9999px;
+
+  /* Spacing scale, inherited from the shared light-first baseline */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-7: 32px;
+  --ds-space-8: 40px;
+  --ds-space-9: 48px;
+  --ds-space-10: 64px;
+  --ds-space-11: 80px;
+  --ds-space-12: 96px;
+
+  /* Local font stack only; ../../_fonts/fonts.css supplies local faces */
+  --ds-font-sans: "Quicksand", "Inter", -apple-system, "PingFang SC", sans-serif;
+  --ds-font-serif: "Quicksand", "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 12px;
+  --ds-text-sm: 13px;
+  --ds-text-base: 14px;
+  --ds-text-md: 16px;
+  --ds-text-lg: 20px;
+  --ds-text-xl: 24px;
+  --ds-text-2xl: 32px;
+  --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25;
+  --ds-leading-normal: 1.55;
+  --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 500;
+  --ds-weight-medium: 600;
+  --ds-weight-bold: 700;
+  --ds-tracking-tight: 0;
+  --ds-tracking-normal: 0.01em;
+
+  /* Shadows */
+  --ds-shadow-sm: 0 2px 6px rgba(21,21,26,.1);
+  --ds-shadow-md: 0 6px 16px -4px rgba(21,21,26,.16);
+  --ds-shadow-lg: 0 14px 30px -8px rgba(21,21,26,.2);
+
+  /* Motion, inherited from the shared light-first baseline */
+  --ds-ease: cubic-bezier(.34,1.56,.64,1);
+  --ds-dur-fast: 200ms;
+  --ds-dur-base: 260ms;
+  --ds-dur-slow: 320ms;
+
+  /* Decorative Memphis-only colors. Do not use for body text. */
+  --ds-memphis-yellow: #f5c518;
+  --ds-memphis-terracotta: #e8590c;
+}
+
+[data-theme="dark"],
+.dark {
+  --ds-bg: #16151c;
+  --ds-bg-subtle: #1e1d26;
+  --ds-bg-elevated: #232230;
+  --ds-bg-sunken: #100f15;
+  --ds-fg: #f3eee4;
+  --ds-fg-muted: #aba6b6;
+  --ds-fg-subtle: #847f90;
+  --ds-fg-on-accent: #06201f;
+  --ds-border: #322f3c;
+  --ds-border-strong: #f3eee4;
+
+  --ds-primary: #2bc4c4;
+  --ds-primary-hover: #4dd2d2;
+  --ds-primary-active: #1fa8a8;
+  --ds-primary-fg: #06201f;
+  --ds-accent: #ff5c9d;
+  --ds-accent-fg: #2a0814;
+
+  --ds-success: #4cc26a;
+  --ds-success-bg: #0c2614;
+  --ds-success-fg: #c9f5d4;
+  --ds-warning: #ffd23f;
+  --ds-warning-bg: #241c00;
+  --ds-warning-fg: #fff0bf;
+  --ds-danger: #ff6b66;
+  --ds-danger-bg: #2a0e0d;
+  --ds-danger-fg: #ffd4d1;
+  --ds-info: #5a9fe8;
+  --ds-info-bg: #0e1f38;
+  --ds-info-fg: #d6e6f8;
+  --ds-focus: #2bc4c4;
+
+  --ds-shadow-sm: 0 2px 6px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 6px 16px -4px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 14px 30px -8px rgba(0,0,0,.7);
+
+  --ds-memphis-yellow: #ffd23f;
+  --ds-memphis-terracotta: #ff7a3d;
+}

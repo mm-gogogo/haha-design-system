@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prism Desk · Liquid Glass Effect Study</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<style>
+  :root{
+    --ink:#ffffff;
+    --ink-soft:rgba(255,255,255,.76);
+    --ink-dim:rgba(255,255,255,.58);
+    --glass-fill:rgba(255,255,255,.15);
+    --glass-fill-strong:rgba(255,255,255,.28);
+    --glass-line:rgba(255,255,255,.48);
+    --glass-line-soft:rgba(255,255,255,.24);
+    --shadow:rgba(10,12,44,.42);
+    --violet:#8c65ff;
+    --aqua:#67e9ff;
+    --coral:#ff6d9a;
+    --lime:#baff7b;
+    --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{
+    min-height:100%;
+    background:#0c1025;
+  }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    min-height:100svh;
+    display:flex;
+    justify-content:center;
+    color:var(--ink);
+    font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    overflow-x:hidden;
+    position:relative;
+    background:
+      radial-gradient(circle at 18% 16%, rgba(255,117,165,.95) 0 10%, transparent 32%),
+      radial-gradient(circle at 78% 12%, rgba(110,229,255,.88) 0 12%, transparent 34%),
+      radial-gradient(circle at 86% 70%, rgba(170,106,255,.9) 0 13%, transparent 36%),
+      radial-gradient(circle at 18% 82%, rgba(200,255,112,.8) 0 10%, transparent 34%),
+      linear-gradient(145deg, #21114b 0%, #0b1738 44%, #11182d 100%);
+  }
+
+  body::before,
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+  }
+
+  body::before{
+    z-index:0;
+    opacity:.98;
+    filter:blur(30px) saturate(1.35);
+    transform:scale(1.04);
+    background:
+      conic-gradient(from 135deg at 52% 42%, rgba(255,255,255,.34), rgba(111,238,255,.52), rgba(255,104,154,.5), rgba(168,97,255,.62), rgba(186,255,123,.42), rgba(255,255,255,.34)),
+      radial-gradient(ellipse at 46% 54%, rgba(255,255,255,.22), transparent 48%);
+    animation:field-breathe 12s ease-in-out infinite alternate;
+  }
+
+  body::after{
+    z-index:1;
+    background:
+      radial-gradient(120% 95% at 50% -12%, rgba(255,255,255,.25), transparent 52%),
+      radial-gradient(95% 110% at 50% 108%, rgba(0,0,0,.46), transparent 58%),
+      linear-gradient(90deg, rgba(255,255,255,.08), transparent 18% 82%, rgba(255,255,255,.08));
+    mix-blend-mode:soft-light;
+  }
+
+  button,
+  input{
+    font:inherit;
+  }
+
+  button{
+    cursor:pointer;
+  }
+
+  svg{
+    display:block;
+    flex:0 0 auto;
+  }
+
+  .stage{
+    width:min(1160px, calc(100vw - 36px));
+    position:relative;
+    z-index:2;
+    padding:clamp(28px, 5vw, 58px) 0 112px;
+  }
+
+  .mast{
+    max-width:840px;
+    margin:0 auto clamp(24px, 4vw, 42px);
+    text-align:center;
+  }
+
+  .mast__brand{
+    margin:0 0 12px;
+    font:700 13px/1 var(--mono);
+    letter-spacing:.08em;
+    color:rgba(255,255,255,.72);
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(38px, 7.4vw, 84px);
+    line-height:.96;
+    letter-spacing:-.035em;
+    text-wrap:balance;
+    text-shadow:0 22px 54px rgba(5,9,32,.38);
+  }
+
+  .mast__copy{
+    max-width:640px;
+    margin:18px auto 0;
+    color:var(--ink-soft);
+    font-size:clamp(15px, 2.1vw, 18px);
+    line-height:1.65;
+    text-wrap:pretty;
+  }
+
+  .board{
+    display:grid;
+    grid-template-columns:minmax(0, .92fr) minmax(340px, 1.08fr);
+    gap:clamp(18px, 2.4vw, 28px);
+    align-items:stretch;
+  }
+
+  .liquid{
+    --radius:34px;
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    border-radius:var(--radius);
+    color:var(--ink);
+    border:1px solid var(--glass-line);
+    background:
+      radial-gradient(105% 130% at 14% 0%, rgba(255,255,255,.68) 0 10%, transparent 36%),
+      radial-gradient(90% 90% at 92% 14%, rgba(255,255,255,.22), transparent 42%),
+      linear-gradient(135deg, rgba(255,255,255,.46), rgba(255,255,255,.16) 29%, rgba(255,255,255,.09) 66%, rgba(255,255,255,.25)),
+      var(--glass-fill);
+    -webkit-backdrop-filter:blur(28px) saturate(190%) contrast(1.05);
+    backdrop-filter:blur(28px) saturate(190%) contrast(1.05);
+    box-shadow:
+      0 30px 76px -28px var(--shadow),
+      0 12px 22px -18px rgba(255,255,255,.36),
+      inset 0 1px 1px rgba(255,255,255,.95),
+      inset 0 -1px 1px rgba(255,255,255,.38),
+      inset 18px 0 28px rgba(255,255,255,.12),
+      inset -22px -30px 48px rgba(54,71,198,.18),
+      inset 0 0 36px rgba(255,255,255,.14);
+    transform:translateZ(0);
+  }
+
+  .liquid > *{
+    position:relative;
+    z-index:1;
+  }
+
+  .liquid::before,
+  .liquid::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .liquid::before{
+    opacity:.92;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.28) 10%, transparent 36%),
+      linear-gradient(102deg, transparent 0 10%, rgba(255,255,255,.42) 14%, transparent 23% 58%, rgba(255,255,255,.18) 66%, transparent 78%),
+      radial-gradient(70% 50% at 24% 0%, rgba(255,255,255,.64), transparent 64%);
+    mix-blend-mode:screen;
+    transform:translateY(-1px);
+  }
+
+  .liquid::after{
+    inset:1px;
+    opacity:.76;
+    background:
+      radial-gradient(80% 120% at 0% 18%, rgba(255,255,255,.2), transparent 46%),
+      radial-gradient(70% 90% at 100% 100%, rgba(91,242,255,.18), transparent 54%),
+      linear-gradient(118deg, transparent 18%, rgba(255,255,255,.16) 29%, transparent 38% 64%, rgba(255,255,255,.13) 73%, transparent 82%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.22),
+      inset 0 0 22px rgba(255,255,255,.18);
+  }
+
+  .liquid:hover{
+    border-color:rgba(255,255,255,.66);
+    box-shadow:
+      0 34px 86px -26px rgba(6,9,39,.5),
+      0 15px 28px -20px rgba(255,255,255,.42),
+      inset 0 1px 1px rgba(255,255,255,1),
+      inset 0 -1px 1px rgba(255,255,255,.46),
+      inset 16px 0 30px rgba(255,255,255,.16),
+      inset -24px -32px 54px rgba(73,89,228,.2),
+      inset 0 0 42px rgba(255,255,255,.2);
+  }
+
+  .showcase{
+    min-height:610px;
+    padding:clamp(22px, 3.2vw, 34px);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:28px;
+  }
+
+  .showcase__top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+  }
+
+  .status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--ink-soft);
+    font:700 12px/1 var(--mono);
+    letter-spacing:.05em;
+  }
+
+  .pulse{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--lime);
+    box-shadow:0 0 18px rgba(186,255,123,.9);
+    animation:pulse-dot 1.9s ease-in-out infinite;
+  }
+
+  .time-chip{
+    color:var(--ink-soft);
+    font:700 12px/1 var(--mono);
+    padding:9px 12px;
+    border-radius:999px;
+    background:rgba(255,255,255,.14);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.36);
+  }
+
+  .orb-wrap{
+    min-height:260px;
+    display:grid;
+    place-items:center;
+    position:relative;
+  }
+
+  .orb-wrap::before{
+    content:"";
+    position:absolute;
+    width:min(260px, 70%);
+    aspect-ratio:1;
+    border-radius:42% 58% 48% 52% / 54% 42% 58% 46%;
+    background:
+      radial-gradient(circle at 31% 24%, rgba(255,255,255,.86), transparent 17%),
+      radial-gradient(circle at 74% 26%, rgba(103,233,255,.54), transparent 20%),
+      radial-gradient(circle at 70% 78%, rgba(255,109,154,.42), transparent 28%),
+      linear-gradient(135deg, rgba(255,255,255,.34), rgba(255,255,255,.08));
+    -webkit-backdrop-filter:blur(18px) saturate(210%);
+    backdrop-filter:blur(18px) saturate(210%);
+    border:1px solid rgba(255,255,255,.5);
+    box-shadow:
+      0 36px 70px -32px rgba(0,0,0,.62),
+      inset 0 2px 2px rgba(255,255,255,.86),
+      inset -28px -32px 42px rgba(57,70,210,.22),
+      inset 20px 18px 36px rgba(255,255,255,.16);
+    animation:orb-float 7s ease-in-out infinite;
+  }
+
+  .orb-wrap::after{
+    content:"";
+    position:absolute;
+    width:min(310px, 78%);
+    height:82px;
+    bottom:20px;
+    border-radius:50%;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(89,240,255,.22), transparent 58%),
+      radial-gradient(ellipse at 46% 55%, rgba(0,0,0,.32), transparent 70%);
+    filter:blur(10px);
+    opacity:.74;
+  }
+
+  .now{
+    display:grid;
+    gap:16px;
+  }
+
+  .now h2{
+    margin:0;
+    font-size:clamp(28px, 4vw, 42px);
+    line-height:1;
+    letter-spacing:-.025em;
+    text-wrap:balance;
+  }
+
+  .now p{
+    margin:0;
+    color:var(--ink-soft);
+    line-height:1.55;
+    font-size:15px;
+    max-width:44ch;
+  }
+
+  .samples{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:clamp(16px, 2vw, 22px);
+  }
+
+  .sample{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .sample--wide{
+    grid-column:1 / -1;
+  }
+
+  .caption{
+    color:rgba(255,255,255,.72);
+    font:700 11px/1 var(--mono);
+    letter-spacing:.07em;
+  }
+
+  .pill-cta{
+    --radius:999px;
+    width:max-content;
+    max-width:100%;
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    border:0;
+    padding:15px 20px 15px 16px;
+    color:#fff;
+    font-weight:800;
+    letter-spacing:-.01em;
+  }
+
+  .pill-cta .icon-disc{
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border-radius:999px;
+    background:rgba(255,255,255,.22);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  }
+
+  .pill-cta svg{
+    width:17px;
+    height:17px;
+  }
+
+  .segmented{
+    --radius:999px;
+    width:100%;
+    display:flex;
+    gap:5px;
+    padding:6px;
+  }
+
+  .segmented button{
+    flex:1;
+    min-width:0;
+    border:0;
+    border-radius:999px;
+    background:transparent;
+    color:rgba(255,255,255,.75);
+    padding:11px 10px;
+    font-weight:800;
+    font-size:13px;
+    white-space:nowrap;
+  }
+
+  .segmented button[aria-pressed="true"]{
+    color:#fff;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.18)),
+      rgba(255,255,255,.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.7),
+      0 6px 18px -10px rgba(0,0,0,.55);
+  }
+
+  .mix-card{
+    --radius:36px;
+    min-height:260px;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:24px;
+  }
+
+  .mix-card__head{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+    align-items:flex-start;
+  }
+
+  .mix-card h3{
+    margin:0;
+    font-size:26px;
+    line-height:1.05;
+    letter-spacing:-.025em;
+  }
+
+  .mix-card p{
+    margin:8px 0 0;
+    color:var(--ink-soft);
+    line-height:1.5;
+    font-size:14px;
+  }
+
+  .mini-meter{
+    width:52px;
+    height:52px;
+    border-radius:19px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    align-items:end;
+    gap:4px;
+    padding:12px;
+    background:rgba(255,255,255,.16);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.38);
+  }
+
+  .mini-meter i{
+    display:block;
+    border-radius:99px;
+    background:#fff;
+    opacity:.9;
+    min-height:9px;
+    animation:bar-rise 1.8s ease-in-out infinite;
+  }
+
+  .mini-meter i:nth-child(1){height:16px;}
+  .mini-meter i:nth-child(2){height:28px;animation-delay:.18s;}
+  .mini-meter i:nth-child(3){height:21px;animation-delay:.36s;}
+
+  .track-row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:14px;
+    align-items:end;
+  }
+
+  .track-row strong{
+    display:block;
+    font-size:14px;
+    margin-bottom:4px;
+  }
+
+  .track-row span{
+    color:var(--ink-dim);
+    font-size:13px;
+  }
+
+  .track-row b{
+    font:800 34px/1 var(--mono);
+    letter-spacing:-.04em;
+  }
+
+  .slider{
+    --radius:999px;
+    padding:16px;
+    display:grid;
+    gap:13px;
+  }
+
+  .slider__meta{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    color:var(--ink-soft);
+    font-weight:750;
+  }
+
+  .slider__track{
+    height:16px;
+    border-radius:999px;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.88) 0 68%, rgba(255,255,255,.18) 68% 100%);
+    box-shadow:
+      inset 0 1px 3px rgba(255,255,255,.42),
+      inset 0 -1px 3px rgba(10,13,50,.28);
+    position:relative;
+  }
+
+  .slider__track::after{
+    content:"";
+    position:absolute;
+    left:calc(68% - 19px);
+    top:50%;
+    width:38px;
+    height:38px;
+    transform:translateY(-50%);
+    border-radius:999px;
+    background:
+      radial-gradient(circle at 30% 22%, rgba(255,255,255,.95), rgba(255,255,255,.28) 34%, rgba(255,255,255,.2) 100%);
+    border:1px solid rgba(255,255,255,.72);
+    box-shadow:
+      0 14px 26px -12px rgba(0,0,0,.62),
+      inset 0 1px 0 rgba(255,255,255,.9),
+      inset -8px -10px 16px rgba(109,95,255,.24);
+  }
+
+  .search{
+    --radius:999px;
+    min-height:64px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 18px;
+  }
+
+  .search svg{
+    width:21px;
+    height:21px;
+    color:rgba(255,255,255,.82);
+  }
+
+  .search input{
+    width:100%;
+    min-width:0;
+    border:0;
+    outline:0;
+    color:#fff;
+    background:transparent;
+    font-weight:750;
+  }
+
+  .search input::placeholder{
+    color:rgba(255,255,255,.72);
+    opacity:1;
+  }
+
+  .dock{
+    --radius:34px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    padding:11px;
+  }
+
+  .dock button{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border:0;
+    border-radius:19px;
+    color:#fff;
+    background:rgba(255,255,255,.13);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.3);
+  }
+
+  .dock button.is-active{
+    background:
+      radial-gradient(circle at 30% 15%, rgba(255,255,255,.72), transparent 44%),
+      linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.16));
+  }
+
+  .dock svg{
+    width:21px;
+    height:21px;
+  }
+
+  .pill-cta:focus-visible,
+  .segmented button:focus-visible,
+  .search:focus-within,
+  .dock button:focus-visible{
+    outline:2px solid rgba(255,255,255,.9);
+    outline-offset:3px;
+  }
+
+  @keyframes field-breathe{
+    0%{transform:scale(1.04) rotate(0deg); filter:blur(30px) saturate(1.25);}
+    100%{transform:scale(1.1) rotate(6deg); filter:blur(36px) saturate(1.55);}
+  }
+
+  @keyframes pulse-dot{
+    0%,100%{transform:scale(.86); opacity:.62;}
+    50%{transform:scale(1.08); opacity:1;}
+  }
+
+  @keyframes orb-float{
+    0%,100%{transform:translate3d(0, -4px, 0) rotate(-2deg); border-radius:42% 58% 48% 52% / 54% 42% 58% 46%;}
+    50%{transform:translate3d(0, 12px, 0) rotate(3deg); border-radius:55% 45% 57% 43% / 44% 58% 42% 56%;}
+  }
+
+  @keyframes bar-rise{
+    0%,100%{transform:scaleY(.72);}
+    50%{transform:scaleY(1.12);}
+  }
+
+  @media (max-width:860px){
+    .board{
+      grid-template-columns:1fr;
+    }
+
+    .showcase{
+      min-height:520px;
+    }
+  }
+
+  @media (max-width:560px){
+    .stage{
+      width:min(100% - 28px, 420px);
+      padding-top:24px;
+    }
+
+    .mast{
+      text-align:left;
+    }
+
+    .mast__copy{
+      margin-left:0;
+    }
+
+    .samples{
+      grid-template-columns:1fr;
+    }
+
+    .sample--wide{
+      grid-column:auto;
+    }
+
+    .showcase{
+      min-height:500px;
+      padding:22px;
+    }
+
+    .showcase__top{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
+    .orb-wrap{
+      min-height:220px;
+    }
+
+    .mix-card{
+      min-height:230px;
+    }
+
+    .segmented{
+      overflow:hidden;
+    }
+
+    .segmented button{
+      font-size:12px;
+      padding-inline:7px;
+    }
+
+    .dock button{
+      width:44px;
+      height:44px;
+      border-radius:16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:.01ms!important;
+      animation-iteration-count:1!important;
+      scroll-behavior:auto!important;
+      transition-duration:.01ms!important;
+    }
+
+    body::before{
+      transform:none;
+    }
+  }
+
+  @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+</style>
+</head>
+<body>
+  <main class="stage" aria-label="Prism Desk liquid glass component study">
+    <header class="mast">
+      <p class="mast__brand">Prism Desk</p>
+      <h1>Soft controls for a private listening room.</h1>
+      <p class="mast__copy">A compact media console where scene controls, search, and ambience tools behave like glossy droplets suspended above a saturated light field.</p>
+    </header>
+
+    <section class="board" aria-label="Liquid glass component variations">
+      <article class="showcase liquid" aria-label="Current scene card">
+        <div class="showcase__top">
+          <div class="status"><span class="pulse" aria-hidden="true"></span><span>Room scene live</span></div>
+          <div class="time-chip">21:48</div>
+        </div>
+
+        <div class="orb-wrap" aria-hidden="true"></div>
+
+        <div class="now">
+          <h2>Moonlit stereo lounge</h2>
+          <p>Low keys, slow tape shimmer, and a blue-pink wall wash tuned for late focus sessions.</p>
+        </div>
+      </article>
+
+      <div class="samples">
+        <div class="sample">
+          <span class="caption">Scene launch</span>
+          <button class="pill-cta liquid" type="button">
+            <span class="icon-disc" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 5v14l11-7-11-7z"/>
+              </svg>
+            </span>
+            <span>Start glow</span>
+          </button>
+        </div>
+
+        <div class="sample">
+          <span class="caption">Mood range</span>
+          <div class="segmented liquid" role="group" aria-label="Mood range">
+            <button type="button">Calm</button>
+            <button type="button" aria-pressed="true">Focus</button>
+            <button type="button">Lift</button>
+          </div>
+        </div>
+
+        <div class="sample sample--wide">
+          <span class="caption">Now on deck</span>
+          <article class="mix-card liquid">
+            <div class="mix-card__head">
+              <div>
+                <h3>Glasshouse Drift</h3>
+                <p>Three-layer ambience with soft bass, rain texture, and a warm center image.</p>
+              </div>
+              <div class="mini-meter" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+            </div>
+            <div class="track-row">
+              <div>
+                <strong>Next blend</strong>
+                <span>Amber field in 04:12</span>
+              </div>
+              <b>68</b>
+            </div>
+          </article>
+        </div>
+
+        <div class="sample">
+          <span class="caption">Room glow</span>
+          <div class="slider liquid" role="slider" aria-label="Room glow" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68">
+            <div class="slider__meta"><span>Glow</span><span>68%</span></div>
+            <div class="slider__track" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="sample">
+          <span class="caption">Find preset</span>
+          <label class="search liquid">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m16.5 16.5 4 4"/>
+            </svg>
+            <input type="search" placeholder="Search scenes" aria-label="Search scenes">
+          </label>
+        </div>
+
+        <div class="sample sample--wide">
+          <span class="caption">Tool dock</span>
+          <nav class="dock liquid" aria-label="Scene tools">
+            <button class="is-active" type="button" aria-label="Now playing">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V6l10 6-10 6z"/>
+                <path d="M5 7v10"/>
+              </svg>
+            </button>
+            <button type="button" aria-label="Library">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h16"/>
+                <path d="M4 12h16"/>
+                <path d="M4 18h16"/>
+              </svg>
+            </button>
+            <button type="button" aria-label="Mix controls">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 5v14"/>
+                <path d="M12 5v14"/>
+                <path d="M18 5v14"/>
+                <path d="M4 9h4"/>
+                <path d="M10 15h4"/>
+                <path d="M16 11h4"/>
+              </svg>
+            </button>
+            <button type="button" aria-label="Light field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v3"/>
+                <path d="M12 18v3"/>
+                <path d="M3 12h3"/>
+                <path d="M18 12h3"/>
+                <path d="m5.6 5.6 2.1 2.1"/>
+                <path d="m16.3 16.3 2.1 2.1"/>
+                <path d="m18.4 5.6-2.1 2.1"/>
+                <path d="m7.7 16.3-2.1 2.1"/>
+                <circle cx="12" cy="12" r="3.2"/>
+              </svg>
+            </button>
+            <button type="button" aria-label="Queue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10"/>
+                <path d="M7 12h7"/>
+                <path d="M7 17h4"/>
+                <path d="m17 15 3 2-3 2v-4z"/>
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Liquid Glass Variations》 by matthewwhe3204 · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
