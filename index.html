@@ -40,6 +40,10 @@
   .badge{position:absolute;left:10px;bottom:10px;font:600 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.04em;
     color:#fff;background:rgba(10,10,14,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
     border:1px solid rgba(255,255,255,.16);padding:5px 9px;border-radius:7px;pointer-events:none}
+  .disclaim{margin:0 32px 18px;color:#d8cba0;background:rgba(255,196,84,.07);border:1px solid rgba(255,196,84,.22);border-radius:11px;padding:12px 15px;font-size:12.5px;line-height:1.65;max-width:none}
+  .disclaim b{color:#ffd166}.disclaim strong{color:#f0e6c8;font-weight:600}.disclaim a{color:#9cc7ff;text-decoration:none}
+  .cite{display:block;font-size:11px;color:var(--mut);padding:0 15px 12px;margin-top:-2px;line-height:1.5}
+  @media (max-width:640px){.disclaim{margin:0 18px 14px}}
   footer{color:var(--mut);font-size:12px;padding:36px 32px;border-top:1px solid var(--line);margin-top:36px;max-width:1480px;margin-left:auto;margin-right:auto}
   footer code{color:#c9c9d6;background:var(--panel-2);padding:1px 6px;border-radius:5px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px}
   @media (max-width:640px){
@@ -77,9 +81,17 @@
   <h2>开源项目定制 · 6 个</h2>
   <p class="sub">哈哈开源全家桶，读取各项目真实上下文后专属定制</p>
   <div class="grid" id="projects"></div>
+
+  <h2>效果临摹 · Effect Studies</h2>
+  <div class="disclaim">
+    <b>这是一栏「效果模仿作业」。</b>下面每个页面都是<strong>对外部社区作品视觉效果的临摹复刻</strong>，用于练习前端技法 —— <strong>非原创</strong>，
+    皆从零重写（未照搬源码）、配以原创文案，并在页内标注原作来源与作者。原版权归各原作者所有，仅作学习展示、不作商用。
+    临摹自 <a href="https://www.vibehub.xin/" target="_blank" rel="noopener">vibehub.xin</a> / variant.com 社区。
+  </div>
+  <div class="grid" id="studies"></div>
 </div>
 
-<footer><code>~/mineproj/designsystem</code> · 19 套通用风格 + 6 项目定制 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
+<footer><code>~/mineproj/designsystem</code> · 19 套通用风格 + 6 项目定制 + 效果临摹 3 例 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
 
 <script>
 const styles = [
@@ -123,6 +135,22 @@ function render(list, dir, mount){
 }
 render(styles,"styles","styles");
 render(projects,"projects","projects");
+
+// 效果临摹（单图单主题，非 token 套；每张标注原作来源/作者）
+const studies = [
+  ["study-ascii-pricing","ascii-pricing","ASCII 终端定价页","《ASCII Pricing Page》 by dyc369v","#3ee08f"],
+  ["study-voice-widget","voice-widget","声纹录音组件","《Voice Recording Widget》· 社区 Featured","#ff5c5c"],
+  ["study-glass-music","glass-music","玻璃音乐播放器","《Glass Music Player》 by burtondesagtim","#9a8cff"],
+];
+document.getElementById("studies").innerHTML = studies.map(([f,slug,name,cite,color])=>`
+  <div class="card">
+    <div class="ttl"><span class="dot" style="background:${color}"></span><b>${name}</b><a href="studies/${slug}/index.html" target="_blank">打开</a></div>
+    <a class="zoom" href="screenshots/${f}.png" target="_blank">
+      <img class="shot" src="screenshots/thumbs/${f}.jpg" decoding="async" loading="lazy" alt="${name}">
+      <span class="badge">效果临摹 · 非原创</span>
+    </a>
+    <span class="cite">临摹自 ${cite}</span>
+  </div>`).join("");
 
 function setShot(mode){
   document.documentElement.dataset.shot = mode;
