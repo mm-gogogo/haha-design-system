@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 19 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 20 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 19 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 20 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -115,6 +115,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 19 Y2K 千禧水光 · Aqua (Frutiger Aero) — `/styles/19-y2k-aqua/`
 晴空蓝/水绿、果冻光泽。primary 水光蓝 `#00709f`(亮)/`#2bb7ef`(暗) / accent 水绿 `#0a7d50`(亮)/`#45d99a`(暗) / bg `#eef7fe`·elevated `#fff`｜暗（深海）bg `#061a26`·fg `#dff1fb`｜8·14·22（很圆）｜Quicksand 圆体标题 + Inter 正文｜果冻渐变按钮（顶部高光 + hover 辉光）+ 水珠气泡 + 克制虹彩条 + 自然科技图（水/海/林）。与 09 玻璃拟态（磨砂）、16 黏土（哑光）刻意区分（光泽水感）。
+
+### 20 瑞士国际主义 · Swiss (International Typographic) — `/styles/20-swiss/`
+网格秩序、客观克制、单一红强调。primary 信号红 `#cc1f16`(亮)/`#ff453a`(暗，黑字) / bg `#fff`·fg `#111`·muted `#555` / border `#e0e0e0`·strong `#111`｜暗 bg `#0a0a0a`·fg `#f2f2f2`｜圆角 0（方）、无投影（仅 1px 描边/细黑分隔线）｜Inter(Helvetica 替代) 大号齐左标题 + JetBrains Mono 栏目编号(01 — Index)｜12 栏非对称网格、留白足、客观图。与 12 粗野（粗黑边/偏移硬影/黄蓝）刻意区分（更平、更克制）。
 
 ---
 

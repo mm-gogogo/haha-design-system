@@ -61,7 +61,7 @@
 <body>
 <header>
   <h1>哈哈设计系统 · 截图总览</h1>
-  <p>基于 Geist / Vercel 衍生 — 19 套通用风格 + 6 个开源项目定制，每套含亮 / 暗两态，hero 大图 + 图片/图标用法 + 桌面与 iPhone 17 Pro Max 移动布局。点缩略图看大图，点「打开」查看可交互 preview。</p>
+  <p>基于 Geist / Vercel 衍生 — 20 套通用风格 + 6 个开源项目定制，每套含亮 / 暗两态，hero 大图 + 图片/图标用法 + 桌面与 iPhone 17 Pro Max 移动布局。点缩略图看大图，点「打开」查看可交互 preview。</p>
   <div class="bar">
     <a class="btn-md" href="design.md">design.md<span>· 一行加载成 skill</span></a>
     <code class="curl">curl design.hahaha.chat/design.md</code>
@@ -74,7 +74,7 @@
 </header>
 
 <div class="wrap">
-  <h2>通用风格库 · 19 套</h2>
+  <h2>通用风格库 · 20 套</h2>
   <p class="sub">可复用 — 共享 <code>--ds-*</code> Token 契约，换一份 tokens.css 即可整体换肤</p>
   <div class="grid" id="styles"></div>
 
@@ -91,7 +91,7 @@
   <div class="grid" id="studies"></div>
 </div>
 
-<footer><code>~/mineproj/designsystem</code> · 19 套通用风格 + 6 项目定制 + 效果临摹 3 例 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
+<footer><code>~/mineproj/designsystem</code> · 20 套通用风格 + 6 项目定制 + 效果临摹 4 例 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
 
 <script>
 const styles = [
@@ -114,6 +114,7 @@ const styles = [
   ["style-17-scifi-hud","17-scifi-hud","科幻 HUD / 航天终端","#4d8dff"],
   ["style-18-mineral-editorial","18-mineral-editorial","矿物康养编辑风","#4f6b52"],
   ["style-19-y2k-aqua","19-y2k-aqua","Y2K 千禧水光 / Aqua","#00a0dc"],
+  ["style-20-swiss","20-swiss","瑞士国际主义 Swiss","#cc1f16"],
 ];
 const projects = [
   ["proj-hahatool","hahatool","hahatool · 企业 + 4 主题","#7c3aed"],
@@ -141,6 +142,7 @@ const studies = [
   ["study-ascii-pricing","ascii-pricing","ASCII 终端定价页","《ASCII Pricing Page》 by dyc369v","#3ee08f"],
   ["study-voice-widget","voice-widget","声纹录音组件","《Voice Recording Widget》· 社区 Featured","#ff5c5c"],
   ["study-glass-music","glass-music","玻璃音乐播放器","《Glass Music Player》 by burtondesagtim","#9a8cff"],
+  ["study-fig-mint","fig-mint","复古电脑编辑页","《Fig Mint Computer》 by bensouth · 社区 #1","#7fc2a8"],
 ];
 document.getElementById("studies").innerHTML = studies.map(([f,slug,name,cite,color])=>`
   <div class="card">

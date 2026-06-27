@@ -1,0 +1,88 @@
+/* ============================================================
+   Swiss · 瑞士国际主义 Design Tokens (International Typographic Style)
+   客观、网格、数学化。中性灰阶 + 黑/白 + 单一红色强调。
+   Neo-grotesque 字型（Inter 代 Helvetica）、扁平、零圆角、发丝线分隔。
+   契约：变量名固定（--ds-*），仅取值随风格变。
+   亮色 :root ｜ 暗色 [data-theme="dark"] + .dark（瑞士反相）
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f4f4f4;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #ededed;
+  --ds-fg: #111111;            --ds-fg-muted: #555555;
+  --ds-fg-subtle: #6f6f6f;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #e0e0e0;        --ds-border-strong: #111111;
+
+  /* ---- 品牌与强调 · 单一红 ---- */
+  --ds-primary: #cc1f16;       --ds-primary-hover: #b31a12;
+  --ds-primary-active: #991610;--ds-primary-fg: #ffffff;
+  --ds-accent: #cc1f16;        --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态（主色 + 浅底 + 底上文字）---- */
+  --ds-success: #1a7d3c; --ds-success-bg: #e9f6ed; --ds-success-fg: #0a3d1c;
+  --ds-warning: #8a5a00; --ds-warning-bg: #fbf0d8; --ds-warning-fg: #4a3000;
+  --ds-danger:  #cc1f16; --ds-danger-bg:  #fbe5e3; --ds-danger-fg:  #5e0f0a;
+  --ds-info:    #14467a; --ds-info-bg:    #e4eef8; --ds-info-fg:    #0a2542;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #cc1f16;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 · 扁平方角 ---- */
+  --ds-radius-sm: 0px; --ds-radius-md: 0px; --ds-radius-lg: 0px; --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基）---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体 · Neo-grotesque（Inter 代 Helvetica）---- */
+  --ds-font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", sans-serif;
+  --ds-font-serif: "Source Serif 4", Georgia, "Songti SC", "SimSun", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · 扁平（深度仅靠发丝线/网格）---- */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong);
+
+  /* ---- 动效 · 极简功能性 ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 · 反相 ---- */
+  --ds-bg: #0a0a0a;            --ds-bg-subtle: #141414;
+  --ds-bg-elevated: #161616;   --ds-bg-sunken: #000000;
+  --ds-fg: #f2f2f2;            --ds-fg-muted: #a6a6a6;
+  --ds-fg-subtle: #8a8a8a;     --ds-fg-on-accent: #0a0a0a;
+  --ds-border: #2a2a2a;        --ds-border-strong: #f2f2f2;
+
+  /* ---- 品牌与强调 · 提亮红（红底用黑字以满足 AA）---- */
+  --ds-primary: #ff453a;       --ds-primary-hover: #ff6157;
+  --ds-primary-active: #e63b30;--ds-primary-fg: #0a0a0a;
+  --ds-accent: #ff453a;        --ds-accent-fg: #0a0a0a;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #4cc266; --ds-success-bg: #0c2614; --ds-success-fg: #bdf0cb;
+  --ds-warning: #e0a93d; --ds-warning-bg: #241803; --ds-warning-fg: #f8e4b8;
+  --ds-danger:  #ff5b52; --ds-danger-bg:  #2a0c0a; --ds-danger-fg:  #ffd2ce;
+  --ds-info:    #5a9fe0; --ds-info-bg:    #0a1f33; --ds-info-fg:    #cfe4f8;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #ff453a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影 · 扁平 ---- */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong);
+}
