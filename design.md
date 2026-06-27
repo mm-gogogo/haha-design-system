@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 22 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 23 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 22 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 23 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -124,6 +124,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 22 孔版印刷 · Risograph (Riso Print) — `/styles/22-risograph/`
 两版油墨印在暖纸上：荧光粉 + 孔版蓝、网点半调、颗粒、重叠 multiply 套印成紫、套印偏移。primary 荧光粉 `#cf2e6a` / accent 孔版蓝 `#2348a8` / bg 暖纸 `#f4efe4`·elevated `#faf6ec` / fg `#1c1a17`｜暗（暗房）primary `#ff5c93`(黑字) / accent `#6f8fff` / bg `#16151a`·fg `#f0ebe0`｜2·3·4｜Inter 粗体｜半调网点 + feTurbulence 颗粒 + mix-blend multiply 套印 + 错位偏移；正文落实色面不压网点。与 12 粗野（粗黑边/硬影/黄蓝）、02 像素刻意区分（油墨纸感）。
+
+### 23 包豪斯 · Bauhaus — `/styles/23-bauhaus/`
+构成主义三原色几何。primary 蓝 `#1b3fae` / accent 红 `#c1272d` / 黄 `#f5c518`(仅装饰) / bg 暖布 `#f4f1e8`·elevated `#fffdf8` / fg `#1a1a1a` / border-strong `#1a1a1a`(粗 keyline)｜暗（构成之夜）primary `#3f63d6` / accent `#e8635f` / bg `#141414`·fg `#f0ede4`｜0·0·0（方+圆）｜Inter 几何粗体 + 宽字距大写｜蓝方/红圆/黄三角几何 + 粗黑 keyline + 非对称网格 + 构成斜线。与 20 瑞士（单红栅格）、12 粗野（硬影）刻意区分（多原色几何形）。
 
 ---
 

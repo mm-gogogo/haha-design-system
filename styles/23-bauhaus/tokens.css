@@ -1,0 +1,84 @@
+/* ============================================================
+   Bauhaus · 包豪斯风 Design Tokens
+   1920s constructivist discipline: warm canvas, black keylines,
+   blue/red primary triad accents, geometric sans, flat surfaces.
+   Contract: variable names are fixed (--ds-*); only values change.
+   Light :root | Dark [data-theme="dark"] + .dark
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces & text ---- */
+  --ds-bg: #f4f1e8;            --ds-bg-subtle: #ebe6d8;
+  --ds-bg-elevated: #fffdf8;   --ds-bg-sunken: #e3ddca;
+  --ds-fg: #1a1a1a;            --ds-fg-muted: #4a4a4a;
+  --ds-fg-subtle: #6e6e6e;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #ddd6c4;        --ds-border-strong: #1a1a1a;
+
+  /* ---- Brand & accent ---- */
+  --ds-primary: #1b3fae;       --ds-primary-hover: #163590;
+  --ds-primary-active: #112a73;--ds-primary-fg: #ffffff;
+  --ds-accent: #c1272d;        --ds-accent-fg: #ffffff;
+
+  /* ---- Semantic states ---- */
+  --ds-success: #1f7a3d; --ds-success-bg: #e3f1e7; --ds-success-fg: #0a3a1c;
+  --ds-warning: #9a6a00; --ds-warning-bg: #fbeecb; --ds-warning-fg: #473006;
+  --ds-danger:  #c1272d; --ds-danger-bg:  #f8e2e1; --ds-danger-fg:  #5a1010;
+  --ds-info:    #1b3fae; --ds-info-bg:    #e3e8f7; --ds-info-fg:    #0e2057;
+
+  /* ---- Focus ---- */
+  --ds-focus: #1b3fae;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- Radius · flat geometry ---- */
+  --ds-radius-sm: 0px; --ds-radius-md: 0px; --ds-radius-lg: 0px; --ds-radius-full: 9999px;
+
+  /* ---- Spacing scale (4px base, inherited from Swiss) ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- Typography · geometric sans ---- */
+  --ds-font-sans: "Inter", "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  --ds-font-serif: "Source Serif 4", Georgia, "Songti SC", "SimSun", serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* ---- Shadows · flat keyline depth ---- */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 0 0 2px var(--ds-border-strong);
+
+  /* ---- Motion · functional ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- Constructivist night ---- */
+  --ds-bg: #141414;            --ds-bg-subtle: #1c1c1c;
+  --ds-bg-elevated: #202020;   --ds-bg-sunken: #0c0c0c;
+  --ds-fg: #f0ede4;            --ds-fg-muted: #a8a8a8;
+  --ds-fg-subtle: #888888;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #2e2e2e;        --ds-border-strong: #f0ede4;
+
+  --ds-primary: #3f63d6;       --ds-primary-hover: #4e72e2;
+  --ds-primary-active: #3354c0;--ds-primary-fg: #ffffff;
+  --ds-accent: #e8635f;        --ds-accent-fg: #160606;
+
+  --ds-success: #4cc26a; --ds-success-bg: #0c2614; --ds-success-fg: #c9f5d4;
+  --ds-warning: #f5c518; --ds-warning-bg: #241c00; --ds-warning-fg: #fff0bf;
+  --ds-danger:  #ef6b66; --ds-danger-bg:  #2a0e0d; --ds-danger-fg:  #ffd4d1;
+  --ds-info:    #5a82ef; --ds-info-bg:    #0e1838; --ds-info-fg:    #d6e0ff;
+
+  --ds-focus: #3f63d6;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 0 0 2px var(--ds-border-strong);
+}
