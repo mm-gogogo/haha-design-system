@@ -1,0 +1,140 @@
+/**
+ * Orbit HUD · 航天终端 / 科幻 HUD — tokens.css
+ * ---------------------------------------------------------------------------
+ * 严格遵守 ds-token-contract@1：变量名固定，仅取值随风格变。
+ *
+ * ⚠️ 本风格暗色优先（与多数风格相反）：
+ *   :root                         = 暗色（默认即暗，轨道控制台基调）
+ *   [data-theme="light"], .light  = 亮色覆盖（白昼运维版）
+ *   [data-theme="dark"], .dark    = 显式暗色（与 :root 同值）
+ *
+ * 气质：深蓝黑海军底 + 一束克制的离子蓝辉光（精密昂贵，非繁忙霓虹赛博）。
+ * 冷白主文字、冷蓝灰次文字、玻璃面板、极淡仪表栅格、等宽坐标/状态标注。
+ * 阴影叠加一束离子蓝辉光；focus 环带主色 glow；动效利落，reduced-motion 关闭呼吸。
+ */
+
+/* ============================================================ */
+/* :root —— 默认暗色（DARK FIRST）                              */
+/* ============================================================ */
+:root {
+  /* 表面与文字 */
+  --ds-bg: #060810;            --ds-bg-subtle: #0b0f1c;
+  --ds-bg-elevated: #101626;   --ds-bg-sunken: #04060c;
+  --ds-fg: #e8eefc;            --ds-fg-muted: #8a99bd;
+  --ds-fg-subtle: #5a6788;     --ds-fg-on-accent: #04101f;
+  --ds-border: #1b2740;        --ds-border-strong: #2c3c5e;
+
+  /* 品牌与强调 —— 一束离子蓝主色 + 冰蓝 accent */
+  --ds-primary: #4d8dff;       --ds-primary-hover: #6ba2ff;
+  --ds-primary-active: #2f74ef; --ds-primary-fg: #04101f;
+  --ds-accent: #56c8ff;        --ds-accent-fg: #021018;
+
+  /* 语义状态（仪表灯）：主色 + -bg 浅底（暗底上的深底）+ -fg 底上文字 */
+  --ds-success: #3ee08f; --ds-success-bg: #06231a; --ds-success-fg: #b6ffd9;
+  --ds-warning: #ffb53d; --ds-warning-bg: #271a04; --ds-warning-fg: #ffe6b8;
+  --ds-danger:  #ff5c72; --ds-danger-bg:  #2a0b12; --ds-danger-fg:  #ffccd4;
+  --ds-info:    #4d8dff; --ds-info-bg:    #08172e; --ds-info-fg:    #cfe0ff;
+
+  /* 焦点 —— 双层环 + 离子蓝 glow */
+  --ds-focus: #4d8dff;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus), 0 0 16px -2px rgba(77,141,255,.6);
+
+  /* 圆角 —— 略偏锐利，仪器面板硬朗 */
+  --ds-radius-sm: 4px; --ds-radius-md: 8px; --ds-radius-lg: 12px; --ds-radius-full: 9999px;
+
+  /* 间距（4px 基） */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* 字体 —— Inter 做技术体标题（紧字距）；JetBrains Mono 做坐标/状态/数据 */
+  --ds-font-sans: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* 阴影 + 一束离子蓝辉光（暗底） */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border), 0 2px 8px -2px rgba(0,0,0,.7);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border), 0 12px 32px -10px rgba(0,0,0,.8), 0 0 28px -12px rgba(77,141,255,.25);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border), 0 24px 64px -16px rgba(0,0,0,.85), 0 0 48px -14px rgba(77,141,255,.35);
+
+  /* 动效 —— 利落 150–250ms */
+  --ds-ease: cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+/* ============================================================ */
+/* 亮色覆盖 —— [data-theme="light"], .light                     */
+/* 干净的「白昼运维」版：浅蓝白底，蓝强调收敛，辉光显著减弱       */
+/* ============================================================ */
+[data-theme="light"],
+.light {
+  /* 表面与文字 */
+  --ds-bg: #f7f9fe;            --ds-bg-subtle: #eef2fb;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #e7edf8;
+  --ds-fg: #0a1222;            --ds-fg-muted: #46546f;
+  --ds-fg-subtle: #687792;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #dde4f0;        --ds-border-strong: #c2cde0;
+
+  /* 品牌与强调 —— 收敛的航天蓝（保证 AA） */
+  --ds-primary: #1f5fe0;       --ds-primary-hover: #1a54c8;
+  --ds-primary-active: #1748ab; --ds-primary-fg: #ffffff;
+  --ds-accent: #0f6fd6;        --ds-accent-fg: #ffffff;
+
+  /* 语义状态（浅底深字） */
+  --ds-success: #07823f; --ds-success-bg: #e6f8ee; --ds-success-fg: #044523;
+  --ds-warning: #9a6400; --ds-warning-bg: #fff4e0; --ds-warning-fg: #4d3200;
+  --ds-danger:  #d11a3f; --ds-danger-bg:  #ffe9ee; --ds-danger-fg:  #6b0a20;
+  --ds-info:    #0073c4; --ds-info-bg:    #e5f3ff; --ds-info-fg:    #003a66;
+
+  /* 焦点 —— 亮底辉光收敛 */
+  --ds-focus: #1f5fe0;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus), 0 0 12px -3px rgba(31,95,224,.4);
+
+  /* 阴影 —— 亮底常规阴影 + 极轻辉光 */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border), 0 2px 6px -2px rgba(10,18,34,.08);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border), 0 10px 28px -10px rgba(10,18,34,.14), 0 0 22px -12px rgba(31,95,224,.16);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border), 0 20px 56px -14px rgba(10,18,34,.18), 0 0 30px -14px rgba(31,95,224,.2);
+}
+
+/* ============================================================ */
+/* [data-theme="dark"], .dark —— 显式暗色（与 :root 同值）       */
+/* 便于在亮色容器内强制局部暗色，或与其它风格选择器约定一致      */
+/* ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg: #060810;            --ds-bg-subtle: #0b0f1c;
+  --ds-bg-elevated: #101626;   --ds-bg-sunken: #04060c;
+  --ds-fg: #e8eefc;            --ds-fg-muted: #8a99bd;
+  --ds-fg-subtle: #5a6788;     --ds-fg-on-accent: #04101f;
+  --ds-border: #1b2740;        --ds-border-strong: #2c3c5e;
+
+  --ds-primary: #4d8dff;       --ds-primary-hover: #6ba2ff;
+  --ds-primary-active: #2f74ef; --ds-primary-fg: #04101f;
+  --ds-accent: #56c8ff;        --ds-accent-fg: #021018;
+
+  --ds-success: #3ee08f; --ds-success-bg: #06231a; --ds-success-fg: #b6ffd9;
+  --ds-warning: #ffb53d; --ds-warning-bg: #271a04; --ds-warning-fg: #ffe6b8;
+  --ds-danger:  #ff5c72; --ds-danger-bg:  #2a0b12; --ds-danger-fg:  #ffccd4;
+  --ds-info:    #4d8dff; --ds-info-bg:    #08172e; --ds-info-fg:    #cfe0ff;
+
+  --ds-focus: #4d8dff;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus), 0 0 16px -2px rgba(77,141,255,.6);
+
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border), 0 2px 8px -2px rgba(0,0,0,.7);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border), 0 12px 32px -10px rgba(0,0,0,.8), 0 0 28px -12px rgba(77,141,255,.25);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border), 0 24px 64px -16px rgba(0,0,0,.85), 0 0 48px -14px rgba(77,141,255,.35);
+}
+
+/* 关闭动效偏好：停掉扫光/辉光呼吸等装饰动效 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

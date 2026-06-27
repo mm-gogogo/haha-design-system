@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 16 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 17 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 16 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 17 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -106,6 +106,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 16 黏土 3D claymorphism — `/styles/16-claymorphism/`
 胖嘟嘟黏土、马卡龙。primary `#7c6cff`(hover `#6a5aee`) / accent 薄荷 `#38d6b0` / bg `#eef0fb` / fg `#3a3a55`｜暗 primary `#9a8cff`(bg `#23233a`)｜16·24·32｜Quicksand｜外柔影 + inset 内高光（黏土双阴影）。
+
+### 17 科幻 HUD · Orbit HUD / 航天终端 — `/styles/17-scifi-hud/`
+深蓝黑航天控制台、单一克制离子蓝辉光（dark-first）。primary `#4d8dff`(hover `#6ba2ff`) / accent `#56c8ff` / bg `#060810`·elevated `#101626` / fg `#e8eefc`·muted `#8a99bd` / border `#1b2740`｜亮（日间作业）primary `#1f5fe0` / bg `#f7f9fe` / fg `#0a1222`｜4·8·12（偏锐利）｜Inter 紧字距标题 + JetBrains Mono 大写坐标/状态标签｜仪表网格底 + 顶部离子蓝径向晕 + 玻璃面板；坐标/状态 chip。与 06 暗黑科技（青紫霓虹）、13 赛博朋克（粉色故障）刻意区分。
 
 ---
 
