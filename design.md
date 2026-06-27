@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 28 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 29 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 28 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 29 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -142,6 +142,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 28 波普艺术 · Pop Art (Ben-Day) — `/styles/28-pop-art/`
 漫画感：原色 + 粗黑描边 + Ben-Day 网点 + 气泡 + 爆炸形。primary 主红 `#d8241b` / accent 印刷蓝 `#1546d6` / 黄 `#ffd21a`(仅网点/装饰) / bg 奶油纸 `#fbf3df` / fg `#15130e`｜暗（漫画夜）primary `#ff5247`(黑字) / accent `#5b86ff` / bg `#14110a`·fg `#fbf3df`｜4·8·14｜Inter 黑体大写｜Ben-Day 网点 + 粗黑 keyline + 硬偏移阴影 + 气泡 + 爆炸星形；正文落实色面不压网点。与 24 孟菲斯（几何纸屑）、22 孔版（柔印）刻意区分（漫画原色描边）。
+
+### 29 蓝图技术风 · Blueprint (Drafting / CAD) — `/styles/29-blueprint/`（暗色优先）
+工程制图：蓝图蓝纸 + 白/青细线 + 制图网格 + 尺寸标注 + 标题栏 + 爆炸示意。`:root`=暗：bg 蓝图蓝 `#0d2747`·elevated `#163a63` / fg `#e8f0fb` / primary 天青 `#7cc4ff`(深字) / accent 琥珀 `#ffb84d`｜亮（白图 CAD）bg `#f4f7fb` / primary `#155fb0` / fg `#122742`｜0·2·4（锐）｜JetBrains Mono 标注 + Inter 标题｜细+粗制图网格 + 尺寸线箭头 + 十字标记 + 标题栏 + 编号引线；纯平无辉光。与 17 科幻 HUD（离子蓝辉光）刻意区分（平面制图）。
 
 ---
 
