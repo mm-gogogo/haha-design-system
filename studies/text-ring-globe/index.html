@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORBNET · 全球链路监测台 — 效果临摹</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<style>
+  :root{
+    --bg:#05070b;
+    --panel:#080c12;
+    --grid:rgba(86,228,196,.06);
+    --ink:#d7f5ec;
+    --mute:#5f7d78;
+    --acc:#4fe6c2;      /* mint signal */
+    --acc-dim:rgba(79,230,194,.35);
+    --warn:#ffd166;
+    --hot:#ff6b6b;
+    --line:rgba(79,230,194,.22);
+    --ringtxt:rgba(150,236,214,.62);
+    --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+    --sans:"Inter",-apple-system,"PingFang SC",system-ui,sans-serif;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    background:
+      radial-gradient(120% 80% at 50% 8%, rgba(79,230,194,.07), transparent 55%),
+      radial-gradient(100% 100% at 50% 120%, rgba(60,120,255,.05), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--mono);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* faint technical grid backdrop */
+  body::before{
+    content:"";
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:42px 42px;
+    -webkit-mask-image:radial-gradient(120% 90% at 50% 45%, #000 35%, transparent 78%);
+            mask-image:radial-gradient(120% 90% at 50% 45%, #000 35%, transparent 78%);
+  }
+  /* scanlines */
+  body::after{
+    content:"";
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.0) 0 2px, rgba(0,0,0,.16) 2px 3px);
+    mix-blend-mode:multiply;opacity:.55;
+  }
+
+  .stage{
+    position:relative;z-index:2;
+    min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;
+    padding:clamp(14px,3vw,30px);
+    gap:clamp(12px,2.2vw,22px);
+  }
+
+  /* ---- top status bar ---- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;flex-wrap:wrap;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 14px;
+    background:linear-gradient(180deg,rgba(79,230,194,.05),rgba(0,0,0,.18));
+  }
+  .brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .brand .mark{
+    width:26px;height:26px;flex:0 0 auto;color:var(--acc);
+    filter:drop-shadow(0 0 6px rgba(79,230,194,.45));
+  }
+  .brand .name{font-weight:500;letter-spacing:.28em;font-size:13px;color:var(--ink)}
+  .brand .sub{font-size:10px;letter-spacing:.18em;color:var(--mute);margin-top:2px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    border:1px solid var(--line);border-radius:999px;
+    padding:5px 11px;font-size:10.5px;letter-spacing:.12em;
+    color:var(--mute);background:rgba(0,0,0,.25);white-space:nowrap;
+  }
+  .chip b{color:var(--ink);font-weight:500}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 8px var(--acc)}
+  .dot.live{animation:blink 1.6s steps(2,jump-none) infinite}
+  .dot.warn{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+
+  /* ---- main split ---- */
+  .main{
+    flex:1;display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,2.1fr) minmax(0,1fr);
+    gap:clamp(12px,2vw,22px);
+    align-items:stretch;
+  }
+
+  .panel{
+    border:1px solid var(--line);border-radius:12px;
+    background:linear-gradient(180deg,rgba(8,14,20,.7),rgba(4,7,11,.7));
+    padding:14px 15px;
+    display:flex;flex-direction:column;gap:12px;
+    position:relative;min-width:0;
+  }
+  .panel-title{
+    font-size:10px;letter-spacing:.26em;color:var(--mute);
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px dashed var(--line);padding-bottom:8px;
+  }
+  .panel-title .id{color:var(--acc)}
+
+  /* readout rows */
+  .row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:11px}
+  .row .k{color:var(--mute);letter-spacing:.08em}
+  .row .v{color:var(--ink);letter-spacing:.04em}
+  .row .v.acc{color:var(--acc)}
+  .row .v.warn{color:var(--warn)}
+  .bar{height:6px;border-radius:3px;background:rgba(79,230,194,.12);overflow:hidden;margin-top:5px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),rgba(79,230,194,.35));border-radius:3px}
+  .micro{font-size:10px;color:var(--mute);letter-spacing:.06em;line-height:1.7}
+  .micro .ok{color:var(--acc)}
+  .micro .wn{color:var(--warn)}
+
+  /* log feed */
+  .feed{display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.04em;color:var(--mute)}
+  .feed div{display:flex;gap:8px}
+  .feed .t{color:var(--acc-dim);flex:0 0 auto}
+  .feed .ok{color:var(--ink)}
+
+  /* ---- globe center stage ---- */
+  .globe-wrap{
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+    border:1px solid var(--line);border-radius:14px;
+    background:
+      radial-gradient(60% 60% at 50% 46%, rgba(79,230,194,.06), transparent 70%),
+      linear-gradient(180deg,rgba(6,10,15,.5),rgba(3,5,9,.5));
+  }
+  /* corner brackets */
+  .brk{position:absolute;width:22px;height:22px;border:1px solid var(--acc-dim);z-index:5}
+  .brk.tl{top:12px;left:12px;border-right:0;border-bottom:0}
+  .brk.tr{top:12px;right:12px;border-left:0;border-bottom:0}
+  .brk.bl{bottom:12px;left:12px;border-right:0;border-top:0}
+  .brk.br{bottom:12px;right:12px;border-left:0;border-top:0}
+  .stamp{position:absolute;font-size:9.5px;letter-spacing:.2em;color:var(--mute);z-index:5}
+  .stamp.t{top:16px;left:50%;transform:translateX(-50%)}
+  .stamp.b{bottom:16px;left:50%;transform:translateX(-50%)}
+  .stamp.l{left:14px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:left center}
+  .stamp.r{right:14px;top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:right center}
+
+  .globe-stage{
+    position:relative;
+    width:clamp(220px,38vw,440px);
+    height:clamp(220px,38vw,440px);
+    display:grid;place-items:center;
+  }
+  .globe-stage > *{grid-area:1/1}
+
+  /* the wireframe sphere */
+  .globe{
+    width:64%;height:64%;border-radius:50%;
+    position:relative;
+    background:
+      radial-gradient(40% 38% at 36% 32%, rgba(79,230,194,.14), transparent 60%),
+      radial-gradient(110% 110% at 50% 50%, rgba(3,8,12,.0) 60%, rgba(3,8,12,.9) 100%),
+      radial-gradient(circle at 50% 50%, rgba(12,24,28,.55), rgba(4,8,11,.2));
+    box-shadow:
+      inset 0 0 40px rgba(79,230,194,.10),
+      inset 14px -10px 50px rgba(0,0,0,.7),
+      0 0 60px rgba(79,230,194,.10);
+    overflow:hidden;
+  }
+  /* longitude meridians (rotate) */
+  .meridians{position:absolute;inset:0;border-radius:50%;animation:spin 26s linear infinite}
+  .meridian{
+    position:absolute;inset:0;border-radius:50%;
+    border:1px solid rgba(79,230,194,.16);
+  }
+  .meridian:nth-child(1){transform:scaleX(.18)}
+  .meridian:nth-child(2){transform:scaleX(.52)}
+  .meridian:nth-child(3){transform:scaleX(.82)}
+  .meridian:nth-child(4){transform:scaleX(1)}
+  /* latitude rings (static, give the sphere band feel) */
+  .lat{position:absolute;left:0;right:0;border-top:1px solid rgba(79,230,194,.13)}
+  /* dotted land overlay — subtle radial speckle masked to a disc */
+  .land{
+    position:absolute;inset:0;border-radius:50%;
+    background-image:radial-gradient(rgba(79,230,194,.55) .9px, transparent 1.1px);
+    background-size:8px 8px;
+    opacity:.30;
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 58%, transparent 72%);
+            mask-image:radial-gradient(circle at 50% 50%, #000 58%, transparent 72%);
+    animation:spin 26s linear infinite reverse;
+  }
+  /* equator highlight */
+  .equator{
+    position:absolute;left:8%;right:8%;top:50%;height:0;
+    border-top:1px solid rgba(79,230,194,.4);
+    box-shadow:0 0 8px rgba(79,230,194,.3);
+  }
+  /* poles */
+  .pole{position:absolute;left:50%;width:5px;height:5px;border-radius:50%;background:var(--acc);transform:translateX(-50%);box-shadow:0 0 8px var(--acc)}
+  .pole.n{top:18.5%}.pole.s{bottom:18.5%}
+
+  /* text rings (SVG textPath) */
+  .ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .ring text{
+    font-family:var(--mono);
+    fill:var(--ringtxt);
+    font-size:13px;letter-spacing:1.5px;
+    text-transform:uppercase;
+  }
+  .ring.outer{animation:spin 38s linear infinite}
+  .ring.mid{animation:spin 30s linear infinite reverse}
+  .ring.mid text{fill:rgba(79,230,194,.5);font-size:11px}
+  /* dashed orbit guide */
+  .orbit{position:absolute;border-radius:50%;border:1px dashed rgba(79,230,194,.14)}
+  .orbit.o1{inset:6%}
+  .orbit.o2{inset:18%}
+  /* a couple of satellite blips on the outer orbit */
+  .sat-ring{position:absolute;inset:0;animation:spin 18s linear infinite}
+  .sat{position:absolute;top:50%;left:6%;width:6px;height:6px;border-radius:50%;background:var(--warn);transform:translateY(-50%);box-shadow:0 0 9px var(--warn)}
+  .sat.b{left:auto;right:6%;background:var(--hot);box-shadow:0 0 9px var(--hot)}
+
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* crosshair center reticle behind globe */
+  .reticle{position:absolute;inset:0;pointer-events:none}
+  .reticle .h,.reticle .v{position:absolute;background:rgba(79,230,194,.10)}
+  .reticle .h{left:0;right:0;top:50%;height:1px}
+  .reticle .v{top:0;bottom:0;left:50%;width:1px}
+
+  /* ---- bottom ticker ---- */
+  .ticker{
+    border:1px solid var(--line);border-radius:10px;
+    background:linear-gradient(180deg,rgba(79,230,194,.04),rgba(0,0,0,.2));
+    overflow:hidden;white-space:nowrap;
+    font-size:10.5px;letter-spacing:.14em;color:var(--mute);
+    position:relative;
+  }
+  .ticker .track{display:inline-flex;gap:34px;padding:9px 0;animation:marquee 34s linear infinite;will-change:transform}
+  .ticker .track span b{color:var(--acc);font-weight:500}
+  .ticker .track span i{color:var(--warn);font-style:normal}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---- responsive ---- */
+  @media (max-width:1040px){
+    .main{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
+    .globe-wrap{grid-column:1/-1;order:-1;min-height:48vh}
+  }
+  @media (max-width:680px){
+    .main{grid-template-columns:1fr}
+    .topbar{padding:9px 11px}
+    .brand .name{letter-spacing:.18em}
+    .globe-wrap{min-height:46vh}
+    .globe-stage{width:min(78vw,330px);height:min(78vw,330px)}
+    .ring text{font-size:11px}
+    .ring.mid text{font-size:9.5px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .meridians,.land,.ring.outer,.ring.mid,.sat-ring,.dot.live,.ticker .track{
+      animation:none !important;
+    }
+  }
+
+  @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- top status bar -->
+  <header class="topbar">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <ellipse cx="12" cy="12" rx="3.6" ry="9"/>
+        <path d="M3 12h18M4 8h16M4 16h16"/>
+      </svg>
+      <div>
+        <div class="name">ORBNET</div>
+        <div class="sub">全球链路监测台 · GLOBAL LINK MONITOR</div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip"><span class="dot live"></span><b>LINK</b> ONLINE</span>
+      <span class="chip">LAT <b>+34.92°</b> LON <b>−118.04°</b></span>
+      <span class="chip"><span class="dot warn"></span>UTC <b id="clock">00:00:00</b></span>
+      <span class="chip">REV <b>2641</b></span>
+    </div>
+  </header>
+
+  <!-- main 3-column layout -->
+  <div class="main">
+
+    <!-- left panel: link telemetry -->
+    <section class="panel">
+      <div class="panel-title"><span>链路遥测 / LINK TELEMETRY</span><span class="id">CH-01</span></div>
+      <div class="row"><span class="k">SIGNAL GAIN</span><span class="v acc">+18.4 dB</span></div>
+      <div class="bar"><i style="width:82%"></i></div>
+      <div class="row"><span class="k">CARRIER LOCK</span><span class="v">98.2%</span></div>
+      <div class="bar"><i style="width:98%"></i></div>
+      <div class="row"><span class="k">PACKET LOSS</span><span class="v warn">0.41%</span></div>
+      <div class="bar"><i style="width:14%"></i></div>
+      <div class="row"><span class="k">ROUND TRIP</span><span class="v">214 ms</span></div>
+      <div class="bar"><i style="width:46%"></i></div>
+      <div class="micro" style="margin-top:4px">
+        BAND <span class="ok">KU / 12.7 GHz</span><br>
+        MODULATION <span class="ok">16-APSK</span><br>
+        FEC <span class="ok">3/4 LDPC</span><br>
+        DRIFT <span class="wn">±2.1 kHz</span>
+      </div>
+    </section>
+
+    <!-- center: the globe -->
+    <section class="globe-wrap">
+      <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
+      <span class="stamp t">SECTOR 7-G · LIVE MESH</span>
+      <span class="stamp b">PROJ: ORTHOGRAPHIC · SCALE 1:140M</span>
+      <span class="stamp l">DECLINATION 23.4°</span>
+      <span class="stamp r">SWEEP 360° / 38s</span>
+
+      <div class="globe-stage">
+        <div class="reticle"><span class="h"></span><span class="v"></span></div>
+
+        <span class="orbit o1"></span>
+        <span class="orbit o2"></span>
+
+        <!-- wireframe sphere -->
+        <div class="globe">
+          <div class="meridians">
+            <span class="meridian"></span><span class="meridian"></span>
+            <span class="meridian"></span><span class="meridian"></span>
+          </div>
+          <span class="lat" style="top:20%"></span>
+          <span class="lat" style="top:34%"></span>
+          <span class="lat" style="top:50%"></span>
+          <span class="lat" style="top:66%"></span>
+          <span class="lat" style="top:80%"></span>
+          <span class="equator"></span>
+          <div class="land"></div>
+          <span class="pole n"></span><span class="pole s"></span>
+        </div>
+
+        <!-- satellite blips orbiting -->
+        <div class="sat-ring"><span class="sat"></span><span class="sat b"></span></div>
+
+        <!-- OUTER rotating text ring -->
+        <svg class="ring outer" viewBox="0 0 400 400" aria-hidden="true">
+          <defs>
+            <path id="ringOuter" fill="none"
+              d="M 200,200 m -184,0 a 184,184 0 1,1 368,0 a 184,184 0 1,1 -368,0"/>
+          </defs>
+          <text><textPath href="#ringOuter" startOffset="0%">
+            UPLINK ACQUIRED · BANDWIDTH NOMINAL · ORBITAL PERIOD 92m · TELEMETRY STREAM OPEN · BEACON SYNC LOCKED · MESH ROUTE STABLE ·&nbsp;
+          </textPath></text>
+        </svg>
+
+        <!-- MID rotating text ring (opposite direction) -->
+        <svg class="ring mid" viewBox="0 0 400 400" aria-hidden="true">
+          <defs>
+            <path id="ringMid" fill="none"
+              d="M 200,200 m -152,0 a 152,152 0 1,1 304,0 a 152,152 0 1,1 -304,0"/>
+          </defs>
+          <text><textPath href="#ringMid" startOffset="0%">
+            GAIN +18.4dB · DOPPLER COMP ON · NOISE FLOOR −112dBm · FRAME CRC OK · GROUND STATION 04 · HANDOVER READY ·&nbsp;
+          </textPath></text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- right panel: node grid + feed -->
+    <section class="panel">
+      <div class="panel-title"><span>地面站节点 / GROUND NODES</span><span class="id">NET</span></div>
+      <div class="row"><span class="k">NODE 04 · 北纬</span><span class="v acc">ACTIVE</span></div>
+      <div class="row"><span class="k">NODE 11 · 东岸</span><span class="v acc">ACTIVE</span></div>
+      <div class="row"><span class="k">NODE 27 · 极地</span><span class="v warn">DEGRADED</span></div>
+      <div class="row"><span class="k">NODE 33 · 海上</span><span class="v acc">ACTIVE</span></div>
+      <div class="row"><span class="k">NODE 48 · 高原</span><span class="v" style="color:var(--mute)">STANDBY</span></div>
+
+      <div class="panel-title" style="margin-top:6px"><span>事件流 / EVENT LOG</span><span class="id">LIVE</span></div>
+      <div class="feed">
+        <div><span class="t">06:41</span><span class="ok">BEACON LOCK · GS-04</span></div>
+        <div><span class="t">06:43</span><span>ROUTE RECALC · 7 HOPS</span></div>
+        <div><span class="t">06:47</span><span class="ok">UPLINK +18.4 dB</span></div>
+        <div><span class="t">06:52</span><span>DOPPLER COMP ADJ</span></div>
+        <div><span class="t">06:55</span><span>NODE 27 → DEGRADED</span></div>
+        <div><span class="t">07:01</span><span class="ok">HANDOVER → GS-11</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- bottom ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <span><b>GLOBAL MESH</b> · 41 NODES TRACKED · SWEEP 360°/38s · <i>NODE-27 DEGRADED</i> · CARRIER LOCK 98.2% · RTT 214ms · DOPPLER −2.1kHz · NEXT PASS 00:11:46 · </span>
+      <span><b>GLOBAL MESH</b> · 41 NODES TRACKED · SWEEP 360°/38s · <i>NODE-27 DEGRADED</i> · CARRIER LOCK 98.2% · RTT 214ms · DOPPLER −2.1kHz · NEXT PASS 00:11:46 · </span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // UTC clock — pure cosmetic; no external deps
+  (function(){
+    var el=document.getElementById('clock');
+    function tick(){
+      var d=new Date();
+      function p(n){return String(n).padStart(2,'0');}
+      el.textContent=p(d.getUTCHours())+':'+p(d.getUTCMinutes())+':'+p(d.getUTCSeconds());
+    }
+    tick(); setInterval(tick,1000);
+  })();
+</script>
+
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Text Ring Globe》（社区 Featured 作品）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

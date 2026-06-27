@@ -1,0 +1,119 @@
+/* ============================================================
+   装饰艺术 / Art Deco · 设计系统 Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"]（并加 .dark 兼容）。
+   气质：象牙奶油为底、深祖母绿为骨、金线为饰、墨为字；
+        几何对称的太阳放射 / 人字 / 阶梯角，细双金线分隔；衬线大标题 + 宽字距大写小标。
+   全部色值满足 WCAG AA（正文 ≥4.5:1，大字/UI ≥3:1）。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（象牙 / 奶油色系） ---- */
+  --ds-bg: #f6f1e7;            /* 象牙奶油 · 主背景 */
+  --ds-bg-subtle: #efe7d6;     /* 次背景 · 区块/分组底 */
+  --ds-bg-elevated: #fffdf8;   /* 浮层/卡片 · 略亮于象牙 */
+  --ds-bg-sunken: #e7dcc6;     /* 凹陷 · 输入槽/代码块 */
+  --ds-fg: #1a2420;            /* 墨绿黑 · 主文字（对底 AA 12.6:1） */
+  --ds-fg-muted: #41514a;      /* 次要文字（对底 AA 7.0:1） */
+  --ds-fg-subtle: #6a766e;     /* 占位/弱文字（达标正文 ≥4.5:1） */
+  --ds-fg-on-accent: #f6f1e7;  /* 落在强调色上的文字（象牙白） */
+  --ds-border: #d8cdb4;        /* 常规描边/分隔线 */
+  --ds-border-strong: #2a3a33; /* 强描边/分隔（深绿墨线） */
+
+  /* ---- 品牌与强调（深祖母绿主操作，金作饰线/次强调） ---- */
+  --ds-primary: #0f5a44;       /* 深祖母绿主操作色（对象牙 AA 6.2:1） */
+  --ds-primary-hover: #0c4a38;
+  --ds-primary-active: #093829;
+  --ds-primary-fg: #f6f1e7;    /* 绿底上的象牙白字（AA 6.2:1） */
+  --ds-accent: #8a6816;        /* 金 · 链接/次强调（对象牙 AA 4.6:1） */
+  --ds-accent-fg: #f6f1e7;     /* accent 上的文字 */
+
+  /* ---- 语义状态（呼应象牙底 · 主色 + 浅底 + 底上深字） ---- */
+  --ds-success: #0f5a44; --ds-success-bg: #e3f0e8; --ds-success-fg: #06291f;
+  --ds-warning: #8a6816; --ds-warning-bg: #f6ecd2; --ds-warning-fg: #3e2f08;
+  --ds-danger:  #9e2b2b; --ds-danger-bg:  #f6e0df; --ds-danger-fg:  #4a1010;
+  --ds-info:    #1d4e6b; --ds-info-bg:    #e0edf3; --ds-info-fg:    #0c2533;
+
+  /* ---- 焦点（祖母绿焦点环） ---- */
+  --ds-focus: #0f5a44;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（Deco 锋利方正） ---- */
+  --ds-radius-sm: 0px;
+  --ds-radius-md: 2px;
+  --ds-radius-lg: 3px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（衬线大标题 + 宽字距大写小标；正文无衬线） ---- */
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-sans: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* 字号：标题比例尺拉开，正文舒适可读 */
+  --ds-text-xs: 12px; --ds-text-sm: 14px; --ds-text-base: 16px; --ds-text-md: 18px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 38px; --ds-text-3xl: 52px;
+  /* 行高 */
+  --ds-leading-tight: 1.22; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.8;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 700;
+  --ds-tracking-tight: -0.01em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影（克制，靠金线与对称分层，非堆叠投影） ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(26,36,32,.06);
+  --ds-shadow-md: 0 6px 18px -10px rgba(26,36,32,.2);
+  --ds-shadow-lg: 0 14px 36px -14px rgba(26,36,32,.24);
+
+  /* ---- 动效（温润 ease-out，无弹跳；Deco 讲究节制优雅） ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 140ms; --ds-dur-base: 220ms; --ds-dur-slow: 320ms;
+
+  /* ---- 语义层级（替代魔法 z-index） ---- */
+  --ds-z-dropdown: 30; --ds-z-sticky: 20; --ds-z-modal-backdrop: 50;
+  --ds-z-modal: 51; --ds-z-toast: 60; --ds-z-tooltip: 70;
+}
+
+/* ============================================================
+   暗色 · 盖茨比之夜：祖母绿墨黑底，金为主，绿玉为辅
+   注意：暗色 primary 为「金」配深字（--ds-primary-fg:#0d1714），
+        为达 AA 故意如此——金按钮上用深绿字而非浅字。
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #0d1714;            /* 祖母绿墨黑 · 主背景 */
+  --ds-bg-subtle: #122019;     /* 次背景 */
+  --ds-bg-elevated: #16271f;   /* 浮层/卡片 */
+  --ds-bg-sunken: #081210;     /* 凹陷 */
+  --ds-fg: #ede6d2;            /* 象牙白文字（对底 AA 13.5:1） */
+  --ds-fg-muted: #a9b4a8;      /* 次要文字（AA 7.4:1） */
+  --ds-fg-subtle: #7d8a80;     /* 弱文字（AA 4.6:1） */
+  --ds-fg-on-accent: #0d1714;  /* 落在亮金强调上的深字 */
+  --ds-border: #2a3a31;        /* 描边/分隔线 */
+  --ds-border-strong: #c9a23f; /* 强描边（金线） */
+
+  /* ---- 品牌与强调（金为主操作，绿玉作次强调） ---- */
+  --ds-primary: #d8b25a;       /* 金主操作（对墨黑 AA 9.0:1） */
+  --ds-primary-hover: #e3c172;
+  --ds-primary-active: #c49e44;
+  --ds-primary-fg: #0d1714;    /* 金底上的深绿黑字（AA 9.0:1） */
+  --ds-accent: #5fb89a;        /* 绿玉 · 链接/次强调（AA 7.4:1） */
+  --ds-accent-fg: #06140f;
+
+  /* ---- 语义状态（深底浅彩） ---- */
+  --ds-success: #5fb89a; --ds-success-bg: #06291f; --ds-success-fg: #cdeede;
+  --ds-warning: #e0b85a; --ds-warning-bg: #241a06; --ds-warning-fg: #f6e6be;
+  --ds-danger:  #e07a72; --ds-danger-bg:  #2a0f0d; --ds-danger-fg:  #f8d6d2;
+  --ds-info:    #6fb0d0; --ds-info-bg:    #0a2230; --ds-info-fg:    #cfe7f2;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #d8b25a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影（暗底更深沉，依旧克制） ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 6px 18px -8px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 16px 40px -14px rgba(0,0,0,.7);
+}

@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     装饰艺术 / Art Deco · "The Verdance" 预览页（自包含，双击即开）
+     象牙奶油底 · 深祖母绿骨 · 金线饰 · 墨字；几何对称的太阳放射 / 人字 / 阶梯角 / 双金线。
+     原创虚构主体：The Verdance —— 1920 年代大饭店与爵士夜场。
+     仅外链 ../../_fonts/fonts.css 与 ../../_assets/device.css（本地）；其余全部内联 var(--ds-*)。
+     ============================================================ -->
+<html lang="zh-CN" data-theme="light">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装饰艺术 / Art Deco · The Verdance · 预览</title>
+<style>
+  /* ============================================================
+     Token 契约（内联，无外链）。亮色 :root + 暗色 [data-theme=dark]/.dark。
+     装饰艺术：象牙奶油底 · 深祖母绿骨 · 金线饰 · 墨字。与 tokens.css 完全一致。
+     ============================================================ */
+  :root {
+    --ds-bg: #f6f1e7; --ds-bg-subtle: #efe7d6; --ds-bg-elevated: #fffdf8; --ds-bg-sunken: #e7dcc6;
+    --ds-fg: #1a2420; --ds-fg-muted: #41514a; --ds-fg-subtle: #6a766e; --ds-fg-on-accent: #f6f1e7;
+    --ds-border: #d8cdb4; --ds-border-strong: #2a3a33;
+    --ds-primary: #0f5a44; --ds-primary-hover: #0c4a38; --ds-primary-active: #093829; --ds-primary-fg: #f6f1e7;
+    --ds-accent: #8a6816; --ds-accent-fg: #f6f1e7;
+    --ds-success: #0f5a44; --ds-success-bg: #e3f0e8; --ds-success-fg: #06291f;
+    --ds-warning: #8a6816; --ds-warning-bg: #f6ecd2; --ds-warning-fg: #3e2f08;
+    --ds-danger:  #9e2b2b; --ds-danger-bg:  #f6e0df; --ds-danger-fg:  #4a1010;
+    --ds-info:    #1d4e6b; --ds-info-bg:    #e0edf3; --ds-info-fg:    #0c2533;
+    --ds-focus: #0f5a44; --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm: 0px; --ds-radius-md: 2px; --ds-radius-lg: 3px; --ds-radius-full: 9999px;
+    --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;--ds-space-6:24px;
+    --ds-space-7:32px;--ds-space-8:40px;--ds-space-9:48px;--ds-space-10:64px;--ds-space-11:80px;--ds-space-12:96px;
+    --ds-font-serif: "Noto Serif",Georgia,"Songti SC",serif;
+    --ds-font-sans: "Inter",-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    --ds-font-mono: "JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --ds-text-xs:12px;--ds-text-sm:14px;--ds-text-base:16px;--ds-text-md:18px;--ds-text-lg:22px;
+    --ds-text-xl:28px;--ds-text-2xl:38px;--ds-text-3xl:52px;
+    --ds-leading-tight:1.22;--ds-leading-normal:1.55;--ds-leading-relaxed:1.8;
+    --ds-weight-normal:400;--ds-weight-medium:500;--ds-weight-bold:700;
+    --ds-tracking-tight:-0.01em;--ds-tracking-normal:0;
+    --ds-shadow-sm: 0 1px 2px rgba(26,36,32,.06);
+    --ds-shadow-md: 0 6px 18px -10px rgba(26,36,32,.2);
+    --ds-shadow-lg: 0 14px 36px -14px rgba(26,36,32,.24);
+    --ds-ease: cubic-bezier(.22,.61,.36,1);
+    --ds-dur-fast:140ms;--ds-dur-base:220ms;--ds-dur-slow:320ms;
+    --ds-z-dropdown:30;--ds-z-sticky:20;--ds-z-modal-backdrop:50;--ds-z-modal:51;--ds-z-toast:60;--ds-z-tooltip:70;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg: #0d1714; --ds-bg-subtle: #122019; --ds-bg-elevated: #16271f; --ds-bg-sunken: #081210;
+    --ds-fg: #ede6d2; --ds-fg-muted: #a9b4a8; --ds-fg-subtle: #7d8a80; --ds-fg-on-accent: #0d1714;
+    --ds-border: #2a3a31; --ds-border-strong: #c9a23f;
+    --ds-primary: #d8b25a; --ds-primary-hover: #e3c172; --ds-primary-active: #c49e44; --ds-primary-fg: #0d1714;
+    --ds-accent: #5fb89a; --ds-accent-fg: #06140f;
+    --ds-success: #5fb89a; --ds-success-bg: #06291f; --ds-success-fg: #cdeede;
+    --ds-warning: #e0b85a; --ds-warning-bg: #241a06; --ds-warning-fg: #f6e6be;
+    --ds-danger:  #e07a72; --ds-danger-bg:  #2a0f0d; --ds-danger-fg:  #f8d6d2;
+    --ds-info:    #6fb0d0; --ds-info-bg:    #0a2230; --ds-info-fg:    #cfe7f2;
+    --ds-focus: #d8b25a; --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+    --ds-shadow-md: 0 6px 18px -8px rgba(0,0,0,.6);
+    --ds-shadow-lg: 0 16px 40px -14px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--ds-bg); color: var(--ds-fg);
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-base);
+    line-height: var(--ds-leading-relaxed);
+    transition: background var(--ds-dur-slow) var(--ds-ease), color var(--ds-dur-slow) var(--ds-ease);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 大标题走衬线（Noto Serif） */
+  h1,h2,h3,.serif { font-family: var(--ds-font-serif); }
+  /* Deco 宽字距大写小标：眉题 / 标签 / 字号尺 */
+  .deco-eyebrow {
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold);
+    text-transform: uppercase; letter-spacing: .22em; color: var(--ds-accent);
+  }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: var(--ds-z-sticky);
+    display: flex; align-items: center; gap: var(--ds-space-4);
+    padding: 0 var(--ds-space-6); height: 60px;
+    background: color-mix(in srgb, var(--ds-bg) 90%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--ds-border);
+  }
+  /* 字号尺标签宽字距大写（Deco 招牌字感） */
+  .brand { display: flex; align-items: center; gap: var(--ds-space-3); font-family: var(--ds-font-sans); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-base); text-transform: uppercase; letter-spacing: .26em; }
+  /* 阶梯/切角金徽（Deco emblem，非圆角方块） */
+  .seal { width: 32px; height: 32px; flex: none; border-radius: var(--ds-radius-sm); background: var(--ds-primary); color: var(--ds-accent); display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--ds-shadow-sm); border: 1px solid var(--ds-accent); clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); }
+  .seal svg { width: 18px; height: 18px; }
+  .topbar-nav { display: flex; gap: var(--ds-space-5); margin-left: var(--ds-space-6); }
+  .topbar-nav a { color: var(--ds-fg-muted); text-decoration: none; font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .12em; transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .topbar-nav a:hover, .topbar-nav a.active { color: var(--ds-primary); }
+  .topbar-spacer { flex: 1; }
+  #themeBtn {
+    font-family: var(--ds-font-sans); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated);
+    color: var(--ds-fg-muted); cursor: pointer; height: 38px; padding: 0 14px; border-radius: var(--ds-radius-sm);
+    display: inline-flex; align-items: center; gap: 6px; font-size: var(--ds-text-sm);
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease);
+  }
+  #themeBtn:hover { background: var(--ds-bg-subtle); color: var(--ds-fg); }
+  #themeBtn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+
+  /* ---------- 布局 ---------- */
+  .page { max-width: 1120px; margin: 0 auto; padding: 0 var(--ds-space-6) var(--ds-space-12); }
+  section { margin-bottom: var(--ds-space-11); }
+  .sec-label {
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold); text-transform: uppercase;
+    letter-spacing: .2em; color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-5);
+    padding-bottom: var(--ds-space-2);
+    /* 双金线下边（Deco 细双金规） */
+    border-bottom: 3px double var(--ds-accent);
+    display: flex; align-items: center; gap: var(--ds-space-3);
+  }
+  /* 切角金钻领标 */
+  .sec-label::before { content: ""; width: 9px; height: 9px; background: var(--ds-accent); flex: none; transform: rotate(45deg); }
+  .lede { font-size: var(--ds-text-md); color: var(--ds-fg-muted); max-width: 70ch; text-wrap: pretty; margin: 0; }
+
+  /* 双金线分隔 + 中心切角钻（SVG 在 HTML 内，这里只控容器） */
+  .deco-rule { display: flex; align-items: center; justify-content: center; color: var(--ds-accent); margin: var(--ds-space-9) 0; opacity: .95; }
+  .deco-rule svg { width: 280px; max-width: 70%; height: 24px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; margin: var(--ds-space-6) 0 var(--ds-space-11);
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--ds-space-9); align-items: center;
+    padding: var(--ds-space-10) var(--ds-space-9);
+    background: var(--ds-bg-subtle);
+    /* Deco 双金线外框 + 阶梯切角 */
+    border: 1px solid var(--ds-accent);
+    box-shadow: inset 0 0 0 4px var(--ds-bg-subtle), inset 0 0 0 5px var(--ds-accent);
+    border-radius: var(--ds-radius-lg);
+    overflow: hidden;
+  }
+  /* 太阳放射背景（藏在 hero 顶部中央，弱透明） */
+  .hero .sunburst-bg { position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 560px; height: 560px; color: var(--ds-accent); opacity: .14; pointer-events: none; z-index: 0; }
+  .hero > * { position: relative; z-index: 1; }
+  /* 阶梯角饰（faceted stepped corner） */
+  .hero .key-corner { position: absolute; width: 40px; height: 40px; color: var(--ds-accent); opacity: .9; z-index: 1; }
+  .hero .key-corner.tl { top: 16px; left: 16px; }
+  .hero .key-corner.tr { top: 16px; right: 16px; transform: scaleX(-1); }
+  .hero .key-corner.bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+  .hero .key-corner.br { bottom: 16px; right: 16px; transform: scale(-1); }
+  .hero-kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold); letter-spacing: .22em; text-transform: uppercase; color: var(--ds-accent); margin: 0 0 var(--ds-space-4); display: flex; align-items: center; gap: var(--ds-space-3); }
+  .hero h1 { font-size: var(--ds-text-3xl); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); letter-spacing: var(--ds-tracking-tight); margin: 0 0 var(--ds-space-4); text-wrap: balance; }
+  .hero h1 .red { color: var(--ds-primary); font-style: italic; }
+  .hero p.sub { font-size: var(--ds-text-md); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-7); max-width: 46ch; text-wrap: pretty; }
+  .hero-cta { display: flex; gap: var(--ds-space-3); flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: var(--ds-space-8); margin-top: var(--ds-space-8); padding-top: var(--ds-space-6); border-top: 3px double var(--ds-accent); }
+  .hero-stats .n { font-family: var(--ds-font-serif); font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); color: var(--ds-fg); display: block; font-variant-numeric: tabular-nums; }
+  .hero-stats .l { font-size: 11px; color: var(--ds-fg-muted); text-transform: uppercase; letter-spacing: .1em; }
+  /* hero 图：阶梯金框 + 金钻角标 */
+  .hero-media { position: relative; }
+  .hero-media .frame {
+    position: relative; border-radius: var(--ds-radius-md); overflow: hidden;
+    border: 2px solid var(--ds-accent); box-shadow: var(--ds-shadow-lg);
+    outline: 1px solid var(--ds-accent); outline-offset: 6px;
+  }
+  .hero-media img { display: block; width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+  .stamp {
+    position: absolute; z-index: 2; width: 56px; height: 56px; border-radius: var(--ds-radius-sm);
+    background: var(--ds-primary); color: var(--ds-accent); display: flex; align-items: center; justify-content: center;
+    font-family: var(--ds-font-sans); font-weight: var(--ds-weight-bold); box-shadow: var(--ds-shadow-md);
+    text-transform: uppercase; letter-spacing: .1em; font-size: var(--ds-text-sm); line-height: 1.1; text-align: center;
+    border: 1px solid var(--ds-accent); clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  }
+  .stamp.corner { right: -14px; bottom: -14px; }
+
+  /* ---------- Deco 装饰组件 ---------- */
+  /* 人字 / 锯齿金带（chevron / zigzag border band） */
+  .chevron-band { height: 12px; width: 100%; color: var(--ds-accent); display: block; }
+  .chevron-band svg { display: block; width: 100%; height: 100%; }
+  /* 太阳放射居中饰（section ornament） */
+  .sunburst { display: flex; justify-content: center; color: var(--ds-accent); margin: var(--ds-space-2) 0 var(--ds-space-8); }
+  .sunburst svg { width: 120px; height: 60px; }
+  /* 切角钻徽（小金钻，用于卡片/标签领标） */
+  .deco-diamond { display: inline-block; width: 8px; height: 8px; background: var(--ds-accent); transform: rotate(45deg); flex: none; }
+
+  /* ---------- 色板 ---------- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: var(--ds-space-3); }
+  .swatch { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; background: var(--ds-bg-elevated); }
+  .swatch .chip { height: 56px; }
+  .swatch .info { padding: var(--ds-space-2) var(--ds-space-3); }
+  .swatch-name { font-size: var(--ds-text-xs); color: var(--ds-fg); display: block; font-family: var(--ds-font-sans); }
+  .swatch-hex { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .state-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: var(--ds-space-3); }
+  .state-card { border-radius: var(--ds-radius-md); padding: var(--ds-space-4); font-size: var(--ds-text-sm); }
+
+  /* ---------- 字体比例尺 ---------- */
+  .type-row { display: flex; align-items: baseline; gap: var(--ds-space-5); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .type-tag { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); width: 130px; flex: none; }
+  .weights { display: flex; gap: var(--ds-space-6); flex-wrap: wrap; margin-top: var(--ds-space-5); }
+  .weights span { font-size: var(--ds-text-lg); }
+
+  /* ---------- 按钮 ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--ds-space-2);
+    height: 40px; padding: 0 var(--ds-space-4); border-radius: var(--ds-radius-sm);
+    font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); cursor: pointer;
+    border: 1px solid transparent; background: none; color: var(--ds-fg);
+    transition: background var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .btn-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .btn-primary:hover { background: var(--ds-primary-hover); }
+  .btn-primary:active { background: var(--ds-primary-active); }
+  .btn-secondary { background: var(--ds-bg-elevated); color: var(--ds-fg); border-color: var(--ds-border-strong); }
+  .btn-secondary:hover { background: var(--ds-bg-subtle); }
+  .btn-tertiary { background: transparent; color: var(--ds-primary); }
+  .btn-tertiary:hover { background: var(--ds-bg-subtle); }
+  .btn-danger { background: var(--ds-danger); color: #fff; }
+  .btn-danger:hover { filter: brightness(.94); }
+  .btn:disabled, .btn.is-disabled { opacity: .5; cursor: not-allowed; }
+  .btn-sm { height: 32px; padding: 0 var(--ds-space-3); }
+  .btn-lg { height: 48px; padding: 0 var(--ds-space-6); font-size: var(--ds-text-base); }
+  .btn-icon { width: 40px; padding: 0; }
+  .btn .ico-svg { width: 16px; height: 16px; }
+  .btn-grid { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; }
+
+  /* ---------- 表单 ---------- */
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: var(--ds-space-5); max-width: 820px; }
+  .field { display: flex; flex-direction: column; gap: var(--ds-space-2); }
+  label { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-medium); color: var(--ds-fg); }
+  input[type=text], input[type=email], textarea, select {
+    height: 40px; padding: 0 var(--ds-space-3); font-size: var(--ds-text-sm); font-family: var(--ds-font-sans);
+    background: var(--ds-bg-elevated); color: var(--ds-fg);
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm); width: 100%;
+    transition: border-color var(--ds-dur-fast) var(--ds-ease), box-shadow var(--ds-dur-fast) var(--ds-ease);
+  }
+  textarea { height: auto; padding: var(--ds-space-3); resize: vertical; min-height: 84px; line-height: var(--ds-leading-normal); }
+  input::placeholder, textarea::placeholder { color: var(--ds-fg-subtle); }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ds-primary); box-shadow: var(--ds-focus-ring); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap .ico-svg { position: absolute; left: var(--ds-space-3); color: var(--ds-fg-subtle); width: 16px; height: 16px; pointer-events: none; }
+  .input-wrap input { padding-left: var(--ds-space-8); }
+  .field-hint { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .field.err input { border-color: var(--ds-danger); }
+  .field.err .field-hint { color: var(--ds-danger); }
+  .choice { display: flex; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+  input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-color: var(--ds-primary); }
+  .switch { position: relative; width: 44px; height: 24px; flex: none; }
+  .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--ds-border-strong); border-radius: var(--ds-radius-full); transition: background var(--ds-dur-base) var(--ds-ease); }
+  .switch .thumb { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: var(--ds-bg-elevated); border-radius: 50%; transition: transform var(--ds-dur-base) var(--ds-ease); box-shadow: var(--ds-shadow-sm); }
+  .switch input:checked + .track { background: var(--ds-primary); }
+  .switch input:checked + .track + .thumb { transform: translateX(20px); }
+  .switch input:focus-visible + .track { box-shadow: var(--ds-focus-ring); }
+
+  /* ---------- 卡片 ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: var(--ds-space-5); }
+  .card {
+    background: var(--ds-bg-elevated); border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-md); padding: var(--ds-space-6); box-shadow: var(--ds-shadow-sm);
+    transition: border-color var(--ds-dur-base) var(--ds-ease), box-shadow var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .card:hover { border-color: var(--ds-border-strong); box-shadow: var(--ds-shadow-md); transform: translateY(-2px); }
+  /* 精选卡：双金线内框（Deco fine double-gold rule） */
+  .card.featured { border-color: var(--ds-accent); box-shadow: inset 0 0 0 3px var(--ds-bg-elevated), inset 0 0 0 4px var(--ds-accent); }
+  .card h3 { font-size: var(--ds-text-lg); margin: 0 0 var(--ds-space-2); font-weight: var(--ds-weight-bold); }
+  .card .meta { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-bottom: var(--ds-space-3); }
+  .card p { margin: 0 0 var(--ds-space-4); color: var(--ds-fg-muted); font-size: var(--ds-text-sm); line-height: var(--ds-leading-normal); }
+
+  /* ---------- 徽章/标签（Deco 方正 · 宽字距大写） ---------- */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 var(--ds-space-3);
+    border-radius: var(--ds-radius-sm); font-family: var(--ds-font-sans); font-size: 11px; font-weight: var(--ds-weight-bold);
+    text-transform: uppercase; letter-spacing: .1em;
+    background: var(--ds-bg-sunken); color: var(--ds-fg-muted);
+  }
+  .badge.success { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+  .badge.warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+  .badge.danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg); }
+  .badge.info    { background: var(--ds-info-bg);    color: var(--ds-info-fg); }
+  .badge.primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  /* 金线描边标（gold rule tag） */
+  .badge.gold    { background: transparent; color: var(--ds-accent); border: 1px solid var(--ds-accent); }
+  .badge-row { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; align-items: center; }
+
+  /* ---------- 内联图标 ---------- */
+  .ico-svg { width: 1em; height: 1em; flex: none; vertical-align: -0.125em; }
+
+  /* ---------- alert ---------- */
+  .alert { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4); border-radius: var(--ds-radius-md); margin-bottom: var(--ds-space-3); border: 1px solid; }
+  .alert .alert-ico { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+  .alert .alert-ico svg { width: 20px; height: 20px; display: block; }
+  .alert .alert-title { font-family: var(--ds-font-sans); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); margin: 0 0 2px; }
+  .alert p { margin: 0; font-size: var(--ds-text-sm); line-height: var(--ds-leading-normal); }
+  .alert.success { background: var(--ds-success-bg); color: var(--ds-success-fg); border-color: color-mix(in srgb, var(--ds-success) 50%, var(--ds-border)); }
+  .alert.success .alert-ico { color: var(--ds-success); }
+  .alert.warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); border-color: color-mix(in srgb, var(--ds-warning) 50%, var(--ds-border)); }
+  .alert.warning .alert-ico { color: var(--ds-warning); }
+  .alert.danger  { background: var(--ds-danger-bg);  color: var(--ds-danger-fg);  border-color: color-mix(in srgb, var(--ds-danger) 50%, var(--ds-border)); }
+  .alert.danger .alert-ico { color: var(--ds-danger); }
+  .alert.info    { background: var(--ds-info-bg);    color: var(--ds-info-fg);    border-color: color-mix(in srgb, var(--ds-info) 50%, var(--ds-border)); }
+  .alert.info .alert-ico { color: var(--ds-info); }
+
+  /* ---------- tabs ---------- */
+  .tabs { display: flex; gap: var(--ds-space-6); border-bottom: 1px solid var(--ds-border); margin-bottom: var(--ds-space-4); }
+  .tab { font-family: var(--ds-font-sans); padding: var(--ds-space-3) 0; font-size: var(--ds-text-sm); color: var(--ds-fg-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .tab:hover { color: var(--ds-fg); }
+  .tab.active { color: var(--ds-primary); border-bottom-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+
+  /* ---------- 表格 ---------- */
+  .table-wrap { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: var(--ds-text-sm); font-family: var(--ds-font-sans); }
+  th, td { text-align: left; padding: var(--ds-space-3) var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+  thead th { background: var(--ds-bg-subtle); font-weight: var(--ds-weight-medium); color: var(--ds-fg-muted); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .06em; }
+  tbody tr:last-child td { border-bottom: none; }
+  td { color: var(--ds-fg); }
+  td.num, th.num { text-align: right; font-family: var(--ds-font-mono); font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: var(--ds-bg-subtle); }
+
+  /* ---------- 图片用法 ---------- */
+  .ratio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-4); }
+  .ratio { position: relative; }
+  .ratio .img-frame {
+    position: relative; border-radius: var(--ds-radius-md); overflow: hidden;
+    border: 1px solid var(--ds-border-strong); box-shadow: var(--ds-shadow-sm);
+  }
+  .ratio img { display: block; width: 100%; object-fit: cover; }
+  .r-16-9 img { aspect-ratio: 16/9; }
+  .r-4-3 img { aspect-ratio: 4/3; }
+  .r-1-1 img { aspect-ratio: 1/1; }
+  .r-3-4 img { aspect-ratio: 3/4; }
+  .ratio .cap { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin-top: var(--ds-space-2); display: block; }
+  /* 金边变体（双金线细描边） */
+  .img-frame.ink { outline: 1px solid var(--ds-accent); outline-offset: 4px; border-color: var(--ds-accent); }
+  /* 切角金钻角标小标（Deco diamond emblem） */
+  .stamp-sm {
+    position: absolute; z-index: 2; top: var(--ds-space-2); right: var(--ds-space-2); width: 30px; height: 30px;
+    border-radius: var(--ds-radius-sm); background: var(--ds-primary); color: var(--ds-accent);
+    display: flex; align-items: center; justify-content: center; font-family: var(--ds-font-sans);
+    font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); box-shadow: var(--ds-shadow-sm);
+    border: 1px solid var(--ds-accent); clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%);
+  }
+
+  .media-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-5); }
+  .media-card { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); overflow: hidden; box-shadow: var(--ds-shadow-sm); transition: box-shadow var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-base) var(--ds-ease); }
+  .media-card:hover { box-shadow: var(--ds-shadow-md); transform: translateY(-2px); }
+  .media-card .mc-img { position: relative; }
+  .media-card img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+  .media-card .mc-body { padding: var(--ds-space-4) var(--ds-space-5) var(--ds-space-5); }
+  .media-card h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-2); }
+  .media-card p { margin: 0 0 var(--ds-space-3); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); line-height: var(--ds-leading-normal); }
+  .media-card .mc-meta { display: flex; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 120px; gap: var(--ds-space-3); }
+  .gallery a { display: block; border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border-strong); position: relative; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--ds-dur-slow) var(--ds-ease); }
+  .gallery a:hover img { transform: scale(1.05); }
+  .gallery a:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+  .gallery .tall { grid-row: span 2; }
+  .gallery .wide { grid-column: span 2; }
+
+  .feature-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-8); align-items: center; }
+  .feature-split .fs-img { border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border-strong); box-shadow: var(--ds-shadow-md); outline: 1px solid var(--ds-accent); outline-offset: 4px; position: relative; }
+  .feature-split img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+  .feature-split h3 { font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); letter-spacing: var(--ds-tracking-tight); }
+  .feature-split .kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); letter-spacing: .12em; text-transform: uppercase; color: var(--ds-primary); margin: 0 0 var(--ds-space-3); }
+  .feature-split p { color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-5); line-height: var(--ds-leading-relaxed); }
+
+  .overlay-card { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; border: 1px solid var(--ds-border-strong); }
+  .overlay-card img { display: block; width: 100%; aspect-ratio: 21/9; object-fit: cover; }
+  .overlay-card .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 28%, rgba(7,16,13,.86) 100%); }
+  .overlay-card .ov-body { position: absolute; left: var(--ds-space-7); bottom: var(--ds-space-7); right: var(--ds-space-7); color: #f3eedf; }
+  .overlay-card .ov-kicker { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold); letter-spacing: .22em; text-transform: uppercase; color: #e6c878; margin: 0 0 var(--ds-space-2); }
+  .overlay-card h3 { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-2); color: #f3eedf; letter-spacing: var(--ds-tracking-tight); text-wrap: balance; }
+  .overlay-card p { margin: 0; color: #d9d3c2; font-size: var(--ds-text-sm); max-width: 52ch; }
+
+  /* 头像 */
+  .avatar { border-radius: 50%; object-fit: cover; border: 2px solid var(--ds-bg-elevated); box-shadow: var(--ds-shadow-sm); display: block; }
+  .av-24 { width: 24px; height: 24px; } .av-32 { width: 32px; height: 32px; }
+  .av-40 { width: 40px; height: 40px; } .av-48 { width: 48px; height: 48px; }
+  .avatar-stack { display: flex; }
+  .avatar-stack .avatar { margin-left: -10px; border: 2px solid var(--ds-bg); }
+  .avatar-stack .avatar:first-child { margin-left: 0; }
+  .avatar-stack .more { width: 40px; height: 40px; border-radius: 50%; background: var(--ds-bg-subtle); color: var(--ds-fg-muted); display: flex; align-items: center; justify-content: center; font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-medium); margin-left: -10px; border: 2px solid var(--ds-bg); }
+  .user-row { display: flex; align-items: center; gap: var(--ds-space-3); }
+  .user-row .name { font-family: var(--ds-font-sans); font-weight: var(--ds-weight-medium); font-size: var(--ds-text-sm); color: var(--ds-fg); }
+  .user-row .sign { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+
+  .bg-band { position: relative; border-radius: var(--ds-radius-lg); overflow: hidden; border: 1px solid var(--ds-border-strong); padding: var(--ds-space-10) var(--ds-space-8); }
+  .bg-band img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bg-band .scrim { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(7,16,13,.9), rgba(9,40,31,.62)); }
+  .bg-band .bb-body { position: relative; color: #f3eedf; max-width: 56ch; }
+  .bg-band h3 { color: #f3eedf; font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); letter-spacing: var(--ds-tracking-tight); }
+  .bg-band p { color: #d9d3c2; margin: 0 0 var(--ds-space-6); }
+
+  /* ---------- 图标用法 ---------- */
+  .icon-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--ds-space-3); }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-4) var(--ds-space-2); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); background: var(--ds-bg-elevated); color: var(--ds-fg); }
+  .icon-cell svg { width: 24px; height: 24px; }
+  .icon-cell .nm { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-sizes { display: flex; align-items: baseline; gap: var(--ds-space-6); color: var(--ds-fg); }
+  .icon-sizes .is { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); }
+  .icon-sizes .is svg { color: var(--ds-fg); }
+  .icon-sizes .is .nm { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .icon-scenes { display: flex; flex-wrap: wrap; gap: var(--ds-space-4); align-items: center; }
+  .list-icons { list-style: none; margin: 0; padding: 0; max-width: 480px; }
+  .list-icons li { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); }
+  .list-icons li svg { width: 18px; height: 18px; color: var(--ds-primary); flex: none; }
+  .list-icons li .tail { margin-left: auto; color: var(--ds-fg-subtle); }
+  .ico-badge { position: relative; display: inline-flex; }
+  .ico-badge .dot { position: absolute; top: -4px; right: -6px; min-width: 16px; height: 16px; padding: 0 4px; background: var(--ds-primary); color: var(--ds-primary-fg); border-radius: var(--ds-radius-full); font-family: var(--ds-font-sans); font-size: 10px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--ds-bg); }
+
+  /* ---------- 浏览器 / 手机 框架 ---------- */
+  .frame-label { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .12em; color: var(--ds-fg-subtle); margin: 0 0 var(--ds-space-3); }
+  .browser { border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-lg); overflow: hidden; box-shadow: var(--ds-shadow-lg); background: var(--ds-bg); }
+  .browser-bar { display: flex; align-items: center; gap: var(--ds-space-3); height: 40px; padding: 0 var(--ds-space-4); background: var(--ds-bg-subtle); border-bottom: 1px solid var(--ds-border); }
+  .browser-bar .dots { display: flex; gap: 6px; }
+  .browser-bar .dots i { width: 11px; height: 11px; border-radius: 50%; display: block; background: var(--ds-border-strong); }
+  .browser-bar .url { flex: 1; height: 24px; background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-full); display: flex; align-items: center; padding: 0 var(--ds-space-3); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+
+  /* 仪表盘小样 */
+  .dash { display: grid; grid-template-columns: 200px 1fr; min-height: 400px; }
+  .dash-side { background: var(--ds-bg-subtle); border-right: 1px solid var(--ds-border); padding: var(--ds-space-5) var(--ds-space-4); }
+  .dash-side .s-brand { display: flex; align-items: center; gap: var(--ds-space-2); font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); margin-bottom: var(--ds-space-6); }
+  .dash-side .s-brand .seal { width: 26px; height: 26px; } .dash-side .s-brand .seal svg { width: 15px; height: 15px; }
+  .dash-nav { display: flex; flex-direction: column; gap: 2px; }
+  .dash-nav a { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); color: var(--ds-fg-muted); text-decoration: none; font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease); }
+  .dash-nav a svg { width: 18px; height: 18px; }
+  .dash-nav a:hover { background: var(--ds-bg-elevated); color: var(--ds-fg); }
+  .dash-nav a.active { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .dash-main { padding: var(--ds-space-6); }
+  .dash-top { display: flex; align-items: center; gap: var(--ds-space-4); margin-bottom: var(--ds-space-5); }
+  .dash-top h3 { font-size: var(--ds-text-lg); margin: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-4); margin-bottom: var(--ds-space-5); }
+  .kpi { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); padding: var(--ds-space-4); }
+  .kpi .k-l { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); display: flex; align-items: center; gap: 6px; }
+  .kpi .k-n { font-family: var(--ds-font-serif); font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-bold); font-variant-numeric: tabular-nums; margin-top: var(--ds-space-2); }
+  .kpi .k-d { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-success); margin-top: 2px; }
+  .chart { height: 120px; display: flex; align-items: flex-end; gap: var(--ds-space-3); padding: var(--ds-space-4); background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); }
+  .chart .bar { flex: 1; background: linear-gradient(180deg, var(--ds-primary), color-mix(in srgb, var(--ds-primary) 55%, transparent)); border-radius: var(--ds-radius-sm) var(--ds-radius-sm) 0 0; }
+  .chart .bar.alt { background: linear-gradient(180deg, var(--ds-accent), color-mix(in srgb, var(--ds-accent) 55%, transparent)); }
+
+  /* 落地页小样 */
+  .land { padding: var(--ds-space-8); }
+  .land .l-hero { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-6); align-items: center; margin-bottom: var(--ds-space-8); }
+  .land .l-hero h2 { font-size: var(--ds-text-2xl); margin: 0 0 var(--ds-space-3); letter-spacing: var(--ds-tracking-tight); line-height: var(--ds-leading-tight); }
+  .land .l-hero p { color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-5); }
+  .land .l-img { border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border-strong); outline: 1px solid var(--ds-accent); outline-offset: 4px; }
+  .land .l-img img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .land .feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-5); }
+  .land .feat { text-align: left; }
+  .land .feat .fi { width: 40px; height: 40px; border-radius: var(--ds-radius-md); background: var(--ds-bg-subtle); color: var(--ds-primary); display: flex; align-items: center; justify-content: center; margin-bottom: var(--ds-space-3); border: 1px solid var(--ds-border); }
+  .land .feat .fi svg { width: 20px; height: 20px; }
+  .land .feat h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-md); margin: 0 0 var(--ds-space-2); }
+  .land .feat p { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+
+  /* 列表-详情小样 */
+  .ld { display: grid; grid-template-columns: 240px 1fr; min-height: 420px; }
+  .ld-list { border-right: 1px solid var(--ds-border); padding: var(--ds-space-3); overflow: hidden; }
+  .ld-item { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-3); border-radius: var(--ds-radius-md); cursor: pointer; }
+  .ld-item.active { background: var(--ds-bg-subtle); }
+  .ld-item img { width: 52px; height: 52px; border-radius: var(--ds-radius-sm); object-fit: cover; flex: none; border: 1px solid var(--ds-border); }
+  .ld-item .li-t { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); margin: 0 0 2px; }
+  .ld-item .li-s { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); }
+  .ld-detail { padding: var(--ds-space-6); }
+  .ld-detail .d-img { border-radius: var(--ds-radius-md); overflow: hidden; border: 1px solid var(--ds-border-strong); margin-bottom: var(--ds-space-5); position: relative; }
+  .ld-detail .d-img img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+  .ld-detail h3 { font-size: var(--ds-text-xl); margin: 0 0 var(--ds-space-2); }
+  .ld-detail .d-meta { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-4); display: flex; gap: var(--ds-space-4); flex-wrap: wrap; }
+  .ld-detail p { color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-relaxed); }
+
+  /* ---------- 移动端（套 .dvc17 设备壳，见 _assets/device.css） ---------- */
+  .phones { display: flex; gap: var(--ds-space-7); flex-wrap: wrap; }
+  .phone-col { flex: 1; min-width: 300px; }
+  /* App 顶栏（位于 .dvc-body 内） */
+  .phone-bar { display: flex; align-items: center; gap: var(--ds-space-3); height: 52px; padding: 0 var(--ds-space-4); border-bottom: 1px solid var(--ds-border); background: var(--ds-bg); }
+  .phone-bar .ico { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; color: var(--ds-fg-muted); }
+  .phone-bar .ico svg { width: 20px; height: 20px; }
+  .phone-bar .ttl { flex: 1; font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-base); }
+
+  /* App 首页 feed */
+  .feed-body { flex: 1; overflow: auto; padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-2); }
+  .feed-hero { position: relative; border-radius: var(--ds-radius-md); overflow: hidden; margin-bottom: var(--ds-space-4); border: 1px solid var(--ds-border-strong); }
+  .feed-hero img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; }
+  .feed-hero .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 38%, rgba(7,16,13,.84)); }
+  .feed-hero .fh-body { position: absolute; left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-4); color: #f3eedf; }
+  .feed-hero .fh-body .k { font-family: var(--ds-font-sans); font-size: 11px; font-weight: var(--ds-weight-bold); letter-spacing: .18em; text-transform: uppercase; color: #e6c878; }
+  .feed-hero .fh-body h4 { font-family: var(--ds-font-serif); font-size: var(--ds-text-lg); margin: 2px 0 0; color: #f3eedf; }
+  /* 横向分类 chip */
+  .chip-row { display: flex; gap: var(--ds-space-2); overflow-x: auto; margin-bottom: var(--ds-space-4); padding-bottom: 2px; scrollbar-width: none; }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip-pill { flex: none; height: 32px; padding: 0 var(--ds-space-4); border-radius: var(--ds-radius-full); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); cursor: pointer; transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease); }
+  .chip-pill:hover { border-color: var(--ds-primary); color: var(--ds-primary); }
+  .chip-pill.active { background: var(--ds-primary); border-color: var(--ds-primary); color: var(--ds-primary-fg); }
+  .feed-sec { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); margin: var(--ds-space-4) 0 var(--ds-space-1); display: flex; align-items: center; gap: var(--ds-space-2); }
+  .feed-sec::before { content: ""; width: 4px; height: 15px; border-radius: 2px; background: var(--ds-primary); flex: none; }
+  .feed-card { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .feed-card img { width: 64px; height: 64px; border-radius: var(--ds-radius-sm); object-fit: cover; flex: none; border: 1px solid var(--ds-border); }
+  .feed-card h5 { font-family: var(--ds-font-serif); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); margin: 0 0 4px; }
+  .feed-card p { font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+  .feed-card .fc-meta { font-family: var(--ds-font-sans); font-size: 11px; color: var(--ds-fg-subtle); margin-top: 6px; display: flex; gap: var(--ds-space-2); align-items: center; }
+  .feed-card .fc-meta .price { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-sm); color: var(--ds-primary); }
+  .feed-card:last-child { border-bottom: none; }
+  .tabbar { display: flex; justify-content: space-around; align-items: center; height: 60px; padding-bottom: 8px; border-top: 1px solid var(--ds-border); background: color-mix(in srgb, var(--ds-bg) 92%, transparent); backdrop-filter: blur(8px); flex: none; }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ds-fg-subtle); text-decoration: none; font-family: var(--ds-font-sans); font-size: 10px; min-width: 48px; min-height: 44px; }
+  .tabbar a svg { width: 22px; height: 22px; }
+  .tabbar a.active { color: var(--ds-primary); }
+
+  /* 详情/个人页 */
+  .profile-hero { position: relative; }
+  .profile-hero img.cover { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+  .profile-hero .pavatar { position: absolute; left: var(--ds-space-4); bottom: -28px; width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--ds-bg); object-fit: cover; box-shadow: var(--ds-shadow-md); }
+  .profile-body { padding: var(--ds-space-7) var(--ds-space-4) var(--ds-space-4); }
+  .profile-body h3 { font-size: var(--ds-text-lg); margin: 0 0 2px; }
+  .profile-body .p-sign { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0 0 var(--ds-space-4); }
+  .profile-stats { display: flex; gap: var(--ds-space-6); margin-bottom: var(--ds-space-4); }
+  .profile-stats .ps { text-align: center; }
+  .profile-stats .ps .n { font-family: var(--ds-font-serif); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); display: block; font-variant-numeric: tabular-nums; color: var(--ds-fg); }
+  .profile-stats .ps .l { font-family: var(--ds-font-sans); font-size: 11px; color: var(--ds-fg-muted); }
+  .profile-tabs { display: flex; gap: var(--ds-space-5); border-bottom: 1px solid var(--ds-border); margin-bottom: var(--ds-space-3); }
+  .profile-tabs .ptab { font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); color: var(--ds-fg-muted); background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: var(--ds-space-2) 0; cursor: pointer; min-height: 38px; transition: color var(--ds-dur-fast) var(--ds-ease); }
+  .profile-tabs .ptab:hover { color: var(--ds-fg); }
+  .profile-tabs .ptab.active { color: var(--ds-primary); border-bottom-color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .profile-grid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--ds-radius-sm); display: block; }
+
+  /* ---------- 步进器 ---------- */
+  .stepper { display: flex; align-items: flex-start; font-family: var(--ds-font-sans); }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .step .num { width: 30px; height: 30px; border-radius: var(--ds-radius-full); display: inline-flex; align-items: center; justify-content: center; font-size: var(--ds-text-sm); border: 1px solid var(--ds-border-strong); background: var(--ds-bg-elevated); color: var(--ds-fg-muted); z-index: 1; transition: background var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease); }
+  .step .label { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-top: var(--ds-space-2); }
+  .step:not(:first-child)::before { content: ""; position: absolute; top: 15px; right: 50%; left: -50%; height: 1px; background: var(--ds-border); }
+  .step.done:not(:first-child)::before, .step.current:not(:first-child)::before { background: var(--ds-primary); }
+  .step.done .num { background: var(--ds-primary); border-color: var(--ds-primary); color: var(--ds-primary-fg); }
+  .step.current .num { border-color: var(--ds-primary); color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .step.current .label, .step.done .label { color: var(--ds-fg); }
+
+  /* ---------- 下拉菜单 ---------- */
+  .dropdown { position: relative; display: inline-block; }
+  .menu { position: absolute; top: calc(100% + var(--ds-space-2)); left: 0; min-width: 200px; z-index: var(--ds-z-dropdown); background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-lg); padding: var(--ds-space-2); font-family: var(--ds-font-sans); }
+  .menu[hidden] { display: none; }
+  .menu .menu-item { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); font-size: var(--ds-text-sm); color: var(--ds-fg); cursor: pointer; border: none; background: none; width: 100%; text-align: left; transition: background var(--ds-dur-fast) var(--ds-ease); }
+  .menu .menu-item svg { width: 16px; height: 16px; color: var(--ds-fg-muted); flex: none; }
+  .menu .menu-item:hover, .menu .menu-item:focus-visible { background: var(--ds-bg-subtle); outline: none; }
+  .menu .menu-item.selected { color: var(--ds-primary); font-weight: var(--ds-weight-medium); }
+  .menu .menu-item.selected svg { color: var(--ds-primary); }
+  .menu .menu-item .kbd { margin-left: auto; font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); }
+  .menu .menu-sep { height: 1px; background: var(--ds-border); margin: var(--ds-space-2) 0; }
+  .menu .menu-label { padding: var(--ds-space-1) var(--ds-space-3); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--ds-fg-subtle); }
+
+  /* ---------- 工具提示 ---------- */
+  .tip { position: relative; display: inline-block; }
+  .tip .tip-bubble { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--ds-fg); color: var(--ds-bg); font-family: var(--ds-font-sans); font-size: var(--ds-text-xs); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-sm); white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; box-shadow: var(--ds-shadow-md); z-index: var(--ds-z-tooltip); transition: opacity var(--ds-dur-fast) var(--ds-ease), visibility var(--ds-dur-fast) var(--ds-ease); }
+  .tip .tip-bubble::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--ds-fg); }
+  .tip:hover .tip-bubble, .tip:focus-within .tip-bubble { opacity: 1; visibility: visible; }
+
+  /* ---------- 模态框 ---------- */
+  .modal-overlay { position: fixed; inset: 0; z-index: var(--ds-z-modal-backdrop); display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, #07100d 60%, transparent); padding: var(--ds-space-5); opacity: 0; visibility: hidden; transition: opacity var(--ds-dur-base) var(--ds-ease), visibility var(--ds-dur-base) var(--ds-ease); }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-shadow-lg); max-width: 480px; width: 100%; padding: var(--ds-space-7); transform: translateY(8px); transition: transform var(--ds-dur-base) var(--ds-ease); z-index: var(--ds-z-modal); }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal h3 { font-size: var(--ds-text-xl); font-weight: var(--ds-weight-bold); margin: 0 0 var(--ds-space-3); }
+  .modal p { margin: 0 0 var(--ds-space-6); color: var(--ds-fg-muted); font-size: var(--ds-text-base); line-height: var(--ds-leading-normal); }
+  .modal .modal-actions { display: flex; justify-content: flex-end; gap: var(--ds-space-3); }
+
+  /* ---------- Toast ---------- */
+  .toast-wrap { position: fixed; bottom: var(--ds-space-6); right: var(--ds-space-6); z-index: var(--ds-z-toast); display: flex; flex-direction: column; gap: var(--ds-space-3); max-width: 360px; }
+  .toast { display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-4); background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); box-shadow: var(--ds-shadow-lg); font-family: var(--ds-font-sans); transform: translateY(8px); opacity: 0; transition: transform var(--ds-dur-base) var(--ds-ease), opacity var(--ds-dur-base) var(--ds-ease); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast .toast-ico { flex: none; width: 20px; height: 20px; margin-top: 1px; color: var(--ds-primary); }
+  .toast .toast-ico svg { width: 20px; height: 20px; display: block; }
+  .toast.success .toast-ico { color: var(--ds-success); }
+  .toast.danger .toast-ico { color: var(--ds-danger); }
+  .toast .toast-body { flex: 1; }
+  .toast .toast-title { font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); color: var(--ds-fg); margin: 0 0 2px; }
+  .toast .toast-msg { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin: 0; line-height: var(--ds-leading-normal); }
+  .toast .toast-close { border: none; background: none; color: var(--ds-fg-subtle); cursor: pointer; padding: 0; display: flex; }
+  .toast .toast-close:hover { color: var(--ds-fg); }
+  .toast .toast-close svg { width: 16px; height: 16px; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--ds-border); padding-top: var(--ds-space-6); color: var(--ds-fg-subtle); font-family: var(--ds-font-sans); font-size: var(--ds-text-sm); display: flex; align-items: center; gap: var(--ds-space-3); flex-wrap: wrap; }
+  footer code { font-family: var(--ds-font-mono); background: var(--ds-bg-sunken); padding: 1px 6px; border-radius: 4px; }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; }
+    .feature-split, .land .l-hero, .ld, .dash { grid-template-columns: 1fr; }
+    .media-cards, .land .feats { grid-template-columns: 1fr 1fr; }
+    .ratio-grid { grid-template-columns: 1fr 1fr; }
+    .icon-grid { grid-template-columns: repeat(4, 1fr); }
+    .dash-side { display: none; }
+    .ld-list { border-right: none; border-bottom: 1px solid var(--ds-border); }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 0 var(--ds-space-4) var(--ds-space-10); }
+    .topbar { padding: 0 var(--ds-space-4); gap: var(--ds-space-2); }
+    .topbar-nav { display: none; }
+    section { margin-bottom: var(--ds-space-9); }
+    .hero { padding: var(--ds-space-7) var(--ds-space-5); }
+    .hero h1 { font-size: var(--ds-text-2xl); }
+    .swatches, .state-row, .cards, .form, .media-cards, .land .feats, .kpis { grid-template-columns: 1fr; }
+    .ratio-grid { grid-template-columns: 1fr 1fr; }
+    .icon-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery { grid-template-columns: 1fr 1fr; }
+    .hero-stats { gap: var(--ds-space-5); flex-wrap: wrap; }
+    .type-row { flex-wrap: wrap; gap: var(--ds-space-2); }
+    .type-tag { width: auto; }
+    .toast-wrap { left: var(--ds-space-4); right: var(--ds-space-4); bottom: var(--ds-space-4); max-width: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto; }
+  }
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <!-- 顶栏 -->
+  <header class="topbar">
+    <span class="brand">
+      <span class="seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M6 6l12 12M18 6 6 18"/></svg></span>
+      The&nbsp;Verdance
+    </span>
+    <nav class="topbar-nav" aria-label="主导航">
+      <a href="#" class="active">The Hotel</a>
+      <a href="#image">Gallery</a>
+      <a href="#icons">Emblems</a>
+      <a href="#layouts">Suites</a>
+    </nav>
+    <span class="topbar-spacer"></span>
+    <button id="themeBtn" onclick="toggleTheme()" aria-label="切换主题">
+      <svg class="ico-svg" id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <span id="themeTxt">Supper Club</span>
+    </button>
+  </header>
+
+  <div class="page">
+
+    <!-- 人字 / 锯齿金带（Deco chevron band，页眉之下 · 全宽对称） -->
+    <span class="chevron-band" aria-hidden="true" style="margin-top:var(--ds-space-6);">
+      <svg viewBox="0 0 96 12" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 11 6 1l6 10 6-10 6 10 6-10 6 10 6-10 6 10 6-10 6 10 6-10 6 10 6-10 6 10 6-10 6 10"/></svg>
+    </span>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="首屏">
+      <!-- 太阳放射 / 扇形金光（hero 中央背景，弱透明对称） -->
+      <svg class="sunburst-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <g stroke-linecap="round">
+          <path d="M100 100 L100 0"/><path d="M100 100 L117 2"/><path d="M100 100 L134 7"/><path d="M100 100 L150 16"/><path d="M100 100 L165 28"/><path d="M100 100 L178 43"/><path d="M100 100 L188 60"/><path d="M100 100 L195 78"/><path d="M100 100 L199 100"/>
+          <path d="M100 100 L195 122"/><path d="M100 100 L188 140"/><path d="M100 100 L178 157"/><path d="M100 100 L165 172"/><path d="M100 100 L150 184"/><path d="M100 100 L134 193"/><path d="M100 100 L117 198"/><path d="M100 100 L100 200"/>
+          <path d="M100 100 L83 198"/><path d="M100 100 L66 193"/><path d="M100 100 L50 184"/><path d="M100 100 L35 172"/><path d="M100 100 L22 157"/><path d="M100 100 L12 140"/><path d="M100 100 L5 122"/><path d="M100 100 L1 100"/>
+          <path d="M100 100 L5 78"/><path d="M100 100 L12 60"/><path d="M100 100 L22 43"/><path d="M100 100 L35 28"/><path d="M100 100 L50 16"/><path d="M100 100 L66 7"/><path d="M100 100 L83 2"/>
+        </g>
+        <circle cx="100" cy="100" r="20" stroke-width="1.5"/>
+      </svg>
+      <svg class="key-corner tl" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 22V4h18M4 14h10V4M4 22h6V10"/></svg>
+      <svg class="key-corner tr" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 22V4h18M4 14h10V4M4 22h6V10"/></svg>
+      <svg class="key-corner bl" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 22V4h18M4 14h10V4M4 22h6V10"/></svg>
+      <svg class="key-corner br" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 22V4h18M4 14h10V4M4 22h6V10"/></svg>
+      <div class="hero-body">
+        <p class="hero-kicker">
+          <span class="deco-diamond" aria-hidden="true"></span>
+          Est. 1924 · A Supper Club &amp; Grand Hotel
+        </p>
+        <h1>An <span class="red">ornamental</span> system, gilded in geometry and emerald.</h1>
+        <p class="sub">The Verdance dresses its interface the way it dresses its lobby — symmetric sunbursts, fine double-gold rules and deep emerald, set on ivory. Opulent, but disciplined.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg">Reserve a Table
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-lg">View the Guide</button>
+        </div>
+        <div class="hero-stats">
+          <div><span class="n">28</span><span class="l">Tokens</span></div>
+          <div><span class="n">14</span><span class="l">Components</span></div>
+          <div><span class="n">2</span><span class="l">Themes</span></div>
+          <div><span class="n">AA</span><span class="l">Contrast</span></div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="frame">
+          <img src="../../_assets/gen/luxury-hero.jpg" alt="深炭灰与金箔大理石的装饰艺术主视觉，几何对称" loading="lazy">
+        </div>
+        <span class="stamp corner" aria-hidden="true">V</span>
+      </div>
+    </section>
+
+    <div class="deco-rule" aria-hidden="true">
+      <svg viewBox="0 0 280 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M2 9h112M166 9h112M2 15h112M166 15h112"/>
+        <path d="M140 3l12 9-12 9-12-9z" fill="currentColor" fill-opacity=".16"/>
+        <path d="M140 7l8 5-8 5-8-5z"/>
+      </svg>
+    </div>
+
+    <!-- 色板 -->
+    <section>
+      <p class="sec-label">Color · Surfaces &amp; Ink</p>
+      <div class="swatches" id="surfSwatches"></div>
+      <p class="sec-label" style="margin-top:var(--ds-space-7);">Color · Brand &amp; Accent</p>
+      <div class="swatches" id="brandSwatches"></div>
+      <p class="sec-label" style="margin-top:var(--ds-space-7);">Color · Semantic States</p>
+      <div class="state-row" id="stateRow"></div>
+    </section>
+
+    <!-- 字体 -->
+    <section>
+      <div class="sunburst" aria-hidden="true">
+        <svg viewBox="0 0 120 60" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><g><path d="M60 60 V14"/><path d="M60 60 L44 17"/><path d="M60 60 L30 25"/><path d="M60 60 L19 37"/><path d="M60 60 L11 51"/><path d="M60 60 L76 17"/><path d="M60 60 L90 25"/><path d="M60 60 L101 37"/><path d="M60 60 L109 51"/></g><path d="M48 60a12 12 0 0 1 24 0" stroke-width="1.3"/></svg>
+      </div>
+      <p class="sec-label">Type · Serif Display / Wide-Tracked Caps</p>
+      <div class="type-row"><span class="type-tag">3xl · 52</span><span class="serif" style="font-size:var(--ds-text-3xl);letter-spacing:var(--ds-tracking-tight);font-weight:var(--ds-weight-bold);">The Verdance</span></div>
+      <div class="type-row"><span class="type-tag">2xl · 38 · h1</span><span class="serif" style="font-size:var(--ds-text-2xl);letter-spacing:var(--ds-tracking-tight);font-weight:var(--ds-weight-bold);">Ballroom &amp; Supper Club</span></div>
+      <div class="type-row"><span class="type-tag">xl · 28 · h2</span><span class="serif" style="font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);">An Evening of Jazz</span></div>
+      <div class="type-row"><span class="type-tag">lg · 22 · h3</span><span class="serif" style="font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);">The Emerald Room</span></div>
+      <div class="type-row"><span class="type-tag">eyebrow · caps</span><span class="deco-eyebrow">Reservations · Since 1924</span></div>
+      <div class="type-row"><span class="type-tag">md · 18 · lede</span><span style="font-size:var(--ds-text-md);color:var(--ds-fg-muted);">A larger lede leads the reader gracefully into the body.</span></div>
+      <div class="type-row"><span class="type-tag">base · 16 · body</span><span style="font-size:var(--ds-text-base);">Body copy is set sans-serif at a leading of 1.8 for unhurried reading.</span></div>
+      <div class="type-row"><span class="type-tag">sm · 14 · meta</span><span style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);">Host · Date · Dress code (sans-serif)</span></div>
+      <div class="type-row"><span class="type-tag">xs · 12 · footnote</span><span style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);">Footnotes &amp; fine print (muted sans)</span></div>
+      <div class="weights">
+        <span style="font-weight:var(--ds-weight-normal);">Normal 400 Body</span>
+        <span style="font-weight:var(--ds-weight-medium);">Medium 500 Emphasis</span>
+        <span class="serif" style="font-weight:var(--ds-weight-bold);">Bold 700 Serif Display</span>
+      </div>
+    </section>
+
+    <!-- 按钮 -->
+    <section>
+      <p class="sec-label">Buttons</p>
+      <div class="btn-grid" style="margin-bottom:var(--ds-space-4);">
+        <button class="btn btn-primary">Reserve</button>
+        <button class="btn btn-secondary">Details</button>
+        <button class="btn btn-tertiary">Read More</button>
+        <button class="btn btn-danger">Cancel</button>
+        <button class="btn btn-primary is-disabled" disabled>Sold Out</button>
+        <button class="btn btn-secondary btn-icon" aria-label="收藏"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg></button>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-primary btn-sm">Small 32</button>
+        <button class="btn btn-primary">Medium 40</button>
+        <button class="btn btn-primary btn-lg">Large 48</button>
+        <button class="btn btn-secondary">
+          <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Leading Icon
+        </button>
+        <button class="btn btn-secondary">Trailing Icon
+          <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 表单 -->
+    <section>
+      <p class="sec-label">Forms (focus shows the emerald ring)</p>
+      <div class="form">
+        <div class="field">
+          <label for="i1">Party Name</label>
+          <div class="input-wrap">
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>
+            <input id="i1" type="text" placeholder="Name on the reservation">
+          </div>
+          <span class="field-hint">Shown to the maître d' at arrival</span>
+        </div>
+        <div class="field err">
+          <label for="i2">Email</label>
+          <input id="i2" type="email" value="not-an-email" aria-invalid="true">
+          <span class="field-hint">That email doesn't look right</span>
+        </div>
+        <div class="field">
+          <label for="s1">Room</label>
+          <select id="s1"><option>The Emerald Room</option><option>Rooftop Terrace</option><option>The Gilt Bar</option></select>
+        </div>
+        <div class="field" style="grid-column:1/-1;">
+          <label for="t1">Notes</label>
+          <textarea id="t1" placeholder="A word on the occasion or any requests…"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;margin-top:var(--ds-space-5);align-items:center;">
+        <label class="choice"><input type="checkbox" checked> Send the weekly programme</label>
+        <label class="choice"><input type="radio" name="r" checked> Dinner seating</label>
+        <label class="choice"><input type="radio" name="r"> Late supper</label>
+        <label class="choice"><span class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></span> Auto night mode</label>
+      </div>
+    </section>
+
+    <!-- 卡片 -->
+    <section>
+      <p class="sec-label">Cards</p>
+      <div class="cards">
+        <div class="card featured">
+          <span class="badge gold" style="margin-bottom:var(--ds-space-3);">
+            <span class="deco-diamond" aria-hidden="true" style="margin-right:4px;"></span>
+            Featured
+          </span>
+          <h3>The Gatsby Tasting</h3>
+          <p class="meta">Supper Club · Eight courses</p>
+          <p>An eight-course evening paired with rare emerald-label champagne. Fine double-gold rules mark the menu — the night's quiet flourish.</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">View the menu →</button>
+        </div>
+        <div class="card">
+          <h3>The Gilt Bar</h3>
+          <p class="meta">Cocktails · Until 2 a.m.</p>
+          <p>A faceted brass bar pouring vermouth, absinthe and a house emerald gin fizz beneath a chevron ceiling.</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">View the menu →</button>
+        </div>
+        <div class="card">
+          <h3>Rooftop Jazz</h3>
+          <p class="meta">Live music · Fridays</p>
+          <p>The resident quartet plays under the sunburst canopy. Dress is black-tie; the city is the backdrop.</p>
+          <button class="btn btn-tertiary" style="padding-left:0;">View the menu →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 徽章 -->
+    <section>
+      <p class="sec-label">Badges / Tags</p>
+      <div class="badge-row">
+        <span class="badge">Default</span>
+        <span class="badge primary">New</span>
+        <span class="badge success">Open</span>
+        <span class="badge warning">Waitlist</span>
+        <span class="badge danger">Sold Out</span>
+        <span class="badge info">Members</span>
+        <span class="badge gold">Black Tie</span>
+        <span class="badge gold">Est. 1924</span>
+      </div>
+    </section>
+
+    <!-- alert -->
+    <section>
+      <p class="sec-label">Alerts (leading icon · tinted · full 1px rule)</p>
+      <div class="alert success"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg></span><div><p class="alert-title">Reservation confirmed</p><p>Your table for four is booked for Friday at eight.</p></div></div>
+      <div class="alert warning"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 2.3 18a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><div><p class="alert-title">Nearly full</p><p>Only two tables remain for the Gatsby Tasting this week.</p></div></div>
+      <div class="alert danger"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span><div><p class="alert-title">Booking failed</p><p>We couldn't reach the reservation desk. Please try again.</p></div></div>
+      <div class="alert info"><span class="alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div><p class="alert-title">A small note</p><p>Switch on night mode for the Gatsby-night palette after dusk.</p></div></div>
+    </section>
+
+    <!-- 导航 tabs -->
+    <section>
+      <p class="sec-label">Navigation · Tabs</p>
+      <div class="tabs">
+        <div class="tab active">All</div>
+        <div class="tab">Dining</div>
+        <div class="tab">Bar</div>
+        <div class="tab">Music</div>
+      </div>
+      <p style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted);margin:0;">The top bar sits at the very top — wordmark, main nav and the day/night theme toggle.</p>
+    </section>
+
+    <!-- 下拉 / 工具提示 -->
+    <section>
+      <p class="sec-label">Dropdown · Tooltip · Stepper</p>
+      <div style="display:flex;gap:var(--ds-space-6);flex-wrap:wrap;align-items:flex-start;margin-bottom:var(--ds-space-7);">
+        <div class="dropdown">
+          <button class="btn btn-secondary" id="ddBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">Choose Room
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="menu" id="ddMenu" role="menu" hidden>
+            <div class="menu-label">Venues</div>
+            <button class="menu-item selected" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg><span>The Emerald Room</span></button>
+            <button class="menu-item" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><span>The Gilt Bar</span></button>
+            <button class="menu-item" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span>Rooftop Terrace</span><span class="kbd">⌘3</span></button>
+            <div class="menu-sep"></div>
+            <button class="menu-item" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Private hire…</span></button>
+          </div>
+        </div>
+        <span class="tip">
+          <button class="btn btn-secondary" aria-describedby="tip1">Hover for note</button>
+          <span class="tip-bubble" role="tooltip" id="tip1">Limited seating — book ahead</span>
+        </span>
+      </div>
+      <div class="stepper" role="list">
+        <div class="step done" role="listitem"><span class="num"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span><span class="label">Choose</span></div>
+        <div class="step done" role="listitem"><span class="num"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></span><span class="label">Details</span></div>
+        <div class="step current" role="listitem" aria-current="step"><span class="num">3</span><span class="label">Confirm</span></div>
+        <div class="step" role="listitem"><span class="num">4</span><span class="label">Deposit</span></div>
+        <div class="step" role="listitem"><span class="num">5</span><span class="label">Arrive</span></div>
+      </div>
+    </section>
+
+    <!-- 模态 / Toast -->
+    <section>
+      <p class="sec-label">Modal · Toast</p>
+      <div class="btn-grid">
+        <button class="btn btn-primary" onclick="openModal()">Open Modal</button>
+        <button class="btn btn-secondary" onclick="showToast('success','Added','The Gatsby Tasting was added to your evening.')">Trigger Toast (success)</button>
+        <button class="btn btn-secondary" onclick="showToast('danger','Booking failed','We couldn\'t reach the desk. Try again.')">Trigger Toast (error)</button>
+      </div>
+    </section>
+
+    <!-- 表格 -->
+    <section>
+      <p class="sec-label">Table (sans header · tabular figures)</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sitting</th><th>Room</th><th class="num">Cover</th><th class="num">Seats</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>The Gatsby Tasting</td><td>Emerald Room</td><td class="num">$ 188</td><td class="num">12</td><td><span class="badge warning">Waitlist</span></td></tr>
+          <tr><td>À la carte Dinner</td><td>Main Dining</td><td class="num">$ 96</td><td class="num">86</td><td><span class="badge success">Open</span></td></tr>
+          <tr><td>Rooftop Jazz Supper</td><td>Terrace</td><td class="num">$ 142</td><td class="num">0</td><td><span class="badge danger">Sold Out</span></td></tr>
+          <tr><td>Late Supper at the Bar</td><td>The Gilt Bar</td><td class="num">$ 64</td><td class="num">24</td><td><span class="badge info">Members</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <div class="deco-rule" aria-hidden="true">
+      <svg viewBox="0 0 280 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 9h112M166 9h112M2 15h112M166 15h112"/><path d="M140 3l12 9-12 9-12-9z" fill="currentColor" fill-opacity=".16"/><path d="M140 7l8 5-8 5-8-5z"/></svg>
+    </div>
+
+    <!-- ============ 图片用法 ============ -->
+    <section id="image">
+      <p class="sec-label">Image Usage</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">One ratio system, sharp corners; key images wear a fine double-gold frame and a faceted emerald diamond marker — opulence kept geometric.</p>
+
+      <p class="frame-label">Aspect ratios · 16:9 / 4:3 / 1:1 / 3:4</p>
+      <div class="ratio-grid">
+        <div class="ratio r-16-9"><div class="img-frame"><img src="../../_assets/photos/city.jpg" alt="夜色中的城市天际线" loading="lazy"></div><span class="cap">16 : 9</span></div>
+        <div class="ratio r-4-3"><div class="img-frame ink"><span class="stamp-sm" aria-hidden="true">V</span><img src="../../_assets/photos/architecture.jpg" alt="装饰艺术建筑立面" loading="lazy"></div><span class="cap">4 : 3 · gold frame</span></div>
+        <div class="ratio r-1-1"><div class="img-frame"><img src="../../_assets/photos/coffee.jpg" alt="鸡尾酒一杯" loading="lazy"></div><span class="cap">1 : 1</span></div>
+        <div class="ratio r-3-4"><div class="img-frame ink"><img src="../../_assets/photos/desk.jpg" alt="黄铜与大理石陈设" loading="lazy"></div><span class="cap">3 : 4 · gold</span></div>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">Media Card (image · title · body · meta)</p>
+      <div class="media-cards">
+        <article class="media-card">
+          <div class="mc-img"><img src="../../_assets/photos/travel.jpg" alt="夜晚的酒店外观" loading="lazy"></div>
+          <div class="mc-body">
+            <h4>A Night at The Verdance</h4>
+            <p>Behind the brass doors: emerald velvet, a sunburst ceiling and a city in evening dress.</p>
+            <div class="mc-meta">
+              <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              6 min · Feature
+            </div>
+          </div>
+        </article>
+        <article class="media-card">
+          <div class="mc-img"><img src="../../_assets/photos/food.jpg" alt="精致摆盘的菜肴" loading="lazy"></div>
+          <div class="mc-body">
+            <h4>The Tasting Menu, Course by Course</h4>
+            <p>Eight plates, two sorbets and a finale of gold-leafed dark chocolate.</p>
+            <div class="mc-meta">
+              <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              4 min · Dining
+            </div>
+          </div>
+        </article>
+        <article class="media-card">
+          <div class="mc-img"><img src="../../_assets/photos/desk.jpg" alt="黄铜调酒台" loading="lazy"></div>
+          <div class="mc-body">
+            <h4>At the Gilt Bar</h4>
+            <p>The art of the aperitif, from the emerald gin fizz to a perfect dry martini.</p>
+            <div class="mc-meta">
+              <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              5 min · Cocktails
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">Gallery (≥6 images · equal-height grid)</p>
+      <div class="gallery">
+        <a href="#" class="wide tall"><img src="../../_assets/photos/ocean.jpg" alt="海景露台" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/city.jpg" alt="城市天际" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/street.jpg" alt="夜晚街景" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/tech.jpg" alt="黄铜器物" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/workspace.jpg" alt="筹备中的宴会厅" loading="lazy"></a>
+        <a href="#" class="wide"><img src="../../_assets/photos/square1.jpg" alt="器物特写" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/square2.jpg" alt="纹样细节" loading="lazy"></a>
+        <a href="#"><img src="../../_assets/photos/square3.jpg" alt="几何构图" loading="lazy"></a>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">Feature Split</p>
+      <div class="feature-split">
+        <div class="fs-img"><span class="stamp-sm" aria-hidden="true">V</span><img src="../../_assets/gen/luxury-hero.jpg" alt="炭灰与金箔大理石的装饰艺术主视觉" loading="lazy"></div>
+        <div>
+          <p class="kicker">The Ornament System</p>
+          <h3>Geometry, gilded — never gaudy.</h3>
+          <p>Every flourish earns its place: the sunburst over the stage, the chevron along the cornice, the fine double-gold rule beneath each heading. We borrow the 1920s vocabulary and speak it with restraint — symmetry first, gold sparingly.</p>
+          <button class="btn btn-primary">Explore the ornament system
+            <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">Image Overlay (gradient scrim · AA text)</p>
+      <div class="overlay-card">
+        <img src="../../_assets/photos/ocean.jpg" alt="黄昏中的屋顶露台与海景" loading="lazy">
+        <div class="scrim"></div>
+        <div class="ov-body">
+          <p class="ov-kicker">Rooftop Series · Friday</p>
+          <h3>Jazz Beneath the Sunburst</h3>
+          <p>The resident quartet plays the rooftop terrace as the city lights come up. Black tie, late supper, last call at two.</p>
+        </div>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">Avatars · size scale / stack / user row</p>
+      <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-8);align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:var(--ds-space-4);">
+          <img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="客人头像" loading="lazy">
+          <img class="avatar av-32" src="../../_assets/avatars/a5.jpg" alt="客人头像" loading="lazy">
+          <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="客人头像" loading="lazy">
+          <img class="avatar av-48" src="../../_assets/avatars/a12.jpg" alt="客人头像" loading="lazy">
+        </div>
+        <div class="avatar-stack" aria-label="出席宾客">
+          <img class="avatar av-40" src="../../_assets/avatars/a15.jpg" alt="宾客" loading="lazy">
+          <img class="avatar av-40" src="../../_assets/avatars/a23.jpg" alt="宾客" loading="lazy">
+          <img class="avatar av-40" src="../../_assets/avatars/a33.jpg" alt="宾客" loading="lazy">
+          <img class="avatar av-40" src="../../_assets/avatars/a47.jpg" alt="宾客" loading="lazy">
+          <span class="more">+9</span>
+        </div>
+        <div class="user-row">
+          <img class="avatar av-48" src="../../_assets/avatars/a23.jpg" alt="Vivian Marlowe 的头像" loading="lazy">
+          <div>
+            <div class="name">Vivian Marlowe</div>
+            <div class="sign">Maître d'hôtel · The Verdance</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">Full-bleed Background Band</p>
+      <div class="bg-band">
+        <img class="bg" src="../../_assets/photos/city.jpg" alt="夜晚的城市背景" loading="lazy">
+        <div class="scrim"></div>
+        <div class="bb-body">
+          <h3>An evening that begins at eight.</h3>
+          <p>Dinner, a turn on the floor, and the city laid out below. Join the weekly programme and never miss a sitting.</p>
+          <button class="btn btn-primary btn-lg">Join the programme</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="deco-rule" aria-hidden="true">
+      <svg viewBox="0 0 280 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 9h112M166 9h112M2 15h112M166 15h112"/><path d="M140 3l12 9-12 9-12-9z" fill="currentColor" fill-opacity=".16"/><path d="M140 7l8 5-8 5-8-5z"/></svg>
+    </div>
+
+    <!-- ============ 图标用法 ============ -->
+    <section id="icons">
+      <p class="sec-label">Icon Usage</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">One linear set (1.7 stroke, 24 viewbox, currentColor), baseline-aligned; status icons take the semantic colors.</p>
+
+      <p class="frame-label">Icon set (linear · one style)</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17c3-4 6-6 9-6s6 2 9 6"/><path d="M3 11c3-4 6-6 9-6s6 2 9 6"/></svg><span class="nm">mountain</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14c-2 0-3.5-1.5-3.5-3.5S4 7 6 7c.3-2.3 2.2-4 4.5-4 2 0 3.7 1.3 4.3 3.1C16.6 6 18.5 7.7 18.5 10c1.6.2 2.8 1.6 2.8 3.2 0 1.8-1.4 3.3-3.3 3.3H6z"/></svg><span class="nm">cloud</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M5 8h13v5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M8 2v3M12 2v3M16 2v3"/></svg><span class="nm">coupe</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="nm">search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg><span class="nm">star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 8.6a5.4 5.4 0 0 0-9.3-3 5.4 5.4 0 0 0-9.3 3c0 5 9.3 11 9.3 11s9.3-6 9.3-11z"/></svg><span class="nm">heart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2 3h3l2.5 13h11l2-9H6.5"/></svg><span class="nm">cart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg><span class="nm">user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 7v5c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V7z"/></svg><span class="nm">shield</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 2v4M16 2v4"/></svg><span class="nm">calendar</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6 4 4 6-7"/><path d="M4 21h16"/></svg><span class="nm">chart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7c4 0 7-2 7-2s3 2 7 2"/><path d="M5 7v8c4 0 7 2 7 2s3-2 7-2V7"/></svg><span class="nm">book</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 2.6 14H2.5a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 4 7a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9 2.6h.1A1.6 1.6 0 0 0 10 .9"/></svg><span class="nm">settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nm">bell</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="m4 8 8 5 8-5"/></svg><span class="nm">mail</span></div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-9);margin-top:var(--ds-space-7);align-items:flex-start;">
+        <div>
+          <p class="frame-label">Size scale · 16 / 20 / 24 / 32 (baseline-aligned)</p>
+          <div class="icon-sizes">
+            <div class="is"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg><span class="nm">16</span></div>
+            <div class="is"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg><span class="nm">20</span></div>
+            <div class="is"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg><span class="nm">24</span></div>
+            <div class="is"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg><span class="nm">32</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="frame-label">Outline vs solid · ink vs emerald</p>
+          <div class="icon-sizes">
+            <div class="is"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 8.6a5.4 5.4 0 0 0-9.3-3 5.4 5.4 0 0 0-9.3 3c0 5 9.3 11 9.3 11s9.3-6 9.3-11z"/></svg><span class="nm">outline</span></div>
+            <div class="is"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.8 8.6a5.4 5.4 0 0 0-9.3-3 5.4 5.4 0 0 0-9.3 3c0 5 9.3 11 9.3 11s9.3-6 9.3-11z"/></svg><span class="nm">solid</span></div>
+            <div class="is" style="color:var(--ds-primary);"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.8 8.6a5.4 5.4 0 0 0-9.3-3 5.4 5.4 0 0 0-9.3 3c0 5 9.3 11 9.3 11s9.3-6 9.3-11z"/></svg><span class="nm">emerald</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="frame-label" style="margin-top:var(--ds-space-7);">In context · icon button / input / list / status / numeric badge</p>
+      <div class="icon-scenes" style="margin-bottom:var(--ds-space-5);">
+        <button class="btn btn-secondary btn-icon" aria-label="搜索"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+        <button class="btn btn-secondary btn-icon" aria-label="收藏"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 8.6a5.4 5.4 0 0 0-9.3-3 5.4 5.4 0 0 0-9.3 3c0 5 9.3 11 9.3 11s9.3-6 9.3-11z"/></svg></button>
+        <div class="input-wrap" style="width:240px;">
+          <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" placeholder="Search rooms, menus, events…">
+        </div>
+        <span class="ico-badge">
+          <button class="btn btn-secondary btn-icon" aria-label="Notifications, 3 unread"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+          <span class="dot">3</span>
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:6px;color:var(--ds-success);font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg>Verified</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;color:var(--ds-danger);font-family:var(--ds-font-sans);font-size:var(--ds-text-sm);"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>Closed</span>
+      </div>
+      <ul class="list-icons">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M5 8h13v5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M8 2v3M12 2v3M16 2v3"/></svg> Dinner reservations <span class="tail">12</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 2v4M16 2v4"/></svg> Upcoming events <span class="tail">4</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7c4 0 7-2 7-2s3 2 7 2"/><path d="M5 7v8c4 0 7 2 7 2s3-2 7-2V7"/></svg> The wine list <span class="tail">28</span></li>
+      </ul>
+    </section>
+
+    <div class="deco-rule" aria-hidden="true">
+      <svg viewBox="0 0 280 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 9h112M166 9h112M2 15h112M166 15h112"/><path d="M140 3l12 9-12 9-12-9z" fill="currentColor" fill-opacity=".16"/><path d="M140 7l8 5-8 5-8-5z"/></svg>
+    </div>
+
+    <!-- ============ 桌面布局 ============ -->
+    <section id="layouts">
+      <p class="sec-label">Desktop Layouts</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">Believable interface mock-ups built with these tokens and real imagery: an admin dashboard, a landing page, and a list-detail view.</p>
+
+      <p class="frame-label">1 · App shell / dashboard</p>
+      <div class="browser" style="margin-bottom:var(--ds-space-8);">
+        <div class="browser-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">theverdance.club/manager</span></div>
+        <div class="dash">
+          <aside class="dash-side">
+            <div class="s-brand"><span class="seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M6 6l12 12M18 6 6 18"/></svg></span>The Verdance</div>
+            <nav class="dash-nav">
+              <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg> Overview</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 2v4M16 2v4"/></svg> Reservations</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M5 8h13v5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M8 2v3M12 2v3M16 2v3"/></svg> Menus</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg> Guests</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6 4 4 6-7"/><path d="M4 21h16"/></svg> Reports</a>
+            </nav>
+          </aside>
+          <main class="dash-main">
+            <div class="dash-top"><h3 class="serif">House Overview</h3><span class="topbar-spacer"></span><button class="btn btn-primary btn-sm">Export</button></div>
+            <div class="kpis">
+              <div class="kpi"><span class="k-l"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Revenue this month</span><div class="k-n">$ 128,640</div><div class="k-d">↑ 18.2% MoM</div></div>
+              <div class="kpi"><span class="k-l"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 2v4M16 2v4"/></svg> Covers booked</span><div class="k-n">1,284</div><div class="k-d">↑ 9.4% MoM</div></div>
+              <div class="kpi"><span class="k-l"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg> New members</span><div class="k-n">312</div><div class="k-d">↑ 5.1% MoM</div></div>
+            </div>
+            <div class="chart" aria-label="Covers over the past seven nights">
+              <span class="bar" style="height:48%;"></span><span class="bar" style="height:70%;"></span><span class="bar alt" style="height:55%;"></span><span class="bar" style="height:88%;"></span><span class="bar" style="height:62%;"></span><span class="bar alt" style="height:96%;"></span><span class="bar" style="height:74%;"></span>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <p class="frame-label">2 · Landing / marketing</p>
+      <div class="browser" style="margin-bottom:var(--ds-space-8);">
+        <div class="browser-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">theverdance.club</span></div>
+        <div class="land">
+          <div class="l-hero">
+            <div>
+              <p class="hero-kicker" style="margin-bottom:var(--ds-space-3);">Dinner · Music · Until Two</p>
+              <h2 class="serif">An evening worth dressing for.</h2>
+              <p>From the emerald gin fizz to the rooftop quartet, The Verdance keeps the 1920s alight — gilded, geometric, and entirely yours for the night.</p>
+              <div class="btn-grid"><button class="btn btn-primary">Reserve a Table</button><button class="btn btn-secondary">The Story</button></div>
+            </div>
+            <div class="l-img"><img src="../../_assets/photos/travel.jpg" alt="夜晚的酒店外观" loading="lazy"></div>
+          </div>
+          <div class="feats">
+            <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M5 8h13v5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M8 2v3M12 2v3M16 2v3"/></svg></span><h4>The Supper Club</h4><p>An eight-course tasting paired with rare emerald-label champagne.</p></div>
+            <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7c4 0 7-2 7-2s3 2 7 2"/><path d="M5 7v8c4 0 7 2 7 2s3-2 7-2V7"/></svg></span><h4>The Gilt Bar</h4><p>Cocktails poured at a faceted brass bar beneath a chevron ceiling.</p></div>
+            <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h4>Rooftop Jazz</h4><p>The resident quartet plays under the sunburst canopy every Friday.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="frame-label">3 · List-detail</p>
+      <div class="browser">
+        <div class="browser-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">theverdance.club/programme</span></div>
+        <div class="ld">
+          <aside class="ld-list">
+            <div class="ld-item active"><img src="../../_assets/photos/food.jpg" alt="The Gatsby Tasting" loading="lazy"><div><p class="li-t">The Gatsby Tasting</p><p class="li-s">Supper Club · $ 188</p></div></div>
+            <div class="ld-item"><img src="../../_assets/photos/desk.jpg" alt="The Gilt Bar" loading="lazy"><div><p class="li-t">Late Supper at the Bar</p><p class="li-s">Bar · $ 64</p></div></div>
+            <div class="ld-item"><img src="../../_assets/photos/coffee.jpg" alt="À la carte Dinner" loading="lazy"><div><p class="li-t">À la carte Dinner</p><p class="li-s">Dining · $ 96</p></div></div>
+            <div class="ld-item"><img src="../../_assets/photos/ocean.jpg" alt="Rooftop Jazz Supper" loading="lazy"><div><p class="li-t">Rooftop Jazz Supper</p><p class="li-s">Music · $ 142</p></div></div>
+          </aside>
+          <main class="ld-detail">
+            <div class="d-img"><span class="stamp-sm" aria-hidden="true">V</span><img src="../../_assets/photos/food.jpg" alt="The Gatsby Tasting 大图" loading="lazy"></div>
+            <h3 class="serif">The Gatsby Tasting</h3>
+            <div class="d-meta"><span>Supper Club</span><span>The Emerald Room</span><span class="badge warning">Waitlist</span></div>
+            <p>Eight courses across an evening, paired with rare emerald-label champagne and finished with gold-leafed dark chocolate. The menu is printed letterpress, ruled in fine double-gold, and signed by the chef de cuisine.</p>
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <div class="deco-rule" aria-hidden="true">
+      <svg viewBox="0 0 280 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 9h112M166 9h112M2 15h112M166 15h112"/><path d="M140 3l12 9-12 9-12-9z" fill="currentColor" fill-opacity=".16"/><path d="M140 7l8 5-8 5-8-5z"/></svg>
+    </div>
+
+    <!-- ============ 移动布局 ============ -->
+    <section>
+      <p class="sec-label">Mobile Layouts · ~390px</p>
+      <p class="lede" style="margin-bottom:var(--ds-space-6);">An app home feed with a bottom tab bar; a profile/detail page with a large header, info, and a nine-up grid.</p>
+      <div class="phones">
+        <!-- App home · Feed (emerald top bar, with sb-light) -->
+        <div class="phone-col">
+          <p class="frame-label">App Home · Feed</p>
+          <div class="dvc17 sb-light">
+            <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+            <span class="k k-cam"></span><span class="k k-pwr"></span>
+            <div class="scr">
+              <div class="island"></div>
+              <div class="sb">
+                <span>9:41</span>
+                <span class="ico">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                  <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                  <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+                </span>
+              </div>
+              <div class="dvc-body" style="display:flex; flex-direction:column; padding-top:0;">
+                <!-- emerald top bar, extending behind the status bar -->
+                <div class="phone-bar" style="margin-top:-54px; padding-top:60px; height:auto; background:var(--ds-primary); border-bottom:none; color:var(--ds-primary-fg);">
+                  <span class="ico" aria-label="Menu" style="color:var(--ds-primary-fg);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>
+                  <span class="ttl" style="color:var(--ds-primary-fg);">The Verdance</span>
+                  <span class="ico" aria-label="Search" style="color:var(--ds-primary-fg);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+                </div>
+                <div class="feed-body">
+                  <div class="feed-hero">
+                    <img src="../../_assets/photos/travel.jpg" alt="夜晚的酒店外观" loading="lazy">
+                    <div class="scrim"></div>
+                    <div class="fh-body"><span class="k">This Friday</span><h4>Rooftop Jazz Supper</h4></div>
+                  </div>
+                  <div class="chip-row" role="tablist" aria-label="分类">
+                    <button class="chip-pill active" role="tab" aria-selected="true">Featured</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">Dining</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">Bar</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">Music</button>
+                    <button class="chip-pill" role="tab" aria-selected="false">Events</button>
+                  </div>
+                  <p class="feed-sec">This Week</p>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/food.jpg" alt="The Gatsby Tasting" loading="lazy">
+                    <div><h5>The Gatsby Tasting</h5><p>Eight courses with emerald-label champagne.</p><div class="fc-meta"><span class="price">$ 188</span><span class="badge warning">Waitlist</span></div></div>
+                  </div>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/desk.jpg" alt="The Gilt Bar" loading="lazy">
+                    <div><h5>Late Supper at the Bar</h5><p>Cocktails and small plates until two.</p><div class="fc-meta"><span class="price">$ 64</span><span class="badge success">Open</span></div></div>
+                  </div>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/ocean.jpg" alt="Rooftop Jazz Supper" loading="lazy">
+                    <div><h5>Rooftop Jazz Supper</h5><p>Dinner on the terrace with the quartet.</p><div class="fc-meta"><span class="price">$ 142</span><span class="badge">Sold Out</span></div></div>
+                  </div>
+                  <p class="feed-sec">From the House</p>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/architecture.jpg" alt="装饰艺术建筑立面" loading="lazy">
+                    <div><h5>The Art of the Aperitif</h5><p>How the house builds an evening, drink by drink.</p><div class="fc-meta"><span>V. Marlowe</span><span>5 min</span></div></div>
+                  </div>
+                  <div class="feed-card">
+                    <img src="../../_assets/photos/city.jpg" alt="夜色城市天际线" loading="lazy">
+                    <div><h5>A Brief History of the Sunburst</h5><p>The motif on our ceiling, and where it came from.</p><div class="fc-meta"><span>The Verdance</span><span>8 min</span></div></div>
+                  </div>
+                </div>
+                <nav class="tabbar" aria-label="Bottom tab bar">
+                  <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/></svg>Home</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Explore</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2 3h3l2.5 13h11l2-9H6.5"/></svg>Book</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>You</a>
+                </nav>
+              </div>
+              <div class="home"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile / detail page (dark cover header, with sb-light) -->
+        <div class="phone-col">
+          <p class="frame-label">Profile / Detail</p>
+          <div class="dvc17 sb-light">
+            <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+            <span class="k k-cam"></span><span class="k k-pwr"></span>
+            <div class="scr">
+              <div class="island"></div>
+              <div class="sb">
+                <span>9:41</span>
+                <span class="ico">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                  <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+                  <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+                </span>
+              </div>
+              <div class="dvc-body" style="padding-top:0; display:flex; flex-direction:column;">
+                <div class="profile-scroll" style="flex:1; overflow:auto;">
+                <div class="profile-hero">
+                  <img class="cover" src="../../_assets/photos/ocean.jpg" alt="屋顶露台封面" loading="lazy">
+                  <span class="stamp-sm" aria-hidden="true">V</span>
+                  <img class="pavatar" src="../../_assets/avatars/a23.jpg" alt="Vivian Marlowe 的头像" loading="lazy">
+                </div>
+                <div class="profile-body">
+                  <h3 class="serif">Vivian Marlowe</h3>
+                  <p class="p-sign">Maître d&#39;hôtel · The Verdance · Host of the supper club</p>
+                  <div class="profile-stats">
+                    <div class="ps"><span class="n">128</span><span class="l">Evenings</span></div>
+                    <div class="ps"><span class="n">3.4k</span><span class="l">Members</span></div>
+                    <div class="ps"><span class="n">286</span><span class="l">Following</span></div>
+                  </div>
+                  <div class="btn-grid" style="margin-bottom:var(--ds-space-4);">
+                    <button class="btn btn-primary btn-sm" style="flex:1;">Follow</button>
+                    <button class="btn btn-secondary btn-sm" style="flex:1;">Message</button>
+                    <button class="btn btn-secondary btn-icon btn-sm" aria-label="收藏"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.6 9.3l6.5-.9L12 2.5l2.9 5.9 6.5.9-4.7 4.7 1.1 6.5z"/></svg></button>
+                  </div>
+                  <div class="profile-tabs" role="tablist" aria-label="Content tabs">
+                    <button class="ptab active" role="tab" aria-selected="true">Evenings 128</button>
+                    <button class="ptab" role="tab" aria-selected="false">Liked</button>
+                    <button class="ptab" role="tab" aria-selected="false">Saved</button>
+                  </div>
+                  <div class="profile-grid">
+                    <img src="../../_assets/photos/coffee.jpg" alt="作品：鸡尾酒特写" loading="lazy">
+                    <img src="../../_assets/photos/desk.jpg" alt="作品：黄铜调酒台" loading="lazy">
+                    <img src="../../_assets/photos/food.jpg" alt="作品：精致摆盘" loading="lazy">
+                    <img src="../../_assets/photos/architecture.jpg" alt="作品：建筑立面" loading="lazy">
+                    <img src="../../_assets/photos/travel.jpg" alt="作品：酒店夜景" loading="lazy">
+                    <img src="../../_assets/photos/square1.jpg" alt="作品：几何细节" loading="lazy">
+                    <img src="../../_assets/photos/city.jpg" alt="作品：城市天际" loading="lazy">
+                    <img src="../../_assets/photos/square2.jpg" alt="作品：纹样特写" loading="lazy">
+                    <img src="../../_assets/photos/square3.jpg" alt="作品：露台一隅" loading="lazy">
+                  </div>
+                </div>
+                </div>
+                <nav class="tabbar" aria-label="Bottom tab bar">
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/></svg>Home</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Explore</a>
+                  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2 3h3l2.5 13h11l2-9H6.5"/></svg>Book</a>
+                  <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>You</a>
+                </nav>
+              </div>
+              <div class="home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="seal" aria-hidden="true" style="width:26px;height:26px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M12 3v18M3 12h18M6 6l12 12M18 6 6 18"/></svg></span>
+      装饰艺术 / Art Deco Kit · The Verdance · every value via <code>var(--ds-*)</code> · light &amp; dark themes · WCAG AA
+    </footer>
+  </div>
+
+  <!-- 模态框 -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3 id="modalTitle" class="serif">Cancel this reservation?</h3>
+      <p>The Rooftop Jazz Supper for Vivian Marlowe will be released. Guests on the waitlist will be offered the table. You can undo this in the manager.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Keep It</button>
+        <button class="btn btn-danger" onclick="closeModal();showToast('success','Released','The reservation was cancelled.')">Cancel Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  // 主题切换
+  var MOON_PATH = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+  var SUN_PATH = '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.5 4.5l1.4 1.4M18.1 18.1l1.4 1.4M2.5 12h2M19.5 12h2M4.5 19.5l1.4-1.4M18.1 5.9l1.4-1.4"/>';
+  function toggleTheme(){
+    var el = document.documentElement;
+    var dark = el.dataset.theme === 'dark';
+    el.dataset.theme = dark ? 'light' : 'dark';
+    var nowDark = !dark;
+    document.getElementById('themeIco').innerHTML = nowDark ? SUN_PATH : MOON_PATH;
+    document.getElementById('themeTxt').textContent = nowDark ? 'Day Salon' : 'Supper Club';
+    setTimeout(refreshHex, 60);
+  }
+  // 色板渲染
+  var surf = [
+    ['--ds-bg','bg · ivory'],['--ds-bg-subtle','bg-subtle'],['--ds-bg-elevated','bg-elevated'],['--ds-bg-sunken','bg-sunken'],
+    ['--ds-fg','fg · ink'],['--ds-fg-muted','fg-muted'],['--ds-fg-subtle','fg-subtle'],['--ds-border','border'],['--ds-border-strong','border-strong']
+  ];
+  var brand = [
+    ['--ds-primary','primary · emerald'],['--ds-primary-hover','hover'],['--ds-primary-active','active'],['--ds-accent','accent · gold'],['--ds-accent-fg','accent-fg']
+  ];
+  function hexOf(varName){
+    var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return v || '—';
+  }
+  function renderSwatches(id, arr){
+    document.getElementById(id).innerHTML = arr.map(function(p){
+      return '<div class="swatch"><div class="chip" style="background:var('+p[0]+');border-bottom:1px solid var(--ds-border)"></div>'+
+        '<div class="info"><span class="swatch-name">'+p[1]+'</span><span class="swatch-hex" data-var="'+p[0]+'">'+hexOf(p[0])+'</span></div></div>';
+    }).join('');
+  }
+  var states = [
+    ['success','Success'],['warning','Warning'],['danger','Danger'],['info','Info']
+  ];
+  function renderStates(){
+    document.getElementById('stateRow').innerHTML = states.map(function(s){
+      return '<div class="state-card" style="background:var(--ds-'+s[0]+'-bg);color:var(--ds-'+s[0]+'-fg);border:1px solid var(--ds-'+s[0]+')">'+
+        '<b>'+s[1]+'</b><br><span style="opacity:.85">tint + state border + text on tint</span></div>';
+    }).join('');
+  }
+  function refreshHex(){
+    document.querySelectorAll('.swatch-hex[data-var]').forEach(function(el){ el.textContent = hexOf(el.dataset.var); });
+  }
+  renderSwatches('surfSwatches', surf);
+  renderSwatches('brandSwatches', brand);
+  renderStates();
+
+  // 下拉菜单
+  function toggleMenu(){
+    var m = document.getElementById('ddMenu'), b = document.getElementById('ddBtn');
+    var open = !m.hasAttribute('hidden');
+    if(open){ m.setAttribute('hidden',''); b.setAttribute('aria-expanded','false'); }
+    else { m.removeAttribute('hidden'); b.setAttribute('aria-expanded','true'); }
+  }
+  document.addEventListener('click', function(e){
+    var dd = document.querySelector('.dropdown');
+    if(dd && !dd.contains(e.target)){ var m=document.getElementById('ddMenu'); if(m && !m.hasAttribute('hidden')){ m.setAttribute('hidden',''); document.getElementById('ddBtn').setAttribute('aria-expanded','false'); } }
+  });
+
+  // 模态框
+  function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
+  function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  // Toast
+  var TOAST_ICONS = {
+    success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-5"/></svg>',
+    danger:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+    info:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>'
+  };
+  var CLOSE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  function showToast(type, title, msg){
+    var wrap = document.getElementById('toastWrap');
+    var t = document.createElement('div');
+    t.className = 'toast ' + (type || '');
+    t.setAttribute('role','status');
+    var icoSvg = TOAST_ICONS[type] || TOAST_ICONS.info;
+    t.innerHTML = '<span class="toast-ico">'+icoSvg+'</span>'+
+                  '<div class="toast-body"><p class="toast-title"></p><p class="toast-msg"></p></div>'+
+                  '<button class="toast-close" aria-label="关闭">'+CLOSE_ICON+'</button>';
+    t.querySelector('.toast-title').textContent = title;
+    t.querySelector('.toast-msg').textContent = msg;
+    var close = function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 240); };
+    t.querySelector('.toast-close').onclick = close;
+    wrap.appendChild(t);
+    requestAnimationFrame(function(){ t.classList.add('show'); });
+    setTimeout(close, 4000);
+  }
+</script>
+</body>
+</html>
