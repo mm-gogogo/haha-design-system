@@ -1,0 +1,141 @@
+/* ============================================================
+   Newspaper · 报刊风 (Broadsheet) Design System Tokens
+   Contract: all variable names are fixed --ds-* tokens.
+   Light :root + dark [data-theme="dark"] and .dark compatibility.
+   Character: ink black, newsprint paper, hairline rules, one editorial red.
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces and text: light newsprint edition ---- */
+  --ds-bg: #f2efe8;
+  --ds-bg-subtle: #e9e5da;
+  --ds-bg-elevated: #fbf9f3;
+  --ds-bg-sunken: #e2ddd0;
+  --ds-fg: #1a1a18;
+  --ds-fg-muted: #4a4a45;
+  --ds-fg-subtle: #6e6e66;
+  --ds-fg-on-accent: #f6f3ea;
+  --ds-border: #d6d0c2;
+  --ds-border-strong: #1a1a18;
+
+  /* ---- Brand and accent: one editorial red ---- */
+  --ds-primary: #1f1f1c;
+  --ds-primary-hover: #000000;
+  --ds-primary-active: #000000;
+  --ds-primary-fg: #f6f3ea;
+  --ds-accent: #a8201a;
+  --ds-accent-fg: #ffffff;
+
+  /* ---- Semantic status colors ---- */
+  --ds-success: #1f6e3a;
+  --ds-success-bg: #e4f0e6;
+  --ds-success-fg: #0a3219;
+  --ds-warning: #8a5e10;
+  --ds-warning-bg: #f5ecce;
+  --ds-warning-fg: #42300a;
+  --ds-danger: #a8201a;
+  --ds-danger-bg: #f6e0de;
+  --ds-danger-fg: #561010;
+  --ds-info: #1d4e7a;
+  --ds-info-bg: #e2ecf4;
+  --ds-info-fg: #0c2740;
+
+  /* ---- Focus ---- */
+  --ds-focus: #a8201a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- Radius: print-straight edges ---- */
+  --ds-radius-sm: 0px;
+  --ds-radius-md: 0px;
+  --ds-radius-lg: 0px;
+  --ds-radius-full: 9999px;
+
+  /* ---- Spacing scale: inherited from the source kit ---- */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-7: 32px;
+  --ds-space-8: 40px;
+  --ds-space-9: 48px;
+  --ds-space-10: 64px;
+  --ds-space-11: 80px;
+  --ds-space-12: 96px;
+
+  /* ---- Typography: serif body, serif heads, sans UI, mono metadata ---- */
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-sans: "Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-mono: "JetBrains Mono",monospace;
+  --ds-text-xs: 13px;
+  --ds-text-sm: 14px;
+  --ds-text-base: 17px;
+  --ds-text-md: 19px;
+  --ds-text-lg: 22px;
+  --ds-text-xl: 28px;
+  --ds-text-2xl: 38px;
+  --ds-text-3xl: 52px;
+  --ds-leading-tight: 1.25;
+  --ds-leading-normal: 1.55;
+  --ds-leading-relaxed: 1.85;
+  --ds-weight-normal: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.015em;
+  --ds-tracking-normal: 0;
+
+  /* ---- Shadows: flat print keylines ---- */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong);
+
+  /* ---- Motion: inherited from the source kit ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 160ms;
+  --ds-dur-base: 240ms;
+  --ds-dur-slow: 300ms;
+}
+
+/* ============================================================
+   Dark · late/night edition: light paper marks on black ink.
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg: #161512;
+  --ds-bg-subtle: #1d1b16;
+  --ds-bg-elevated: #211f19;
+  --ds-bg-sunken: #100f0b;
+  --ds-fg: #ece8dc;
+  --ds-fg-muted: #aaa595;
+  --ds-fg-subtle: #7e7a6c;
+  --ds-fg-on-accent: #161512;
+  --ds-border: #34322a;
+  --ds-border-strong: #ece8dc;
+
+  --ds-primary: #e8e4d8;
+  --ds-primary-hover: #fffdf4;
+  --ds-primary-active: #d6d2c6;
+  --ds-primary-fg: #161512;
+  --ds-accent: #e0564e;
+  --ds-accent-fg: #1a0a08;
+
+  --ds-success: #5fb87a;
+  --ds-success-bg: #0e2a1a;
+  --ds-success-fg: #cdeed7;
+  --ds-warning: #d6b25a;
+  --ds-warning-bg: #241c08;
+  --ds-warning-fg: #f6e6be;
+  --ds-danger: #e0564e;
+  --ds-danger-bg: #2a0e0c;
+  --ds-danger-fg: #f8d4d0;
+  --ds-info: #6fa6d0;
+  --ds-info-bg: #0c2030;
+  --ds-info-fg: #cfe6f4;
+
+  --ds-focus: #e0564e;
+
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong);
+}

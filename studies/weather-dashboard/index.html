@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather Dashboard Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07090d;
+      --bg-2: #12151b;
+      --panel: rgba(23, 25, 30, .82);
+      --panel-solid: #191c22;
+      --panel-deep: #080a0d;
+      --rim: #323842;
+      --rim-soft: rgba(255, 255, 255, .13);
+      --ink: #f2f5f2;
+      --muted: #9aa39c;
+      --dim: #626a67;
+      --amber: #ff8a3d;
+      --amber-hot: #ffc066;
+      --amber-dim: rgba(255, 118, 46, .36);
+      --green: #7dffb4;
+      --blue: #6cc7ff;
+      --violet: #be9cff;
+      --danger: #ff6262;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 28px 18px 98px;
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 24% 8%, rgba(112, 121, 125, .28), transparent 34%),
+        radial-gradient(circle at 76% 92%, rgba(255, 116, 51, .16), transparent 32%),
+        linear-gradient(145deg, #34383f 0%, #111419 45%, #050609 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .34;
+      background:
+        linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, #000 0%, transparent 74%);
+    }
+
+    .study-shell {
+      width: min(1180px, calc(100vw - 28px));
+      position: relative;
+      padding: 18px;
+      border-radius: 22px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .025) 24%, rgba(0, 0, 0, .18)),
+        var(--panel-solid);
+      box-shadow:
+        0 42px 82px -38px rgba(0, 0, 0, .94),
+        0 8px 0 #090a0d,
+        inset 0 1px 0 rgba(255, 255, 255, .16),
+        inset 0 -1px 0 rgba(0, 0, 0, .76);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .study-shell::before,
+    .study-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .study-shell::before {
+      opacity: .22;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, .34) 0 1px, transparent 1px),
+        radial-gradient(circle at 72% 38%, rgba(255, 255, 255, .24) 0 1px, transparent 1px);
+      background-size: 11px 11px, 17px 17px;
+      mix-blend-mode: overlay;
+    }
+
+    .study-shell::after {
+      inset: 8px;
+      border-radius: 17px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .62);
+    }
+
+    .engraving {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 0 6px 14px;
+      color: #090a0c;
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .16em;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .12);
+      text-transform: uppercase;
+    }
+
+    .console-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.16fr) minmax(320px, .82fr) minmax(290px, .7fr);
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .module {
+      min-width: 0;
+      border-radius: 12px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .018)),
+        rgba(9, 11, 14, .82);
+      border: 1px solid rgba(255, 255, 255, .1);
+      box-shadow:
+        inset 0 2px 12px rgba(0, 0, 0, .68),
+        inset 0 0 0 1px rgba(0, 0, 0, .66);
+      overflow: hidden;
+    }
+
+    .screen {
+      min-height: 424px;
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 145, 61, .12), transparent 42%),
+        linear-gradient(rgba(255, 135, 57, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 135, 57, .035) 1px, transparent 1px),
+        #040504;
+      background-size: auto, 100% 7px, 26px 100%, auto;
+      color: var(--amber);
+      text-shadow: 0 0 10px rgba(255, 126, 50, .34);
+      position: relative;
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 18%),
+        radial-gradient(circle at center, transparent 36%, rgba(0, 0, 0, .62) 100%);
+      mix-blend-mode: screen;
+      opacity: .52;
+    }
+
+    .telemetry-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font: 700 11px/1.2 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255, 158, 83, .62);
+    }
+
+    .status-lamps {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .lamp {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--amber);
+      box-shadow: 0 0 14px rgba(255, 129, 45, .9), inset 0 1px 0 rgba(255, 255, 255, .55);
+    }
+
+    .lamp:nth-child(2) {
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(125, 255, 180, .7);
+    }
+
+    .lamp:nth-child(3) {
+      background: #151714;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, .9), 0 1px 0 rgba(255, 255, 255, .1);
+    }
+
+    .current-reading {
+      position: relative;
+      align-self: center;
+      padding: 24px 0 18px;
+    }
+
+    .city {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: rgba(255, 196, 123, .72);
+      font: 700 12px/1 var(--mono);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .glyph {
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      color: var(--amber-hot);
+      filter: drop-shadow(0 0 8px rgba(255, 144, 64, .44));
+    }
+
+    .temp-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .temperature {
+      font-family: var(--mono);
+      font-size: clamp(76px, 12vw, 142px);
+      font-weight: 300;
+      line-height: .86;
+      letter-spacing: -0.035em;
+      color: #ff9a4a;
+    }
+
+    .temperature sup {
+      font-size: .26em;
+      vertical-align: top;
+      margin-left: 4px;
+      color: rgba(255, 198, 119, .88);
+    }
+
+    .now-copy {
+      max-width: 230px;
+      padding-top: 10px;
+      color: rgba(255, 201, 133, .76);
+      font: 500 13px/1.55 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .micro-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .micro {
+      min-width: 0;
+      padding: 11px 10px;
+      border-radius: 8px;
+      background: rgba(255, 128, 47, .055);
+      border: 1px solid rgba(255, 143, 65, .14);
+      font-family: var(--mono);
+    }
+
+    .micro b {
+      display: block;
+      margin-bottom: 6px;
+      color: rgba(255, 151, 72, .52);
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .micro span {
+      display: block;
+      color: #ffd09a;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .middle-stack,
+    .right-stack {
+      display: grid;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .gauges {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gauge-card {
+      min-width: 0;
+      min-height: 154px;
+      padding: 12px 10px 11px;
+      display: grid;
+      justify-items: center;
+      align-content: space-between;
+      border-radius: 10px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .018)),
+        #14171c;
+      border: 1px solid rgba(255, 255, 255, .09);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+    }
+
+    .gauge-title,
+    .panel-title {
+      color: rgba(237, 241, 237, .56);
+      font: 700 10px/1 var(--mono);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .dial {
+      --angle: 220deg;
+      position: relative;
+      width: 92px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #0a0c0f 0 42%, transparent 43%),
+        conic-gradient(from -132deg, rgba(255, 143, 65, .92) 0 var(--angle), rgba(255, 255, 255, .06) var(--angle) 284deg, transparent 284deg 360deg);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, .08),
+        inset 0 8px 16px rgba(0, 0, 0, .75),
+        0 1px 0 rgba(255, 255, 255, .08);
+    }
+
+    .dial svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      overflow: visible;
+    }
+
+    .dial .track {
+      fill: none;
+      stroke: rgba(255, 255, 255, .08);
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+
+    .dial .arc {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 8;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px currentColor);
+    }
+
+    .dial-value {
+      color: #fff0cf;
+      font: 700 17px/1 var(--mono);
+    }
+
+    .gauge-note {
+      color: rgba(154, 163, 156, .72);
+      font: 700 9px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .hourly {
+      padding: 14px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .panel-head span:last-child {
+      color: rgba(154, 163, 156, .6);
+      font: 700 10px/1 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .hour-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .hour {
+      min-width: 0;
+      min-height: 108px;
+      padding: 10px 7px;
+      display: grid;
+      justify-items: center;
+      align-content: space-between;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      color: rgba(242, 245, 242, .82);
+      font-family: var(--mono);
+    }
+
+    .hour time {
+      color: rgba(154, 163, 156, .72);
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .hour svg {
+      width: 28px;
+      height: 28px;
+      color: var(--amber-hot);
+    }
+
+    .hour b {
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .hour small {
+      color: rgba(255, 138, 61, .72);
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .radar {
+      min-height: 288px;
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .scope-wrap {
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      padding: 8px 0 10px;
+    }
+
+    .scope {
+      position: relative;
+      width: min(236px, 100%);
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 58% 38%, rgba(125, 255, 180, .22) 0 7%, transparent 8%),
+        radial-gradient(circle at 42% 66%, rgba(108, 199, 255, .2) 0 10%, transparent 11%),
+        radial-gradient(circle at 70% 73%, rgba(255, 138, 61, .18) 0 8%, transparent 9%),
+        linear-gradient(rgba(125, 255, 180, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(125, 255, 180, .06) 1px, transparent 1px),
+        #050807;
+      background-size: auto, auto, auto, 24px 24px, 24px 24px, auto;
+      border: 1px solid rgba(125, 255, 180, .2);
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, .7),
+        inset 0 0 28px rgba(0, 0, 0, .9),
+        0 0 28px -18px rgba(125, 255, 180, .8);
+    }
+
+    .scope::before,
+    .scope::after {
+      content: "";
+      position: absolute;
+      inset: 16%;
+      border: 1px solid rgba(125, 255, 180, .13);
+      border-radius: 50%;
+    }
+
+    .scope::after {
+      inset: 33%;
+    }
+
+    .crosshair {
+      position: absolute;
+      inset: 50% 0 auto;
+      height: 1px;
+      background: rgba(125, 255, 180, .16);
+    }
+
+    .crosshair::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -118px;
+      width: 1px;
+      height: 236px;
+      background: rgba(125, 255, 180, .16);
+    }
+
+    .sweep {
+      position: absolute;
+      inset: -3%;
+      border-radius: 50%;
+      background: conic-gradient(from 22deg, rgba(125, 255, 180, .56), rgba(125, 255, 180, .16) 28deg, transparent 62deg 360deg);
+      mix-blend-mode: screen;
+      transform-origin: center;
+      animation: sweep-rotate 5.4s linear infinite;
+    }
+
+    .blip {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 13px rgba(125, 255, 180, .9);
+    }
+
+    .blip.one {
+      left: 30%;
+      top: 40%;
+    }
+
+    .blip.two {
+      left: 65%;
+      top: 31%;
+      background: var(--blue);
+      box-shadow: 0 0 13px rgba(108, 199, 255, .82);
+    }
+
+    .blip.three {
+      left: 56%;
+      top: 70%;
+      background: var(--amber);
+      box-shadow: 0 0 13px rgba(255, 138, 61, .8);
+    }
+
+    .radar-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .radar-stats div {
+      min-width: 0;
+      padding: 9px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .035);
+      font-family: var(--mono);
+    }
+
+    .radar-stats b {
+      display: block;
+      margin-bottom: 5px;
+      color: rgba(154, 163, 156, .64);
+      font-size: 9px;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .radar-stats span {
+      color: #dfffe9;
+      font-size: 13px;
+    }
+
+    .week {
+      padding: 14px;
+    }
+
+    .day-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .day {
+      min-width: 0;
+      min-height: 43px;
+      display: grid;
+      grid-template-columns: 42px 28px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .07);
+      font-family: var(--mono);
+    }
+
+    .day strong {
+      color: rgba(242, 245, 242, .86);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .day svg {
+      width: 24px;
+      height: 24px;
+      color: var(--amber-hot);
+    }
+
+    .bar {
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      width: var(--w);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--amber-hot));
+    }
+
+    .day span {
+      color: #fff0cf;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .system-note {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 11px;
+      padding-top: 11px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      color: rgba(154, 163, 156, .64);
+      font: 700 10px/1.35 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .signal {
+      width: 62px;
+      height: 18px;
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, var(--green) 0 62%, rgba(255, 255, 255, .08) 62% 100%);
+      box-shadow: 0 0 14px -7px rgba(125, 255, 180, .9);
+    }
+
+    @keyframes sweep-rotate {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .console-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(300px, .82fr);
+      }
+
+      .right-stack {
+        grid-column: 1 / -1;
+        grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 14px 10px 136px;
+        place-items: start center;
+      }
+
+      .study-shell {
+        width: min(100%, calc(100vw - 20px));
+        padding: 12px;
+        border-radius: 16px;
+      }
+
+      .engraving {
+        flex-wrap: wrap;
+        padding-bottom: 10px;
+        font-size: 8px;
+      }
+
+      .console-grid,
+      .right-stack,
+      .gauges,
+      .micro-grid,
+      .radar-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .screen {
+        min-height: 0;
+      }
+
+      .temp-line {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .temperature {
+        font-size: clamp(72px, 27vw, 104px);
+      }
+
+      .now-copy {
+        max-width: none;
+        padding-top: 0;
+      }
+
+      .hour-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .day {
+        grid-template-columns: 38px 26px minmax(54px, 1fr) auto;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .study-shell {
+        width: min(100%, calc(100vw - 16px));
+        padding: 10px;
+      }
+
+      .module {
+        border-radius: 10px;
+      }
+
+      .screen,
+      .gauges,
+      .hourly,
+      .radar,
+      .week {
+        padding: 12px;
+      }
+
+      .hour-strip {
+        gap: 6px;
+      }
+
+      .hour {
+        min-height: 98px;
+        padding-inline: 5px;
+      }
+
+      .telemetry-row,
+      .panel-head,
+      .system-note {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .sweep {
+        transform: rotate(42deg);
+      }
+    }
+
+    @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+  </style>
+</head>
+<body>
+  <main class="study-shell" aria-label="Dark retro weather dashboard effect study">
+    <div class="engraving" aria-hidden="true">
+      <span>OBSERVATION DECK / UNIT 19</span>
+      <span>BARO DATA LINK READY</span>
+      <span>LOCAL MODEL 04:18</span>
+    </div>
+
+    <section class="console-grid">
+      <article class="module screen">
+        <div class="telemetry-row">
+          <span>CINDER BAY / WEST MOOR</span>
+          <span class="status-lamps" aria-label="System status indicators">
+            <i class="lamp"></i>
+            <i class="lamp"></i>
+            <i class="lamp"></i>
+          </span>
+        </div>
+
+        <div class="current-reading">
+          <div class="city">
+            <svg class="glyph" viewBox="0 0 48 48" aria-hidden="true">
+              <circle cx="18" cy="18" r="8" fill="none" stroke="currentColor" stroke-width="3"/>
+              <path d="M18 3v6M18 27v6M3 18h6M27 18h6M7.5 7.5l4.2 4.2M24.3 24.3l4.2 4.2M28.5 7.5l-4.2 4.2M11.7 24.3l-4.2 4.2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M19 34h16.5a6.5 6.5 0 0 0 0-13 9.2 9.2 0 0 0-17.4 3.2A5 5 0 0 0 19 34Z" fill="#050504" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+            <span>Calm haze with high cloud shelf</span>
+          </div>
+          <div class="temp-line">
+            <div class="temperature">18<sup>°C</sup></div>
+            <p class="now-copy">Pressure rising. Sea breeze holding north-east. Visibility stable across the lower harbor.</p>
+          </div>
+        </div>
+
+        <div class="micro-grid" aria-label="Current condition telemetry">
+          <div class="micro"><b>Feels</b><span>16.9°C</span></div>
+          <div class="micro"><b>Dew pt</b><span>9.4°C</span></div>
+          <div class="micro"><b>Cloud</b><span>38%</span></div>
+        </div>
+      </article>
+
+      <div class="middle-stack">
+        <article class="module gauges" aria-label="Circular weather gauges">
+          <div class="gauge-card">
+            <div class="gauge-title">Humidity</div>
+            <div class="dial" style="--angle: 196deg; color: var(--blue);">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="track" cx="60" cy="60" r="45"></circle>
+                <circle class="arc" cx="60" cy="60" r="45" stroke-dasharray="176 283"></circle>
+              </svg>
+              <div class="dial-value">62%</div>
+            </div>
+            <div class="gauge-note">Marine layer</div>
+          </div>
+
+          <div class="gauge-card">
+            <div class="gauge-title">Wind</div>
+            <div class="dial" style="--angle: 128deg; color: var(--green);">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="track" cx="60" cy="60" r="45"></circle>
+                <circle class="arc" cx="60" cy="60" r="45" stroke-dasharray="115 283"></circle>
+              </svg>
+              <div class="dial-value">14 kt</div>
+            </div>
+            <div class="gauge-note">NE steady</div>
+          </div>
+
+          <div class="gauge-card">
+            <div class="gauge-title">UV Index</div>
+            <div class="dial" style="--angle: 78deg; color: var(--amber-hot);">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="track" cx="60" cy="60" r="45"></circle>
+                <circle class="arc" cx="60" cy="60" r="45" stroke-dasharray="70 283"></circle>
+              </svg>
+              <div class="dial-value">2.1</div>
+            </div>
+            <div class="gauge-note">Low angle</div>
+          </div>
+
+          <div class="gauge-card">
+            <div class="gauge-title">Pressure</div>
+            <div class="dial" style="--angle: 242deg; color: var(--violet);">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="track" cx="60" cy="60" r="45"></circle>
+                <circle class="arc" cx="60" cy="60" r="45" stroke-dasharray="218 283"></circle>
+              </svg>
+              <div class="dial-value">1018</div>
+            </div>
+            <div class="gauge-note">hPa rising</div>
+          </div>
+        </article>
+
+        <article class="module hourly">
+          <div class="panel-head">
+            <span class="panel-title">Hourly Strip</span>
+            <span>Next 18 hr</span>
+          </div>
+          <div class="hour-strip" aria-label="Hourly forecast">
+            <div class="hour">
+              <time>06</time>
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 33h21a7 7 0 0 0 0-14 10 10 0 0 0-19-3.4A7.5 7.5 0 0 0 14 33Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+              <b>17°</b><small>mist</small>
+            </div>
+            <div class="hour">
+              <time>09</time>
+              <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="19" cy="19" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M19 4v5M19 29v5M4 19h5M29 19h5M8.5 8.5l3.5 3.5M26 26l3.5 3.5M29.5 8.5 26 12M12 26l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+              <b>19°</b><small>clear</small>
+            </div>
+            <div class="hour">
+              <time>12</time>
+              <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="16" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M18 34h17a7 7 0 0 0 0-14 10 10 0 0 0-18.4 3.9A5.5 5.5 0 0 0 18 34Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+              <b>21°</b><small>high</small>
+            </div>
+            <div class="hour">
+              <time>15</time>
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 29h22a7 7 0 0 0 0-14 10 10 0 0 0-19-3.2A7.2 7.2 0 0 0 13 29Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M17 37v4M25 36v5M33 37v4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+              <b>20°</b><small>drip</small>
+            </div>
+            <div class="hour">
+              <time>18</time>
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 33h21a7 7 0 0 0 0-14 10 10 0 0 0-19-3.4A7.5 7.5 0 0 0 14 33Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+              <b>18°</b><small>cloud</small>
+            </div>
+            <div class="hour">
+              <time>21</time>
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 8a15 15 0 1 0 10 24 12 12 0 1 1-10-24Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+              <b>16°</b><small>cool</small>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="right-stack">
+        <article class="module radar">
+          <div class="panel-head">
+            <span class="panel-title">Precip Scope</span>
+            <span>Band 03</span>
+          </div>
+          <div class="scope-wrap">
+            <div class="scope" aria-label="Rotating radar precipitation sweep">
+              <i class="crosshair"></i>
+              <i class="sweep"></i>
+              <i class="blip one"></i>
+              <i class="blip two"></i>
+              <i class="blip three"></i>
+            </div>
+          </div>
+          <div class="radar-stats" aria-label="Radar telemetry">
+            <div><b>Rain</b><span>18%</span></div>
+            <div><b>Cell</b><span>7 km</span></div>
+            <div><b>Echo</b><span>soft</span></div>
+          </div>
+        </article>
+
+        <article class="module week">
+          <div class="panel-head">
+            <span class="panel-title">Seven Day Line</span>
+            <span>Bay model</span>
+          </div>
+          <div class="day-list" aria-label="Seven day forecast">
+            <div class="day"><strong>Mon</strong><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="9" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><span class="bar" style="--w: 58%;"><i></i></span><span>21 / 14</span></div>
+            <div class="day"><strong>Tue</strong><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 33h21a7 7 0 0 0 0-14 10 10 0 0 0-19-3.4A7.5 7.5 0 0 0 14 33Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg><span class="bar" style="--w: 46%;"><i></i></span><span>19 / 13</span></div>
+            <div class="day"><strong>Wed</strong><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 29h22a7 7 0 0 0 0-14 10 10 0 0 0-19-3.2A7.2 7.2 0 0 0 13 29Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M17 37v4M25 36v5M33 37v4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><span class="bar" style="--w: 38%;"><i></i></span><span>17 / 12</span></div>
+            <div class="day"><strong>Thu</strong><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="16" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M18 34h17a7 7 0 0 0 0-14 10 10 0 0 0-18.4 3.9A5.5 5.5 0 0 0 18 34Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg><span class="bar" style="--w: 68%;"><i></i></span><span>23 / 15</span></div>
+            <div class="day"><strong>Fri</strong><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 8a15 15 0 1 0 10 24 12 12 0 1 1-10-24Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg><span class="bar" style="--w: 52%;"><i></i></span><span>20 / 11</span></div>
+            <div class="day"><strong>Sat</strong><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 33h21a7 7 0 0 0 0-14 10 10 0 0 0-19-3.4A7.5 7.5 0 0 0 14 33Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg><span class="bar" style="--w: 49%;"><i></i></span><span>18 / 10</span></div>
+            <div class="day"><strong>Sun</strong><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="9" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><span class="bar" style="--w: 73%;"><i></i></span><span>24 / 16</span></div>
+          </div>
+          <div class="system-note">
+            <span>Telemetry lock 97.3 / scan clean</span>
+            <i class="signal" aria-hidden="true"></i>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Weather Dashboard Design》（社区 Featured 作品）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

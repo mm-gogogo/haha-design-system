@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 25 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 26 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 25 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 26 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -133,6 +133,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 25 新艺术运动 · Art Nouveau (Mucha) — `/styles/25-art-nouveau/`
 有机曲线、植物线描、鞭线藤蔓。primary 鼠尾草青 `#3e6b5e` / accent 哑金 `#7d6212` / bg 暖羊皮纸 `#f5f0e6`·elevated `#fffdf6` / fg 棕墨 `#2a2820`｜暗（夜园）primary `#6fae90` / accent 金 `#cba24e` / bg 森绿黑 `#181c18`·fg `#ece4d2`｜4·10·18｜Noto Serif 流动标题 + Inter｜鞭线 S 曲线/藤蔓/百合鸢尾孔雀线描 + 拱形装饰框 + 金色细线纹样。与 21 装饰艺术（几何对称）刻意区分（有机曲线植物）。
+
+### 26 报刊风 · Newspaper (Broadsheet) — `/styles/26-newspaper/`
+传统大报：衬线报头 + 日期线 + 多栏细线正文。primary 墨黑 `#1f1f1c`(黑底按钮) / accent 报红 `#a8201a` / bg 新闻纸 `#f2efe8`·elevated `#fbf9f3` / fg `#1a1a18`｜暗（夜刊）primary 纸白 `#e8e4d8`(黑字) / accent `#e0564e` / bg `#161512`·fg `#ece8dc`｜0·0·0（锐）｜Noto Serif 报头/标题/正文 + JetBrains Mono 日期线/眉标｜大报头 + 双线 + column-count 多栏细线 + 首字下沉 + 小型大写署名 + 灰度配图。与 07 极简编辑（舒适阅读）刻意区分（高密度多栏大报）。
 
 ---
 
