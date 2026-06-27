@@ -1,0 +1,104 @@
+/* ============================================================================
+   Pop Art / 波普艺术 Design System — tokens.css
+   ----------------------------------------------------------------------------
+   Token 契约 100% 遵守（--ds-* 全量）。亮色 :root + 暗色
+   [data-theme="dark"] 与 .dark 兼容。气质：漫画书红/蓝主色、奶油纸底、
+   粗黑 keyline、Ben-Day 网点、气泡与爆炸形、硬偏移阴影。
+   ============================================================================ */
+
+:root {
+  /* ---- 表面与文字（亮：奶油纸 + 近黑墨线） -------------------------------- */
+  --ds-bg:           #fbf3df;
+  --ds-bg-subtle:    #f3e9cd;
+  --ds-bg-elevated:  #fffdf6;
+  --ds-bg-sunken:    #efe3c2;
+  --ds-fg:           #15130e;
+  --ds-fg-muted:     #44403a;
+  --ds-fg-subtle:    #6a665c;
+  --ds-fg-on-accent: #ffffff;
+  --ds-border:       #ddd2b4;
+  --ds-border-strong:#15130e;
+
+  /* ---- 品牌与强调（漫画红 + 印刷蓝） --------------------------------------- */
+  --ds-primary:        #d8241b;
+  --ds-primary-hover:  #bd1f17;
+  --ds-primary-active: #a01a13;
+  --ds-primary-fg:     #ffffff;
+  --ds-accent:         #1546d6;
+  --ds-accent-fg:      #ffffff;
+
+  /* ---- 语义状态（主 / -bg 浅底 / -fg 底上文字；全部 AA） -------------------- */
+  --ds-success: #1f8a3a; --ds-success-bg: #e4f2e6; --ds-success-fg: #0a3618;
+  --ds-warning: #9a6a00; --ds-warning-bg: #f8eccb; --ds-warning-fg: #42300a;
+  --ds-danger:  #d8241b; --ds-danger-bg:  #f9e1df; --ds-danger-fg:  #5a100c;
+  --ds-info:    #1546d6; --ds-info-bg:    #e3e8f9; --ds-info-fg:    #0c1f5a;
+
+  /* ---- 焦点（红色双层硬环） ------------------------------------------------ */
+  --ds-focus: #d8241b;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（漫画气泡/贴纸：小圆角，不软化 keyline） ----------------------- */
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 14px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（继承源 kit：4px 基） ------------------------------------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（本地 fonts.css：Inter + JetBrains Mono；中文系统回退） -------- */
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", sans-serif;
+  --ds-font-serif: "Inter", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 14px; --ds-text-base: 16px; --ds-text-md: 19px;
+  --ds-text-lg: 24px; --ds-text-xl: 34px; --ds-text-2xl: 52px; --ds-text-3xl: 76px;
+  --ds-leading-tight: 1.02; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 600; --ds-weight-bold: 800;
+  --ds-tracking-tight: -0.04em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影（硬实心偏移，永不模糊；漫画贴纸离版感） ----------------------- */
+  --ds-shadow-sm: 2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 6px 6px 0 var(--ds-border-strong);
+
+  /* ---- 动效（继承源 kit：短促、硬收尾） ----------------------------------- */
+  --ds-ease: cubic-bezier(.2,0,0,1);
+  --ds-dur-fast: 80ms; --ds-dur-base: 140ms; --ds-dur-slow: 240ms;
+}
+
+/* ============================================================================
+   暗色主题：comic night，红/蓝提亮，keyline 翻为奶油纸色。
+   暗色 primary/accent 使用深色文字是有意为 AA 对比。
+   ============================================================================ */
+[data-theme="dark"], .dark {
+  --ds-bg:           #14110a;
+  --ds-bg-subtle:    #1c1810;
+  --ds-bg-elevated:  #221d12;
+  --ds-bg-sunken:    #0e0b06;
+  --ds-fg:           #fbf3df;
+  --ds-fg-muted:     #b8b09a;
+  --ds-fg-subtle:    #8a8270;
+  --ds-fg-on-accent: #1a0604;
+  --ds-border:       #34301f;
+  --ds-border-strong:#fbf3df;
+
+  --ds-primary:        #ff5247;
+  --ds-primary-hover:  #ff6e64;
+  --ds-primary-active: #ee4339;
+  --ds-primary-fg:     #1a0604;
+  --ds-accent:         #5b86ff;
+  --ds-accent-fg:      #04102e;
+
+  --ds-success: #4cc26a; --ds-success-bg: #0c2614; --ds-success-fg: #c9f5d4;
+  --ds-warning: #ffd21a; --ds-warning-bg: #241c00; --ds-warning-fg: #fff0bf;
+  --ds-danger:  #ff5247; --ds-danger-bg:  #2a0c0a; --ds-danger-fg:  #ffd4d0;
+  --ds-info:    #5b86ff; --ds-info-bg:    #0c1838; --ds-info-fg:    #d6e0ff;
+
+  --ds-focus: #ff5247;
+
+  --ds-shadow-sm: 2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 6px 6px 0 var(--ds-border-strong);
+}
