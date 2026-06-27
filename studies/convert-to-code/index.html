@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tracepane Studio - Convert Design to Code</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<style>
+:root{
+  --bg:#0d0e12;
+  --shell:#15161c;
+  --shell-2:#1d1f28;
+  --ink:#f2f4f8;
+  --muted:#9ba2b1;
+  --line:#2b2f3c;
+  --accent:#7ad7c4;
+  --accent-2:#ffbf69;
+  --code:#0a0c10;
+  --code-line:#202634;
+  --green:#77d5a5;
+  --blue:#83b8ff;
+  --rose:#ff8aa6;
+  --amber:#ffd37a;
+  --violet:#b9a4ff;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg)}
+body{
+  margin:0;
+  min-height:100svh;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 20% 12%,rgba(122,215,196,.16),transparent 30%),
+    radial-gradient(circle at 88% 18%,rgba(255,191,105,.12),transparent 28%),
+    linear-gradient(180deg,#12141a 0%,#0d0e12 58%,#090a0d 100%);
+  color:var(--ink);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit}
+.page{
+  width:min(1120px,calc(100% - 40px));
+  min-height:100svh;
+  margin:0 auto;
+  padding:32px 0 110px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+.brand-mark{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:11px;
+  background:#222733;
+  border:1px solid #343a48;
+}
+.brand-mark svg{width:22px;height:22px;color:var(--accent)}
+.brand-copy{min-width:0}
+.brand-copy strong{
+  display:block;
+  font-size:16px;
+  line-height:1.15;
+  letter-spacing:-.01em;
+}
+.brand-copy span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.generate{
+  appearance:none;
+  border:0;
+  border-radius:10px;
+  color:#07100e;
+  background:var(--accent);
+  padding:10px 14px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:750;
+  cursor:pointer;
+  transition:transform .18s ease,background .18s ease,opacity .18s ease;
+  flex:0 0 auto;
+}
+.generate:hover{background:#94ead8;transform:translateY(-1px)}
+.generate:active{transform:translateY(0)}
+.generate:focus-visible{outline:2px solid #d4fff6;outline-offset:3px}
+.generate:disabled{opacity:.68;cursor:default;transform:none}
+.generate svg{width:17px;height:17px}
+.workspace{
+  display:grid;
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+  gap:16px;
+  align-items:stretch;
+}
+.pane{
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(21,22,28,.94);
+  overflow:hidden;
+}
+.preview-pane{
+  display:flex;
+  flex-direction:column;
+}
+.pane-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px 14px;
+  border-bottom:1px solid var(--line);
+  background:#171922;
+}
+.pane-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  color:#e9edf6;
+  font-weight:700;
+  font-size:13px;
+}
+.pane-title svg{width:15px;height:15px;color:var(--accent-2);flex:0 0 auto}
+.mono{
+  font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:-.01em;
+}
+.canvas{
+  flex:1;
+  min-height:460px;
+  padding:22px;
+  display:grid;
+  place-items:center;
+  background:
+    linear-gradient(#21242e 1px,transparent 1px),
+    linear-gradient(90deg,#21242e 1px,transparent 1px),
+    #11131a;
+  background-size:24px 24px;
+}
+.mock-card{
+  width:min(100%,326px);
+  border-radius:14px;
+  background:#f8f9fb;
+  color:#16181f;
+  border:1px solid #dfe3eb;
+  box-shadow:0 8px 0 #222733;
+  overflow:hidden;
+  position:relative;
+}
+.mock-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:5px;
+  background:linear-gradient(90deg,#7ad7c4,#ffbf69,#b9a4ff);
+}
+.mock-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:19px 18px 14px;
+  border-bottom:1px solid #e7eaf0;
+}
+.mock-avatar{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:
+    linear-gradient(135deg,#202634 0 48%,transparent 48%),
+    linear-gradient(135deg,transparent 52%,#7ad7c4 52%),
+    #ffd37a;
+}
+.mock-name{min-width:0;flex:1}
+.mock-name b{display:block;font-size:15px;line-height:1.15;letter-spacing:-.02em}
+.mock-name span{display:block;margin-top:4px;color:#687080;font-size:11px}
+.mock-toggle{
+  width:42px;
+  height:24px;
+  border-radius:999px;
+  background:#17202a;
+  padding:3px;
+}
+.mock-toggle i{
+  display:block;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#7ad7c4;
+  margin-left:auto;
+}
+.mock-body{padding:16px 18px 18px}
+.mock-metrics{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:14px;
+}
+.mock-metric{
+  border:1px solid #e3e6ed;
+  border-radius:10px;
+  padding:10px;
+  background:#fff;
+}
+.mock-metric span{
+  color:#727b8c;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.mock-metric strong{
+  display:block;
+  margin-top:4px;
+  font-size:19px;
+  letter-spacing:-.03em;
+}
+.chart{
+  height:92px;
+  display:flex;
+  align-items:end;
+  gap:8px;
+  padding:11px 12px;
+  border-radius:10px;
+  background:#151923;
+}
+.bar{
+  flex:1;
+  min-width:0;
+  border-radius:6px 6px 2px 2px;
+  background:linear-gradient(180deg,#7ad7c4,#407f75);
+}
+.bar:nth-child(1){height:36%}
+.bar:nth-child(2){height:58%;background:linear-gradient(180deg,#ffd37a,#a97025)}
+.bar:nth-child(3){height:43%}
+.bar:nth-child(4){height:76%;background:linear-gradient(180deg,#b9a4ff,#6d5fb0)}
+.bar:nth-child(5){height:64%}
+.mock-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:14px;
+}
+.mock-button{
+  width:122px;
+  height:34px;
+  border-radius:9px;
+  background:#151923;
+  position:relative;
+}
+.mock-button::after{
+  content:"";
+  position:absolute;
+  left:14px;
+  right:14px;
+  top:15px;
+  height:4px;
+  border-radius:999px;
+  background:#f6f7fb;
+}
+.mock-lines{flex:1;display:grid;gap:7px}
+.mock-lines i{height:6px;border-radius:999px;background:#e1e5ec}
+.mock-lines i:nth-child(2){width:72%}
+.connector{
+  position:absolute;
+  inset:50% auto auto 50%;
+  width:90px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.code-pane{
+  display:flex;
+  flex-direction:column;
+  background:var(--code);
+}
+.code-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 12px 0;
+}
+.tabs{
+  display:flex;
+  gap:4px;
+  padding:4px;
+  border:1px solid #252a36;
+  border-radius:10px;
+  background:#11141b;
+  min-width:0;
+}
+.tab{
+  appearance:none;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#8e96a8;
+  padding:7px 10px;
+  font:700 12px/1 "JetBrains Mono",ui-monospace,monospace;
+  cursor:pointer;
+}
+.tab:hover{color:#e8ecf6;background:#191d27}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tab[aria-selected="true"]{
+  color:#07100e;
+  background:var(--accent);
+}
+.status{
+  min-width:0;
+  max-width:100%;
+  color:#8e96a8;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.code-shell{
+  margin:12px;
+  border:1px solid #252a36;
+  border-radius:12px;
+  background:#090b10;
+  overflow:hidden;
+  min-height:0;
+  flex:1;
+}
+.code-head{
+  height:34px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 12px;
+  border-bottom:1px solid #222734;
+  background:#10131a;
+}
+.dot{width:9px;height:9px;border-radius:50%;background:#596173}
+.dot:nth-child(1){background:#ff6d7a}
+.dot:nth-child(2){background:#ffc36b}
+.dot:nth-child(3){background:#75d6aa}
+pre{
+  margin:0;
+  min-height:424px;
+  max-height:520px;
+  overflow:auto;
+  padding:16px;
+  color:#d7deea;
+  font:12.5px/1.75 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:pre;
+  tab-size:2;
+}
+code{font-family:inherit}
+.code-line{
+  display:block;
+  min-height:1.75em;
+}
+.tag{color:var(--blue)}
+.attr{color:var(--amber)}
+.str{color:var(--green)}
+.txt{color:#d7deea}
+.kw{color:var(--rose)}
+.fn{color:var(--violet)}
+.prop{color:#9bdcff}
+.num{color:#ffca8b}
+.com{color:#748097}
+.caret{
+  display:inline-block;
+  width:8px;
+  height:1.25em;
+  margin-left:2px;
+  vertical-align:-.25em;
+  background:var(--accent);
+  animation:blink 1s steps(1,end) infinite;
+}
+@keyframes blink{50%{opacity:0}}
+.scan-line{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:2px;
+  background:var(--accent);
+  box-shadow:0 0 18px rgba(122,215,196,.6);
+  animation:scan 3.4s ease-in-out infinite;
+  opacity:.8;
+}
+.preview-frame{position:relative}
+@keyframes scan{
+  0%,18%{transform:translateY(0);opacity:.18}
+  56%{transform:translateY(382px);opacity:.85}
+  100%{transform:translateY(0);opacity:.18}
+}
+@media (max-width:860px){
+  .page{width:min(100% - 28px,1120px);padding-top:22px}
+  .workspace{grid-template-columns:1fr}
+  .canvas{min-height:390px}
+  pre{min-height:360px;max-height:440px}
+}
+@media (max-width:520px){
+  .topbar{align-items:flex-start;flex-direction:column}
+  .generate{width:100%;justify-content:center}
+  .pane-head{align-items:flex-start;flex-direction:column}
+  .code-toolbar{align-items:flex-start;flex-direction:column}
+  .tabs{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tab{padding:8px 6px}
+  .canvas{padding:14px;min-height:350px}
+  .mock-metrics{grid-template-columns:1fr}
+  .mock-actions{align-items:stretch;flex-direction:column}
+  .mock-button{width:100%}
+  pre{padding:13px;font-size:11.5px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+  .caret{display:none}
+  .scan-line{display:none}
+}
+@media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} pre{max-width:100%;overflow-x:auto;} }
+</style>
+</head>
+<body>
+<main class="page" aria-label="Tracepane design to code study">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7h7v7H4z"></path>
+          <path d="M13 10h7v7h-7z"></path>
+          <path d="M11 10h2"></path>
+          <path d="M8 14v3h5"></path>
+        </svg>
+      </span>
+      <div class="brand-copy">
+        <strong>Tracepane Studio</strong>
+        <span>Design layers translated into tidy interface code</span>
+      </div>
+    </div>
+    <button class="generate" id="generateBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14"></path>
+        <path d="M13 6l6 6-6 6"></path>
+        <path d="M5 5v14"></path>
+      </svg>
+      Generate code
+    </button>
+  </header>
+
+  <section class="workspace" aria-label="Split conversion workspace">
+    <article class="pane preview-pane">
+      <div class="pane-head">
+        <div class="pane-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+            <path d="M8 9h8"></path>
+            <path d="M8 13h5"></path>
+          </svg>
+          Preview canvas
+        </div>
+        <span class="mono">mock-card.css</span>
+      </div>
+      <div class="canvas">
+        <div class="preview-frame" aria-label="Small CSS-only interface card preview">
+          <span class="scan-line" aria-hidden="true"></span>
+          <div class="mock-card">
+            <div class="mock-top">
+              <div class="mock-avatar" aria-hidden="true"></div>
+              <div class="mock-name">
+                <b>Northline Board</b>
+                <span>Release pulse, 18 tasks</span>
+              </div>
+              <div class="mock-toggle" aria-hidden="true"><i></i></div>
+            </div>
+            <div class="mock-body">
+              <div class="mock-metrics">
+                <div class="mock-metric"><span>Build</span><strong>94%</strong></div>
+                <div class="mock-metric"><span>Merge</span><strong>12m</strong></div>
+              </div>
+              <div class="chart" aria-hidden="true">
+                <i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i>
+              </div>
+              <div class="mock-actions">
+                <div class="mock-button" aria-hidden="true"></div>
+                <div class="mock-lines" aria-hidden="true"><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="pane code-pane">
+      <div class="pane-head">
+        <div class="pane-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 9l-4 3 4 3"></path>
+            <path d="M16 9l4 3-4 3"></path>
+            <path d="M14 5l-4 14"></path>
+          </svg>
+          Code output
+        </div>
+        <span class="mono">offline render engine</span>
+      </div>
+      <div class="code-toolbar">
+        <div class="tabs" role="tablist" aria-label="Output language">
+          <button class="tab" id="tab-html" type="button" role="tab" aria-selected="true" data-lang="html">HTML</button>
+          <button class="tab" id="tab-css" type="button" role="tab" aria-selected="false" data-lang="css">CSS</button>
+          <button class="tab" id="tab-react" type="button" role="tab" aria-selected="false" data-lang="react">React</button>
+        </div>
+        <span class="mono status" id="statusText">ready - 9 layers detected</span>
+      </div>
+      <div class="code-shell">
+        <div class="code-head" aria-hidden="true"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+        <pre aria-live="polite"><code id="codeStream"><span class="code-line"><span class="tag">&lt;article</span> <span class="attr">class</span>=<span class="str">"release-card"</span><span class="tag">&gt;</span></span>
+<span class="code-line">  <span class="tag">&lt;header</span> <span class="attr">class</span>=<span class="str">"release-card__top"</span><span class="tag">&gt;</span></span>
+<span class="code-line">    <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"release-card__mark"</span><span class="tag">&gt;&lt;/span&gt;</span></span>
+<span class="code-line">    <span class="tag">&lt;div&gt;</span><span class="tag">&lt;h2&gt;</span>Northline Board<span class="tag">&lt;/h2&gt;</span><span class="tag">&lt;p&gt;</span>Release pulse, 18 tasks<span class="tag">&lt;/p&gt;</span><span class="tag">&lt;/div&gt;</span></span>
+<span class="code-line">  <span class="tag">&lt;/header&gt;</span></span>
+<span class="code-line">  <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"release-card__action"</span><span class="tag">&gt;</span>Open board<span class="tag">&lt;/button&gt;</span></span>
+<span class="code-line"><span class="tag">&lt;/article&gt;</span></span></code><span class="caret" id="caret" aria-hidden="true"></span></pre>
+      </div>
+    </article>
+  </section>
+</main>
+
+<script>
+(function(){
+  var snippets = {
+    html: [
+      '<span class="code-line"><span class="tag">&lt;article</span> <span class="attr">class</span>=<span class="str">"release-card"</span><span class="tag">&gt;</span></span>',
+      '<span class="code-line">  <span class="tag">&lt;header</span> <span class="attr">class</span>=<span class="str">"release-card__top"</span><span class="tag">&gt;</span></span>',
+      '<span class="code-line">    <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"release-card__mark"</span> <span class="attr">aria-hidden</span>=<span class="str">"true"</span><span class="tag">&gt;&lt;/span&gt;</span></span>',
+      '<span class="code-line">    <span class="tag">&lt;div&gt;</span></span>',
+      '<span class="code-line">      <span class="tag">&lt;h2&gt;</span>Northline Board<span class="tag">&lt;/h2&gt;</span></span>',
+      '<span class="code-line">      <span class="tag">&lt;p&gt;</span>Release pulse, 18 tasks<span class="tag">&lt;/p&gt;</span></span>',
+      '<span class="code-line">    <span class="tag">&lt;/div&gt;</span></span>',
+      '<span class="code-line">  <span class="tag">&lt;/header&gt;</span></span>',
+      '<span class="code-line">  <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"release-card__action"</span><span class="tag">&gt;</span>Open board<span class="tag">&lt;/button&gt;</span></span>',
+      '<span class="code-line"><span class="tag">&lt;/article&gt;</span></span>'
+    ],
+    css: [
+      '<span class="code-line"><span class="prop">.release-card</span> {</span>',
+      '<span class="code-line">  <span class="prop">width</span>: <span class="num">20.5rem</span>;</span>',
+      '<span class="code-line">  <span class="prop">border</span>: <span class="num">1px</span> solid <span class="str">#dfe3eb</span>;</span>',
+      '<span class="code-line">  <span class="prop">border-radius</span>: <span class="num">14px</span>;</span>',
+      '<span class="code-line">  <span class="prop">background</span>: <span class="str">#f8f9fb</span>;</span>',
+      '<span class="code-line">  <span class="prop">box-shadow</span>: <span class="num">0 8px 0</span> <span class="str">#222733</span>;</span>',
+      '<span class="code-line">}</span>',
+      '<span class="code-line"><span class="prop">.release-card__action</span> {</span>',
+      '<span class="code-line">  <span class="prop">background</span>: <span class="str">#151923</span>;</span>',
+      '<span class="code-line">  <span class="prop">color</span>: <span class="str">#f6f7fb</span>;</span>',
+      '<span class="code-line">}</span>'
+    ],
+    react: [
+      '<span class="code-line"><span class="kw">export function</span> <span class="fn">ReleaseCard</span>() {</span>',
+      '<span class="code-line">  <span class="kw">return</span> (</span>',
+      '<span class="code-line">    <span class="tag">&lt;article</span> <span class="attr">className</span>=<span class="str">"release-card"</span><span class="tag">&gt;</span></span>',
+      '<span class="code-line">      <span class="tag">&lt;header</span> <span class="attr">className</span>=<span class="str">"release-card__top"</span><span class="tag">&gt;</span></span>',
+      '<span class="code-line">        <span class="tag">&lt;span</span> <span class="attr">className</span>=<span class="str">"release-card__mark"</span> <span class="attr">aria-hidden</span><span class="tag"> /&gt;</span></span>',
+      '<span class="code-line">        <span class="tag">&lt;h2&gt;</span>Northline Board<span class="tag">&lt;/h2&gt;</span></span>',
+      '<span class="code-line">      <span class="tag">&lt;/header&gt;</span></span>',
+      '<span class="code-line">      <span class="tag">&lt;button&gt;</span>Open board<span class="tag">&lt;/button&gt;</span></span>',
+      '<span class="code-line">    <span class="tag">&lt;/article&gt;</span></span>',
+      '<span class="code-line">  );</span>',
+      '<span class="code-line">}</span>'
+    ]
+  };
+  var code = document.getElementById('codeStream');
+  var status = document.getElementById('statusText');
+  var button = document.getElementById('generateBtn');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var pre = document.querySelector('pre');
+  var active = 'html';
+  var timer = 0;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function renderFull(){
+    window.clearInterval(timer);
+    code.innerHTML = snippets[active].join('\n');
+    status.textContent = active.toUpperCase() + ' static - reduced motion';
+    button.disabled = false;
+  }
+
+  function runTyping(){
+    window.clearInterval(timer);
+    if(reduce.matches){
+      renderFull();
+      return;
+    }
+    var lines = snippets[active];
+    var index = 0;
+    code.innerHTML = '';
+    status.textContent = 'mapping layers - ' + active.toUpperCase();
+    button.disabled = true;
+    timer = window.setInterval(function(){
+      code.innerHTML += (index ? '\n' : '') + lines[index];
+      pre.scrollTop = pre.scrollHeight;
+      index += 1;
+      if(index >= lines.length){
+        window.clearInterval(timer);
+        status.textContent = 'complete - ' + lines.length + ' lines generated';
+        button.disabled = false;
+      }
+    }, 135);
+  }
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      active = tab.dataset.lang;
+      tabs.forEach(function(item){
+        item.setAttribute('aria-selected', String(item === tab));
+      });
+      runTyping();
+    });
+  });
+
+  button.addEventListener('click', runTyping);
+  if(reduce.addEventListener){
+    reduce.addEventListener('change', function(event){
+      if(event.matches){ renderFull(); } else { runTyping(); }
+    });
+  }
+  runTyping();
+})();
+</script>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Convert to code》 by ryanvanderbilt · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

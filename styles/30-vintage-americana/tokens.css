@@ -1,0 +1,72 @@
+/* ============================================================
+   Vintage Americana / 复古美式 · Diner / Retro Signage Tokens
+   Contract: fixed --ds-* variables, light-first with dark diner-night mode.
+   Mood: warm cream paper, retro red, deep teal-navy, mustard signage accents.
+   ============================================================ */
+
+:root {
+  /* Surfaces and text */
+  --ds-bg: #f7efdf; --ds-bg-subtle: #efe4cc; --ds-bg-elevated: #fffaf0; --ds-bg-sunken: #e6d8bc;
+  --ds-fg: #2a1f16; --ds-fg-muted: #5a4a3a; --ds-fg-subtle: #766349; --ds-fg-on-accent: #fff8ec;
+  --ds-border: #dcc9a6; --ds-border-strong: #2a1f16;
+
+  /* Brand and accent */
+  --ds-primary: #c0392b; --ds-primary-hover: #a52f23; --ds-primary-active: #8a271d; --ds-primary-fg: #fff8ec;
+  --ds-accent: #1f5a6b; --ds-accent-fg: #fff8ec;
+  --ds-gold: #d99a2b;
+
+  /* Semantic status */
+  --ds-success: #3f7a3a; --ds-success-bg: #e7f1e2; --ds-success-fg: #123c12;
+  --ds-warning: #9a6a14; --ds-warning-bg: #f6ead0; --ds-warning-fg: #43300a;
+  --ds-danger: #c0392b; --ds-danger-bg: #f8e3df; --ds-danger-fg: #5a140d;
+  --ds-info: #1f5a6b; --ds-info-bg: #e2eef1; --ds-info-fg: #0c2c34;
+
+  /* Focus */
+  --ds-focus: #c0392b;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* Radius */
+  --ds-radius-sm: 4px; --ds-radius-md: 8px; --ds-radius-lg: 16px; --ds-radius-full: 9999px;
+
+  /* Spacing */
+  --ds-space-1: 4px; --ds-space-2: 8px; --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* Typography */
+  --ds-font-serif: 'Noto Serif', Georgia, serif;
+  --ds-font-sans: 'Inter',-apple-system,'PingFang SC',sans-serif;
+  --ds-font-mono: 'JetBrains Mono',monospace;
+  --ds-text-xs: 13px; --ds-text-sm: 14px; --ds-text-base: 17px; --ds-text-md: 19px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 38px; --ds-text-3xl: 52px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.85;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.015em; --ds-tracking-normal: 0;
+
+  /* Shadows */
+  --ds-shadow-sm: 0 1px 2px rgba(42,31,22,.1);
+  --ds-shadow-md: 0 4px 14px -6px rgba(42,31,22,.22);
+  --ds-shadow-lg: 0 12px 30px -10px rgba(42,31,22,.28);
+
+  /* Motion */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 160ms; --ds-dur-base: 240ms; --ds-dur-slow: 300ms;
+}
+
+[data-theme="dark"],
+.dark {
+  --ds-bg: #1c160f; --ds-bg-subtle: #241c12; --ds-bg-elevated: #2a2116; --ds-bg-sunken: #140f08;
+  --ds-fg: #f4e8d2; --ds-fg-muted: #b8a888; --ds-fg-subtle: #8a7c62; --ds-fg-on-accent: #1c0c08;
+  --ds-border: #3a2f1e; --ds-border-strong: #f4e8d2;
+  --ds-primary: #e0584a; --ds-primary-hover: #ea6e60; --ds-primary-active: #d04a3d; --ds-primary-fg: #1c0c08;
+  --ds-accent: #4aa8bf; --ds-accent-fg: #06222a;
+  --ds-gold: #e8b34a;
+  --ds-success: #5fb85f; --ds-success-bg: #0e260e; --ds-success-fg: #cdeec0;
+  --ds-warning: #e8b34a; --ds-warning-bg: #241a06; --ds-warning-fg: #f6e6be;
+  --ds-danger: #e0584a; --ds-danger-bg: #2a0f0b; --ds-danger-fg: #f8d6cf;
+  --ds-info: #4aa8bf; --ds-info-bg: #08242c; --ds-info-fg: #cfeaf2;
+  --ds-focus: #e0584a;
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 4px 14px -6px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 12px 30px -10px rgba(0,0,0,.7);
+}
