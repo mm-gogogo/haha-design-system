@@ -2,9 +2,10 @@
    用法见 _base/DEVICE-FRAME.md。所有移动端演示统一套这个壳。主题无关（钛金边框，亮暗皆可）。 */
 
 .dvc17{
-  --dvc-w: 390px;                       /* 屏幕逻辑宽 */
+  --dvc-w: min(390px, calc(100vw - 72px)); /* 屏幕逻辑宽：桌面 390，窄屏自适应不溢出 */
   position: relative;
   width: calc(var(--dvc-w) + 26px);
+  max-width: 100%;
   margin: 0 auto;
   padding: 13px;
   border-radius: 64px;
@@ -27,7 +28,7 @@
 .dvc17 .k-pwr{ right:-3px; top:210px; width:4px; height:86px; }
 
 .dvc17 .scr{
-  position: relative; height: 812px; overflow: hidden;
+  position: relative; height: calc(var(--dvc-w) * 2.082); overflow: hidden; /* 锁 390:812 比例，窄屏等比缩 */
   border-radius: 51px; background: var(--ds-bg, #fff);
 }
 /* 灵动岛 Dynamic Island（含摄像头点） */

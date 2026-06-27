@@ -639,6 +639,13 @@
     .tm.big { grid-row: auto; min-height: 80px; }
     .hero h2 { font-size: var(--ds-text-xl); }
   }
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
 </style>
 </head>
 <body>

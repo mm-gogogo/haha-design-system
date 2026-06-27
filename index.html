@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-shot="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -12,35 +12,61 @@
   h1{margin:0 0 8px;font-size:28px;letter-spacing:-0.02em;font-weight:650}
   header p{margin:0;color:var(--mut);max-width:72ch}
   .wrap{max-width:1480px;margin:0 auto}
+  .bar{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .bar a,.bar code{display:inline-flex;align-items:center;gap:7px;border-radius:9px;text-decoration:none}
+  .btn-md{font-weight:600;font-size:13px;color:#0b0b0f;background:var(--acc);padding:8px 14px}
+  .btn-md span{font-weight:400;opacity:.85}
+  .curl{color:var(--mut);background:var(--panel-2);border:1px solid var(--line);padding:7px 11px;font:12px/1 'JetBrains Mono',ui-monospace,monospace}
+  .btn-gh{font-size:13px;color:var(--mut);border:1px solid var(--line);padding:8px 13px}
+  .btn-gh:hover{border-color:var(--acc);color:#fff}
+  /* 统一亮/暗切换：分段控件，切换全站缩略图主题（不再左右并排两张） */
+  .seg{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+  .seg button{appearance:none;border:0;background:transparent;color:var(--mut);font:600 13px/1 -apple-system,"PingFang SC",sans-serif;
+    padding:7px 14px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .18s,color .18s}
+  .seg button svg{width:14px;height:14px}
+  .seg button[aria-pressed="true"]{background:var(--acc);color:#0b0b0f}
   h2{margin:44px 32px 4px;font-size:15px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
   .sub{margin:0 32px 18px;color:var(--mut);font-size:13px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;padding:0 32px 8px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s;content-visibility:auto;contain-intrinsic-size:0 480px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:0 32px 8px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s;content-visibility:auto;contain-intrinsic-size:0 430px}
   .card:hover{border-color:#3a3a47;transform:translateY(-2px)}
   .card .ttl{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line)}
   .dot{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.05)}
   .card .ttl b{font-size:14px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .card .ttl a{color:var(--acc);text-decoration:none;font-size:12px;border:1px solid var(--line);padding:4px 9px;border-radius:8px;flex:none;transition:border-color .2s,color .2s}
   .card .ttl a:hover{border-color:var(--acc);color:#fff}
-  .pair{display:grid;grid-template-columns:1fr 1fr}
-  .pair figure{margin:0;border-right:1px solid var(--line)}
-  .pair figure:last-child{border-right:0}
-  .pair figcaption{font-size:11px;color:var(--mut);padding:7px 10px;border-top:1px solid var(--line);text-align:center;letter-spacing:.03em}
-  .shot{display:block;width:100%;height:340px;object-fit:cover;object-position:top center;background:#000}
-  a.zoom{display:block;line-height:0}
+  a.zoom{display:block;line-height:0;position:relative}
+  .shot{display:block;width:100%;height:300px;object-fit:cover;object-position:top center;background:#000}
+  .badge{position:absolute;left:10px;bottom:10px;font:600 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.04em;
+    color:#fff;background:rgba(10,10,14,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.16);padding:5px 9px;border-radius:7px;pointer-events:none}
   footer{color:var(--mut);font-size:12px;padding:36px 32px;border-top:1px solid var(--line);margin-top:36px;max-width:1480px;margin-left:auto;margin-right:auto}
   footer code{color:#c9c9d6;background:var(--panel-2);padding:1px 6px;border-radius:5px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px}
+  @media (max-width:640px){
+    header{padding:30px 18px 22px}
+    h1{font-size:23px}
+    h2{margin:34px 18px 4px}
+    .sub{margin:0 18px 14px}
+    .grid{grid-template-columns:1fr;gap:14px;padding:0 18px 8px}
+    .shot{height:230px}
+    footer{padding:28px 18px}
+    .bar{gap:8px}
+  }
 </style>
 </head>
 <body>
 <header>
   <h1>哈哈设计系统 · 截图总览</h1>
   <p>基于 Geist / Vercel 衍生 — 16 套通用风格 + 6 个开源项目定制，每套含亮 / 暗两态，hero 大图 + 图片/图标用法 + 桌面与 iPhone 17 Pro Max 移动布局。点缩略图看大图，点「打开」查看可交互 preview。</p>
-  <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <a href="design.md" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:13px;color:#0b0b0f;background:#66aadd;padding:8px 14px;border-radius:9px">design.md<span style="font-weight:400;opacity:.85">· 一行加载成 skill</span></a>
-    <code style="color:#9a9ab0;background:#1b1b23;border:1px solid #26262f;padding:7px 11px;border-radius:9px;font:12px/1 'JetBrains Mono',ui-monospace,monospace">curl design.hahaha.chat/design.md</code>
-    <a href="https://github.com/mm-gogogo/haha-design-system" target="_blank" style="text-decoration:none;font-size:13px;color:#9a9ab0;border:1px solid #26262f;padding:8px 13px;border-radius:9px">GitHub</a>
-  </p>
+  <div class="bar">
+    <a class="btn-md" href="design.md">design.md<span>· 一行加载成 skill</span></a>
+    <code class="curl">curl design.hahaha.chat/design.md</code>
+    <a class="btn-gh" href="https://github.com/mm-gogogo/haha-design-system" target="_blank">GitHub</a>
+    <span class="seg" role="group" aria-label="主题切换">
+      <button id="segL" aria-pressed="true" onclick="setShot('light')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>亮色</button>
+      <button id="segD" aria-pressed="false" onclick="setShot('dark')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>暗色</button>
+    </span>
+  </div>
 </header>
 
 <div class="wrap">
@@ -53,7 +79,7 @@
   <div class="grid" id="projects"></div>
 </div>
 
-<footer><code>~/mineproj/designsystem</code> · screenshots/ 共 44 张 · 双击任意 preview.html 离线可用</footer>
+<footer><code>~/mineproj/designsystem</code> · 16 套通用风格 + 6 项目定制 · 顶部「亮色 / 暗色」可统一切换预览主题 · 双击任意 preview.html 离线可用</footer>
 
 <script>
 const styles = [
@@ -86,14 +112,26 @@ function render(list, dir, mount){
   document.getElementById(mount).innerHTML = list.map(([f,slug,name,color])=>`
     <div class="card">
       <div class="ttl"><span class="dot" style="background:${color}"></span><b>${name}</b><a href="${dir}/${slug}/preview.html" target="_blank">打开 preview</a></div>
-      <div class="pair">
-        <figure><a class="zoom" href="screenshots/${f}.png" target="_blank"><img class="shot" src="screenshots/thumbs/${f}.jpg" decoding="async" loading="lazy" alt="${name} 亮色"></a><figcaption>亮色 Light</figcaption></figure>
-        <figure><a class="zoom" href="screenshots/${f}--dark.png" target="_blank"><img class="shot" src="screenshots/thumbs/${f}--dark.jpg" decoding="async" loading="lazy" alt="${name} 暗色"></a><figcaption>暗色 Dark</figcaption></figure>
-      </div>
+      <a class="zoom" data-zoom href="screenshots/${f}.png" data-l="screenshots/${f}.png" data-d="screenshots/${f}--dark.png" target="_blank">
+        <img class="shot" data-l="screenshots/thumbs/${f}.jpg" data-d="screenshots/thumbs/${f}--dark.jpg" src="screenshots/thumbs/${f}.jpg" decoding="async" loading="lazy" alt="${name}">
+        <span class="badge" data-badge>亮色 Light</span>
+      </a>
     </div>`).join("");
 }
 render(styles,"styles","styles");
 render(projects,"projects","projects");
+
+function setShot(mode){
+  document.documentElement.dataset.shot = mode;
+  document.getElementById('segL').setAttribute('aria-pressed', mode==='light');
+  document.getElementById('segD').setAttribute('aria-pressed', mode==='dark');
+  const isDark = mode==='dark';
+  document.querySelectorAll('img.shot').forEach(img=>{ img.src = img.dataset[isDark?'d':'l']; });
+  document.querySelectorAll('a[data-zoom]').forEach(a=>{ a.href = a.dataset[isDark?'d':'l']; });
+  document.querySelectorAll('[data-badge]').forEach(b=>{ b.textContent = isDark?'暗色 Dark':'亮色 Light'; });
+  try{ localStorage.setItem('ds-shot', mode); }catch(e){}
+}
+try{ const saved = localStorage.getItem('ds-shot'); if(saved==='dark') setShot('dark'); }catch(e){}
 </script>
 </body>
 </html>
