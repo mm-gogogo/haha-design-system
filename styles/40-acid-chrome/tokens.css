@@ -1,0 +1,80 @@
+/* ============================================================
+   Acid Chrome · 酸性镀铬（Y2K Chrome / Acid Graphics）Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   暗色优先：:root = acid chrome night；[data-theme="light"], .light = chrome daylight。
+   气质：酸性荧光绿 + 液态铬金属 + 虹彩 blob + 厚圆角高光组件。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（acid chrome night） ---- */
+  --ds-bg:#0a0c0a; --ds-bg-subtle:#11140f; --ds-bg-elevated:#161a13; --ds-bg-sunken:#050604;
+  --ds-fg:#eaffea; --ds-fg-muted:#a8c4a0; --ds-fg-subtle:#7e9874; --ds-fg-on-accent:#0a1400;
+  --ds-border:#283022; --ds-border-strong:#b6ff3a;
+
+  /* ---- 品牌与强调 ---- */
+  --ds-primary:#b6ff3a; --ds-primary-hover:#c8ff5e; --ds-primary-active:#a2ec28; --ds-primary-fg:#0a1400;
+  --ds-accent:#a85cff; --ds-accent-fg:#ffffff;
+
+  /* ---- 语义状态 ---- */
+  --ds-success:#6ee07a; --ds-success-bg:#06220e; --ds-success-fg:#c9f5cd;
+  --ds-warning:#ffd23a; --ds-warning-bg:#241c00; --ds-warning-fg:#fff0b8;
+  --ds-danger:#ff5f6e;  --ds-danger-bg:#260a0e;  --ds-danger-fg:#ffd2d6;
+  --ds-info:#4bc8ff;    --ds-info-bg:#06202a;    --ds-info-fg:#cdeeff;
+
+  /* ---- 焦点 ---- */
+  --ds-focus:#b6ff3a;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 ---- */
+  --ds-radius-sm:8px; --ds-radius-md:16px; --ds-radius-lg:28px; --ds-radius-full:9999px;
+
+  /* ---- 间距比例（4px 基，继承 19-y2k-aqua） ---- */
+  --ds-space-1:4px;  --ds-space-2:8px;  --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+
+  /* ---- 字体（本地 fonts.css；无外部字体） ---- */
+  --ds-font-sans:"Quicksand","Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif:"Quicksand","Inter",Georgia,"Songti SC",serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs:12px; --ds-text-sm:13px; --ds-text-base:14px; --ds-text-md:16px;
+  --ds-text-lg:20px; --ds-text-xl:24px; --ds-text-2xl:32px; --ds-text-3xl:48px;
+  --ds-leading-tight:1.2; --ds-leading-normal:1.55; --ds-leading-relaxed:1.75;
+  --ds-weight-normal:400; --ds-weight-medium:500; --ds-weight-bold:600;
+  --ds-tracking-tight:-0.02em; --ds-tracking-normal:0;
+
+  /* ---- 阴影 / 光泽 ---- */
+  --ds-shadow-sm:0 2px 8px -2px rgba(0,0,0,.5);
+  --ds-shadow-md:0 12px 28px -10px rgba(0,0,0,.6);
+  --ds-shadow-lg:0 24px 56px -16px rgba(0,0,0,.7), 0 0 32px -8px rgba(182,255,58,.3);
+  --ds-gloss-top:inset 0 1px 0 rgba(255,255,255,.2);
+  --ds-gloss-blur:8px; --ds-gloss-blur-sm:4px;
+
+  /* ---- 动效（继承 19-y2k-aqua） ---- */
+  --ds-ease:cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast:140ms; --ds-dur-base:220ms; --ds-dur-slow:360ms;
+
+  /* ---- 语义层级 ---- */
+  --ds-z-dropdown:1000; --ds-z-sticky:1100; --ds-z-modal-backdrop:1200;
+  --ds-z-modal:1300; --ds-z-toast:1400; --ds-z-tooltip:1500;
+}
+
+[data-theme="light"],
+.light {
+  /* ---- 表面与文字（chrome on white / acid daylight） ---- */
+  --ds-bg:#f4f6f0; --ds-bg-subtle:#e9ede2; --ds-bg-elevated:#ffffff; --ds-bg-sunken:#dde2d4;
+  --ds-fg:#14180e; --ds-fg-muted:#44503a; --ds-fg-subtle:#5f6e52; --ds-fg-on-accent:#ffffff;
+  --ds-border:#d2dac6; --ds-border-strong:#14180e;
+  --ds-primary:#4a8a00; --ds-primary-hover:#3f7800; --ds-primary-active:#356600; --ds-primary-fg:#ffffff;
+  --ds-accent:#7b2ff0; --ds-accent-fg:#ffffff;
+  --ds-success:#1f8a4c; --ds-success-bg:#e2f3e8; --ds-success-fg:#0c3a20;
+  --ds-warning:#8a6a00; --ds-warning-bg:#f6eece; --ds-warning-fg:#3e3000;
+  --ds-danger:#c0322a;  --ds-danger-bg:#f8e2df;  --ds-danger-fg:#551410;
+  --ds-info:#1f6fd0;    --ds-info-bg:#e2ebfb;    --ds-info-fg:#0e2c5e;
+  --ds-focus:#4a8a00;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+  --ds-shadow-sm:0 2px 8px -2px rgba(20,24,14,.16);
+  --ds-shadow-md:0 12px 28px -10px rgba(20,24,14,.24);
+  --ds-shadow-lg:0 24px 56px -16px rgba(20,24,14,.3);
+  --ds-gloss-top:inset 0 1px 0 rgba(255,255,255,.72);
+}

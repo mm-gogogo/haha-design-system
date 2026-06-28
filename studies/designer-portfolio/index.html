@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mira Halden Portfolio - Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      --paper: #f4efe4;
+      --paper-deep: #e4d9c7;
+      --ink: #211f1b;
+      --muted: #665f55;
+      --line: rgba(33, 31, 27, .16);
+      --accent: #d85d3a;
+      --accent-dark: #963c27;
+      --sage: #435345;
+      --mist: #aeb7c3;
+      --white: #fffaf0;
+      --shadow: rgba(84, 59, 42, .22);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      min-width: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      background:
+        linear-gradient(115deg, rgba(216, 93, 58, .12), transparent 30%),
+        linear-gradient(180deg, var(--paper), #ebe2d4 56%, #d7dddb);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(100%, 1480px);
+      margin: 0 auto;
+      padding: 20px clamp(18px, 4vw, 64px) 120px;
+    }
+
+    .nav {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .78rem;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--ink);
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: clamp(14px, 2.2vw, 34px);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .76rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      text-underline-offset: 5px;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    .hero {
+      min-height: min(850px, calc(100dvh - 90px));
+      display: grid;
+      grid-template-columns: minmax(0, 1.16fr) minmax(260px, .84fr);
+      align-items: center;
+      gap: clamp(28px, 5vw, 72px);
+      padding: clamp(42px, 7vw, 88px) 0 clamp(54px, 8vw, 96px);
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 250, 240, .62);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    .kicker svg {
+      width: 15px;
+      height: 15px;
+      color: var(--accent-dark);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 26px 0 22px;
+      max-width: 9ch;
+      font-family: "Noto Serif", Georgia, serif;
+      font-size: clamp(4.15rem, 15.6vw, 13.8rem);
+      line-height: .86;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    h1 span {
+      display: block;
+    }
+
+    .hero-copy {
+      max-width: 560px;
+      margin: 0;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--ink);
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform .28s ease, color .28s ease, background .28s ease, box-shadow .28s ease;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      background: var(--ink);
+      color: var(--white);
+      box-shadow: 0 16px 34px -22px rgba(33, 31, 27, .7);
+    }
+
+    .button.secondary {
+      background: rgba(255, 250, 240, .55);
+      color: var(--ink);
+    }
+
+    .button svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 40px -24px var(--shadow);
+    }
+
+    .button:active {
+      transform: translateY(-1px);
+    }
+
+    .portrait-wrap {
+      position: relative;
+      display: grid;
+      align-items: end;
+      min-width: 0;
+    }
+
+    .portrait-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(33, 31, 27, .2);
+      background: var(--sage);
+      box-shadow: 0 34px 70px -44px rgba(33, 31, 27, .7);
+      transform: rotate(1.6deg);
+      transition: transform .35s ease;
+    }
+
+    .portrait-card:hover {
+      transform: rotate(.4deg) translateY(-4px);
+    }
+
+    .portrait-card img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      filter: saturate(.96) contrast(1.04);
+      mix-blend-mode: luminosity;
+      opacity: .92;
+    }
+
+    .portrait-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(216, 93, 58, .36), rgba(67, 83, 69, .16) 56%, transparent);
+      pointer-events: none;
+    }
+
+    .role-card {
+      width: min(78%, 320px);
+      margin: -58px 0 0 auto;
+      padding: 18px;
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, .88);
+      box-shadow: 0 20px 44px -32px var(--shadow);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .74rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .role-card strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .section {
+      padding: clamp(54px, 8vw, 104px) 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section h2 {
+      margin: 0 0 18px;
+      max-width: 760px;
+      font-family: "Noto Serif", Georgia, serif;
+      font-size: clamp(2.3rem, 6vw, 5.2rem);
+      line-height: .96;
+      letter-spacing: 0;
+    }
+
+    .section-intro {
+      max-width: 680px;
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.58;
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: clamp(18px, 3vw, 34px);
+      align-items: start;
+    }
+
+    .work-card {
+      min-width: 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(255, 250, 240, .55);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      text-decoration: none;
+      transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+    }
+
+    .work-card:nth-child(2),
+    .work-card:nth-child(4) {
+      margin-top: clamp(28px, 6vw, 84px);
+    }
+
+    .work-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(150, 60, 39, .36);
+      box-shadow: 0 34px 62px -44px var(--shadow);
+    }
+
+    .work-card:focus-visible,
+    .button:focus-visible,
+    .nav a:focus-visible {
+      outline: 3px solid rgba(216, 93, 58, .48);
+      outline-offset: 4px;
+    }
+
+    .work-image {
+      overflow: hidden;
+      background: var(--paper-deep);
+    }
+
+    .work-image img {
+      width: 100%;
+      aspect-ratio: 1.28 / 1;
+      object-fit: cover;
+      transition: transform .46s ease, filter .46s ease;
+    }
+
+    .work-card:hover .work-image img {
+      transform: scale(1.045);
+      filter: saturate(1.04) contrast(1.03);
+    }
+
+    .work-body {
+      padding: clamp(18px, 2.4vw, 28px);
+    }
+
+    .work-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .work-title h3 {
+      margin: 0;
+      font-family: "Noto Serif", Georgia, serif;
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      line-height: 1;
+    }
+
+    .work-title svg {
+      width: 20px;
+      height: 20px;
+      margin-top: 5px;
+      color: var(--accent-dark);
+      flex: 0 0 auto;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      padding: 6px 9px;
+      background: rgba(255, 250, 240, .7);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .68rem;
+      color: var(--muted);
+    }
+
+    .work-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: clamp(28px, 6vw, 84px);
+      align-items: start;
+    }
+
+    .about-lede {
+      margin: 0;
+      font-family: "Noto Serif", Georgia, serif;
+      font-size: clamp(1.7rem, 4vw, 3.8rem);
+      line-height: 1.05;
+    }
+
+    .about-copy {
+      display: grid;
+      gap: 18px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.35vw, 1.18rem);
+      line-height: 1.64;
+    }
+
+    .about-copy p {
+      margin: 0;
+    }
+
+    .capabilities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .capabilities span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 12px;
+      background: rgba(174, 183, 195, .18);
+      color: var(--ink);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .72rem;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+      padding-bottom: 30px;
+    }
+
+    .contact p {
+      max-width: 620px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.58;
+    }
+
+    .footer-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .72rem;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-copy,
+      .hero-actions,
+      .portrait-wrap,
+      .section {
+        animation: rise .72s cubic-bezier(.16, 1, .3, 1) both;
+      }
+
+      .hero-actions {
+        animation-delay: .08s;
+      }
+
+      .portrait-wrap {
+        animation-delay: .12s;
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .about-grid,
+      .contact {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 0;
+        align-items: start;
+      }
+
+      h1 {
+        max-width: 7.8ch;
+      }
+
+      .portrait-wrap {
+        width: min(100%, 520px);
+      }
+
+      .contact {
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding-inline: 16px;
+      }
+
+      .nav {
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 12px;
+        font-size: .7rem;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        gap: 34px;
+        padding-top: 38px;
+      }
+
+      .works-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-card:nth-child(2),
+      .work-card:nth-child(4) {
+        margin-top: 0;
+      }
+
+      .role-card {
+        width: calc(100% - 18px);
+        margin-top: -36px;
+      }
+
+      .footer-line {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .page {
+        padding-inline: 14px;
+      }
+
+      h1 {
+        font-size: clamp(3.6rem, 20vw, 4.8rem);
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .work-title {
+        gap: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0ms !important;
+      }
+
+      .button:hover,
+      .work-card:hover,
+      .work-card:hover .work-image img,
+      .portrait-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+      }
+    }
+
+    @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="Mira Halden home">
+        <span class="brand-mark">M</span>
+        Mira Halden
+      </a>
+      <div class="nav-links">
+        <a href="#works">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <section id="top" class="hero" aria-label="Portfolio introduction">
+      <div>
+        <div class="kicker">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+          Brand systems and digital product design
+        </div>
+        <h1><span>Mira</span><span>Halden</span></h1>
+        <p class="hero-copy">I shape quiet brands, useful interfaces, and launch systems for teams that care about the first impression.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#works">
+            View work
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7"></path>
+              <path d="M8 7h9v9"></path>
+            </svg>
+          </a>
+          <a class="button secondary" href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div class="portrait-wrap">
+        <figure class="portrait-card">
+          <img src="../../_assets/avatars/a33.jpg" width="640" height="800" alt="Portrait of fictional designer Mira Halden">
+        </figure>
+        <div class="role-card">
+          <strong>Independent designer</strong>
+          Identity systems, product moments, art direction, and launch pages for culture-led teams.
+        </div>
+      </div>
+    </section>
+
+    <section id="works" class="section">
+      <h2>Selected work with a point of view.</h2>
+      <p class="section-intro">Four fictional studies in restrained identity, editorial interface design, and tactile product storytelling.</p>
+
+      <div class="works-grid">
+        <a class="work-card" href="#contact" aria-label="Harbor House project">
+          <div class="work-image">
+            <img src="../../_assets/photos/coffee.jpg" width="900" height="700" loading="lazy" alt="Warm coffee table image used as a brand study thumbnail">
+          </div>
+          <div class="work-body">
+            <div class="work-title">
+              <h3>Harbor House</h3>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M8 7h9v9"></path>
+              </svg>
+            </div>
+            <div class="tags">
+              <span class="tag">Identity</span>
+              <span class="tag">Retail system</span>
+            </div>
+            <p>A neighborhood cafe identity built around soft contrast, confident labels, and a calm ordering flow.</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" aria-label="Orbit Wrist project">
+          <div class="work-image">
+            <img src="../../_assets/gen/product-watch.jpg" width="900" height="700" loading="lazy" alt="Product watch image used as a wearable product thumbnail">
+          </div>
+          <div class="work-body">
+            <div class="work-title">
+              <h3>Orbit Wrist</h3>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M8 7h9v9"></path>
+              </svg>
+            </div>
+            <div class="tags">
+              <span class="tag">Product story</span>
+              <span class="tag">Interaction</span>
+            </div>
+            <p>A launch direction for a wearable interface, balancing precise product detail with softer editorial pacing.</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" aria-label="Field Table project">
+          <div class="work-image">
+            <img src="../../_assets/gen/food-bowl.jpg" width="900" height="700" loading="lazy" alt="Food bowl image used as a hospitality project thumbnail">
+          </div>
+          <div class="work-body">
+            <div class="work-title">
+              <h3>Field Table</h3>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M8 7h9v9"></path>
+              </svg>
+            </div>
+            <div class="tags">
+              <span class="tag">Editorial</span>
+              <span class="tag">Hospitality</span>
+            </div>
+            <p>A seasonal dining campaign with a warmer voice, modular menus, and photography-led landing patterns.</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" aria-label="Wave Index project">
+          <div class="work-image">
+            <img src="../../_assets/gen/abstract-wave.jpg" width="900" height="700" loading="lazy" alt="Abstract wave image used as a motion system thumbnail">
+          </div>
+          <div class="work-body">
+            <div class="work-title">
+              <h3>Wave Index</h3>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M8 7h9v9"></path>
+              </svg>
+            </div>
+            <div class="tags">
+              <span class="tag">Campaign</span>
+              <span class="tag">Motion system</span>
+            </div>
+            <p>A flexible visual language for a media studio, designed to move from poster to web without losing texture.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="about-grid">
+        <p class="about-lede">Useful structure, human texture, and a little friction in the right place.</p>
+        <div class="about-copy">
+          <p>Mira is a fictional independent designer working across identity, product, and art direction. Her practice turns fuzzy briefs into visual systems with room for people, texture, and pace.</p>
+          <p>This non-original effect study rebuilds the portfolio feeling from scratch for learning only. Names, copy, layout, and project concepts are original to this file.</p>
+          <div class="capabilities" aria-label="Capabilities">
+            <span>Identity systems</span>
+            <span>Interface direction</span>
+            <span>Launch pages</span>
+            <span>Editorial art direction</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <div>
+        <h2>Make the first pass feel finished.</h2>
+        <p>Open to selected brand and interface collaborations, especially projects that need clarity before they need volume.</p>
+      </div>
+      <a class="button primary" href="mailto:studio@mirahalden.example">Contact</a>
+    </section>
+
+    <footer class="footer-line">
+      <span>Fictional portfolio effect study</span>
+      <span>Original copy and local assets only</span>
+    </footer>
+  </main>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Stephanie Portfolio Website》 by stephjivoderova · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
