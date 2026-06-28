@@ -1,0 +1,118 @@
+/* ============================================================
+   Dark Academia · 暗黑学院风 设计系统 Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   亮色 :root + 暗色 [data-theme="dark"]（并加 .dark 兼容）。
+   气质： aged manuscript paper, oxblood, bottle green, candlelit brass.
+   全部色值满足 WCAG AA（正文 >=4.5:1，大字/UI >=3:1）。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字（aged manuscript / library daylight） ---- */
+  --ds-bg: #ece3d0;
+  --ds-bg-subtle: #e2d6bd;
+  --ds-bg-elevated: #f6efdd;
+  --ds-bg-sunken: #d6c8a8;
+  --ds-fg: #2a2018;
+  --ds-fg-muted: #5a4a38;
+  --ds-fg-subtle: #776550;
+  --ds-fg-on-accent: #f6efdd;
+  --ds-border: #cdbd9c;
+  --ds-border-strong: #2a2018;
+  --ds-brass: #9a7b2e;
+
+  /* ---- 品牌与强调（oxblood + bottle green） ---- */
+  --ds-primary: #7c2b22;
+  --ds-primary-hover: #6a241c;
+  --ds-primary-active: #561a14;
+  --ds-primary-fg: #f6efdd;
+  --ds-accent: #2f4a32;
+  --ds-accent-fg: #f6efdd;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #3a6b2e;
+  --ds-success-bg: #e6efe0;
+  --ds-success-fg: #173310;
+  --ds-warning: #9a6a14;
+  --ds-warning-bg: #f4e8cf;
+  --ds-warning-fg: #43300a;
+  --ds-danger: #7c2b22;
+  --ds-danger-bg: #f3e0db;
+  --ds-danger-fg: #4a130d;
+  --ds-info: #2f4a52;
+  --ds-info-bg: #e0eaec;
+  --ds-info-fg: #0e2429;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #7c2b22;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 ---- */
+  --ds-radius-sm: 3px;
+  --ds-radius-md: 6px;
+  --ds-radius-lg: 10px;
+  --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（4px 基，沿用 07 editorial） ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（本地 fonts.css；无外链字体） ---- */
+  --ds-font-serif: "Noto Serif", Georgia, serif;
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", sans-serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 13px; --ds-text-sm: 14px; --ds-text-base: 17px; --ds-text-md: 19px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 38px; --ds-text-3xl: 52px;
+  --ds-leading-tight: 1.25; --ds-leading-normal: 1.55; --ds-leading-relaxed: 1.85;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.015em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(42,32,24,.14);
+  --ds-shadow-md: 0 5px 16px -6px rgba(42,32,24,.24);
+  --ds-shadow-lg: 0 16px 36px -12px rgba(42,32,24,.32);
+
+  /* ---- 动效（沿用 07 editorial） ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 160ms; --ds-dur-base: 240ms; --ds-dur-slow: 300ms;
+}
+
+/* ============================================================
+   暗色 · candlelit study：深墨棕底、烛光提亮、brass 边界。
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg: #16110c;
+  --ds-bg-subtle: #1d1610;
+  --ds-bg-elevated: #231b13;
+  --ds-bg-sunken: #0e0a06;
+  --ds-fg: #ece0c8;
+  --ds-fg-muted: #b09a78;
+  --ds-fg-subtle: #847058;
+  --ds-fg-on-accent: #f6efdd;
+  --ds-border: #38291c;
+  --ds-border-strong: #c9a86a;
+  --ds-brass: #c9a86a;
+  --ds-primary: #b8463a;
+  --ds-primary-hover: #c8564a;
+  --ds-primary-active: #a83c30;
+  --ds-primary-fg: #f6efdd;
+  --ds-accent: #8fb07a;
+  --ds-accent-fg: #0e1a08;
+  --ds-success: #6fbf6f;
+  --ds-success-bg: #102a10;
+  --ds-success-fg: #cdeec0;
+  --ds-warning: #d8b25a;
+  --ds-warning-bg: #241a06;
+  --ds-warning-fg: #f6e6be;
+  --ds-danger: #d8584a;
+  --ds-danger-bg: #2a0e0a;
+  --ds-danger-fg: #f8d6cf;
+  --ds-info: #5fa0a8;
+  --ds-info-bg: #08222a;
+  --ds-info-fg: #d6eef2;
+  --ds-focus: #b8463a;
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 5px 16px -6px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 16px 36px -12px rgba(0,0,0,.72);
+}
