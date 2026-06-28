@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fieldtile Studio · Mosaic Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      --bg: #f3f5ef;
+      --paper: #fbfcf7;
+      --ink: #171a18;
+      --muted: #61685f;
+      --line: rgba(23, 26, 24, .13);
+      --line-strong: rgba(23, 26, 24, .22);
+      --accent: #e64b35;
+      --accent-dark: #9f2b21;
+      --moss: #173f37;
+      --sage: #c7d4c4;
+      --sky: #dce9ee;
+      --amber: #f1c45c;
+      --radius: 22px;
+      --gap: clamp(12px, 1.4vw, 20px);
+      --shadow: 0 22px 70px -42px rgba(23, 26, 24, .45);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --serif: "Noto Serif", "Noto Serif SC", Georgia, serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      overflow-x: clip;
+      background:
+        linear-gradient(90deg, rgba(23, 26, 24, .045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(23, 26, 24, .035) 1px, transparent 1px),
+        radial-gradient(circle at 20% 12%, rgba(230, 75, 53, .16), transparent 30%),
+        radial-gradient(circle at 80% 86%, rgba(23, 63, 55, .12), transparent 28%),
+        var(--bg);
+      background-size: 56px 56px, 56px 56px, auto, auto, auto;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(100%, 1480px);
+      margin: 0 auto;
+      padding: clamp(16px, 2.5vw, 34px);
+    }
+
+    .study-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 var(--gap);
+      padding: 10px 12px 10px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(251, 252, 247, .75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font: 600 12px/1.2 var(--mono);
+      letter-spacing: .02em;
+      box-shadow: 0 8px 34px -26px rgba(23, 26, 24, .5);
+    }
+
+    .study-ribbon strong {
+      color: var(--accent-dark);
+    }
+
+    .study-ribbon span:last-child {
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .mosaic {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: minmax(116px, auto);
+      gap: var(--gap);
+      align-items: stretch;
+    }
+
+    .tile {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(251, 252, 247, .86);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+      transition: transform .35s cubic-bezier(.2, .7, .1, 1), box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .tile:hover {
+      transform: translateY(-4px);
+      border-color: var(--line-strong);
+      box-shadow: 0 30px 90px -46px rgba(23, 26, 24, .58);
+    }
+
+    .tile-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      height: 100%;
+      min-height: 100%;
+      flex-direction: column;
+      padding: clamp(18px, 2.1vw, 32px);
+    }
+
+    .hero-tile {
+      grid-column: span 7;
+      grid-row: span 4;
+      min-height: clamp(470px, 58vw, 720px);
+      background:
+        linear-gradient(135deg, rgba(251, 252, 247, .96) 0%, rgba(251, 252, 247, .78) 52%, rgba(199, 212, 196, .58) 100%),
+        var(--paper);
+    }
+
+    .hero-tile::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(23, 26, 24, .09);
+      border-radius: calc(var(--radius) - 8px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-tile::after {
+      content: "";
+      position: absolute;
+      right: -14%;
+      bottom: -22%;
+      width: min(58vw, 640px);
+      aspect-ratio: 1;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(230, 75, 53, .22), rgba(230, 75, 53, .06) 42%, transparent 70%);
+      z-index: 0;
+    }
+
+    .nav-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: auto;
+      font: 700 12px/1 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 9px;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px 18px;
+      color: var(--muted);
+    }
+
+    .hero-copy {
+      max-width: 850px;
+      padding: clamp(58px, 8vw, 124px) 0 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 22px;
+      color: var(--accent-dark);
+      font: 700 12px/1.15 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow svg,
+    .mini-icon svg,
+    .cta-icon svg {
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      max-width: 11ch;
+      margin: 0;
+      font-size: clamp(54px, 8.4vw, 132px);
+      line-height: .89;
+      letter-spacing: 0;
+      font-weight: 800;
+    }
+
+    .hero-subcopy {
+      max-width: 580px;
+      margin: clamp(22px, 3vw, 34px) 0 0;
+      color: var(--muted);
+      font-size: clamp(17px, 1.6vw, 22px);
+      line-height: 1.5;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: clamp(26px, 3vw, 40px);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font: 800 13px/1 var(--mono);
+      letter-spacing: .03em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform .25s ease, background .25s ease, color .25s ease;
+      white-space: nowrap;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .portrait-tile {
+      grid-column: span 3;
+      grid-row: span 2;
+      min-height: 250px;
+      background: var(--moss);
+    }
+
+    .wide-image-tile {
+      grid-column: span 5;
+      grid-row: span 2;
+      min-height: 260px;
+    }
+
+    .watch-tile {
+      grid-column: span 4;
+      grid-row: span 3;
+      min-height: 410px;
+      background: #dce6e2;
+    }
+
+    .image-tile img {
+      transition: transform .55s ease, filter .55s ease;
+    }
+
+    .image-tile:hover img {
+      transform: scale(1.045);
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .image-caption {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 12px;
+      border: 1px solid rgba(255, 255, 255, .34);
+      border-radius: 999px;
+      background: rgba(18, 22, 20, .66);
+      color: #fff;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font: 700 11px/1 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .stat-tile {
+      grid-column: span 2;
+      grid-row: span 2;
+      min-height: 230px;
+      background: var(--moss);
+      color: #f7fbf5;
+    }
+
+    .stat-tile .tile-inner {
+      justify-content: space-between;
+    }
+
+    .stat-number {
+      margin-top: 22px;
+      font-family: var(--serif);
+      font-size: clamp(48px, 5.4vw, 86px);
+      line-height: .86;
+      letter-spacing: 0;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      max-width: 18ch;
+      color: rgba(247, 251, 245, .72);
+      font: 600 13px/1.4 var(--mono);
+      letter-spacing: .02em;
+    }
+
+    .quote-tile {
+      grid-column: span 5;
+      grid-row: span 2;
+      min-height: 260px;
+      background: var(--sky);
+    }
+
+    .quote-tile blockquote {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(27px, 3vw, 48px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .quote-tile footer {
+      margin-top: auto;
+      color: var(--muted);
+      font: 700 12px/1.35 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .feature-tile {
+      grid-column: span 3;
+      grid-row: span 3;
+      min-height: 410px;
+      background: var(--paper);
+    }
+
+    .tile-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font: 800 11px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .feature-tile h2,
+    .cta-tile h2,
+    .process-tile h2 {
+      margin: 0;
+      font-size: clamp(27px, 3vw, 46px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 12px;
+      margin-top: auto;
+      padding: 0;
+      list-style: none;
+    }
+
+    .feature-list li {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .mini-icon {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(230, 75, 53, .12);
+      color: var(--accent-dark);
+    }
+
+    .process-tile {
+      grid-column: span 4;
+      grid-row: span 2;
+      min-height: 260px;
+      background: #fff8dc;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .step {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid rgba(23, 26, 24, .12);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .5);
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 7px;
+      font: 800 11px/1 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .step span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .cta-tile {
+      grid-column: span 5;
+      grid-row: span 2;
+      min-height: 270px;
+      background: var(--accent);
+      color: #fffdf6;
+    }
+
+    .cta-tile::before {
+      content: "";
+      position: absolute;
+      inset: auto -8% -54% auto;
+      width: 52%;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .38);
+    }
+
+    .cta-tile .tile-inner {
+      justify-content: space-between;
+    }
+
+    .cta-copy {
+      max-width: 520px;
+      margin: 14px 0 0;
+      color: rgba(255, 253, 246, .84);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .cta-icon {
+      display: grid;
+      width: 54px;
+      height: 54px;
+      place-items: center;
+      border-radius: 999px;
+      background: #fffdf6;
+      color: var(--accent-dark);
+      transition: transform .3s ease;
+    }
+
+    .cta-tile:hover .cta-icon {
+      transform: translateX(4px);
+    }
+
+    .micro-meta {
+      color: rgba(255, 253, 246, .72);
+      font: 800 11px/1.4 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .ticker-tile {
+      grid-column: span 3;
+      grid-row: span 1;
+      min-height: 120px;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .ticker-tile .tile-inner {
+      justify-content: center;
+    }
+
+    .ticker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font: 800 12px/1 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .ticker span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(251, 252, 247, .7);
+    }
+
+    .ticker span::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--amber);
+    }
+
+    .wave-tile {
+      grid-column: span 4;
+      grid-row: span 2;
+      min-height: 250px;
+    }
+
+    .desktop-only {
+      display: block;
+    }
+
+    @media (max-width: 1180px) {
+      .mosaic {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .hero-tile {
+        grid-column: span 8;
+        min-height: 560px;
+      }
+
+      .portrait-tile,
+      .feature-tile,
+      .ticker-tile {
+        grid-column: span 4;
+      }
+
+      .wide-image-tile,
+      .quote-tile,
+      .process-tile,
+      .cta-tile,
+      .wave-tile,
+      .watch-tile {
+        grid-column: span 4;
+      }
+
+      .stat-tile {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 12px 12px 96px;
+      }
+
+      .study-ribbon {
+        align-items: flex-start;
+        border-radius: 18px;
+        flex-direction: column;
+      }
+
+      .study-ribbon span:last-child {
+        text-align: left;
+      }
+
+      .mosaic {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: minmax(132px, auto);
+      }
+
+      .tile {
+        border-radius: 18px;
+      }
+
+      .tile-inner {
+        padding: 18px;
+      }
+
+      .hero-tile,
+      .wide-image-tile,
+      .quote-tile,
+      .feature-tile,
+      .process-tile,
+      .cta-tile,
+      .wave-tile,
+      .watch-tile,
+      .ticker-tile {
+        grid-column: span 2;
+      }
+
+      .portrait-tile,
+      .stat-tile {
+        grid-column: span 1;
+      }
+
+      .hero-tile {
+        min-height: 620px;
+      }
+
+      .nav-line {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      h1 {
+        max-width: 9ch;
+        font-size: clamp(50px, 17vw, 78px);
+      }
+
+      .hero-subcopy {
+        font-size: 16px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .process-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .image-caption {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        border-radius: 16px;
+        white-space: normal;
+        line-height: 1.25;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .mosaic {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-tile,
+      .wide-image-tile,
+      .quote-tile,
+      .feature-tile,
+      .process-tile,
+      .cta-tile,
+      .wave-tile,
+      .watch-tile,
+      .ticker-tile,
+      .portrait-tile,
+      .stat-tile {
+        grid-column: 1;
+      }
+
+      .hero-tile {
+        min-height: 650px;
+      }
+
+      .portrait-tile,
+      .stat-tile,
+      .wide-image-tile,
+      .quote-tile,
+      .wave-tile {
+        min-height: 230px;
+      }
+
+      .watch-tile,
+      .feature-tile {
+        min-height: 360px;
+      }
+
+      .cta-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .desktop-only {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+
+      .tile:hover,
+      .button:hover,
+      .image-tile:hover img,
+      .cta-tile:hover .cta-icon {
+        transform: none !important;
+        filter: none !important;
+      }
+    }
+
+    @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Fieldtile Studio mosaic landing effect study">
+    <div class="study-ribbon" aria-label="Non-original effect study notice">
+      <span><strong>效果临摹 · Effect Study（非原创）</strong> / mosaic grid technique study</span>
+      <span>Fresh layout, original copy, local assets only</span>
+    </div>
+
+    <section class="mosaic" aria-label="Asymmetric bento landing layout">
+      <article class="tile hero-tile">
+        <div class="tile-inner">
+          <header class="nav-line" aria-label="Site navigation">
+            <div class="brand-mark">
+              <span class="brand-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h7v7H4z"></path>
+                  <path d="M13 4h7v5h-7z"></path>
+                  <path d="M13 11h7v9h-7z"></path>
+                  <path d="M4 13h7v7H4z"></path>
+                </svg>
+              </span>
+              Fieldtile Studio
+            </div>
+            <nav class="nav-links" aria-label="Primary">
+              <a href="#method">Method</a>
+              <a href="#signals">Signals</a>
+              <a href="#start">Start</a>
+            </nav>
+          </header>
+
+          <div class="hero-copy">
+            <p class="eyebrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v18"></path>
+                <path d="M3 12h18"></path>
+                <path d="M6 6l12 12"></path>
+                <path d="M18 6L6 18"></path>
+              </svg>
+              Pattern lab for launch teams
+            </p>
+            <h1>Turn scattered signals into one launch surface.</h1>
+            <p class="hero-subcopy">Fieldtile organizes research, product moments, and proof points into a living campaign wall teams can actually read.</p>
+            <div class="hero-actions">
+              <a class="button" href="#start">
+                Build a wall
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M13 6l6 6-6 6"></path>
+                </svg>
+              </a>
+              <a class="button secondary" href="#method">View method</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="tile image-tile portrait-tile" id="signals">
+        <img src="../../_assets/photos/coffee.jpg" alt="Coffee on a work table used as a planning scene">
+        <div class="image-caption">
+          <span>Signal capture</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12h16"></path>
+            <path d="M14 6l6 6-6 6"></path>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile stat-tile">
+        <div class="tile-inner">
+          <p class="tile-label">Live index</p>
+          <div>
+            <div class="stat-number">42</div>
+            <p class="stat-label">active tiles ranked by launch impact this week</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="tile image-tile wide-image-tile">
+        <img src="../../_assets/gen/abstract-wave.jpg" alt="Abstract wave texture in muted red and cream">
+        <div class="image-caption">
+          <span>Visual language</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v18"></path>
+            <path d="M3 12h18"></path>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile quote-tile">
+        <div class="tile-inner">
+          <p class="tile-label">Studio note</p>
+          <blockquote>Less slide churn. More shared context in the room.</blockquote>
+          <footer>Used by launch, brand, and product leads</footer>
+        </div>
+      </article>
+
+      <article class="tile feature-tile" id="method">
+        <div class="tile-inner">
+          <p class="tile-label">Why it works</p>
+          <h2>A campaign board that keeps shape as details change.</h2>
+          <ul class="feature-list">
+            <li>
+              <span class="mini-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7h16"></path>
+                  <path d="M4 12h10"></path>
+                  <path d="M4 17h16"></path>
+                </svg>
+              </span>
+              <span>Briefs, proof points, and creative references stay visible in one scan-friendly surface.</span>
+            </li>
+            <li>
+              <span class="mini-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20V4"></path>
+                  <path d="M5 13l7 7 7-7"></path>
+                </svg>
+              </span>
+              <span>Priority shifts are reflected by tile weight instead of another meeting thread.</span>
+            </li>
+            <li>
+              <span class="mini-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 5h14v14H5z"></path>
+                  <path d="M9 9h6v6H9z"></path>
+                </svg>
+              </span>
+              <span>Each campaign gets a reusable pattern without flattening the story into a template.</span>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="tile image-tile watch-tile">
+        <img src="../../_assets/gen/product-watch.jpg" alt="Minimal product watch render in a soft studio setting">
+        <div class="image-caption">
+          <span>Launch object</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17L17 7"></path>
+            <path d="M7 7h10v10"></path>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile process-tile">
+        <div class="tile-inner">
+          <p class="tile-label">Three pass rhythm</p>
+          <h2>Collect, weight, publish.</h2>
+          <div class="process-steps">
+            <div class="step">
+              <strong>01 Gather</strong>
+              <span>Pull source notes, visuals, claims, and objections.</span>
+            </div>
+            <div class="step">
+              <strong>02 Sort</strong>
+              <span>Assign tile scale by decision value and urgency.</span>
+            </div>
+            <div class="step">
+              <strong>03 Align</strong>
+              <span>Share the wall before the next creative sprint.</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="tile ticker-tile">
+        <div class="tile-inner">
+          <div class="ticker" aria-label="Campaign tile categories">
+            <span>Claims</span>
+            <span>Moments</span>
+            <span>Assets</span>
+            <span>Risks</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tile image-tile wave-tile desktop-only">
+        <img src="../../_assets/photos/coffee.jpg" alt="Desk scene cropped as a supporting research tile">
+        <div class="image-caption">
+          <span>Desk review</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 6h13"></path>
+            <path d="M8 12h13"></path>
+            <path d="M8 18h13"></path>
+            <path d="M3 6h.01"></path>
+            <path d="M3 12h.01"></path>
+            <path d="M3 18h.01"></path>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile cta-tile" id="start">
+        <div class="tile-inner">
+          <div>
+            <p class="tile-label" style="color:rgba(255,253,246,.82)">Start a field wall</p>
+            <h2>Make the next launch easier to see.</h2>
+            <p class="cta-copy">Turn the latest research, strongest proof, and unresolved questions into a board your whole team can use.</p>
+          </div>
+          <div class="cta-row">
+            <p class="micro-meta">Effect study file · offline demo · no external assets</p>
+            <span class="cta-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M13 6l6 6-6 6"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Mosaic Redesigned Landing》 by brianjyip · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+/* ============================================================
+   Film Noir · 黑色电影 (Cinematic) Tokens
+   契约：所有变量名固定为 --ds-*，只换取值。
+   本风格暗为主：:root / [data-theme="dark"] / .dark = noir night；
+   [data-theme="light"] / .light = high-key paper dossier。
+   气质：高反差黑白、威尼斯百叶阴影、key-light/vignette、场记板与单一暖色强调。
+   ============================================================ */
+
+:root,
+[data-theme="dark"],
+.dark {
+  --ds-bg:#0c0c0e; --ds-bg-subtle:#141416; --ds-bg-elevated:#1a1a1d; --ds-bg-sunken:#060607;
+  --ds-fg:#ece9e2; --ds-fg-muted:#a8a59c; --ds-fg-subtle:#79766d; --ds-fg-on-accent:#1a1206;
+  --ds-border:#2a2a2d; --ds-border-strong:#ece9e2;
+  --ds-primary:#d9a441; --ds-primary-hover:#e6b357; --ds-primary-active:#c8923a; --ds-primary-fg:#1a1206;
+  --ds-accent:#c83a30; --ds-accent-fg:#ffffff;
+  --ds-success:#6aaf6a; --ds-success-bg:#0e220e; --ds-success-fg:#cde6cd;
+  --ds-warning:#d9a441; --ds-warning-bg:#241a06; --ds-warning-fg:#f6e6c2;
+  --ds-danger:#e25a4e;  --ds-danger-bg:#2a0c09;  --ds-danger-fg:#f8d6d0;
+  --ds-info:#8aa6c0;    --ds-info-bg:#0c1a26;    --ds-info-fg:#d6e6f2;
+  --ds-focus:#d9a441;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+  --ds-radius-sm:1px; --ds-radius-md:2px; --ds-radius-lg:4px; --ds-radius-full:9999px;
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+  --ds-font-serif:"Noto Serif", Georgia, serif;
+  --ds-font-sans:"Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 15px; --ds-text-md: 18px;
+  --ds-text-lg: 22px; --ds-text-xl: 30px; --ds-text-2xl: 42px; --ds-text-3xl: 60px;
+  --ds-leading-tight: 1.15; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+  --ds-shadow-sm:0 2px 6px rgba(0,0,0,.6);
+  --ds-shadow-md:0 10px 28px -8px rgba(0,0,0,.75);
+  --ds-shadow-lg:0 28px 64px -16px rgba(0,0,0,.85);
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 160ms; --ds-dur-base: 260ms; --ds-dur-slow: 380ms;
+  --ds-z-dropdown:1000;--ds-z-sticky:1100;--ds-z-modal-backdrop:1200;--ds-z-modal:1300;--ds-z-toast:1400;--ds-z-tooltip:1500;
+}
+
+[data-theme="light"],
+.light {
+  --ds-bg:#f2f0ea; --ds-bg-subtle:#e7e4db; --ds-bg-elevated:#fbfaf5; --ds-bg-sunken:#dcd8cd;
+  --ds-fg:#16140f; --ds-fg-muted:#4a463c; --ds-fg-subtle:#6e695c; --ds-fg-on-accent:#ffffff;
+  --ds-border:#cfc9bb; --ds-border-strong:#16140f;
+  --ds-primary:#8a5a14; --ds-primary-hover:#76490f; --ds-primary-active:#5f3b0a; --ds-primary-fg:#ffffff;
+  --ds-accent:#b3302a; --ds-accent-fg:#ffffff;
+  --ds-success:#2f7a3a; --ds-success-bg:#e4f0e2; --ds-success-fg:#103a14;
+  --ds-warning:#8a5a14; --ds-warning-bg:#f4e8cf; --ds-warning-fg:#3e2a08;
+  --ds-danger:#b3302a;  --ds-danger-bg:#f6e0dd;  --ds-danger-fg:#511210;
+  --ds-info:#3a5a78;    --ds-info-bg:#e2e9f0;    --ds-info-fg:#11283a;
+  --ds-focus:#8a5a14;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+  --ds-shadow-sm:0 1px 2px rgba(22,20,15,.16);
+  --ds-shadow-md:0 8px 22px -8px rgba(22,20,15,.26);
+  --ds-shadow-lg:0 22px 50px -16px rgba(22,20,15,.34);
+}

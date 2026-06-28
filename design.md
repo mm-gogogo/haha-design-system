@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 37 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 38 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 37 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 38 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -169,6 +169,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 37 多巴胺撞色 · Dopamine (Maximalist colour-blocking) — `/styles/37-dopamine/`
 高饱和大色块 + 超大胖圆字 + 贴纸徽章 + 粗药丸：现代多巴胺。primary 品红 `#e6187f` / accent 紫 `#7b2ff0` / bg 暖奶油 `#fdf4ec`·elevated `#fff` / fg `#1f1320`｜暗（霓虹多巴胺夜）primary `#ff4d9e`(深字) / accent `#a36bff` / bg `#161018`·fg `#f6ecf6`｜10·18·28（圆）｜Quicksand 最重字超大标题 + Inter｜大色块整屏面板（每段一种亮色）+ 多色单词标题 + 贴纸 blob/爆星 + 硬偏移投影粗药丸；色块亮色 橘/青柠/青/紫/阳光 仅作填充、色块上文字按对比走白/近黑。与 01 可爱（柔粉）、24 孟菲斯（碎屑几何）、28 波普（漫画网点）、36 扁平插画（克制友好）刻意区分（大色块 + 超大字 + 高饱和）。
+
+### 38 黑色电影 · Film Noir (Cinematic) — `/styles/38-noir/`（暗色优先）
+电影黑白 + 单一暖强调：明暗强对比、百叶阴影条、主光径向、戏剧衬线标题、场记板、颗粒、灰度双色照。`:root`=暗（夜）：bg `#0c0c0e`·elevated `#1a1a1d` / fg `#ece9e2` / primary 琥珀 `#d9a441`(深字) / accent 深红 `#c83a30`｜亮（高调纸档）bg `#f2f0ea` / primary `#8a5a14` / accent `#b3302a` / fg `#16140f`｜1·2·4（锐）｜Noto Serif 戏剧标题 + Inter 大写标签 + JetBrains Mono 场号｜百叶阴影条 + 明暗径向 + 场记板 + 颗粒 + 灰度双色；深红仅大号粗体。与 11 奢侈（金极简留白）、26 报刊（印刷）、20 瑞士（克制网格）刻意区分（黑白电影戏剧光影）。
 
 ---
 
