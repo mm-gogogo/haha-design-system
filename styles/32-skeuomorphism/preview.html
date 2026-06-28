@@ -1,0 +1,1755 @@
+<!-- Skeuomorphism · 拟物写实 (Rich Skeuo) — Design Kit Preview -->
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css">
+<link rel="stylesheet" href="../../_assets/device.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skeuomorphism · 拟物写实 (Rich Skeuo) — Design Kit Preview</title>
+<style>
+  /* ===== Tokens (内联自 tokens.css，自包含离线可用) ===== */
+  :root {
+    --ds-bg:#e7ddc9; --ds-bg-subtle:#dccfb5; --ds-bg-elevated:#fbf6ea; --ds-bg-sunken:#d0c2a4;
+    --ds-fg:#2c2419; --ds-fg-muted:#5a4d38; --ds-fg-subtle:#786a4e; --ds-fg-on-accent:#ffffff;
+    --ds-border:#cbbb98; --ds-border-strong:#2c2419;
+    --ds-primary:#2f6fd0; --ds-primary-hover:#2860b8; --ds-primary-active:#21509c; --ds-primary-fg:#ffffff;
+    --ds-accent:#8a6a1e; --ds-accent-fg:#fff8ec;
+    --ds-success:#3a7a3a; --ds-success-bg:#e6f1e2; --ds-success-fg:#123a12;
+    --ds-warning:#9a6a14; --ds-warning-bg:#f6ead0; --ds-warning-fg:#43300a;
+    --ds-danger:#b03a2e; --ds-danger-bg:#f7e2de; --ds-danger-fg:#551410;
+    --ds-info:#2f6fd0; --ds-info-bg:#e3ecf8; --ds-info-fg:#0e2c5a;
+    --ds-focus:#2f6fd0; --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+    --ds-radius-sm:6px; --ds-radius-md:12px; --ds-radius-lg:18px; --ds-radius-full:9999px;
+    --ds-space-1:4px; --ds-space-2:8px; --ds-space-3:12px; --ds-space-4:16px; --ds-space-5:20px;
+    --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px; --ds-space-9:48px;
+    --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+    --ds-font-sans:'Inter',-apple-system,'PingFang SC',sans-serif;
+    --ds-font-serif:'Noto Serif', Georgia, serif;
+    --ds-font-mono:'JetBrains Mono',monospace;
+    --ds-text-xs:12px; --ds-text-sm:13px; --ds-text-base:14px; --ds-text-md:16px;
+    --ds-text-lg:20px; --ds-text-xl:24px; --ds-text-2xl:32px; --ds-text-3xl:48px;
+    --ds-leading-tight:1.25; --ds-leading-normal:1.55; --ds-leading-relaxed:1.75;
+    --ds-weight-normal:400; --ds-weight-medium:500; --ds-weight-bold:600;
+    --ds-tracking-tight:-0.01em; --ds-tracking-normal:0;
+    --ds-shadow-sm:inset 0 1px 0 rgba(255,255,255,.55), 0 1px 2px rgba(44,36,25,.28);
+    --ds-shadow-md:inset 0 1px 0 rgba(255,255,255,.5), 0 4px 10px -2px rgba(44,36,25,.3);
+    --ds-shadow-lg:inset 0 1px 0 rgba(255,255,255,.5), 0 12px 28px -6px rgba(44,36,25,.4);
+    --ds-shadow-inset:inset 0 2px 4px rgba(44,36,25,.38), inset 0 -1px 0 rgba(255,255,255,.35);
+    --ds-shadow-inset-sm:inset 0 1px 2px rgba(44,36,25,.32), inset 0 -1px 0 rgba(255,255,255,.32);
+    --ds-ease:cubic-bezier(.25,.46,.45,.94);
+    --ds-dur-fast:200ms; --ds-dur-base:240ms; --ds-dur-slow:280ms;
+    /* Preview-only layer helpers, dropdown<sticky<modal-backdrop<modal<toast<tooltip */
+    --ds-z-dropdown:1000; --ds-z-sticky:1100; --ds-z-modal-backdrop:1200;
+    --ds-z-modal:1300; --ds-z-toast:1400; --ds-z-tooltip:1500;
+  }
+  [data-theme=dark],
+  .dark {
+    --ds-bg:#1f1a12; --ds-bg-subtle:#261f15; --ds-bg-elevated:#2c2419; --ds-bg-sunken:#14100a;
+    --ds-fg:#efe6d2; --ds-fg-muted:#b6a98c; --ds-fg-subtle:#847862; --ds-fg-on-accent:#08142e;
+    --ds-border:#3a3122; --ds-border-strong:#c9a86a;
+    --ds-primary:#5d97f0; --ds-primary-hover:#74a8f4; --ds-primary-active:#4d86e0; --ds-primary-fg:#08142e;
+    --ds-accent:#c9a259; --ds-accent-fg:#1a1408;
+    --ds-success:#6fbf6f; --ds-success-bg:#102a10; --ds-success-fg:#cdeec0;
+    --ds-warning:#e0b35a; --ds-warning-bg:#241a06; --ds-warning-fg:#f6e6be;
+    --ds-danger:#e07a5f; --ds-danger-bg:#2a0f08; --ds-danger-fg:#f8d6c8;
+    --ds-info:#5d97f0; --ds-info-bg:#0c1c3a; --ds-info-fg:#d6e4fb;
+    --ds-focus:#5d97f0;
+    --ds-shadow-sm:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.55);
+    --ds-shadow-md:inset 0 1px 0 rgba(255,255,255,.07), 0 5px 12px -2px rgba(0,0,0,.6);
+    --ds-shadow-lg:inset 0 1px 0 rgba(255,255,255,.06), 0 14px 30px -6px rgba(0,0,0,.7);
+    --ds-shadow-inset:inset 0 2px 5px rgba(0,0,0,.72), inset 0 -1px 0 rgba(255,255,255,.06);
+    --ds-shadow-inset-sm:inset 0 1px 3px rgba(0,0,0,.68), inset 0 -1px 0 rgba(255,255,255,.05);
+  }
+
+  /* ===== Base ===== */
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(255,255,255,.32), transparent 26%),
+      linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, transparent 1px 9px),
+      linear-gradient(0deg, rgba(44,36,25,.08) 0 1px, transparent 1px 10px),
+      var(--ds-bg);
+    color:var(--ds-fg);
+    font-family:var(--ds-font-sans); font-size:var(--ds-text-base);
+    line-height:var(--ds-leading-normal); font-weight:var(--ds-weight-normal);
+    transition:background var(--ds-dur-slow) var(--ds-ease), color var(--ds-dur-slow) var(--ds-ease);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:1040px; margin:0 auto; padding:var(--ds-space-8) var(--ds-space-6) var(--ds-space-9); }
+  h1 { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.03em; margin:0; text-shadow:0 1px 0 rgba(255,255,255,.45), 0 -1px 0 rgba(44,36,25,.16); }
+  h2 { font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); margin:0 0 var(--ds-space-5); letter-spacing:-0.02em; text-shadow:0 1px 0 rgba(255,255,255,.4); }
+  .lead { color:var(--ds-fg-muted); font-size:var(--ds-text-md); margin:var(--ds-space-2) 0 0; }
+  section { margin-top:var(--ds-space-9); }
+  .panel {
+    position:relative; overflow:hidden;
+    background:
+      radial-gradient(circle at 16% 18%, rgba(255,255,255,.22), transparent 20%),
+      radial-gradient(circle at 82% 70%, rgba(44,36,25,.12), transparent 28%),
+      linear-gradient(145deg, var(--ds-bg-elevated), var(--ds-bg-subtle));
+    border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-lg);
+    box-shadow:var(--ds-shadow-md); padding:var(--ds-space-7);
+  }
+  .panel::before {
+    content:""; position:absolute; inset:10px; border:1px dashed var(--ds-border-strong);
+    border-radius:calc(var(--ds-radius-lg) - 5px); opacity:.42; pointer-events:none;
+  }
+  .panel::after {
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.18;
+    background:
+      radial-gradient(circle at 24% 32%, rgba(44,36,25,.24) 0 1px, transparent 1px 8px),
+      radial-gradient(circle at 70% 64%, rgba(255,255,255,.45) 0 1px, transparent 1px 10px);
+    mix-blend-mode:multiply;
+  }
+  .panel > * { position:relative; z-index:1; }
+  .grid { display:grid; gap:var(--ds-space-6); }
+  .row { display:flex; flex-wrap:wrap; gap:var(--ds-space-4); align-items:center; }
+  .muted { color:var(--ds-fg-muted); } .subtle { color:var(--ds-fg-subtle); }
+  .mono { font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); }
+
+  /* ===== Topbar ===== */
+  .topbar {
+    position:sticky; top:0; z-index:var(--ds-z-sticky);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:var(--ds-space-4) var(--ds-space-6);
+    background:
+      radial-gradient(circle at 16% 20%, rgba(255,255,255,.24), transparent 26%),
+      linear-gradient(145deg, var(--ds-bg-elevated), var(--ds-bg-subtle));
+    border:1px solid var(--ds-border);
+    box-shadow:var(--ds-shadow-md); border-radius:var(--ds-radius-md);
+    margin:var(--ds-space-4) auto 0; max-width:1040px;
+  }
+  .brand { display:flex; align-items:center; gap:var(--ds-space-3); font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md); letter-spacing:-0.01em; }
+  .logo { width:36px; height:36px; border-radius:var(--ds-radius-full); display:grid; place-items:center;
+    background:linear-gradient(180deg, var(--ds-bg-elevated), var(--ds-bg-subtle));
+    border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-md); color:var(--ds-accent); }
+  .logo svg { width:20px; height:20px; display:block; }
+
+  /* ===== 内联 SVG 图标（统一线性风格） ===== */
+  .ic { width:1em; height:1em; flex:none; vertical-align:-0.125em; }
+  svg.ic, .menu-item svg, .alert svg, .toast svg, .step svg, .check svg, .ph-btn svg, .pl-ico svg, .x svg, .t-x svg, .btn svg { stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ===== Buttons ===== */
+  .btn {
+    font:inherit; font-weight:var(--ds-weight-medium); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; gap:var(--ds-space-2);
+    border:1px solid var(--ds-border); height:40px; padding:0 var(--ds-space-5);
+    border-radius:var(--ds-radius-sm);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.58), rgba(255,255,255,.16) 34%, transparent 35%),
+      linear-gradient(180deg, var(--ds-bg-elevated), var(--ds-bg-subtle) 58%, var(--ds-bg-sunken));
+    color:var(--ds-fg);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -10px 16px rgba(44,36,25,.09), 0 3px 7px -2px rgba(44,36,25,.34);
+    letter-spacing:-0.01em; text-shadow:0 1px 0 rgba(255,255,255,.42);
+    transition:box-shadow var(--ds-dur-base) var(--ds-ease), background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-fast) var(--ds-ease);
+  }
+  .btn svg { width:18px; height:18px; flex:none; }
+  .btn--icon svg { width:20px; height:20px; }
+  .tt-ico { display:inline-flex; }
+  .tt-ico svg { width:16px; height:16px; }
+  .btn:hover { box-shadow:inset 0 1px 0 rgba(255,255,255,.72), inset 0 -10px 16px rgba(44,36,25,.07), 0 6px 12px -4px rgba(44,36,25,.38); }
+  .btn:active { transform:translateY(1px); box-shadow:var(--ds-shadow-inset); }
+  .btn:focus-visible { outline:none; box-shadow:var(--ds-shadow-md), var(--ds-focus-ring); }
+  .btn--primary {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.58), rgba(255,255,255,.18) 34%, transparent 35%),
+      linear-gradient(180deg, var(--ds-primary-hover), var(--ds-primary) 62%, var(--ds-primary-active));
+    color:var(--ds-primary-fg); border-color:var(--ds-primary-active);
+    text-shadow:0 -1px 0 rgba(0,0,0,.22);
+  }
+  .btn--primary:hover {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.2) 34%, transparent 35%),
+      linear-gradient(180deg, var(--ds-primary), var(--ds-primary-hover) 64%, var(--ds-primary-active));
+  }
+  .btn--primary:active { background:var(--ds-primary-active); box-shadow:var(--ds-shadow-inset); }
+  .btn--danger {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.48), rgba(255,255,255,.14) 34%, transparent 35%),
+      linear-gradient(180deg, var(--ds-danger), var(--ds-danger-fg));
+    color:var(--ds-fg-on-accent); border-color:var(--ds-danger-fg);
+    text-shadow:0 -1px 0 rgba(0,0,0,.24);
+  }
+  .btn--tertiary { box-shadow:none; color:var(--ds-fg-muted); }
+  .btn--tertiary:hover { box-shadow:var(--ds-shadow-sm); }
+  .btn--pressed { box-shadow:var(--ds-shadow-inset); color:var(--ds-primary); }
+  .btn:disabled { opacity:.55; cursor:not-allowed; box-shadow:var(--ds-shadow-sm); }
+  .btn--sm { height:32px; padding:0 var(--ds-space-4); font-size:var(--ds-text-sm); }
+  .btn--lg { height:48px; padding:0 var(--ds-space-6); font-size:var(--ds-text-md); }
+  .btn--icon { width:44px; padding:0; display:grid; place-items:center; border-radius:var(--ds-radius-full); }
+
+  /* ===== Swatches ===== */
+  .swatches { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:var(--ds-space-4); }
+  .sw { border-radius:var(--ds-radius-md); padding:var(--ds-space-3); background:var(--ds-bg-elevated); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-sm); }
+  .sw .chip { height:48px; border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-inset-sm); margin-bottom:var(--ds-space-2); }
+  .sw .name { font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); }
+  .sw .hex { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+
+  /* ===== Type scale ===== */
+  .type-row { display:flex; align-items:baseline; gap:var(--ds-space-5); padding:var(--ds-space-2) 0; }
+  .type-row .tag { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); width:120px; font-family:var(--ds-font-mono); flex:none; }
+
+  /* ===== Form ===== */
+  .field { margin-bottom:var(--ds-space-5); }
+  .field label { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); margin-bottom:var(--ds-space-2); color:var(--ds-fg-muted); }
+  .input, .textarea, .select {
+    width:100%; font:inherit; color:var(--ds-fg);
+    background:
+      linear-gradient(180deg, rgba(44,36,25,.07), transparent 18%),
+      var(--ds-bg-sunken);
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-sm);
+    box-shadow:var(--ds-shadow-inset); padding:0 var(--ds-space-4); height:42px;
+    transition:box-shadow var(--ds-dur-base) var(--ds-ease);
+  }
+  .textarea { height:auto; padding:var(--ds-space-3) var(--ds-space-4); resize:vertical; min-height:84px; }
+  .input::placeholder, .textarea::placeholder { color:var(--ds-fg-subtle); }
+  .input:focus, .textarea:focus, .select:focus { outline:none; box-shadow:var(--ds-shadow-inset), var(--ds-focus-ring); }
+
+  /* checkbox / radio */
+  .check { display:flex; align-items:center; gap:var(--ds-space-3); cursor:pointer; font-size:var(--ds-text-sm); }
+  .check .box { width:24px; height:24px; border-radius:7px; background:linear-gradient(180deg,var(--ds-bg-elevated),var(--ds-bg-subtle)); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; flex:none; transition:box-shadow var(--ds-dur-base) var(--ds-ease); }
+  .check .box.r { border-radius:var(--ds-radius-full); }
+  .check input { position:absolute; opacity:0; pointer-events:none; }
+  .check input:checked + .box { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); }
+  .check .box svg { opacity:0; transition:opacity var(--ds-dur-fast) var(--ds-ease); }
+  .check input:checked + .box svg { opacity:1; }
+  .check input:focus-visible + .box { box-shadow:var(--ds-shadow-sm), var(--ds-focus-ring); }
+  .dot { width:10px; height:10px; border-radius:50%; background:var(--ds-primary); opacity:0; }
+  .check input:checked + .box .dot { opacity:1; }
+
+  /* switch */
+  .switch { position:relative; width:56px; height:30px; flex:none; cursor:pointer; }
+  .switch input { position:absolute; opacity:0; }
+  .switch .track {
+    position:absolute; inset:0; border-radius:var(--ds-radius-full);
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.38), transparent 18% 32%, rgba(44,36,25,.16) 50%, transparent 68% 82%, rgba(255,255,255,.28)),
+      linear-gradient(180deg, var(--ds-border), var(--ds-bg-elevated) 42%, var(--ds-bg-sunken));
+    border:1px solid var(--ds-border-strong); box-shadow:var(--ds-shadow-inset-sm);
+    transition:background var(--ds-dur-base) var(--ds-ease);
+  }
+  .switch .knob {
+    position:absolute; top:4px; left:4px; width:22px; height:22px; border-radius:50%;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.58), transparent 24% 34%, rgba(44,36,25,.16) 50%, transparent 66% 76%, rgba(255,255,255,.5)),
+      linear-gradient(180deg, var(--ds-bg-elevated), var(--ds-border));
+    border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-sm);
+    transition:transform var(--ds-dur-base) var(--ds-ease);
+  }
+  .switch input:checked ~ .track {
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.26), transparent 22% 36%, rgba(44,36,25,.18) 52%, transparent 70%),
+      linear-gradient(180deg, var(--ds-primary-hover), var(--ds-primary));
+  }
+  .switch input:checked ~ .knob { transform:translateX(26px); }
+  .switch input:focus-visible ~ .track { box-shadow:var(--ds-shadow-inset-sm), var(--ds-focus-ring); }
+
+  /* slider */
+  .slider { -webkit-appearance:none; appearance:none; width:100%; height:14px; border-radius:var(--ds-radius-full); background:linear-gradient(180deg,var(--ds-bg-sunken),var(--ds-bg-subtle)); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-inset-sm); outline:none; }
+  .slider::-webkit-slider-thumb { -webkit-appearance:none; width:26px; height:26px; border-radius:50%; background:linear-gradient(180deg,var(--ds-bg-elevated),var(--ds-border)); border:1px solid var(--ds-border-strong); box-shadow:var(--ds-shadow-md); cursor:pointer; }
+  .slider::-moz-range-thumb { width:26px; height:26px; border:1px solid var(--ds-border-strong); border-radius:50%; background:linear-gradient(180deg,var(--ds-bg-elevated),var(--ds-border)); box-shadow:var(--ds-shadow-md); cursor:pointer; }
+
+  /* ===== Cards ===== */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:var(--ds-space-6); }
+  .card { background:linear-gradient(180deg,var(--ds-bg-elevated),var(--ds-bg-elevated) 72%,var(--ds-bg-subtle)); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-6); }
+  .card h3 { margin:0 0 var(--ds-space-2); font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); }
+  .card p { margin:0 0 var(--ds-space-5); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-relaxed); }
+
+  /* ===== Badges ===== */
+  .badge { display:inline-flex; align-items:center; gap:6px; padding:3px 12px; border-radius:var(--ds-radius-full); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); border:1px solid var(--ds-border); box-shadow:var(--ds-shadow-sm); }
+  .badge .dot-ic { width:7px; height:7px; flex:none; }
+  .badge--success { background:var(--ds-success-bg); color:var(--ds-success-fg); }
+  .badge--warning { background:var(--ds-warning-bg); color:var(--ds-warning-fg); }
+  .badge--danger { background:var(--ds-danger-bg); color:var(--ds-danger-fg); }
+  .badge--info { background:var(--ds-info-bg); color:var(--ds-info-fg); }
+
+  /* ===== Alerts（前置语义 SVG 图标 + 浅底，凹陷图标坑表达语义，不用粗色条） ===== */
+  .alert { display:flex; gap:var(--ds-space-4); align-items:flex-start; padding:var(--ds-space-4) var(--ds-space-5); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); margin-bottom:var(--ds-space-4); font-size:var(--ds-text-sm); }
+  .alert .ico { flex:none; width:32px; height:32px; border-radius:var(--ds-radius-full); display:grid; place-items:center; box-shadow:var(--ds-shadow-inset-sm); background:inherit; }
+  .alert .ico svg { width:18px; height:18px; }
+  .alert .a-body { padding-top:5px; }
+  .alert--success { background:var(--ds-success-bg); color:var(--ds-success-fg); }
+  .alert--warning { background:var(--ds-warning-bg); color:var(--ds-warning-fg); }
+  .alert--danger { background:var(--ds-danger-bg); color:var(--ds-danger-fg); }
+  .alert--info { background:var(--ds-info-bg); color:var(--ds-info-fg); }
+
+  /* ===== Tabs / nav ===== */
+  .tabs { display:inline-flex; gap:var(--ds-space-2); padding:var(--ds-space-2); background:linear-gradient(180deg,var(--ds-bg-subtle),var(--ds-bg-sunken)); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); }
+  .tab { font:inherit; font-weight:var(--ds-weight-medium); font-size:var(--ds-text-sm); border:none; cursor:pointer; padding:8px 18px; border-radius:var(--ds-radius-sm); background:transparent; color:var(--ds-fg-muted); transition:all var(--ds-dur-base) var(--ds-ease); }
+  .tab:hover { color:var(--ds-fg); }
+  .tab[aria-selected="true"] { background:var(--ds-bg); color:var(--ds-primary); box-shadow:var(--ds-shadow-md); }
+
+  /* ===== Table ===== */
+  table { width:100%; border-collapse:collapse; font-size:var(--ds-text-sm); }
+  thead th { text-align:left; font-weight:var(--ds-weight-medium); color:var(--ds-fg-muted); font-size:var(--ds-text-xs); text-transform:uppercase; letter-spacing:.04em; padding:var(--ds-space-3) var(--ds-space-4); }
+  tbody td { padding:var(--ds-space-3) var(--ds-space-4); border-top:1px solid var(--ds-border); }
+  tbody tr:first-child td { border-top:none; }
+  td.num { font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; text-align:right; color:var(--ds-fg); }
+
+  .label { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); margin-bottom:var(--ds-space-3); font-family:var(--ds-font-mono); }
+
+  /* ===== Modal（凸起浮层） ===== */
+  .modal-demo { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--ds-space-6); align-items:start; }
+  .modal-scrim { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-8) var(--ds-space-6); display:grid; place-items:center; }
+  .modal-scrim {
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,255,255,.16), transparent 18%),
+      radial-gradient(circle at 70% 64%, rgba(44,36,25,.18), transparent 24%),
+      var(--ds-bg-sunken);
+  }
+  .modal {
+    width:100%; max-width:360px; background:var(--ds-bg-elevated); color:var(--ds-fg);
+    border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg); padding:var(--ds-space-6);
+  }
+  .modal .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-3); }
+  .modal h3 { margin:0; font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); color:var(--ds-fg); }
+  .modal .x { width:32px; height:32px; border-radius:var(--ds-radius-full); border:none; cursor:pointer; background:var(--ds-bg); color:var(--ds-fg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; transition:box-shadow var(--ds-dur-base) var(--ds-ease); }
+  .modal .x svg { width:16px; height:16px; }
+  .modal .x:hover { box-shadow:var(--ds-shadow-md); }
+  .modal .x:active { box-shadow:var(--ds-shadow-inset-sm); }
+  .modal p { margin:0 0 var(--ds-space-6); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-relaxed); }
+  .modal .modal-foot { display:flex; gap:var(--ds-space-3); justify-content:flex-end; }
+
+  /* ===== Dropdown（凸起触发 + 凹陷菜单容器） ===== */
+  .dropdown { position:relative; display:inline-block; }
+  .menu {
+    margin-top:var(--ds-space-3); width:220px; background:var(--ds-bg); border-radius:var(--ds-radius-md);
+    box-shadow:var(--ds-shadow-md); padding:var(--ds-space-2);
+  }
+  .menu-item {
+    display:flex; align-items:center; gap:var(--ds-space-3); width:100%; text-align:left;
+    font:inherit; font-size:var(--ds-text-sm); color:var(--ds-fg); border:none; cursor:pointer;
+    background:transparent; padding:var(--ds-space-3) var(--ds-space-4); border-radius:var(--ds-radius-sm);
+    transition:box-shadow var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .menu-item .mi { width:18px; height:18px; flex:none; display:grid; place-items:center; color:var(--ds-fg-muted); }
+  .menu-item .mi svg { width:18px; height:18px; }
+  .menu-item[aria-current="true"] .mi, .menu-item:hover .mi { color:inherit; }
+  .menu-item.danger .mi { color:var(--ds-danger-fg); }
+  .menu-item:hover { box-shadow:var(--ds-shadow-sm); }
+  .menu-item:active { box-shadow:var(--ds-shadow-inset-sm); }
+  .menu-item[aria-current="true"] { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-fg); font-weight:var(--ds-weight-bold); }
+  .menu-item.danger { color:var(--ds-danger-fg); }
+  .menu-sep { height:1px; background:var(--ds-border); margin:var(--ds-space-2) var(--ds-space-3); }
+
+  /* ===== Tooltip（凸起小气泡） ===== */
+  .tip { position:relative; display:inline-block; }
+  .tip .bubble {
+    position:absolute; left:50%; bottom:calc(100% + 12px); transform:translateX(-50%);
+    background:var(--ds-bg); color:var(--ds-fg); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium);
+    padding:var(--ds-space-2) var(--ds-space-3); border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-md);
+    white-space:nowrap; opacity:0; pointer-events:none; transition:opacity var(--ds-dur-base) var(--ds-ease); z-index:var(--ds-z-tooltip);
+  }
+  .tip:hover .bubble, .tip:focus-within .bubble { opacity:1; }
+
+  /* ===== Pagination（凸页码 / 选中凹陷） ===== */
+  .pagination { display:inline-flex; gap:var(--ds-space-2); padding:var(--ds-space-2); background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); }
+  .page {
+    min-width:38px; height:38px; padding:0 var(--ds-space-3); border:none; cursor:pointer; font:inherit;
+    font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); background:var(--ds-bg);
+    border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center;
+    transition:box-shadow var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  .page:hover { box-shadow:var(--ds-shadow-md); }
+  .page:active { box-shadow:var(--ds-shadow-inset-sm); }
+  .page[aria-current="page"] { box-shadow:var(--ds-shadow-inset); color:var(--ds-primary); }
+  .page:disabled { opacity:.5; cursor:not-allowed; box-shadow:var(--ds-shadow-inset-sm); }
+
+  /* ===== Toast（凸起通知） ===== */
+  .toast-stack { display:grid; gap:var(--ds-space-3); }
+  .toast {
+    display:flex; align-items:flex-start; gap:var(--ds-space-3); max-width:380px;
+    background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md);
+    padding:var(--ds-space-4) var(--ds-space-5); font-size:var(--ds-text-sm); color:var(--ds-fg);
+  }
+  .toast .t-ico { flex:none; width:34px; height:34px; border-radius:var(--ds-radius-full); display:grid; place-items:center; box-shadow:var(--ds-shadow-inset-sm); }
+  .toast .t-ico svg { width:18px; height:18px; }
+  .toast.success .t-ico { background:var(--ds-success-bg); color:var(--ds-success-fg); }
+  .toast.info .t-ico { background:var(--ds-info-bg); color:var(--ds-info-fg); }
+  .toast.danger .t-ico { background:var(--ds-danger-bg); color:var(--ds-danger-fg); }
+  .toast .t-body strong { display:block; font-weight:var(--ds-weight-bold); color:var(--ds-fg); }
+  .toast .t-body span { color:var(--ds-fg-muted); }
+  .toast .t-x { margin-left:auto; flex:none; border:none; cursor:pointer; background:transparent; color:var(--ds-fg-muted); line-height:0; padding:4px; border-radius:var(--ds-radius-sm); display:grid; place-items:center; }
+  .toast .t-x svg { width:16px; height:16px; }
+  .toast .t-x:hover { color:var(--ds-fg); }
+
+  /* ===== Stepper / 步骤条 ===== */
+  .stepper { display:flex; align-items:flex-start; gap:0; flex-wrap:wrap; }
+  .step { display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-2); flex:1; min-width:88px; position:relative; }
+  .step .dot {
+    width:40px; height:40px; border-radius:var(--ds-radius-full); background:var(--ds-bg); color:var(--ds-fg-muted);
+    box-shadow:var(--ds-shadow-md); display:grid; place-items:center; font-weight:var(--ds-weight-bold);
+    font-size:var(--ds-text-sm); z-index:2; transition:box-shadow var(--ds-dur-base) var(--ds-ease);
+  }
+  .step .dot svg { width:18px; height:18px; }
+  .step.done .dot { background:var(--ds-primary); color:var(--ds-primary-fg); }
+  .step.active .dot { box-shadow:var(--ds-shadow-inset); color:var(--ds-primary); } /* 当前步被「按入」 */
+  .step .s-label { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); text-align:center; }
+  .step.active .s-label, .step.done .s-label { color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .step .line { position:absolute; top:20px; left:calc(50% + 24px); right:calc(-50% + 24px); height:6px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); z-index:1; }
+  .step.done .line { background:var(--ds-primary); box-shadow:none; }
+  .step:last-child .line { display:none; }
+
+  /* ===== Breadcrumb / 面包屑 ===== */
+  .breadcrumb { display:inline-flex; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-2) var(--ds-space-4); background:var(--ds-bg); border-radius:var(--ds-radius-full); box-shadow:var(--ds-shadow-inset-sm); font-size:var(--ds-text-sm); flex-wrap:wrap; }
+  .breadcrumb a { color:var(--ds-fg-muted); text-decoration:none; padding:var(--ds-space-1) var(--ds-space-2); border-radius:var(--ds-radius-sm); transition:box-shadow var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease); }
+  .breadcrumb a:hover { color:var(--ds-fg); box-shadow:var(--ds-shadow-sm); }
+  .breadcrumb .sep { color:var(--ds-fg-subtle); }
+  .breadcrumb .current { color:var(--ds-fg); font-weight:var(--ds-weight-medium); padding:var(--ds-space-1) var(--ds-space-2); }
+
+  /* ===== Mobile（屏内内容：卡片 / 列表 / 标签栏；外框统一用 _assets/device.css 的 .dvc17） ===== */
+  /* dvc-body 拉成纵向 flex：内容区 flex:1 填满 812px，底部 tab/控制条 margin-top:auto 贴底，消除底部留白 */
+  .dvc17 .dvc-body { display:flex; flex-direction:column; }
+  /* 屏内顶部小标题栏（取代旧 .phone-top），紧贴状态栏之下 */
+  .scr-head { flex:none; display:flex; align-items:center; justify-content:space-between; padding:var(--ds-space-2) var(--ds-space-4) var(--ds-space-3); }
+  .scr-head .sh-title { font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md); color:var(--ds-fg); }
+  .scr-head .ph-btn { width:38px; height:38px; border-radius:var(--ds-radius-full); border:none; cursor:pointer; background:var(--ds-bg); color:var(--ds-fg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; }
+  .scr-head .ph-btn svg { width:18px; height:18px; }
+  /* 屏内内容区：纵向 flex 撑满剩余高度，底部留出 home indicator 空间 */
+  .scr-pad { flex:1; min-height:0; display:flex; flex-direction:column; padding:0 var(--ds-space-4) calc(var(--ds-space-5) + 14px); }
+  .phone-card { background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5); margin-bottom:var(--ds-space-4); }
+  .phone-card .pc-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .phone-card .pc-v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); color:var(--ds-fg); letter-spacing:var(--ds-tracking-tight); }
+  /* 进度环（凹槽底 + conic 主色填充） */
+  .pc-ring { width:104px; height:104px; flex:none; border-radius:50%; position:relative; display:grid; place-items:center;
+    background:var(--ds-bg); box-shadow:var(--ds-shadow-inset); }
+  .pc-ring::before { content:""; position:absolute; inset:9px; border-radius:50%;
+    background:conic-gradient(var(--ds-primary) var(--pct,84%), transparent 0); -webkit-mask:radial-gradient(transparent 56%,#000 57%); mask:radial-gradient(transparent 56%,#000 57%); }
+  .pc-ring .pr-in { position:relative; text-align:center; line-height:1; }
+  .pc-ring .pr-in b { display:block; font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); color:var(--ds-fg); font-variant-numeric:tabular-nums; }
+  .pc-ring .pr-in span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .pc-row { display:flex; align-items:center; gap:var(--ds-space-5); }
+  /* 双指标小卡（凸起） */
+  .stat-2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-3); margin-bottom:var(--ds-space-4); }
+  .stat-2 .st-cell { background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4); }
+  .stat-2 .st-k { display:flex; align-items:center; gap:6px; font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .stat-2 .st-k svg { width:14px; height:14px; color:var(--ds-primary); }
+  .stat-2 .st-v { font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); color:var(--ds-fg); margin-top:2px; font-variant-numeric:tabular-nums; }
+  .stat-2 .st-v small { font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); color:var(--ds-fg-muted); }
+  .btn-block { width:100%; height:52px; font-size:var(--ds-text-md); margin-bottom:var(--ds-space-4); }
+  .phone-list { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); }
+  .phone-list .pl-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-3); border-radius:var(--ds-radius-sm); }
+  .phone-list .pl-item + .pl-item { margin-top:var(--ds-space-1); }
+  .phone-list .pl-ico { width:36px; height:36px; flex:none; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; color:var(--ds-primary); }
+  .phone-list .pl-ico svg { width:18px; height:18px; }
+  .phone-list .pl-txt { flex:1; min-width:0; }
+  .phone-list .pl-txt b { display:block; font-size:var(--ds-text-sm); color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .phone-list .pl-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .phone-list .pl-val { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
+
+  /* ===== Desk control screen: dark header + raised material tiles + slider ===== */
+  .scr-hero { flex:none; margin:0 0 var(--ds-space-4); padding:var(--ds-space-5) var(--ds-space-5) var(--ds-space-6);
+    border-radius:0 0 var(--ds-radius-lg) var(--ds-radius-lg);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.22), transparent 38%),
+      linear-gradient(155deg, var(--ds-primary-hover), var(--ds-primary) 58%, var(--ds-primary-active));
+    color:var(--ds-primary-fg);
+    box-shadow:var(--ds-shadow-lg); }
+  .scr-hero .sh-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-5); }
+  .scr-hero .sh-top .sh-t { font-weight:var(--ds-weight-bold); font-size:var(--ds-text-md); }
+  .scr-hero .hb { width:38px; height:38px; border-radius:var(--ds-radius-full); border:1px solid var(--ds-primary-active); cursor:pointer; background:rgba(255,255,255,.14); color:var(--ds-primary-fg); display:grid; place-items:center; }
+  .scr-hero .hb svg { width:18px; height:18px; }
+  .scr-hero .sh-room { font-size:var(--ds-text-xs); color:var(--ds-primary-fg); opacity:.78; letter-spacing:.02em; }
+  .scr-hero .sh-temp { font-size:40px; font-weight:var(--ds-weight-bold); letter-spacing:-0.03em; line-height:1.1; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .scr-hero .sh-temp sup { font-size:var(--ds-text-lg); font-weight:var(--ds-weight-medium); top:-0.7em; }
+  .scr-hero .sh-meta { display:flex; gap:var(--ds-space-5); margin-top:var(--ds-space-4); }
+  .scr-hero .sh-meta div { font-size:var(--ds-text-xs); color:var(--ds-primary-fg); opacity:.82; }
+  .scr-hero .sh-meta b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-bold); color:var(--ds-primary-fg); margin-bottom:1px; }
+  /* Material control tile grid */
+  .tile-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-3); margin-bottom:var(--ds-space-4); }
+  .tile { background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4); }
+  .tile .tl-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-4); }
+  .tile .tl-ico { width:40px; height:40px; flex:none; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm); display:grid; place-items:center; color:var(--ds-fg-muted); }
+  .tile .tl-ico svg { width:20px; height:20px; }
+  .tile.on .tl-ico { color:var(--ds-primary); }
+  .tile .tl-name { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); }
+  .tile .tl-state { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); margin-top:1px; }
+  /* on 态用更深的 primary-active 保证浅底 ≥4.5:1（5.89:1）；暗色下改回 primary（5.11:1） */
+  .tile.on .tl-state { color:var(--ds-primary-active); font-weight:var(--ds-weight-medium); }
+  [data-theme="dark"] .tile.on .tl-state { color:var(--ds-primary); }
+  /* Inset material slider */
+  .ctrl-slide { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4) var(--ds-space-5); margin-bottom:var(--ds-space-4); }
+  .ctrl-slide .cs-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-3); }
+  .ctrl-slide .cs-head .cs-l { display:flex; align-items:center; gap:var(--ds-space-2); font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); }
+  .ctrl-slide .cs-head .cs-l svg { width:16px; height:16px; color:var(--ds-primary); }
+  .ctrl-slide .cs-head .cs-v { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
+
+  /* ===== Hero（凸起大卡 + inset 图槽） ===== */
+  .hero {
+    margin:var(--ds-space-6) auto 0; max-width:1040px;
+    display:grid; grid-template-columns:1.05fr .95fr; gap:var(--ds-space-8);
+    align-items:center;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255,255,255,.32), transparent 24%),
+      radial-gradient(circle at 82% 72%, rgba(44,36,25,.13), transparent 30%),
+      linear-gradient(145deg, var(--ds-bg-elevated), var(--ds-bg-subtle));
+    border:1px solid var(--ds-border);
+    border-radius:var(--ds-radius-lg);
+    box-shadow:var(--ds-shadow-lg); padding:var(--ds-space-9) var(--ds-space-8);
+  }
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:var(--ds-space-2); padding:6px var(--ds-space-4);
+    border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm);
+    font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); color:var(--ds-fg-muted); letter-spacing:.02em; }
+  .hero-eyebrow svg { width:14px; height:14px; color:var(--ds-primary); }
+  .hero h1 { font-size:var(--ds-text-3xl); line-height:1.05; letter-spacing:-0.04em; margin:var(--ds-space-5) 0 0; }
+  .hero .lead { font-size:var(--ds-text-md); max-width:46ch; margin-top:var(--ds-space-4); line-height:var(--ds-leading-relaxed); }
+  .hero-cta { display:flex; flex-wrap:wrap; gap:var(--ds-space-4); margin-top:var(--ds-space-7); }
+  .hero-stats { display:flex; gap:var(--ds-space-7); margin-top:var(--ds-space-8); flex-wrap:wrap; }
+  .hero-stat .hs-v { font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); color:var(--ds-fg); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+  .hero-stat .hs-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); margin-top:2px; }
+  .hero-figure {
+    background:
+      radial-gradient(circle at 20% 18%, rgba(255,255,255,.16), transparent 20%),
+      radial-gradient(circle at 70% 72%, rgba(44,36,25,.2), transparent 26%),
+      linear-gradient(145deg, var(--ds-accent), var(--ds-fg-muted));
+    border:1px solid var(--ds-border-strong);
+    border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg);
+    padding:var(--ds-space-5); position:relative;
+  }
+  .hero-figure::before {
+    content:""; position:absolute; inset:10px; border:1px dashed var(--ds-accent-fg);
+    border-radius:calc(var(--ds-radius-lg) - 5px); opacity:.5; pointer-events:none; z-index:2;
+  }
+  .hero-figure img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); display:block; border:1px solid var(--ds-border-strong); }
+  .hero-figure .float-card { position:absolute; left:var(--ds-space-7); bottom:var(--ds-space-7); display:flex; align-items:center; gap:var(--ds-space-3);
+    background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-3) var(--ds-space-4); }
+  .hero-figure .fc-ico { width:36px; height:36px; flex:none; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm); display:grid; place-items:center; color:var(--ds-success); }
+  .hero-figure .fc-ico svg { width:18px; height:18px; }
+  .hero-figure .fc-v { font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); color:var(--ds-fg); font-variant-numeric:tabular-nums; }
+  .hero-figure .fc-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+
+  /* ===== 区块小标题（带英文副标） ===== */
+  .sec-head { margin-bottom:var(--ds-space-6); }
+  .sec-head h2 { margin:0; }
+  .sec-head .en { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); letter-spacing:.06em; text-transform:uppercase; margin-bottom:var(--ds-space-2); display:block; }
+  .sec-head p { margin:var(--ds-space-2) 0 0; color:var(--ds-fg-muted); font-size:var(--ds-text-sm); max-width:70ch; }
+
+  /* ===== 图片用法 ===== */
+  .ratio-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--ds-space-5); }
+  .ratio-cell { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-3); }
+  .ratio-cell img { width:100%; object-fit:cover; border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-sm); display:block; }
+  .ratio-cell .rc-tag { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); text-align:center; margin-top:var(--ds-space-3); }
+  .r-16x9 { aspect-ratio:16/9; } .r-4x3 { aspect-ratio:4/3; } .r-1x1 { aspect-ratio:1/1; } .r-3x4 { aspect-ratio:3/4; }
+
+  .media-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-6); }
+  .media-card { background:var(--ds-bg-elevated); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-3) var(--ds-space-3) var(--ds-space-5); }
+  .media-card .mc-img { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); margin-bottom:var(--ds-space-4); }
+  .media-card .mc-img img { width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:8px; box-shadow:var(--ds-shadow-sm); display:block; }
+  .media-card .mc-body { padding:0 var(--ds-space-3); }
+  .media-card h3 { margin:0 0 var(--ds-space-1); font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .media-card p { margin:0 0 var(--ds-space-4); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-normal); }
+  .media-card .mc-meta { display:flex; align-items:center; gap:var(--ds-space-3); }
+
+  .gallery { display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:96px; gap:var(--ds-space-4); }
+  .gallery .g-cell { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); overflow:hidden; }
+  .gallery .g-cell img { width:100%; height:100%; object-fit:cover; border-radius:10px; box-shadow:var(--ds-shadow-sm); display:block; }
+  .gallery .g-tall { grid-row:span 2; } .gallery .g-wide { grid-column:span 2; }
+
+  .feature-split { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-8); align-items:center; }
+  .feature-split .fs-fig { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-4); }
+  .feature-split .fs-fig img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); display:block; }
+  .feature-split h3 { margin:0 0 var(--ds-space-3); font-size:var(--ds-text-xl); letter-spacing:-0.02em; }
+  .feature-split p { margin:0 0 var(--ds-space-4); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); line-height:var(--ds-leading-relaxed); }
+  .feature-list { list-style:none; margin:0 0 var(--ds-space-6); padding:0; display:grid; gap:var(--ds-space-3); }
+  .feature-list li { display:flex; align-items:center; gap:var(--ds-space-3); font-size:var(--ds-text-sm); color:var(--ds-fg); }
+  .feature-list .fl-ic { width:26px; height:26px; flex:none; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; color:var(--ds-primary); }
+  .feature-list .fl-ic svg { width:15px; height:15px; }
+
+  .overlay-row { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-6); }
+  .overlay { position:relative; border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-md); overflow:hidden; background:var(--ds-bg-sunken); padding:var(--ds-space-3); }
+  .overlay .ov-inner { position:relative; border-radius:var(--ds-radius-md); overflow:hidden; box-shadow:var(--ds-shadow-inset-sm); }
+  .overlay img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+  .overlay .scrim { position:absolute; inset:0; background:linear-gradient(to top, var(--ds-primary-active) 0%, rgba(44,36,25,.35) 45%, transparent 75%); opacity:.86; }
+  .overlay .ov-txt { position:absolute; left:var(--ds-space-5); right:var(--ds-space-5); bottom:var(--ds-space-5); color:var(--ds-primary-fg); }
+  .overlay .ov-txt .ov-ey { font-size:var(--ds-text-xs); font-weight:var(--ds-weight-medium); opacity:.92; letter-spacing:.04em; text-transform:uppercase; }
+  .overlay .ov-txt h3 { margin:var(--ds-space-1) 0 0; font-size:var(--ds-text-lg); color:var(--ds-primary-fg); letter-spacing:-0.02em; }
+
+  .avatar-panel { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-6); }
+  .av-block { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5); }
+  .av-block .ab-lab { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-bottom:var(--ds-space-4); }
+  .avatar { border-radius:var(--ds-radius-full); object-fit:cover; background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); padding:3px; flex:none; }
+  .av-24 { width:24px; height:24px; } .av-32 { width:32px; height:32px; } .av-40 { width:40px; height:40px; } .av-48 { width:48px; height:48px; }
+  .av-sizes { display:flex; align-items:flex-end; gap:var(--ds-space-4); }
+  .av-stack { display:flex; }
+  .av-stack .avatar { margin-left:-12px; box-shadow:var(--ds-shadow-md); }
+  .av-stack .avatar:first-child { margin-left:0; }
+  .av-stack .more { width:40px; height:40px; margin-left:-12px; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-md); display:grid; place-items:center; font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); color:var(--ds-fg-muted); }
+  .user-row { display:flex; align-items:center; gap:var(--ds-space-4); }
+  .user-row .ur-txt b { display:block; font-size:var(--ds-text-sm); color:var(--ds-fg); font-weight:var(--ds-weight-medium); }
+  .user-row .ur-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+
+  .bg-hero { position:relative; border-radius:var(--ds-radius-lg); overflow:hidden; box-shadow:var(--ds-shadow-md); margin-top:var(--ds-space-6); }
+  .bg-hero > img { width:100%; height:260px; object-fit:cover; display:block; }
+  .bg-hero .bg-scrim { position:absolute; inset:0; background:linear-gradient(110deg, var(--ds-primary-active) 0%, rgba(44,36,25,.55) 50%, transparent 100%); opacity:.9; }
+  .bg-hero .bg-content { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; padding:var(--ds-space-8) var(--ds-space-9); color:var(--ds-primary-fg); max-width:560px; }
+  .bg-hero .bg-content h3 { margin:0 0 var(--ds-space-2); font-size:var(--ds-text-2xl); color:var(--ds-primary-fg); letter-spacing:-0.03em; }
+  .bg-hero .bg-content p { margin:0 0 var(--ds-space-5); font-size:var(--ds-text-sm); color:var(--ds-primary-fg); opacity:.9; line-height:var(--ds-leading-relaxed); }
+  .btn--on-img { background:rgba(255,255,255,.16); color:var(--ds-primary-fg); box-shadow:none; backdrop-filter:blur(4px); }
+  .btn--on-img:hover { background:rgba(255,255,255,.26); box-shadow:none; }
+
+  /* ===== 图标用法 ===== */
+  .icon-set { display:grid; grid-template-columns:repeat(6,1fr); gap:var(--ds-space-4); }
+  .icon-cell { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-sm); padding:var(--ds-space-4) var(--ds-space-3); text-align:center; }
+  .icon-cell .ic-box { width:44px; height:44px; margin:0 auto var(--ds-space-3); border-radius:var(--ds-radius-md); background:var(--ds-bg); box-shadow:var(--ds-shadow-inset-sm); display:grid; place-items:center; color:var(--ds-fg); }
+  .icon-cell .ic-box svg { width:22px; height:22px; }
+  .icon-cell .ic-name { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
+  .icon-sizes { display:flex; align-items:flex-end; gap:var(--ds-space-6); }
+  .icon-sizes .is-item { display:flex; flex-direction:column; align-items:center; gap:var(--ds-space-2); color:var(--ds-fg); }
+  .icon-sizes .is-item .is-tag { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .icon-pair { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-6); }
+  .ip-cell { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-5); text-align:center; }
+  .ip-cell .ip-icons { display:flex; justify-content:center; gap:var(--ds-space-6); margin-bottom:var(--ds-space-3); color:var(--ds-primary); }
+  .ip-cell .ip-icons svg { width:28px; height:28px; }
+  .ip-cell .ip-lab { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .input-affix { position:relative; }
+  .input-affix .af-ico { position:absolute; top:50%; transform:translateY(-50%); color:var(--ds-fg-subtle); display:grid; place-items:center; }
+  .input-affix .af-ico svg { width:18px; height:18px; }
+  .input-affix .af-left { left:var(--ds-space-4); } .input-affix .af-right { right:var(--ds-space-4); }
+  .input-affix .input { padding-left:42px; }
+  .icon-badge { position:relative; width:44px; height:44px; }
+  .icon-badge .ib-count { position:absolute; top:-4px; right:-4px; min-width:20px; height:20px; padding:0 5px; border-radius:var(--ds-radius-full); background:var(--ds-danger); color:var(--ds-fg-on-accent); font-size:11px; font-weight:var(--ds-weight-bold); display:grid; place-items:center; box-shadow:var(--ds-shadow-sm); }
+
+  /* ===== 桌面布局 frame ===== */
+  .frame {
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.18), transparent 18% 32%, rgba(44,36,25,.18) 50%, transparent 68% 82%, rgba(255,255,255,.12)),
+      linear-gradient(180deg, var(--ds-accent), var(--ds-bg-subtle) 42%, var(--ds-accent));
+    border:1px solid var(--ds-border-strong);
+    border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg); padding:var(--ds-space-3);
+  }
+  .frame-bar { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); }
+  .frame-bar .dots { display:flex; gap:7px; }
+  .frame-bar .dots i { width:11px; height:11px; border-radius:50%; box-shadow:var(--ds-shadow-inset-sm); display:block; }
+  .frame-bar .url { flex:1; height:30px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); display:flex; align-items:center; padding:0 var(--ds-space-4); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); gap:var(--ds-space-2); }
+  .frame-bar .url svg { width:13px; height:13px; flex:none; color:var(--ds-success); }
+  .frame-body { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-5); margin-top:var(--ds-space-2); }
+  .lay-name { font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-bottom:var(--ds-space-4); display:flex; align-items:center; gap:var(--ds-space-2); }
+
+  /* dashboard layout */
+  .dash { display:grid; grid-template-columns:188px 1fr; gap:var(--ds-space-5); }
+  .dash-side { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4); display:flex; flex-direction:column; gap:var(--ds-space-4); }
+  .dash-brand { display:flex; align-items:center; gap:var(--ds-space-3); font-weight:var(--ds-weight-bold); font-size:var(--ds-text-sm); }
+  .dash-brand .db-logo { width:30px; height:30px; border-radius:var(--ds-radius-full); background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); display:grid; place-items:center; color:var(--ds-primary); }
+  .dash-brand .db-logo svg { width:16px; height:16px; }
+  .dash-nav { display:flex; flex-direction:column; gap:var(--ds-space-1); }
+  .dash-nav a { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3); border-radius:var(--ds-radius-sm); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); text-decoration:none; }
+  .dash-nav a svg { width:17px; height:17px; flex:none; }
+  .dash-nav a.on { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .dash-nav a:not(.on):hover { box-shadow:var(--ds-shadow-sm); color:var(--ds-fg); }
+  .dash-main { display:flex; flex-direction:column; gap:var(--ds-space-5); min-width:0; }
+  .dash-top { display:flex; align-items:center; justify-content:space-between; gap:var(--ds-space-4); }
+  .dash-top h3 { margin:0; font-size:var(--ds-text-lg); letter-spacing:-0.02em; }
+  .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--ds-space-4); }
+  .kpi { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-4); }
+  .kpi .kpi-k { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); display:flex; align-items:center; gap:var(--ds-space-2); }
+  .kpi .kpi-k svg { width:14px; height:14px; }
+  .kpi .kpi-v { font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); letter-spacing:-0.03em; margin-top:var(--ds-space-2); font-variant-numeric:tabular-nums; }
+  .kpi .kpi-d { font-size:var(--ds-text-xs); margin-top:2px; }
+  .chart-box { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-5); }
+  .chart-box .cb-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-5); }
+  .chart-box .cb-head b { font-size:var(--ds-text-sm); }
+  .bars { display:flex; align-items:flex-end; gap:var(--ds-space-3); height:120px; }
+  .bars .bar { flex:1; border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 6px 6px; background:var(--ds-bg); box-shadow:var(--ds-shadow-sm); }
+  .bars .bar.hi { background:var(--ds-primary); }
+  .bars-x { display:flex; gap:var(--ds-space-3); margin-top:var(--ds-space-2); }
+  .bars-x span { flex:1; text-align:center; font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+
+  /* music / player layout */
+  .music { display:grid; grid-template-columns:1.1fr 1fr; gap:var(--ds-space-6); }
+  .music-now { background:var(--ds-bg); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5); }
+  .music-now .mn-cover { background:var(--ds-bg-sunken); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-3); margin-bottom:var(--ds-space-5); }
+  .music-now .mn-cover img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:var(--ds-radius-sm); box-shadow:var(--ds-shadow-sm); display:block; }
+  .music-now h3 { margin:0; font-size:var(--ds-text-lg); letter-spacing:-0.02em; }
+  .music-now .mn-art { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); margin:2px 0 var(--ds-space-5); }
+  .music-now .mn-prog { height:8px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); position:relative; margin-bottom:var(--ds-space-2); }
+  .music-now .mn-prog i { position:absolute; left:0; top:0; bottom:0; width:42%; border-radius:var(--ds-radius-full); background:var(--ds-primary); }
+  .music-now .mn-time { display:flex; justify-content:space-between; font-size:11px; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); margin-bottom:var(--ds-space-5); }
+  .music-now .mn-ctrl { display:flex; align-items:center; justify-content:center; gap:var(--ds-space-5); }
+  .music-list { display:flex; flex-direction:column; gap:var(--ds-space-3); }
+  .music-list .ml-head { font-size:var(--ds-text-sm); font-weight:var(--ds-weight-bold); }
+  .ml-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3); border-radius:var(--ds-radius-md); }
+  .ml-item.on { box-shadow:var(--ds-shadow-inset-sm); }
+  .ml-item:not(.on):hover { box-shadow:var(--ds-shadow-sm); }
+  .ml-item .ml-thumb { width:44px; height:44px; flex:none; border-radius:var(--ds-radius-sm); object-fit:cover; box-shadow:var(--ds-shadow-sm); background:var(--ds-bg); padding:2px; }
+  .ml-item .ml-txt { flex:1; min-width:0; }
+  .ml-item .ml-txt b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ml-item .ml-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .ml-item .ml-dur { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); }
+
+  /* settings layout */
+  .settings { display:grid; grid-template-columns:200px 1fr; gap:var(--ds-space-6); }
+  .set-nav { display:flex; flex-direction:column; gap:var(--ds-space-1); }
+  .set-nav a { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); border-radius:var(--ds-radius-sm); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); text-decoration:none; }
+  .set-nav a svg { width:17px; height:17px; flex:none; }
+  .set-nav a.on { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); font-weight:var(--ds-weight-medium); }
+  .set-nav a:not(.on):hover { box-shadow:var(--ds-shadow-sm); color:var(--ds-fg); }
+  .set-panel { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-6); }
+  .set-user { display:flex; align-items:center; gap:var(--ds-space-4); padding-bottom:var(--ds-space-5); margin-bottom:var(--ds-space-5); border-bottom:1px solid var(--ds-border); }
+  .set-user .su-txt b { display:block; font-size:var(--ds-text-md); font-weight:var(--ds-weight-bold); }
+  .set-user .su-txt span { font-size:var(--ds-text-sm); color:var(--ds-fg-muted); }
+  .set-row { display:flex; align-items:center; justify-content:space-between; gap:var(--ds-space-4); padding:var(--ds-space-4) 0; }
+  .set-row + .set-row { border-top:1px solid var(--ds-border); }
+  .set-row .sr-txt b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  .set-row .sr-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+
+  /* ===== In-device audio screen: cover / tabbar / progress ===== */
+  .phone-fig { background:var(--ds-bg-sunken); border-radius:24px; box-shadow:var(--ds-shadow-inset); padding:var(--ds-space-2); margin-bottom:var(--ds-space-4); }
+  .phone-fig img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:18px; box-shadow:var(--ds-shadow-sm); display:block; }
+  /* 底部标签栏 / 控制区贴底：margin-top:auto 把上方剩余空间吸收，消除底部留白 */
+  .phone-tabbar { flex:none; margin-top:auto; display:flex; justify-content:space-around; align-items:center; padding:var(--ds-space-3); background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-md); }
+  .phone-tabbar a { display:grid; place-items:center; width:42px; height:42px; border-radius:var(--ds-radius-full); color:var(--ds-fg-muted); text-decoration:none; }
+  .phone-tabbar a svg { width:20px; height:20px; }
+  .phone-tabbar a.on { box-shadow:var(--ds-shadow-inset-sm); color:var(--ds-primary); }
+  .mini-prog { height:6px; border-radius:var(--ds-radius-full); background:var(--ds-bg-sunken); box-shadow:var(--ds-shadow-inset-sm); position:relative; margin:var(--ds-space-4) 0 var(--ds-space-2); }
+  .mini-prog i { position:absolute; left:0; top:0; bottom:0; width:58%; border-radius:var(--ds-radius-full); background:var(--ds-primary); }
+  .mini-ctrl { display:flex; align-items:center; justify-content:center; gap:var(--ds-space-5); margin-top:var(--ds-space-3); }
+  /* 播放器：封面区可伸缩居中，控制条贴底 */
+  .player-top { flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center; }
+  .player-foot { flex:none; margin-top:var(--ds-space-4); }
+  .player-foot .pf-card { background:var(--ds-bg); border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-md); padding:var(--ds-space-5) var(--ds-space-5) var(--ds-space-4); }
+  /* 音乐屏队列列表（凹槽） */
+  .queue { background:var(--ds-bg); border-radius:var(--ds-radius-md); box-shadow:var(--ds-shadow-inset-sm); padding:var(--ds-space-2); margin-top:var(--ds-space-4); }
+  .queue .q-head { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-weight:var(--ds-weight-medium); padding:var(--ds-space-2) var(--ds-space-3) var(--ds-space-1); }
+  .q-item { display:flex; align-items:center; gap:var(--ds-space-3); padding:var(--ds-space-2) var(--ds-space-3); border-radius:var(--ds-radius-sm); }
+  .q-item.on { box-shadow:var(--ds-shadow-inset-sm); }
+  .q-item .q-n { width:18px; flex:none; text-align:center; font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); }
+  .q-item.on .q-n { color:var(--ds-primary); }
+  .q-item .q-txt { flex:1; min-width:0; }
+  .q-item .q-txt b { display:block; font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); color:var(--ds-fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .q-item .q-txt span { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); }
+  .q-item .q-dur { font-size:var(--ds-text-xs); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); flex:none; }
+  /* 三台 .dvc17 并排展示 */
+  .phones-2 { display:flex; gap:var(--ds-space-7); justify-content:center; flex-wrap:wrap; }
+
+  /* ===== 响应式断点 ===== */
+  @media (max-width: 960px) {
+    .hero { grid-template-columns:1fr; gap:var(--ds-space-7); }
+    .ratio-grid { grid-template-columns:repeat(2,1fr); }
+    .media-grid, .kpi-row { grid-template-columns:1fr 1fr; }
+    .gallery { grid-template-columns:repeat(3,1fr); }
+    .music, .feature-split, .overlay-row, .icon-pair { grid-template-columns:1fr; }
+    .icon-set { grid-template-columns:repeat(4,1fr); }
+    .dash, .settings { grid-template-columns:1fr; }
+    .avatar-panel { grid-template-columns:1fr; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding:var(--ds-space-6) var(--ds-space-4) var(--ds-space-8); }
+    /* 栅格收成一列 */
+    .cards, .swatches, .modal-demo { grid-template-columns:1fr; }
+    .topbar { margin-top:var(--ds-space-3); padding:var(--ds-space-3) var(--ds-space-4); }
+    h1 { font-size:var(--ds-text-xl); }
+    .type-row { flex-direction:column; align-items:flex-start; gap:var(--ds-space-1); }
+    .type-row .tag { width:auto; }
+    .stepper { gap:var(--ds-space-3); }
+    .step { flex:0 0 calc(50% - var(--ds-space-3)); }
+    .step .line { display:none; }
+    .modal .modal-foot { flex-wrap:wrap; }
+    .hero { padding:var(--ds-space-7) var(--ds-space-5); }
+    .hero h1 { font-size:var(--ds-text-2xl); }
+    .ratio-grid, .media-grid, .gallery, .kpi-row, .icon-pair { grid-template-columns:1fr; }
+    .icon-set { grid-template-columns:repeat(3,1fr); }
+    .gallery .g-wide, .gallery .g-tall { grid-column:auto; grid-row:auto; }
+    .bg-hero .bg-content { padding:var(--ds-space-6); }
+    .icon-sizes { flex-wrap:wrap; gap:var(--ds-space-4); }
+  }
+
+  /* ===== 减弱动效 ===== */
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+  }
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 4v16M11 8h5M11 12h4" stroke="currentColor" stroke-width="1.8"/></svg>
+      </span>
+      Skeuomorphism · 拟物写实
+    </div>
+    <button class="btn btn--sm" id="themeToggle" aria-label="切换亮暗主题">
+      <span class="tt-ico" aria-hidden="true"></span><span class="tt-label"></span>
+    </button>
+  </header>
+
+  <!-- Hero 首屏 -->
+  <header class="hero">
+    <div class="hero-text">
+      <span class="hero-eyebrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3.4"/></svg>
+        LedgerDesk · Rich Skeuo Kit
+      </span>
+      <h1>皮革、凝胶与金属的<br>触感工作台</h1>
+      <p class="lead">为虚构桌面札记应用 LedgerDesk 打造的 Rich Skeuo 风格：缝线皮革面板、亚麻纸面、拉丝金属开关、玻璃凝胶按钮和雕版文字共同构成可触摸的旧式数字工作台。</p>
+      <div class="hero-cta">
+        <button class="btn btn--primary btn--lg">新建札记</button>
+        <button class="btn btn--lg">打开素材匣</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hs-v">19</div><div class="hs-k">保留展示区</div></div>
+        <div class="hero-stat"><div class="hs-v">2</div><div class="hs-k">亮 / 暗主题</div></div>
+        <div class="hero-stat"><div class="hs-v">AA</div><div class="hs-k">正文对比</div></div>
+        <div class="hero-stat"><div class="hs-v">100%</div><div class="hs-k">var(--ds-*) 驱动</div></div>
+      </div>
+    </div>
+    <div class="hero-figure">
+      <img src="../../_assets/photos/desk.jpg" alt="皮革边框中的桌面札记照片" loading="lazy" width="640" height="480">
+      <div class="float-card">
+        <span class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 4h12v16H6z"/><path d="M9 8h6M9 12h5M9 16h4"/></svg></span>
+        <div><div class="fc-v">Leather note</div><div class="fc-k">缝线照片框</div></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <section style="margin-top:var(--ds-space-8)">
+      <h1>Rich Skeuo 工作台语言</h1>
+      <p class="lead">真实材料感替代单色软阴影：皮革、毛毡、木纹、拉丝金属、凝胶高光和凹刻输入槽都服务于 LedgerDesk 的札记、录音与桌面任务。</p>
+    </section>
+
+    <!-- 色板 -->
+    <section>
+      <h2>色板 · Color Tokens</h2>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:var(--ds-bg)"></div><div class="name">bg</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-bg-sunken)"></div><div class="name">bg-sunken</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-primary)"></div><div class="name">primary</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-accent)"></div><div class="name">accent</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-success)"></div><div class="name">success</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-warning)"></div><div class="name">warning</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-danger)"></div><div class="name">danger</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-info)"></div><div class="name">info</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-fg)"></div><div class="name">fg</div><div class="hex" data-hex></div></div>
+        <div class="sw"><div class="chip" style="background:var(--ds-fg-muted)"></div><div class="name">fg-muted</div><div class="hex" data-hex></div></div>
+      </div>
+    </section>
+
+    <!-- 字体 -->
+    <section>
+      <h2>字体 · Type Scale</h2>
+      <div class="panel">
+        <div class="type-row"><span class="tag">3xl / 48</span><span style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);letter-spacing:var(--ds-tracking-tight)">LedgerDesk</span></div>
+        <div class="type-row"><span class="tag">2xl / 32</span><span style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold)">今日札记</span></div>
+        <div class="type-row"><span class="tag">xl / 24</span><span style="font-size:var(--ds-text-xl);font-weight:var(--ds-weight-medium)">雕版标题与皮革标签</span></div>
+        <div class="type-row"><span class="tag">lg / 20</span><span style="font-size:var(--ds-text-lg)">亚麻纸面承载正文，纹理只做背景</span></div>
+        <div class="type-row"><span class="tag">md / 16</span><span style="font-size:var(--ds-text-md)">凝胶按钮、金属开关、木纹抽屉</span></div>
+        <div class="type-row"><span class="tag">base / 14</span><span style="font-size:var(--ds-text-base)">正文保持在纯净纸面上，材料纹理降低透明度，保证长笔记仍清晰。</span></div>
+        <div class="type-row"><span class="tag">sm / 13 muted</span><span class="muted" style="font-size:var(--ds-text-sm)">次要文字 · The quick brown fox</span></div>
+        <div class="type-row"><span class="tag">weight 400/500/600</span><span><span style="font-weight:400">Regular</span> · <span style="font-weight:500">Medium</span> · <span style="font-weight:600">Semibold</span></span></div>
+      </div>
+    </section>
+
+    <!-- 按钮 -->
+    <section>
+      <h2>按钮 · Buttons（凝胶高光 / 按下凹陷）</h2>
+      <div class="panel grid" style="gap:var(--ds-space-5)">
+        <div class="label">primary / secondary / tertiary / danger · default → hover → pressed bevel → disabled</div>
+        <div class="row">
+          <button class="btn btn--primary">保存札记</button>
+          <button class="btn">放入抽屉</button>
+          <button class="btn btn--tertiary">只读预览</button>
+          <button class="btn btn--danger">丢弃草稿</button>
+          <button class="btn btn--pressed">按入锁扣</button>
+          <button class="btn" disabled>Disabled</button>
+        </div>
+        <div class="label">尺寸 sm / md / lg + 圆形图标按钮</div>
+        <div class="row">
+          <button class="btn btn--primary btn--sm">小标签</button>
+          <button class="btn btn--primary">中按钮</button>
+          <button class="btn btn--primary btn--lg">大主键</button>
+          <button class="btn btn--icon" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+          <button class="btn btn--icon" aria-label="设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        </div>
+        <div class="subtle" style="font-size:var(--ds-text-xs)">提示：按住任意按钮可见凝胶表面被压入的 inset 过渡。</div>
+      </div>
+    </section>
+
+    <!-- 表单 -->
+    <section>
+      <h2>表单 · Forms（压印输入槽）</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="field"><label for="i1">札记标题</label><input id="i1" class="input" placeholder="会议纪要、录音索引或灵感标题" /></div>
+          <div class="field"><label for="i2">纸面正文</label><textarea id="i2" class="textarea" placeholder="写下下一步、待办和片段引用"></textarea></div>
+          <div class="field"><label for="s1">材料模式</label>
+            <select id="s1" class="select"><option>Warm Desk Linen</option><option>Night Leather</option><option>Studio Felt</option></select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="field"><label>勾选 / 单选</label>
+            <div class="grid" style="gap:var(--ds-space-3)">
+              <label class="check"><input type="checkbox" checked><span class="box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5L5.5 11L12 3.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> 显示缝线边框</label>
+              <label class="check"><input type="checkbox"><span class="box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5L5.5 11L12 3.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> 减弱抽屉动画</label>
+              <label class="check"><input type="radio" name="r" checked><span class="box r"><span class="dot"></span></span> 白日书桌</label>
+              <label class="check"><input type="radio" name="r"><span class="box r"><span class="dot"></span></span> 夜间皮革</label>
+            </div>
+          </div>
+          <div class="field"><label>开关 Switch（拉丝金属轨 + 凸滑块）</label>
+            <div class="row" style="gap:var(--ds-space-6)">
+              <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+              <label class="switch"><input type="checkbox"><span class="track"></span><span class="knob"></span></label>
+            </div>
+          </div>
+          <div class="field"><label for="rg">纸张纹理强度</label><input id="rg" class="slider" type="range" min="0" max="100" value="64"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 卡片 -->
+    <section>
+      <h2>卡片 · Cards（纸面卡与皮革托盘）</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>今日札记</h3>
+          <p>12 条片段已归档，3 条等待复核，晨会摘要已压进皮革抽屉。</p>
+          <div class="row"><button class="btn btn--primary btn--sm">整理</button><span class="badge badge--success">已同步</span></div>
+        </div>
+        <div class="card">
+          <h3>正在转写</h3>
+          <p>Oak Room Memo — 录音 18 分钟。关键句已标为金色书签，待确认。</p>
+          <div class="row"><button class="btn btn--icon" aria-label="上一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6v12h2V6zm3 6 8 6V6z"/></svg></button><button class="btn btn--icon btn--primary" aria-label="暂停"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg></button><button class="btn btn--icon" aria-label="下一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6v12h2V6zM6 6v12l8-6z"/></svg></button></div>
+        </div>
+        <div class="card">
+          <h3>桌面状态</h3>
+          <p>收件匣 32% 已清理 · 5 个任务进入今日夹 · 1 条录音需要命名。</p>
+          <div class="row"><span class="badge badge--info">工作中</span><span class="badge badge--warning">待命名</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 徽章 -->
+    <section>
+      <h2>徽章 / 标签 · Badges</h2>
+      <div class="panel row">
+        <span class="badge badge--success"><svg class="dot-ic" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg> Success</span>
+        <span class="badge badge--warning"><svg class="dot-ic" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg> Warning</span>
+        <span class="badge badge--danger"><svg class="dot-ic" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg> Danger</span>
+        <span class="badge badge--info"><svg class="dot-ic" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg> Info</span>
+      </div>
+    </section>
+
+    <!-- 提示条 -->
+    <section>
+      <h2>提示条 · Alerts</h2>
+      <div class="panel">
+        <div class="alert alert--success"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><div class="a-body"><strong>札记已装订。</strong> 今日记录已保存到 Leather Ledger。</div></div>
+        <div class="alert alert--warning"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><div class="a-body"><strong>素材匣接近满载。</strong> 剩余 8%，建议归档旧录音。</div></div>
+        <div class="alert alert--danger"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span><div class="a-body"><strong>录音未保存。</strong> 木盒锁定前请重新连接本地库。</div></div>
+        <div class="alert alert--info" style="margin-bottom:0"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div class="a-body"><strong>新增纸张模板。</strong> Cornell Notes 与 Audio Cue Sheet 已可用。</div></div>
+      </div>
+    </section>
+
+    <!-- 导航 + tab -->
+    <section>
+      <h2>导航 · Tabs（选中项压入皮革槽）</h2>
+      <div class="panel row" style="justify-content:flex-start">
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true">今日</button>
+          <button class="tab" role="tab" aria-selected="false">札记</button>
+          <button class="tab" role="tab" aria-selected="false">录音</button>
+          <button class="tab" role="tab" aria-selected="false">抽屉</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 表格 -->
+    <section>
+      <h2>表格 · Table</h2>
+      <div class="card" style="padding:var(--ds-space-3)">
+        <table>
+          <thead><tr><th>条目</th><th>状态</th><th class="num" style="text-align:right">字数</th><th class="num" style="text-align:right">时长</th></tr></thead>
+          <tbody>
+            <tr><td>Morning brief</td><td><span class="badge badge--success">已装订</span></td><td class="num">842</td><td class="num">03:12</td></tr>
+            <tr><td>Oak Room Memo</td><td><span class="badge badge--warning">待复核</span></td><td class="num">1,280</td><td class="num">18:04</td></tr>
+            <tr><td>Loose clipping</td><td><span class="badge badge--danger">缺来源</span></td><td class="num">96</td><td class="num">—</td></tr>
+            <tr><td>Ink catalog</td><td><span class="badge badge--info">草稿</span></td><td class="num">412</td><td class="num">01:22</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 模态框 -->
+    <section>
+      <h2>模态框 · Modal（浮起木盒叠在毛毡面上）</h2>
+      <div class="modal-demo">
+        <div class="modal-scrim">
+          <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mdl-t">
+            <div class="modal-head">
+              <h3 id="mdl-t">丢弃这张草稿？</h3>
+              <button class="x" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <p>「Oak Room Memo」的未确认摘录将移入废纸篓，已保存录音仍保留在素材匣中。</p>
+            <div class="modal-foot">
+              <button class="btn">取消</button>
+              <button class="btn btn--danger">丢弃草稿</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="label">用法</div>
+          <p class="muted" style="margin:0 0 var(--ds-space-4);font-size:var(--ds-text-sm);line-height:var(--ds-leading-relaxed)">毛毡遮罩用 <span class="mono">shadow-inset</span> 压低，木盒浮层用 <span class="mono">shadow-lg</span> 抬起；正文仍落在纯净纸面上。</p>
+          <button class="btn btn--primary" id="openModal">打开木盒弹层</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 下拉菜单 + 工具提示 -->
+    <section>
+      <h2>下拉菜单 · Dropdown / 工具提示 · Tooltip</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="label">下拉菜单（项 hover 微凸 / 选中压入）</div>
+          <div class="dropdown">
+            <button class="btn" aria-haspopup="true" aria-expanded="true">札记操作 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="menu" role="menu">
+              <button class="menu-item" role="menuitem" aria-current="true"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span> 预览纸面</button>
+              <button class="menu-item" role="menuitem"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span> 编辑摘录</button>
+              <button class="menu-item" role="menuitem"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span> 复制引用</button>
+              <div class="menu-sep"></div>
+              <button class="menu-item danger" role="menuitem"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span> 移入废纸篓</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="label">工具提示（悬停 / 聚焦凸气泡）</div>
+          <p class="muted" style="margin:0 0 var(--ds-space-5);font-size:var(--ds-text-sm)">悬停或用 Tab 聚焦下方按钮，纸质气泡以 <span class="mono">shadow-md</span> 从桌面浮起。</p>
+          <div class="row">
+            <span class="tip">
+              <button class="btn btn--icon" aria-label="帮助">?</button>
+              <span class="bubble" role="tooltip">打开 LedgerDesk 手册</span>
+            </span>
+            <span class="tip">
+              <button class="btn">查看书签</button>
+              <span class="bubble" role="tooltip">书签会固定在当前札记边缘</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分页 -->
+    <section>
+      <h2>分页 · Pagination（凸页签 / 当前页压入）</h2>
+      <div class="panel row" style="justify-content:flex-start">
+        <nav class="pagination" aria-label="分页">
+          <button class="page" aria-label="上一页" disabled>‹</button>
+          <button class="page" aria-current="page" aria-label="第 1 页">1</button>
+          <button class="page" aria-label="第 2 页">2</button>
+          <button class="page" aria-label="第 3 页">3</button>
+          <button class="page" aria-label="第 4 页">4</button>
+          <button class="page" aria-label="下一页">›</button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <section>
+      <h2>Toast 通知（凸起浮卡）</h2>
+      <div class="panel">
+        <div class="toast-stack">
+          <div class="toast success" role="status"><span class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><div class="t-body"><strong>已压入书脊</strong><span>札记已同步到今日皮革本。</span></div><button class="t-x" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+          <div class="toast info" role="status"><span class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div class="t-body"><strong>新模板可用</strong><span>采访提纲纸已放入模板抽屉。</span></div><button class="t-x" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+          <div class="toast danger" role="alert"><span class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><div class="t-body"><strong>本地库未连接</strong><span>录音片段暂存于临时夹。</span></div><button class="t-x" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 步骤条 -->
+    <section>
+      <h2>步进器 / 步骤条 · Stepper（装订流程）</h2>
+      <div class="panel">
+        <div class="stepper">
+          <div class="step done"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="s-label">采集片段</span><span class="line"></span></div>
+          <div class="step done"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="s-label">校对摘录</span><span class="line"></span></div>
+          <div class="step active"><span class="dot">3</span><span class="s-label">压入书脊</span><span class="line"></span></div>
+          <div class="step"><span class="dot">4</span><span class="s-label">归入抽屉</span><span class="line"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 面包屑 -->
+    <section>
+      <h2>面包屑 · Breadcrumb（凹槽导航条）</h2>
+      <div class="panel row" style="justify-content:flex-start">
+        <nav class="breadcrumb" aria-label="面包屑">
+          <a href="#">书桌</a><span class="sep">/</span>
+          <a href="#">札记</a><span class="sep">/</span>
+          <a href="#">采访</a><span class="sep">/</span>
+          <span class="current" aria-current="page">Oak Room Memo</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ============ 图片用法 ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Image Usage</span>
+        <h2>图片用法</h2>
+        <p>Rich Skeuo 里图片像被装进相册：嵌入压印槽、皮革边框或木纹托盘。文字仍放在纯净纸面，纹理只做边框和背景。</p>
+      </div>
+
+      <div class="panel grid" style="gap:var(--ds-space-8)">
+        <div>
+          <div class="label">宽高比框 · 16:9 / 4:3 / 1:1 / 3:4（压入纸槽）</div>
+          <div class="ratio-grid">
+            <div class="ratio-cell"><img class="r-16x9" src="../../_assets/photos/workspace.jpg" alt="LedgerDesk 的桌面工作区素材" loading="lazy"><div class="rc-tag">16 : 9</div></div>
+            <div class="ratio-cell"><img class="r-4x3" src="../../_assets/photos/desk.jpg" alt="札记封面照片" loading="lazy"><div class="rc-tag">4 : 3</div></div>
+            <div class="ratio-cell"><img class="r-1x1" src="../../_assets/photos/coffee.jpg" alt="咖啡旁的短札素材" loading="lazy"><div class="rc-tag">1 : 1</div></div>
+            <div class="ratio-cell"><img class="r-3x4" src="../../_assets/photos/portrait1.jpg" alt="采访对象头像素材" loading="lazy"><div class="rc-tag">3 : 4</div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">媒体卡 Media Card（凸起卡 + inset 图槽 + 操作）</div>
+          <div class="media-grid">
+            <div class="media-card">
+              <div class="mc-img"><img src="../../_assets/photos/ocean.jpg" alt="平静的海面与天空" loading="lazy"></div>
+              <div class="mc-body">
+                <h3>Wave Room</h3>
+                <p>18 分钟环境录音，已生成会议前专注片段。</p>
+                <div class="mc-meta"><button class="btn btn--primary btn--sm">试听</button><span class="badge badge--info">音频</span></div>
+              </div>
+            </div>
+            <div class="media-card">
+              <div class="mc-img"><img src="../../_assets/photos/forest.jpg" alt="阳光穿过森林树冠" loading="lazy"></div>
+              <div class="mc-body">
+                <h3>Field Notes</h3>
+                <p>户外调研的碎片照片，已归入本周项目夹。</p>
+                <div class="mc-meta"><button class="btn btn--primary btn--sm">查看</button><span class="badge badge--success">已归档</span></div>
+              </div>
+            </div>
+            <div class="media-card">
+              <div class="mc-img"><img src="../../_assets/photos/desk.jpg" alt="LedgerDesk 桌面素材照片" loading="lazy"></div>
+              <div class="mc-body">
+                <h3>Desk Drawer</h3>
+                <p>本地素材匣已连接，11 张纸片等待命名。</p>
+                <div class="mc-meta"><button class="btn btn--sm">管理</button><span class="badge badge--success">已连接</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">图片网格 / 画廊 Gallery（等高凹槽网格，≥6 图）</div>
+          <div class="gallery">
+            <div class="g-cell g-wide g-tall"><img src="../../_assets/photos/city.jpg" alt="城市调研剪贴素材" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/desk.jpg" alt="桌面札记素材" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/street.jpg" alt="街访照片素材" loading="lazy"></div>
+            <div class="g-cell g-tall"><img src="../../_assets/photos/architecture.jpg" alt="建筑灵感剪贴素材" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/travel.jpg" alt="出差记录素材" loading="lazy"></div>
+            <div class="g-cell g-wide"><img src="../../_assets/gen/abstract-wave.jpg" alt="录音波形封面素材" loading="lazy"></div>
+            <div class="g-cell"><img src="../../_assets/photos/tech.jpg" alt="硬件访谈参考素材" loading="lazy"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">图文混排 Feature Split（大图 + 段落并排）</div>
+          <div class="feature-split">
+            <div class="fs-fig"><img src="../../_assets/photos/workspace.jpg" alt="LedgerDesk 工作区展示" loading="lazy"></div>
+            <div>
+              <h3>把碎片装订成一页</h3>
+              <p>LedgerDesk 把录音、引用、照片和待办收进同一个皮革工作台。视觉层级来自材料和深度，不靠杂乱的颜色堆叠。</p>
+              <ul class="feature-list">
+                <li><span class="fl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> 录音自动切成可引用片段</li>
+                <li><span class="fl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> 札记、照片和任务统一装订</li>
+                <li><span class="fl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> 深色夜间皮革主题保持 AA</li>
+              </ul>
+              <button class="btn btn--primary">打开工作台</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">图上叠字 Overlay（渐变 scrim 保证文字 AA）</div>
+          <div class="overlay-row">
+            <div class="overlay">
+              <div class="ov-inner">
+                <img src="../../_assets/photos/hero-summit.jpg" alt="项目出差照片素材" loading="lazy">
+                <div class="scrim"></div>
+                <div class="ov-txt"><div class="ov-ey">Research · Trip</div><h3>山脊访谈剪贴</h3></div>
+              </div>
+            </div>
+            <div class="overlay">
+              <div class="ov-inner">
+                <img src="../../_assets/photos/hero-studio.jpg" alt="创作工作室录音素材" loading="lazy">
+                <div class="scrim"></div>
+                <div class="ov-txt"><div class="ov-ey">Studio · Audio</div><h3>工作室录音底稿</h3></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">头像用法 Avatars（尺寸阶 / 堆叠组 / 用户行）</div>
+          <div class="avatar-panel">
+            <div class="av-block">
+              <div class="ab-lab">尺寸阶 24 / 32 / 40 / 48</div>
+              <div class="av-sizes">
+                <img class="avatar av-24" src="../../_assets/avatars/a1.jpg" alt="用户头像" loading="lazy">
+                <img class="avatar av-32" src="../../_assets/avatars/a5.jpg" alt="用户头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a8.jpg" alt="用户头像" loading="lazy">
+                <img class="avatar av-48" src="../../_assets/avatars/a12.jpg" alt="用户头像" loading="lazy">
+              </div>
+            </div>
+            <div class="av-block">
+              <div class="ab-lab">堆叠头像组 Avatar Stack</div>
+              <div class="av-stack">
+                <img class="avatar av-40" src="../../_assets/avatars/a15.jpg" alt="团队成员头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a23.jpg" alt="团队成员头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a33.jpg" alt="团队成员头像" loading="lazy">
+                <img class="avatar av-40" src="../../_assets/avatars/a47.jpg" alt="团队成员头像" loading="lazy">
+                <span class="more">+6</span>
+              </div>
+            </div>
+            <div class="av-block">
+              <div class="ab-lab">用户行 User Row</div>
+              <div class="user-row">
+                <img class="avatar av-48" src="../../_assets/avatars/a1.jpg" alt="LedgerDesk 协作者头像" loading="lazy">
+                <div class="ur-txt"><b>林知夏</b><span>主编 · 正在校对</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">背景大图区 Full-bleed（遮罩 + 内容）</div>
+          <div class="bg-hero">
+            <img src="../../_assets/photos/hero-gallery.jpg" alt="LedgerDesk 素材墙背景" loading="lazy">
+            <div class="bg-scrim"></div>
+            <div class="bg-content">
+              <h3>为可触摸的桌面而生</h3>
+              <p>从札记卡片到录音抽屉，同一套皮革、木纹和凝胶语言贯穿桌面与移动端。</p>
+              <div class="row"><button class="btn btn--on-img btn--lg">查看素材墙</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 图标用法 ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Icon Usage</span>
+        <h2>图标用法</h2>
+        <p>统一 24×24 viewBox、1.8 线宽、圆角端点的线性图标。Rich Skeuo 中图标常坐在 <span class="mono">inset</span> 小坑或凝胶圆钮中，颜色用 <span class="mono">currentColor</span> 继承上下文。</p>
+      </div>
+
+      <div class="panel grid" style="gap:var(--ds-space-8)">
+        <div>
+          <div class="label">图标集 Icon Set（≥12 个，inset 坑承载）</div>
+          <div class="icon-set">
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span><div class="ic-name">home</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span><div class="ic-name">search</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span><div class="ic-name">bell</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span><div class="ic-name">user</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div class="ic-name">chat</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg></span><div class="ic-name">save</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><div class="ic-name">edit</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span><div class="ic-name">trash</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg></span><div class="ic-name">download</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span><div class="ic-name">heart</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z"/></svg></span><div class="ic-name">star</div></div>
+            <div class="icon-cell"><span class="ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><div class="ic-name">settings</div></div>
+          </div>
+        </div>
+
+        <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+          <div>
+            <div class="label">尺寸阶 16 / 20 / 24 / 32（基线对齐）</div>
+            <div class="card">
+              <div class="icon-sizes">
+                <div class="is-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">16</span></div>
+                <div class="is-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">20</span></div>
+                <div class="is-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">24</span></div>
+                <div class="is-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="is-tag">32</span></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="label">线性 vs 实心 · 单色 vs 双色</div>
+            <div class="icon-pair">
+              <div class="ip-cell"><div class="ip-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div><div class="ip-lab">线性 / 实心</div></div>
+              <div class="ip-cell"><div class="ip-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z"/></svg><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z" fill="var(--ds-warning-bg)" stroke="var(--ds-warning)" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="ip-lab">单色 / 双色</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">上下文里 In Context（按钮 / 输入 / 状态 / 徽标）</div>
+          <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+            <div class="card">
+              <div class="grid" style="gap:var(--ds-space-5)">
+                <div class="row">
+                  <button class="btn btn--icon" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11.5 2 14 8.5 21 9l-5 4.5L17.5 21 11.5 17 5.5 21 7 13.5 2 9l7-.5z"/></svg></button>
+                  <button class="btn btn--primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg> 前置图标</button>
+                  <button class="btn">后置图标 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                  <span class="icon-badge">
+                    <button class="btn btn--icon" aria-label="通知，3 条未读"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+                    <span class="ib-count" aria-hidden="true">3</span>
+                  </span>
+                </div>
+                <div class="row">
+                  <span class="badge badge--success"><svg class="dot-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="11" height="11" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> 已通过</span>
+                  <span class="badge badge--warning"><svg class="dot-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="11" height="11" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg> 待复核</span>
+                  <span class="badge badge--danger"><svg class="dot-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="11" height="11" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> 已拒绝</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="field" style="margin-bottom:var(--ds-space-5)">
+                <label for="ia1">搜索（前置图标）</label>
+                <div class="input-affix">
+                  <span class="af-ico af-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+                  <input id="ia1" class="input" placeholder="搜索札记、录音或剪贴…">
+                </div>
+              </div>
+              <div class="field" style="margin-bottom:0">
+                <label for="ia2">金额（后置图标）</label>
+                <div class="input-affix">
+                  <input id="ia2" class="input" value="128.00" style="padding-right:42px">
+                  <span class="af-ico af-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 桌面布局 ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Desktop Layouts</span>
+        <h2>桌面布局</h2>
+        <p>三个用本风格 token 拼出的 LedgerDesk 小样：札记工作台、录音播放器、账户设置页。侧栏选中项被压入皮革槽，统计卡与封面凸起，图表区是压印纸面。</p>
+      </div>
+
+      <!-- 布局 1：札记工作台 / 仪表盘 -->
+      <div class="frame" style="margin-bottom:var(--ds-space-7)">
+        <div class="frame-bar">
+          <span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> ledgerdesk.local/workbench</span>
+        </div>
+        <div class="frame-body">
+          <div class="lay-name"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg> 札记工作台 · Journal Dashboard</div>
+          <div class="dash">
+            <aside class="dash-side">
+              <div class="dash-brand"><span class="db-logo"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 4v16" stroke="currentColor" stroke-width="1.8"/></svg></span> LedgerDesk</div>
+              <nav class="dash-nav">
+                <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> 概览</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg> 素材匣</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 3-3 3 3 5-6"/></svg> 进度</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg> 日志</a>
+                <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83 1.65 1.65 0 0 0-2.82 1.18V21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-2.82-1.18 2 2 0 1 1-2.83-2.83A1.65 1.65 0 0 0 4.6 13a2 2 0 0 1 0-4 1.65 1.65 0 0 0 1.18-2.82 2 2 0 1 1 2.83-2.83A1.65 1.65 0 0 0 11 4.6a2 2 0 0 1 4 0 1.65 1.65 0 0 0 2.82 1.18 2 2 0 1 1 2.83 2.83A1.65 1.65 0 0 0 19.4 11a2 2 0 0 1 0 4z"/></svg> 设置</a>
+              </nav>
+            </aside>
+            <div class="dash-main">
+              <div class="dash-top">
+                <h3>今日书桌 · 总览</h3>
+                <div class="row" style="gap:var(--ds-space-3)">
+                  <button class="btn btn--sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg> 刷新</button>
+                  <button class="btn btn--primary btn--sm">导出札记</button>
+                </div>
+              </div>
+              <div class="kpi-row">
+                <div class="kpi"><div class="kpi-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg> 已装订</div><div class="kpi-v">128</div><div class="kpi-d" style="color:var(--ds-success-fg)">较昨日 +6</div></div>
+                <div class="kpi"><div class="kpi-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> 完成度</div><div class="kpi-v">42%</div><div class="kpi-d muted">草稿队列</div></div>
+                <div class="kpi"><div class="kpi-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg> 待复核</div><div class="kpi-v">3</div><div class="kpi-d" style="color:var(--ds-warning-fg)">需关注</div></div>
+              </div>
+              <div class="chart-box">
+                <div class="cb-head"><b>近 7 日札记量</b><span class="badge badge--info">notes</span></div>
+                <div class="bars">
+                  <div class="bar" style="height:48%"></div><div class="bar" style="height:62%"></div><div class="bar" style="height:54%"></div>
+                  <div class="bar hi" style="height:88%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:76%"></div>
+                </div>
+                <div class="bars-x"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 布局 2：录音播放器 -->
+      <div class="frame" style="margin-bottom:var(--ds-space-7)">
+        <div class="frame-bar">
+          <span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> ledgerdesk.local/audio</span>
+        </div>
+        <div class="frame-body">
+          <div class="lay-name"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> 录音播放器 · Audio Desk</div>
+          <div class="music">
+            <div class="music-now">
+              <div class="mn-cover"><img src="../../_assets/gen/abstract-wave.jpg" alt="抽象波纹专辑封面" loading="lazy"></div>
+              <h3>Oak Room Memo</h3>
+              <div class="mn-art">采访录音 · Project Atlas</div>
+              <div class="mn-prog"><i></i></div>
+              <div class="mn-time"><span>1:48</span><span>4:12</span></div>
+              <div class="mn-ctrl">
+                <button class="btn btn--icon" aria-label="上一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6v12h2V6zm3 6 8 6V6z"/></svg></button>
+                <button class="btn btn--icon btn--primary btn--lg" aria-label="暂停"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg></button>
+                <button class="btn btn--icon" aria-label="下一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6v12h2V6zM6 6v12l8-6z"/></svg></button>
+              </div>
+            </div>
+            <div class="music-list">
+              <div class="ml-head">录音队列 · 待摘录</div>
+              <div class="ml-item on">
+                <img class="ml-thumb" src="../../_assets/gen/abstract-wave.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Oak Room Memo</b><span>Project Atlas</span></span>
+                <span class="ml-dur">4:12</span>
+              </div>
+              <div class="ml-item">
+                <img class="ml-thumb" src="../../_assets/photos/ocean.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Client Walkthrough</b><span>Design Review</span></span>
+                <span class="ml-dur">3:48</span>
+              </div>
+              <div class="ml-item">
+                <img class="ml-thumb" src="../../_assets/photos/forest.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Desk Notes</b><span>Weekly Planning</span></span>
+                <span class="ml-dur">5:06</span>
+              </div>
+              <div class="ml-item">
+                <img class="ml-thumb" src="../../_assets/photos/mountain.jpg" alt="曲目封面" loading="lazy">
+                <span class="ml-txt"><b>Archive Cue</b><span>Reference Tape</span></span>
+                <span class="ml-dur">4:33</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 布局 3：设置页 -->
+      <div class="frame">
+        <div class="frame-bar">
+          <span class="dots"><i style="background:var(--ds-danger)"></i><i style="background:var(--ds-warning)"></i><i style="background:var(--ds-success)"></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> ledgerdesk.local/settings</span>
+        </div>
+        <div class="frame-body">
+          <div class="lay-name"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83 1.65 1.65 0 0 0-2.82 1.18V21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-2.82-1.18 2 2 0 1 1-2.83-2.83A1.65 1.65 0 0 0 4.6 13a2 2 0 0 1 0-4 1.65 1.65 0 0 0 1.18-2.82 2 2 0 1 1 2.83-2.83A1.65 1.65 0 0 0 11 4.6a2 2 0 0 1 4 0 1.65 1.65 0 0 0 2.82 1.18 2 2 0 1 1 2.83 2.83A1.65 1.65 0 0 0 19.4 11a2 2 0 0 1 0 4z"/></svg> 账户设置 · Settings</div>
+          <div class="settings">
+            <nav class="set-nav">
+              <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg> 个人资料</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> 安全</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> 通知</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> 账单</a>
+            </nav>
+            <div class="set-panel">
+              <div class="set-user">
+                <img class="avatar av-48" src="../../_assets/avatars/a8.jpg" alt="林悦的头像" loading="lazy">
+                <div class="su-txt"><b>林悦</b><span>linyue@ledgerdesk.local · 主编</span></div>
+                <button class="btn btn--sm" style="margin-left:auto">更换头像</button>
+              </div>
+              <div class="set-row">
+                <div class="sr-txt"><b>暗色主题</b><span>跟随系统或手动切换</span></div>
+                <label class="switch"><input type="checkbox"><span class="track"></span><span class="knob"></span></label>
+              </div>
+              <div class="set-row">
+                <div class="sr-txt"><b>桌面通知</b><span>有新摘录时弹出提醒</span></div>
+                <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+              </div>
+              <div class="set-row">
+                <div class="sr-txt"><b>双重验证</b><span>登录时需要短信验证码</span></div>
+                <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+              </div>
+              <div class="set-row" style="border-top:1px solid var(--ds-border)">
+                <div class="sr-txt"><b>语言</b><span>界面显示语言</span></div>
+                <select class="select" style="width:160px;height:38px"><option>简体中文</option><option>English</option><option>日本語</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 移动端 -->
+    <section>
+      <div class="sec-head">
+        <span class="en">Mobile Layouts</span>
+        <h2>移动布局</h2>
+        <p>三台 iPhone 17 Pro Max 套壳并排：书桌控制（深色皮革 header + 材料磁贴 + 纹理强度凹槽条）、札记概览（环形进度 + 双指标卡 + 满宽主按钮 + 凹槽列表 + 底部标签栏）、录音播放器（凸起封面 + inset 进度 + 队列）。每屏内容填满 812px，底部 tab/控制条贴底、无留白。</p>
+      </div>
+      <div class="phones-2">
+
+      <!-- 移动端 0：书桌控制（深色 header，状态栏文字转白 sb-light） -->
+      <div class="dvc17 sb-light">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="scr-hero">
+              <div class="sh-top">
+                <span class="sh-t">书桌控制</span>
+                <button class="hb" aria-label="添加素材"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+              </div>
+              <div class="sh-room">LedgerDesk · 4 个模块启用</div>
+              <div class="sh-temp">22<sup>°C</sup></div>
+              <div class="sh-meta">
+                <div><b>48%</b>纸纹</div>
+                <div><b>良</b>同步</div>
+                <div><b>3</b>模板</div>
+              </div>
+            </div>
+            <div class="scr-pad">
+              <div class="tile-grid">
+                <div class="tile on">
+                  <div class="tl-top">
+                    <span class="tl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V18h6v-1.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
+                    <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+                  </div>
+                  <div class="tl-name">纸面灯</div>
+                  <div class="tl-state">已开启 · 80%</div>
+                </div>
+                <div class="tile on">
+                  <div class="tl-top">
+                    <span class="tl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9.5 19a6 6 0 1 1 5 0"/><path d="M9 22h6"/><path d="M12 2v3M5 5l1.5 1.5M19 5l-1.5 1.5"/></svg></span>
+                    <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label>
+                  </div>
+                  <div class="tl-name">录音台</div>
+                  <div class="tl-state">监听 · 22 dB</div>
+                </div>
+                <div class="tile">
+                  <div class="tl-top">
+                    <span class="tl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span>
+                    <label class="switch"><input type="checkbox"><span class="track"></span><span class="knob"></span></label>
+                  </div>
+                  <div class="tl-name">计时器</div>
+                  <div class="tl-state">已关闭</div>
+                </div>
+                <div class="tile">
+                  <div class="tl-top">
+                    <span class="tl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></span>
+                    <label class="switch"><input type="checkbox"><span class="track"></span><span class="knob"></span></label>
+                  </div>
+                  <div class="tl-name">素材墙</div>
+                  <div class="tl-state">待机</div>
+                </div>
+              </div>
+              <div class="ctrl-slide">
+                <div class="cs-head">
+                  <span class="cs-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg> 纸纹强度</span>
+                  <span class="cs-v">80%</span>
+                </div>
+                <input class="slider" type="range" min="0" max="100" value="80" aria-label="纸纹强度">
+              </div>
+              <nav class="phone-tabbar" aria-label="底部导航">
+                <a href="#" class="on" aria-label="模块"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></a>
+                <a href="#" aria-label="模板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg></a>
+                <a href="#" aria-label="统计"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></a>
+                <a href="#" aria-label="我的"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></a>
+              </nav>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <!-- 移动端 1：札记概览 -->
+      <div class="dvc17">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="scr-head">
+              <button class="ph-btn" aria-label="菜单"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg></button>
+              <span class="sh-title">札记概览</span>
+              <button class="ph-btn" aria-label="设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+            </div>
+            <div class="scr-pad">
+              <div class="phone-card">
+                <div class="pc-row">
+                  <div class="pc-ring" style="--pct:84%"><div class="pr-in"><b>84%</b><span>目标</span></div></div>
+                  <div>
+                    <div class="pc-k">今日进度</div>
+                    <div class="pc-v">8,420</div>
+                    <div class="muted" style="font-size:var(--ds-text-xs)">目标 10 条 · 还差 2 条摘录</div>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-2">
+                <div class="st-cell">
+                  <div class="st-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-5.4-9.2-10A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.2 11C19 15.6 12 21 12 21z"/></svg> 卡路里</div>
+                  <div class="st-v">486 <small>kcal</small></div>
+                </div>
+                <div class="st-cell">
+                  <div class="st-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s8-4.5 8-11a8 8 0 1 0-16 0c0 6.5 8 11 8 11z"/><circle cx="12" cy="11" r="3"/></svg> 距离</div>
+                  <div class="st-v">5.8 <small>km</small></div>
+                </div>
+              </div>
+              <button class="btn btn--primary btn-block">新建札记</button>
+              <div class="phone-list">
+                <div class="pl-item">
+                  <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="13" cy="4.5" r="1.6"/><path d="M5 21l3-5 3.5-2-1.5-5"/><path d="M10 9.5 7 7l4-2 3 3 3 .5"/><path d="m12.5 11 2 4 3.5 1"/></svg></span>
+                  <span class="pl-txt"><b>晨会</b><span>摘要 · 28 分钟</span></span>
+                  <span class="pl-val">3.2k</span>
+                </div>
+                <div class="pl-item">
+                  <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></span>
+                  <span class="pl-txt"><b>归档</b><span>昨夜 · 2 组素材</span></span>
+                  <span class="pl-val">7 items</span>
+                </div>
+                <div class="pl-item">
+                  <span class="pl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
+                  <span class="pl-txt"><b>标记</b><span>待处理</span></span>
+                  <span class="pl-val">62 refs</span>
+                </div>
+              </div>
+              <nav class="phone-tabbar" aria-label="底部导航">
+                <a href="#" class="on" aria-label="首页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
+                <a href="#" aria-label="活动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></a>
+                <a href="#" aria-label="发现"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></a>
+                <a href="#" aria-label="我的"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></a>
+              </nav>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <!-- 移动端 2：录音播放器 -->
+      <div class="dvc17">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="scr-head">
+              <button class="ph-btn" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+              <span class="sh-title">正在播放</span>
+              <button class="ph-btn" aria-label="更多"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></button>
+            </div>
+            <div class="scr-pad">
+              <div class="player-top">
+                <div class="phone-fig"><img src="../../_assets/gen/abstract-wave.jpg" alt="抽象波纹专辑封面" loading="lazy"></div>
+                <div style="text-align:center">
+                  <div style="font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);letter-spacing:-0.02em">Oak Room Memo</div>
+                  <div class="muted" style="font-size:var(--ds-text-sm)">采访录音 · Project Atlas</div>
+                </div>
+                <div class="mini-prog"><i></i></div>
+                <div class="mn-time" style="display:flex;justify-content:space-between;font-size:11px;color:var(--ds-fg-subtle);font-family:var(--ds-font-mono)"><span>2:26</span><span>4:12</span></div>
+                <div class="mini-ctrl">
+                  <button class="btn btn--icon" aria-label="随机"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16 3h5v5M21 3l-7 7M8 21H3v-5M3 21l7-7M16 21h5v-5M21 21 14 14M3 3l7 7"/></svg></button>
+                  <button class="btn btn--icon" aria-label="上一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6v12h2V6zm3 6 8 6V6z"/></svg></button>
+                  <button class="btn btn--icon btn--primary btn--lg" aria-label="暂停"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg></button>
+                  <button class="btn btn--icon" aria-label="下一首"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6v12h2V6zM6 6v12l8-6z"/></svg></button>
+                  <button class="btn btn--icon" aria-label="单曲循环"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></button>
+                </div>
+              </div>
+              <div class="queue">
+                <div class="q-head">播放队列 · 接下来</div>
+                <div class="q-item on">
+                  <span class="q-n">1</span>
+                  <span class="q-txt"><b>Oak Room Memo</b><span>Project Atlas</span></span>
+                  <span class="q-dur">4:12</span>
+                </div>
+                <div class="q-item">
+                  <span class="q-n">2</span>
+                  <span class="q-txt"><b>Client Walkthrough</b><span>Design Review</span></span>
+                  <span class="q-dur">3:48</span>
+                </div>
+                <div class="q-item">
+                  <span class="q-n">3</span>
+                  <span class="q-txt"><b>Desk Notes</b><span>Weekly Planning</span></span>
+                  <span class="q-dur">5:06</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section style="margin-top:var(--ds-space-9)">
+      <p class="subtle" style="font-size:var(--ds-text-xs);text-align:center">Skeuomorphism Kit · 全部走 <span class="mono">var(--ds-*)</span> 变量 · 双击即开 · 亮暗双主题 · WCAG AA · 响应式</p>
+    </section>
+
+  </div>
+
+<script>
+  // 主题切换
+  const root = document.documentElement, btn = document.getElementById('themeToggle');
+  const ttIco = btn.querySelector('.tt-ico'), ttLabel = btn.querySelector('.tt-label');
+  const moonSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+  const sunSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  function setTheme(t){
+    root.dataset.theme = t;
+    const dark = t === 'dark';
+    ttIco.innerHTML = dark ? sunSvg : moonSvg;
+    ttLabel.textContent = dark ? '亮色' : '暗色';
+    refreshHex();
+  }
+  btn.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+  // 自动回填色板 hex（读取计算后的变量）
+  const names = ['bg','bg-sunken','primary','accent','success','warning','danger','info','fg','fg-muted'];
+  function toHex(c){
+    const m = c.match(/\d+(\.\d+)?/g); if(!m) return c;
+    return '#' + m.slice(0,3).map(n => (+n).toString(16).padStart(2,'0')).join('');
+  }
+  function refreshHex(){
+    const cs = getComputedStyle(root);
+    document.querySelectorAll('[data-hex]').forEach((el,i) => {
+      el.textContent = toHex(cs.getPropertyValue('--ds-' + names[i]).trim());
+    });
+  }
+  // tab 切换演示
+  document.querySelectorAll('[role=tab]').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('[role=tab]').forEach(x => x.setAttribute('aria-selected','false'));
+    t.setAttribute('aria-selected','true');
+  }));
+  // 分页演示
+  document.querySelectorAll('.page[aria-label^="第"]').forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('.page[aria-current]').forEach(x => x.removeAttribute('aria-current'));
+    p.setAttribute('aria-current','page');
+  }));
+  // 模态框示例（静态演示，按钮仅作滚动定位）
+  const openModal = document.getElementById('openModal');
+  if (openModal) openModal.addEventListener('click', () => {
+    document.querySelector('.modal-scrim')?.scrollIntoView({ behavior:'smooth', block:'center' });
+  });
+  // Toast 关闭演示
+  document.querySelectorAll('.toast .t-x').forEach(x => x.addEventListener('click', () => {
+    x.closest('.toast').style.display = 'none';
+  }));
+  setTheme(root.dataset.theme || 'light');
+</script>
+</body>
+</html>
