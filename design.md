@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 30 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 31 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 30 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 31 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -148,6 +148,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 30 复古美式 · Vintage Americana (Diner / Signage) — `/styles/30-vintage-americana/`
 50 年代餐车招牌：奶油纸 + 复古红 + 深青蓝 + 芥末金、星芒徽章、绶带、细条纹边。primary 复古红 `#c0392b` / accent 深青蓝 `#1f5a6b` / 芥末 `#d99a2b`(仅徽章) / bg `#f7efdf` / fg `#2a1f16`｜暗（霓虹餐车夜）primary `#e0584a`(深字) / accent `#4aa8bf` / bg `#1c160f`·fg `#f4e8d2`｜4·8·16｜Noto Serif 粗体招牌 + Inter 大写标牌｜星芒徽章 + 折叠绶带 + 细条纹/双线边 + 扇贝条 + 价签。与 07 极简编辑（现代克制）刻意区分（招牌徽章绶带）。
+
+### 31 拼贴手帐 · Collage (Scrapbook) — `/styles/31-collage/`
+牛皮纸拼贴：和纸胶带 + 撕纸边 + 拍立得相框 + 图钉/回形针 + 缝线虚框 + 微旋转便签。primary 珊瑚陶土 `#b5503a` / accent 墨蓝青 `#2f6f8c` / bg 牛皮纸 `#f3ece0`·elevated `#fffdf7` / fg `#2c2620`｜暗（夜间手帐/软木板）primary `#e07a5f`(深字) / accent `#5fa8c4` / bg `#1e1913`·fg `#f0e7d6`｜3·8·14｜Quicksand 圆体 + Noto Serif 标签｜和纸胶带/撕纸/拍立得/图钉/缝线/微旋转层叠；正文落实色纸不压纹理。装饰色 芥末/鼠尾草/粉 仅胶带图钉。与 01 可爱（糖果粉）、18 矿物（克制编辑）刻意区分（手工拼贴质感）。
 
 ---
 

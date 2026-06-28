@@ -1,0 +1,141 @@
+/* ============================================================
+   Collage · 拼贴手帐风 Design System Tokens
+   Contract: variable names stay fixed as --ds-*; only values change.
+   Light :root + dark [data-theme="dark"] and .dark compatibility.
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces and text ---- */
+  --ds-bg: #f3ece0;
+  --ds-bg-subtle: #eae0cf;
+  --ds-bg-elevated: #fffdf7;
+  --ds-bg-sunken: #e2d6c0;
+  --ds-fg: #2c2620;
+  --ds-fg-muted: #5c5446;
+  --ds-fg-subtle: #7a7060;
+  --ds-fg-on-accent: #fff8ef;
+  --ds-border: #dccdb2;
+  --ds-border-strong: #2c2620;
+
+  /* ---- Brand and accent ---- */
+  --ds-primary: #b5503a;
+  --ds-primary-hover: #9e4530;
+  --ds-primary-active: #853a28;
+  --ds-primary-fg: #fff8ef;
+  --ds-accent: #2f6f8c;
+  --ds-accent-fg: #fff8ef;
+
+  /* ---- Semantic states ---- */
+  --ds-success: #4a8a3a;
+  --ds-success-bg: #e8f1e0;
+  --ds-success-fg: #1a3a12;
+  --ds-warning: #9a6a14;
+  --ds-warning-bg: #f6ead0;
+  --ds-warning-fg: #43300a;
+  --ds-danger: #b5503a;
+  --ds-danger-bg: #f7e4de;
+  --ds-danger-fg: #551c10;
+  --ds-info: #2f6f8c;
+  --ds-info-bg: #e2eef2;
+  --ds-info-fg: #0e2e3a;
+
+  /* ---- Focus ---- */
+  --ds-focus: #b5503a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- Radius ---- */
+  --ds-radius-sm: 3px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 14px;
+  --ds-radius-full: 9999px;
+
+  /* ---- Spacing scale inherited from the light rounded base ---- */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-7: 32px;
+  --ds-space-8: 40px;
+  --ds-space-9: 48px;
+  --ds-space-10: 64px;
+  --ds-space-11: 80px;
+  --ds-space-12: 96px;
+
+  /* ---- Local font stack only ---- */
+  --ds-font-sans: "Quicksand","Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif: "Noto Serif",Georgia,serif;
+  --ds-font-mono: "JetBrains Mono",monospace;
+  --ds-text-xs: 12px;
+  --ds-text-sm: 13px;
+  --ds-text-base: 14px;
+  --ds-text-md: 16px;
+  --ds-text-lg: 20px;
+  --ds-text-xl: 24px;
+  --ds-text-2xl: 32px;
+  --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25;
+  --ds-leading-normal: 1.55;
+  --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 500;
+  --ds-weight-medium: 600;
+  --ds-weight-bold: 700;
+  --ds-tracking-tight: 0;
+  --ds-tracking-normal: 0.01em;
+
+  /* ---- Shadows ---- */
+  --ds-shadow-sm: 0 1px 2px rgba(44,38,32,.12);
+  --ds-shadow-md: 0 6px 16px -6px rgba(44,38,32,.22);
+  --ds-shadow-lg: 0 14px 32px -10px rgba(44,38,32,.28);
+
+  /* ---- Decorative collage helpers, never for body text ---- */
+  --ds-decor-tape-mustard: #d8a23a;
+  --ds-decor-tape-sage: #7a9a5e;
+  --ds-decor-tape-pink: #d98ca0;
+
+  /* ---- Motion inherited from the light rounded base ---- */
+  --ds-ease: cubic-bezier(.34,1.56,.64,1);
+  --ds-dur-fast: 200ms;
+  --ds-dur-base: 260ms;
+  --ds-dur-slow: 320ms;
+}
+
+[data-theme="dark"],
+.dark {
+  --ds-bg: #1e1913;
+  --ds-bg-subtle: #261f17;
+  --ds-bg-elevated: #2c241a;
+  --ds-bg-sunken: #15110b;
+  --ds-fg: #f0e7d6;
+  --ds-fg-muted: #b4a890;
+  --ds-fg-subtle: #847a66;
+  --ds-fg-on-accent: #1a0a06;
+  --ds-border: #3a3022;
+  --ds-border-strong: #f0e7d6;
+  --ds-primary: #e07a5f;
+  --ds-primary-hover: #ea8e74;
+  --ds-primary-active: #d06a4f;
+  --ds-primary-fg: #1a0a06;
+  --ds-accent: #5fa8c4;
+  --ds-accent-fg: #06202a;
+  --ds-success: #6fbf6f;
+  --ds-success-bg: #102a10;
+  --ds-success-fg: #cdeec0;
+  --ds-warning: #e8b85a;
+  --ds-warning-bg: #241a06;
+  --ds-warning-fg: #f6e6be;
+  --ds-danger: #e07a5f;
+  --ds-danger-bg: #2a0f08;
+  --ds-danger-fg: #f8d6c8;
+  --ds-info: #5fa8c4;
+  --ds-info-bg: #08222c;
+  --ds-info-fg: #cfeaf2;
+  --ds-focus: #e07a5f;
+  --ds-shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md: 0 6px 16px -6px rgba(0,0,0,.6);
+  --ds-shadow-lg: 0 14px 32px -10px rgba(0,0,0,.7);
+  --ds-decor-tape-mustard: #e8b85a;
+  --ds-decor-tape-sage: #9ab87a;
+  --ds-decor-tape-pink: #e8a4b8;
+}

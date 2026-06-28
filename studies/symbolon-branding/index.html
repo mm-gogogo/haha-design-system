@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Veyra Identity System | Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      --ink: #11110f;
+      --ink-2: #25231f;
+      --bone: #f2eadc;
+      --bone-2: #d8cbb7;
+      --accent: #b96b4f;
+      --accent-2: #e0a184;
+      --line: rgba(242, 234, 220, .17);
+      --line-dark: rgba(17, 17, 15, .16);
+      --muted: rgba(242, 234, 220, .64);
+      --panel: rgba(242, 234, 220, .055);
+      --panel-strong: rgba(242, 234, 220, .095);
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: "Noto Serif", "Times New Roman", serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --ease: cubic-bezier(.2, .82, .18, 1);
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      margin: 0;
+      min-width: 0;
+      background: var(--ink);
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      min-width: 0;
+      color: var(--bone);
+      background:
+        radial-gradient(circle at 74% 11%, rgba(185, 107, 79, .22), transparent 29rem),
+        linear-gradient(90deg, rgba(242, 234, 220, .035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(242, 234, 220, .035) 1px, transparent 1px),
+        var(--ink);
+      background-size: auto, 74px 74px, 74px 74px, auto;
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      content: "";
+      opacity: .18;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px);
+      mix-blend-mode: overlay;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .shell {
+      width: min(100% - 40px, 1320px);
+      margin-inline: auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding-block: 28px;
+      color: var(--muted);
+      font: 600 11px/1 var(--font-mono);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .topbar__brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      color: var(--bone);
+    }
+
+    .topbar__sig {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--accent-2);
+    }
+
+    .topbar__meta {
+      display: flex;
+      gap: clamp(16px, 4vw, 56px);
+      white-space: nowrap;
+    }
+
+    .hero {
+      min-height: 88svh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+      gap: clamp(28px, 6vw, 92px);
+      align-items: center;
+      padding: clamp(48px, 8vw, 112px) 0 clamp(70px, 10vw, 128px);
+    }
+
+    .hero__copy {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 28px;
+      color: var(--accent-2);
+      font: 700 11px/1 var(--font-mono);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 32px;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 10ch;
+      margin-bottom: 30px;
+      font-family: var(--font-serif);
+      font-size: clamp(4.4rem, 15vw, 14.8rem);
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: .78;
+    }
+
+    .hero__lede {
+      max-width: 620px;
+      margin: 0;
+      color: var(--bone-2);
+      font-family: var(--font-serif);
+      font-size: clamp(1.25rem, 2.3vw, 2.4rem);
+      line-height: 1.12;
+    }
+
+    .hero__plate {
+      position: relative;
+      min-width: 0;
+      padding: clamp(10px, 1.5vw, 18px);
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: rgba(242, 234, 220, .045);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      animation: rise .9s var(--ease) both;
+    }
+
+    .hero__mark {
+      position: relative;
+      display: grid;
+      min-height: clamp(340px, 47vw, 620px);
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(242, 234, 220, .12);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(242, 234, 220, .08), transparent 34%),
+        linear-gradient(135deg, rgba(242, 234, 220, .08), rgba(242, 234, 220, .015));
+    }
+
+    .hero__mark::before,
+    .hero__mark::after {
+      position: absolute;
+      content: "";
+      border: 1px solid rgba(242, 234, 220, .08);
+      border-radius: 999px;
+    }
+
+    .hero__mark::before {
+      width: 78%;
+      aspect-ratio: 1;
+    }
+
+    .hero__mark::after {
+      width: 52%;
+      aspect-ratio: 1;
+      transform: rotate(45deg);
+      border-radius: 22px;
+    }
+
+    .monogram {
+      position: relative;
+      z-index: 1;
+      width: min(76%, 460px);
+      color: var(--bone);
+      animation: breathe 6.5s var(--ease) infinite alternate;
+    }
+
+    .hero__caption {
+      position: absolute;
+      right: clamp(18px, 3vw, 38px);
+      bottom: clamp(18px, 3vw, 38px);
+      z-index: 2;
+      max-width: 220px;
+      color: var(--muted);
+      font: 600 11px/1.6 var(--font-mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      padding: clamp(72px, 10vw, 150px) 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section__head {
+      display: grid;
+      grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
+      gap: clamp(26px, 5vw, 82px);
+      align-items: end;
+      margin-bottom: clamp(32px, 6vw, 80px);
+    }
+
+    .section__kicker {
+      margin: 0;
+      color: var(--accent-2);
+      font: 700 11px/1.2 var(--font-mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-family: var(--font-serif);
+      font-size: clamp(2.7rem, 7.5vw, 7.2rem);
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: .88;
+    }
+
+    .section__note {
+      max-width: 680px;
+      margin: 0;
+      color: var(--bone-2);
+      font-size: clamp(1rem, 1.4vw, 1.18rem);
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr .7fr;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .swatch {
+      min-width: 0;
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(18px, 3vw, 32px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      color: var(--bone);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .swatch--ink {
+      background: var(--ink-2);
+    }
+
+    .swatch--bone {
+      color: var(--ink);
+      background: var(--bone);
+      border-color: rgba(17,17,15,.14);
+    }
+
+    .swatch--accent {
+      background: var(--accent);
+    }
+
+    .swatch b {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: clamp(2.1rem, 4vw, 4.8rem);
+      font-weight: 500;
+      line-height: .9;
+    }
+
+    .swatch span {
+      display: block;
+      margin-top: 18px;
+      font: 700 11px/1.4 var(--font-mono);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .system-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: clamp(16px, 2.4vw, 28px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+
+    .panel__label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font: 700 11px/1.3 var(--font-mono);
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .grid-drawing {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 18px;
+      background:
+        linear-gradient(90deg, rgba(242,234,220,.06) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(242,234,220,.06) 1px, transparent 1px),
+        rgba(17, 17, 15, .42);
+      background-size: 38px 38px;
+    }
+
+    .rules {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rule {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(242, 234, 220, .045);
+    }
+
+    .rule h3 {
+      margin-bottom: 8px;
+      color: var(--bone);
+      font: 700 12px/1.2 var(--font-mono);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .rule p {
+      margin: 0;
+      color: var(--bone-2);
+      font-size: .96rem;
+    }
+
+    .type-specimen {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .6fr);
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .type-stage {
+      min-width: 0;
+      padding: clamp(22px, 4vw, 52px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--bone);
+      color: var(--ink);
+    }
+
+    .type-stage__large {
+      margin-bottom: clamp(28px, 5vw, 62px);
+      font-family: var(--font-serif);
+      font-size: clamp(4.8rem, 16vw, 14rem);
+      font-weight: 500;
+      line-height: .78;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .type-stage__line {
+      max-width: 850px;
+      margin: 0;
+      color: rgba(17, 17, 15, .72);
+      font-size: clamp(1.1rem, 2vw, 1.55rem);
+      line-height: 1.42;
+    }
+
+    .scale-list {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .scale-row {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 18px;
+      align-items: baseline;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .scale-row span {
+      color: var(--accent-2);
+      font: 700 11px/1 var(--font-mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .scale-row b {
+      min-width: 0;
+      font-family: var(--font-serif);
+      font-weight: 500;
+      line-height: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .scale-row:nth-child(1) b { font-size: clamp(3rem, 6vw, 5.8rem); }
+    .scale-row:nth-child(2) b { font-size: clamp(2.2rem, 4vw, 3.8rem); }
+    .scale-row:nth-child(3) b { font-size: clamp(1.45rem, 2.5vw, 2.1rem); }
+    .scale-row:nth-child(4) b { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; }
+
+    .guidelines {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .guide {
+      min-width: 0;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(18px, 2.6vw, 30px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      transition: transform .7s var(--ease), background-color .7s var(--ease), border-color .7s var(--ease);
+    }
+
+    .guide:hover {
+      transform: translateY(-6px);
+      border-color: rgba(224, 161, 132, .46);
+      background: var(--panel-strong);
+    }
+
+    .guide__num {
+      color: var(--accent-2);
+      font: 700 11px/1 var(--font-mono);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .guide h3 {
+      margin: 44px 0 14px;
+      font-family: var(--font-serif);
+      font-size: clamp(1.7rem, 3vw, 2.85rem);
+      font-weight: 500;
+      line-height: .96;
+    }
+
+    .guide p {
+      margin: 0;
+      color: var(--bone-2);
+      font-size: .98rem;
+    }
+
+    .closing {
+      padding: clamp(70px, 12vw, 160px) 0 190px;
+      border-top: 1px solid var(--line);
+    }
+
+    .closing__panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
+      padding: clamp(22px, 4vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(185, 107, 79, .25), transparent 28rem),
+        rgba(242, 234, 220, .06);
+    }
+
+    .closing h2 {
+      max-width: 11ch;
+    }
+
+    .closing p {
+      max-width: 520px;
+      margin: 24px 0 0;
+      color: var(--bone-2);
+    }
+
+    .wordmark {
+      color: var(--accent-2);
+      font: 700 clamp(1.4rem, 3vw, 3rem)/1 var(--font-mono);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    [data-reveal] {
+      animation: rise .85s var(--ease) both;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(34px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes breathe {
+      from {
+        transform: rotate(-2deg) scale(.985);
+      }
+      to {
+        transform: rotate(2deg) scale(1.015);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .section__head,
+      .system-grid,
+      .type-specimen,
+      .closing__panel {
+        grid-template-columns: 1fr;
+      }
+
+      .guidelines {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .swatches {
+        grid-template-columns: 1fr;
+      }
+
+      .swatch {
+        min-height: 220px;
+      }
+
+      .wordmark {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .shell {
+        width: min(100% - 28px, 1320px);
+      }
+
+      .topbar {
+        align-items: flex-start;
+        padding-block: 18px;
+      }
+
+      .topbar__meta {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-block: 44px 72px;
+      }
+
+      h1 {
+        font-size: clamp(3.8rem, 22vw, 6.4rem);
+      }
+
+      .hero__mark {
+        min-height: 340px;
+        border-radius: 20px;
+      }
+
+      .hero__caption {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        margin: 18px;
+        max-width: none;
+      }
+
+      .section {
+        padding-block: 68px;
+      }
+
+      .panel,
+      .type-stage,
+      .guide {
+        border-radius: 18px;
+      }
+
+      .scale-row {
+        grid-template-columns: 1fr;
+        gap: 9px;
+      }
+
+      .guidelines {
+        grid-template-columns: 1fr;
+      }
+
+      .guide {
+        min-height: 230px;
+      }
+
+      .closing {
+        padding-bottom: 220px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar shell" aria-label="Study header">
+      <div class="topbar__brand">
+        <span class="topbar__sig" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3l9 9-9 9-9-9 9-9Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M12 7v10M7 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>Veyra</span>
+      </div>
+      <nav class="topbar__meta" aria-label="Page sections">
+        <a href="#color">Color</a>
+        <a href="#construction">Construction</a>
+        <a href="#type">Type</a>
+      </nav>
+    </header>
+
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero__copy" data-reveal>
+        <p class="eyebrow">Effect study · identity specimen</p>
+        <h1 id="hero-title">Veyra Field</h1>
+        <p class="hero__lede">A measured identity system for cultural strategy studios, pairing quiet authority with a single warm signal color.</p>
+      </div>
+
+      <div class="hero__plate" data-reveal style="--delay: 110ms">
+        <div class="hero__mark" aria-label="Large geometric Veyra monogram">
+          <svg class="monogram" viewBox="0 0 520 520" role="img" aria-labelledby="mark-title mark-desc">
+            <title id="mark-title">Veyra geometric monogram</title>
+            <desc id="mark-desc">A symmetrical inline SVG mark made from circles, angled bars, and a central diamond.</desc>
+            <defs>
+              <linearGradient id="markGradient" x1="90" y1="68" x2="440" y2="456" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#f2eadc"/>
+                <stop offset=".55" stop-color="#e0a184"/>
+                <stop offset="1" stop-color="#b96b4f"/>
+              </linearGradient>
+            </defs>
+            <circle cx="260" cy="260" r="213" fill="none" stroke="rgba(242,234,220,.25)" stroke-width="2"/>
+            <circle cx="260" cy="260" r="146" fill="none" stroke="rgba(242,234,220,.18)" stroke-width="2" stroke-dasharray="9 13"/>
+            <path d="M102 96h108l50 238 50-238h108L306 424h-92L102 96Z" fill="url(#markGradient)"/>
+            <path d="M171 148h62l27 132 27-132h62l-62 220h-54l-62-220Z" fill="#11110f" opacity=".78"/>
+            <path d="M260 156l64 104-64 104-64-104 64-104Z" fill="none" stroke="#f2eadc" stroke-width="11" stroke-linejoin="round"/>
+            <path d="M260 205l34 55-34 55-34-55 34-55Z" fill="#f2eadc"/>
+            <path d="M102 96l158 164L418 96M214 424l46-164 46 164" fill="none" stroke="rgba(17,17,15,.44)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="hero__caption">Geometric monogram built from a 13-unit radial field and a centered diamond axis.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="color" aria-labelledby="color-title">
+      <div class="section__head" data-reveal>
+        <p class="section__kicker">Palette</p>
+        <div>
+          <h2 id="color-title">Ink, bone, signal.</h2>
+          <p class="section__note">The palette stays deliberately narrow: a deep ink ground, a warm bone surface, and one copper accent reserved for orientation, active states, and proof marks.</p>
+        </div>
+      </div>
+
+      <div class="swatches" data-reveal style="--delay: 90ms">
+        <article class="swatch swatch--ink">
+          <div>
+            <b>Ink</b>
+            <span>Primary ground · #11110F</span>
+          </div>
+          <span>Use for gallery fields, large negative space, and signature marks.</span>
+        </article>
+        <article class="swatch swatch--bone">
+          <div>
+            <b>Bone</b>
+            <span>Reading surface · #F2EADC</span>
+          </div>
+          <span>Use for type, paper panels, and reserved clear-space diagrams.</span>
+        </article>
+        <article class="swatch swatch--accent">
+          <div>
+            <b>Signal</b>
+            <span>Accent · #B96B4F</span>
+          </div>
+          <span>Use sparingly for coordinates, rules, and attention anchors.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="construction" aria-labelledby="construction-title">
+      <div class="section__head" data-reveal>
+        <p class="section__kicker">Construction</p>
+        <div>
+          <h2 id="construction-title">Clear-space is part of the mark.</h2>
+          <p class="section__note">The symbol keeps one diamond unit of open air on every side. Cropping, crowding, or placing the mark over busy imagery weakens the field relationship.</p>
+        </div>
+      </div>
+
+      <div class="system-grid">
+        <article class="panel" data-reveal>
+          <div class="panel__label">
+            <span>Logo construction grid</span>
+            <span>13u / x = diamond</span>
+          </div>
+          <div class="grid-drawing">
+            <svg viewBox="0 0 760 520" role="img" aria-labelledby="grid-title grid-desc">
+              <title id="grid-title">Veyra clear-space and construction grid</title>
+              <desc id="grid-desc">A logo construction diagram showing a geometric mark centered inside a clear-space frame.</desc>
+              <defs>
+                <pattern id="fineGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M40 0H0V40" fill="none" stroke="rgba(242,234,220,.07)" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect width="760" height="520" fill="url(#fineGrid)"/>
+              <rect x="112" y="52" width="536" height="416" rx="10" fill="none" stroke="rgba(224,161,132,.78)" stroke-width="2" stroke-dasharray="10 12"/>
+              <rect x="192" y="112" width="376" height="296" rx="8" fill="none" stroke="rgba(242,234,220,.38)" stroke-width="2"/>
+              <circle cx="380" cy="260" r="166" fill="none" stroke="rgba(242,234,220,.24)" stroke-width="2"/>
+              <circle cx="380" cy="260" r="106" fill="none" stroke="rgba(242,234,220,.18)" stroke-width="2" stroke-dasharray="8 10"/>
+              <path d="M246 126h88l46 214 46-214h88L420 394h-80L246 126Z" fill="#b96b4f"/>
+              <path d="M380 160l78 100-78 100-78-100 78-100Z" fill="none" stroke="#f2eadc" stroke-width="10" stroke-linejoin="round"/>
+              <path d="M380 210l39 50-39 50-39-50 39-50Z" fill="#f2eadc"/>
+              <path d="M112 36v36M648 36v36M112 448v36M648 448v36" stroke="#e0a184" stroke-width="2" stroke-linecap="round"/>
+              <path d="M88 52h48M624 52h48M88 468h48M624 468h48" stroke="#e0a184" stroke-width="2" stroke-linecap="round"/>
+              <path d="M112 486h536" stroke="rgba(224,161,132,.72)" stroke-width="2"/>
+              <path d="M112 486l18-8v16l-18-8ZM648 486l-18-8v16l18-8Z" fill="#e0a184"/>
+              <text x="380" y="506" text-anchor="middle" fill="#e0a184" font-family="JetBrains Mono, monospace" font-size="18" letter-spacing="3">CLEAR SPACE: 1X</text>
+              <text x="43" y="266" fill="rgba(242,234,220,.72)" font-family="JetBrains Mono, monospace" font-size="14" letter-spacing="2" transform="rotate(-90 43 266)">NO INTRUSION FIELD</text>
+            </svg>
+          </div>
+        </article>
+
+        <aside class="panel" data-reveal style="--delay: 100ms">
+          <div class="panel__label">
+            <span>Application rules</span>
+            <span>01 / 04</span>
+          </div>
+          <div class="rules">
+            <div class="rule">
+              <h3>Minimum Size</h3>
+              <p>Use the complete mark at 42px or larger. Below that, use the inner diamond only.</p>
+            </div>
+            <div class="rule">
+              <h3>Placement</h3>
+              <p>Anchor the mark to a calm corner or center field. Avoid decorative tiling.</p>
+            </div>
+            <div class="rule">
+              <h3>Contrast</h3>
+              <p>Pair ink with bone for primary use. Reserve copper for emphasis, not body copy.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section shell" id="type" aria-labelledby="type-title">
+      <div class="section__head" data-reveal>
+        <p class="section__kicker">Typography</p>
+        <div>
+          <h2 id="type-title">Editorial scale, technical rhythm.</h2>
+          <p class="section__note">Serif display settings give the system its institutional voice. Monospace labels act as coordinates, keeping the page precise without becoming mechanical.</p>
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <article class="type-stage" data-reveal>
+          <div class="type-stage__large">Aa Vv</div>
+          <p class="type-stage__line">Veyra speaks in short, assured sentences. The voice is clear, restrained, and slightly formal, with enough warmth to feel authored.</p>
+        </article>
+
+        <aside class="panel scale-list" data-reveal style="--delay: 100ms">
+          <div class="panel__label">
+            <span>Scale specimen</span>
+            <span>Display to label</span>
+          </div>
+          <div class="scale-row">
+            <span>Hero</span>
+            <b>Field</b>
+          </div>
+          <div class="scale-row">
+            <span>Title</span>
+            <b>Measured presence</b>
+          </div>
+          <div class="scale-row">
+            <span>Body</span>
+            <b>Quiet systems carry memory.</b>
+          </div>
+          <div class="scale-row">
+            <span>Label</span>
+            <b>Archive index / 04</b>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="guidelines-title">
+      <div class="section__head" data-reveal>
+        <p class="section__kicker">Guidelines</p>
+        <div>
+          <h2 id="guidelines-title">A compact operating code.</h2>
+          <p class="section__note">Every application should feel deliberate, sparse, and well measured. The system works best when space is treated as a material rather than a leftover.</p>
+        </div>
+      </div>
+
+      <div class="guidelines">
+        <article class="guide" data-reveal>
+          <span class="guide__num">01</span>
+          <div>
+            <h3>Lead with pause.</h3>
+            <p>Give the mark and headline room to establish hierarchy before adding detail.</p>
+          </div>
+        </article>
+        <article class="guide" data-reveal style="--delay: 70ms">
+          <span class="guide__num">02</span>
+          <div>
+            <h3>Keep color rare.</h3>
+            <p>Use the copper accent like a proof stamp: visible, specific, and never casual.</p>
+          </div>
+        </article>
+        <article class="guide" data-reveal style="--delay: 140ms">
+          <span class="guide__num">03</span>
+          <div>
+            <h3>Use grids openly.</h3>
+            <p>Construction lines, coordinates, and margins can stay visible when they add trust.</p>
+          </div>
+        </article>
+        <article class="guide" data-reveal style="--delay: 210ms">
+          <span class="guide__num">04</span>
+          <div>
+            <h3>Write with restraint.</h3>
+            <p>Prefer exact language, active verbs, and statements that can stand alone.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing shell" aria-labelledby="closing-title">
+      <div class="closing__panel" data-reveal>
+        <div>
+          <p class="section__kicker">Identity close</p>
+          <h2 id="closing-title">A field mark for considered work.</h2>
+          <p>This study is an original front-end reconstruction focused on layout technique, inline SVG construction, and responsive brand-system presentation.</p>
+        </div>
+        <div class="wordmark">Veyra</div>
+      </div>
+    </section>
+  </main>
+
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Symbolon Branding Site》 by reficulgr · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

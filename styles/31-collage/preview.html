@@ -1,0 +1,1609 @@
+<!-- Collage · 拼贴手帐风 Design Kit Preview -->
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Collage · 拼贴手帐风 Design Kit 预览</title>
+<!-- 真实字体（共享本地表；Quicksand 圆体在此生效） -->
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<!-- 共享设备套壳：iPhone 17 Pro Max（钛金边框，亮暗皆可） -->
+<link rel="stylesheet" href="../../_assets/device.css" />
+<style>
+/* ====================== Tokens（内联，与 tokens.css 同步） ====================== */
+:root{
+  --ds-bg:#f3ece0; --ds-bg-subtle:#eae0cf; --ds-bg-elevated:#fffdf7; --ds-bg-sunken:#e2d6c0;
+  --ds-fg:#2c2620; --ds-fg-muted:#5c5446; --ds-fg-subtle:#7a7060; --ds-fg-on-accent:#fff8ef;
+  --ds-border:#dccdb2; --ds-border-strong:#2c2620;
+  --ds-primary:#b5503a; --ds-primary-hover:#9e4530; --ds-primary-active:#853a28; --ds-primary-fg:#fff8ef;
+  --ds-accent:#2f6f8c; --ds-accent-fg:#fff8ef;
+  --ds-success:#4a8a3a; --ds-success-bg:#e8f1e0; --ds-success-fg:#1a3a12;
+  --ds-warning:#9a6a14; --ds-warning-bg:#f6ead0; --ds-warning-fg:#43300a;
+  --ds-danger:#b5503a; --ds-danger-bg:#f7e4de; --ds-danger-fg:#551c10;
+  --ds-info:#2f6f8c; --ds-info-bg:#e2eef2; --ds-info-fg:#0e2e3a;
+  --ds-focus:#b5503a; --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+  --ds-radius-sm:3px; --ds-radius-md:8px; --ds-radius-lg:14px; --ds-radius-full:9999px;
+  --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;
+  --ds-space-6:24px;--ds-space-7:32px;--ds-space-8:40px;--ds-space-9:48px;--ds-space-10:64px;
+  --ds-space-11:80px;--ds-space-12:96px;
+  --ds-font-sans:"Quicksand","Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif:"Noto Serif",Georgia,serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs:12px;--ds-text-sm:13px;--ds-text-base:14px;--ds-text-md:16px;--ds-text-lg:20px;
+  --ds-text-xl:24px;--ds-text-2xl:32px;--ds-text-3xl:48px;
+  --ds-leading-tight:1.25;--ds-leading-normal:1.55;--ds-leading-relaxed:1.75;
+  --ds-weight-normal:500;--ds-weight-medium:600;--ds-weight-bold:700;
+  --ds-tracking-tight:0;--ds-tracking-normal:0.01em;
+  --ds-shadow-sm:0 1px 2px rgba(44,38,32,.12);
+  --ds-shadow-md:0 6px 16px -6px rgba(44,38,32,.22);
+  --ds-shadow-lg:0 14px 32px -10px rgba(44,38,32,.28);
+  --ds-decor-tape-mustard:#d8a23a;--ds-decor-tape-sage:#7a9a5e;--ds-decor-tape-pink:#d98ca0;
+  --ds-ease:cubic-bezier(.34,1.56,.64,1); --ds-dur-fast:200ms;--ds-dur-base:260ms;--ds-dur-slow:320ms;
+  /* 语义 z-index 尺度（禁止 9999/999 魔法值） */
+  --ds-z-base:1;--ds-z-dropdown:1000;--ds-z-sticky:1100;--ds-z-modal-backdrop:1200;
+  --ds-z-modal:1300;--ds-z-toast:1400;--ds-z-tooltip:1500;
+}
+[data-theme="dark"],.dark{
+  --ds-bg:#1e1913; --ds-bg-subtle:#261f17; --ds-bg-elevated:#2c241a; --ds-bg-sunken:#15110b;
+  --ds-fg:#f0e7d6; --ds-fg-muted:#b4a890; --ds-fg-subtle:#847a66; --ds-fg-on-accent:#1a0a06;
+  --ds-border:#3a3022; --ds-border-strong:#f0e7d6;
+  --ds-primary:#e07a5f; --ds-primary-hover:#ea8e74; --ds-primary-active:#d06a4f; --ds-primary-fg:#1a0a06;
+  --ds-accent:#5fa8c4; --ds-accent-fg:#06202a;
+  --ds-success:#6fbf6f; --ds-success-bg:#102a10; --ds-success-fg:#cdeec0;
+  --ds-warning:#e8b85a; --ds-warning-bg:#241a06; --ds-warning-fg:#f6e6be;
+  --ds-danger:#e07a5f; --ds-danger-bg:#2a0f08; --ds-danger-fg:#f8d6c8;
+  --ds-info:#5fa8c4; --ds-info-bg:#08222c; --ds-info-fg:#cfeaf2;
+  --ds-focus:#e07a5f;
+  --ds-shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-md:0 6px 16px -6px rgba(0,0,0,.6);
+  --ds-shadow-lg:0 14px 32px -10px rgba(0,0,0,.7);
+  --ds-decor-tape-mustard:#e8b85a;--ds-decor-tape-sage:#9ab87a;--ds-decor-tape-pink:#e8a4b8;
+}
+
+/* ====================== 基础 ====================== */
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--ds-bg); color:var(--ds-fg);
+  font-family:var(--ds-font-sans); font-weight:var(--ds-weight-normal);
+  letter-spacing:var(--ds-tracking-normal); line-height:var(--ds-leading-normal);
+  transition:background var(--ds-dur-base) var(--ds-ease),color var(--ds-dur-base) var(--ds-ease);
+  background-image:
+    radial-gradient(color-mix(in srgb,var(--ds-border-strong) 16%,transparent) .8px,transparent .8px),
+    radial-gradient(color-mix(in srgb,var(--ds-border) 28%,transparent) .9px,transparent .9px),
+    linear-gradient(0deg,color-mix(in srgb,var(--ds-bg-subtle) 38%,transparent),transparent 46%);
+  background-size:18px 18px,31px 31px,100% 100%;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--ds-space-5) var(--ds-space-12);}
+section{margin-top:var(--ds-space-10);}
+h2.sec{font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-2);}
+h2.sec::before{content:"";display:inline-block;width:10px;height:10px;border-radius:var(--ds-radius-full);
+  background:var(--ds-primary);margin-right:var(--ds-space-3);vertical-align:middle;}
+.sub{color:var(--ds-fg-muted);font-size:var(--ds-text-sm);margin:0 0 var(--ds-space-5);}
+.grid{display:grid;gap:var(--ds-space-4);}
+.code{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+
+/* ====================== 顶栏 ====================== */
+.topbar{position:sticky;top:0;z-index:var(--ds-z-sticky);backdrop-filter:saturate(1.4) blur(8px);
+  background:color-mix(in srgb,var(--ds-bg) 82%,transparent);
+  border-bottom:1px solid var(--ds-border);}
+.topbar-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:var(--ds-space-4);
+  padding:var(--ds-space-4) var(--ds-space-5);}
+.brand{display:flex;align-items:center;gap:var(--ds-space-3);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-lg);}
+.brand .logo{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:var(--ds-radius-sm);
+  background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-sm);
+  transform:rotate(-3deg);}
+.brand .logo svg{width:18px;height:18px;display:block;}
+.brand small{font-size:var(--ds-text-xs);color:var(--ds-fg-muted);font-weight:var(--ds-weight-normal);}
+.nav{display:flex;gap:var(--ds-space-2);margin-left:var(--ds-space-4);}
+.nav a{padding:6px 14px;border-radius:var(--ds-radius-full);color:var(--ds-fg-muted);
+  text-decoration:none;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.nav a:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.nav a.active{background:var(--ds-primary);color:var(--ds-primary-fg);}
+.spacer{flex:1;}
+.toggle{cursor:pointer;border:1px solid var(--ds-border-strong);background:var(--ds-bg-elevated);
+  color:var(--ds-fg);border-radius:var(--ds-radius-full);padding:8px 18px;font-family:inherit;
+  font-weight:var(--ds-weight-medium);font-size:var(--ds-text-sm);box-shadow:var(--ds-shadow-sm);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform var(--ds-dur-fast) var(--ds-ease);}
+.toggle .ico{width:16px;height:16px;}
+.toggle:hover{transform:scale(1.04);}
+.toggle:active{transform:scale(.95);}
+.toggle:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+
+/* ====================== Hero（有图首屏，消灭大留白） ====================== */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--ds-space-8);align-items:center;
+  margin-top:var(--ds-space-8);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);
+  border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);padding:var(--ds-space-9);
+  position:relative;overflow:hidden;
+  background-image:
+    linear-gradient(90deg,color-mix(in srgb,var(--ds-bg-subtle) 45%,transparent),transparent 30%),
+    radial-gradient(color-mix(in srgb,var(--ds-border-strong) 14%,transparent) .8px,transparent .8px);
+  background-size:100% 100%,20px 20px;}
+.hero::before,.hero::after{content:"";position:absolute;left:0;right:0;height:16px;pointer-events:none;
+  background:linear-gradient(135deg,transparent 8px,var(--ds-bg) 0) 0 0/16px 16px repeat-x;
+  opacity:.65;}
+.hero::before{top:0;}
+.hero::after{bottom:0;transform:rotate(180deg);}
+.hero-copy{position:relative;z-index:var(--ds-z-base);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:var(--ds-text-xs);
+  font-weight:var(--ds-weight-bold);letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ds-primary-active);background:var(--ds-bg-subtle);border:1px solid var(--ds-border);
+  padding:6px 14px;border-radius:var(--ds-radius-full);margin-bottom:var(--ds-space-4);}
+.hero-eyebrow svg{width:14px;height:14px;}
+.hero h1{font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-4);
+  line-height:var(--ds-leading-tight);letter-spacing:0;}
+.hero p{font-size:var(--ds-text-md);color:var(--ds-fg-muted);max-width:46ch;margin:0 0 var(--ds-space-6);line-height:var(--ds-leading-normal);}
+.hero-cta{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-bottom:var(--ds-space-6);}
+.hero-stats{display:flex;gap:var(--ds-space-8);flex-wrap:wrap;}
+.hero-stats .hs-num{font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;line-height:1.1;}
+.hero-stats .hs-lab{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+/* hero 图：polaroid 相框 + 纸胶带 + 便签层叠 */
+.hero-figure{position:relative;min-width:0;}
+.polaroid{position:relative;background:var(--ds-bg-elevated);padding:var(--ds-space-4) var(--ds-space-4) var(--ds-space-8);
+  border:1px solid var(--ds-border);box-shadow:var(--ds-shadow-lg);transform:rotate(1.8deg);max-width:100%;}
+.polaroid img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:var(--ds-radius-sm);
+  border:1px solid var(--ds-border);box-shadow:inset 0 0 0 1px var(--ds-border);}
+.polaroid figcaption{font-family:var(--ds-font-serif);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);
+  margin-top:var(--ds-space-3);text-align:center;}
+.washi{position:absolute;height:30px;border:1px dashed color-mix(in srgb,var(--ds-border-strong) 36%,transparent);
+  box-shadow:var(--ds-shadow-sm);opacity:.78;pointer-events:none;}
+.washi.mustard{background:var(--ds-decor-tape-mustard);}
+.washi.sage{background:var(--ds-decor-tape-sage);}
+.washi.pink{background:var(--ds-decor-tape-pink);}
+.polaroid .washi.tl{width:118px;left:6px;top:14px;transform:rotate(-3deg);}
+.polaroid .washi.br{width:112px;right:8px;bottom:34px;transform:rotate(2deg);}
+.sticky-stack{position:absolute;right:8px;bottom:8px;width:min(44%,180px);display:grid;gap:var(--ds-space-3);}
+.sticky-note{position:relative;background:var(--ds-bg-subtle);border:1px dashed var(--ds-border-strong);
+  border-radius:var(--ds-radius-sm);padding:var(--ds-space-3);box-shadow:var(--ds-shadow-md);
+  font-size:var(--ds-text-xs);color:var(--ds-fg-muted);transform:rotate(-2deg);}
+.sticky-note + .sticky-note{background:var(--ds-bg-elevated);transform:rotate(1.5deg);}
+.pin,.paperclip{position:absolute;color:var(--ds-primary-active);width:22px;height:22px;}
+.sticky-note .pin{top:-11px;right:14px;}
+.paperclip{right:12px;top:-10px;color:var(--ds-accent);}
+.torn-note{position:relative;margin:0 0 var(--ds-space-5);padding:var(--ds-space-4) var(--ds-space-5);
+  background:var(--ds-bg-subtle);border:1px dashed var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);
+  clip-path:polygon(0 8px,4% 0,8% 7px,14% 1px,20% 8px,28% 2px,36% 9px,44% 1px,52% 8px,61% 2px,70% 7px,80% 0,88% 8px,96% 2px,100% 8px,100% calc(100% - 8px),94% 100%,86% calc(100% - 7px),78% 100%,68% calc(100% - 8px),58% 100%,48% calc(100% - 7px),38% 100%,28% calc(100% - 8px),18% 100%,9% calc(100% - 7px),0 100%);}
+.torn-note b{display:block;color:var(--ds-fg);font-family:var(--ds-font-serif);font-size:var(--ds-text-sm);}
+.torn-note span{display:block;color:var(--ds-fg-muted);font-size:var(--ds-text-xs);margin-top:2px;}
+.hero-figure .sticker{position:absolute;bottom:var(--ds-space-4);left:var(--ds-space-4);
+  display:flex;align-items:center;gap:10px;background:var(--ds-bg-elevated);
+  border:1px dashed var(--ds-border-strong);border-radius:var(--ds-radius-md);padding:8px 16px 8px 8px;
+  box-shadow:var(--ds-shadow-md);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
+.hero-figure .sticker .av{display:flex;}
+.hero-figure .sticker .av img{width:30px;height:30px;border-radius:var(--ds-radius-full);
+  border:2px solid var(--ds-bg-elevated);margin-left:-10px;aspect-ratio:1;box-shadow:none;}
+.hero-figure .sticker .av img:first-child{margin-left:0;}
+
+/* ====================== 图片用法 Image Usage ====================== */
+/* 统一处理：大圆角 + 柔彩影 + 3px 贴纸边 */
+img.ds-img{display:block;width:100%;object-fit:cover;border-radius:var(--ds-radius-sm);
+  border:6px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-md),0 0 0 1px var(--ds-border);}
+.ratios{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+.ratio figure{margin:0;}
+.ratio img{width:100%;object-fit:cover;border-radius:var(--ds-radius-md);
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm),0 0 0 1px var(--ds-border);}
+.ratio .r-16x9 img{aspect-ratio:16/9;} .ratio .r-4x3 img{aspect-ratio:4/3;}
+.ratio .r-1x1 img{aspect-ratio:1/1;} .ratio .r-3x4 img{aspect-ratio:3/4;}
+.ratio figcaption{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:8px;}
+
+.media-cards{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+.media-card{--tilt:0deg;position:relative;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-md);overflow:hidden;transform:rotate(var(--tilt));transition:transform var(--ds-dur-base) var(--ds-ease),box-shadow var(--ds-dur-base) var(--ds-ease);}
+.media-card:nth-child(1){--tilt:-.7deg;}.media-card:nth-child(2){--tilt:.8deg;}.media-card:nth-child(3){--tilt:-.4deg;}
+.media-card::before{content:"";position:absolute;z-index:1;width:92px;height:24px;top:12px;left:18px;
+  background:var(--ds-decor-tape-mustard);opacity:.72;transform:rotate(-5deg);border:1px dashed color-mix(in srgb,var(--ds-border-strong) 35%,transparent);}
+.media-card:hover{transform:rotate(var(--tilt)) translateY(-4px);box-shadow:var(--ds-shadow-lg);}
+.media-card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.media-card .mc-body{padding:var(--ds-space-4) var(--ds-space-5) var(--ds-space-5);}
+.media-card .mc-tag{font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);color:var(--ds-primary-active);
+  letter-spacing:.03em;text-transform:uppercase;}
+.media-card h4{margin:6px 0 6px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.media-card p{margin:0 0 var(--ds-space-4);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);}
+.media-card .mc-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);}
+.media-card .mc-user{display:flex;align-items:center;gap:8px;font-size:var(--ds-text-xs);color:var(--ds-fg-muted);}
+.media-card .mc-user img{width:24px;height:24px;border-radius:var(--ds-radius-full);}
+
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:118px;gap:var(--ds-space-3);}
+.gallery img{width:100%;height:100%;object-fit:cover;border-radius:var(--ds-radius-md);
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm),0 0 0 1px var(--ds-border);}
+.gallery .g-tall{grid-row:span 2;} .gallery .g-wide{grid-column:span 2;}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-7);align-items:center;
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);
+  box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-7);}
+.split img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--ds-radius-md);
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-md),0 0 0 1px var(--ds-border);}
+.split h3{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);letter-spacing:0;}
+.split p{margin:0 0 var(--ds-space-4);color:var(--ds-fg-muted);font-size:var(--ds-text-base);max-width:46ch;}
+.split ul{margin:0 0 var(--ds-space-5);padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;}
+.split li{display:flex;align-items:center;gap:10px;font-size:var(--ds-text-sm);}
+.split li .li-ic{width:22px;height:22px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
+  color:var(--ds-primary-active);display:grid;place-items:center;flex:none;}
+.split li .li-ic svg{width:14px;height:14px;}
+
+.overlay-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+.overlay{position:relative;border-radius:var(--ds-radius-md);overflow:hidden;
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-md),0 0 0 1px var(--ds-border);}
+.overlay img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;}
+.overlay .scrim-grad{position:absolute;inset:0;background:linear-gradient(to top,color-mix(in srgb,var(--ds-bg-elevated) 94%,transparent),color-mix(in srgb,var(--ds-bg-elevated) 50%,transparent) 58%,transparent);}
+.overlay .ov-body{position:absolute;left:0;right:0;bottom:0;padding:var(--ds-space-5);color:var(--ds-fg);}
+.overlay .ov-tag{display:inline-block;font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);
+  background:var(--ds-primary);color:var(--ds-primary-fg);padding:4px 12px;border-radius:var(--ds-radius-full);margin-bottom:8px;}
+.overlay h4{margin:0;font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);letter-spacing:0;}
+.overlay p{margin:4px 0 0;font-size:var(--ds-text-sm);color:var(--ds-fg-muted);}
+
+.avatar-demo{display:flex;flex-wrap:wrap;gap:var(--ds-space-8);align-items:flex-end;}
+.av-sizes{display:flex;align-items:flex-end;gap:var(--ds-space-4);}
+.av-sizes figure{margin:0;text-align:center;}
+.av-sizes img{border-radius:var(--ds-radius-full);border:2px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:block;}
+.av-sizes .s24{width:24px;height:24px;} .av-sizes .s32{width:32px;height:32px;}
+.av-sizes .s40{width:40px;height:40px;} .av-sizes .s48{width:48px;height:48px;}
+.av-sizes figcaption{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:6px;}
+.av-stack{display:flex;align-items:center;}
+.av-stack img{width:40px;height:40px;border-radius:var(--ds-radius-full);border:3px solid var(--ds-bg-elevated);
+  margin-left:-14px;box-shadow:var(--ds-shadow-sm);}
+.av-stack img:first-child{margin-left:0;}
+.av-stack .more{width:40px;height:40px;border-radius:var(--ds-radius-full);border:3px solid var(--ds-bg-elevated);
+  margin-left:-14px;background:var(--ds-primary);color:var(--ds-primary-fg);display:grid;place-items:center;
+  font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);box-shadow:var(--ds-shadow-sm);}
+.user-row{display:flex;align-items:center;gap:var(--ds-space-3);background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);padding:8px 18px 8px 8px;box-shadow:var(--ds-shadow-sm);}
+.user-row img{width:44px;height:44px;border-radius:var(--ds-radius-full);}
+.user-row .ur-name{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);}
+.user-row .ur-sub{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+
+.bg-feature{position:relative;border-radius:var(--ds-radius-lg);overflow:hidden;
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-lg),0 0 0 1px var(--ds-border-strong);min-height:240px;}
+.bg-feature img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.bg-feature .bg-scrim{position:absolute;inset:0;
+  background:linear-gradient(120deg,color-mix(in srgb,var(--ds-bg-elevated) 92%,transparent) 0%,color-mix(in srgb,var(--ds-bg-elevated) 58%,transparent) 72%);}
+.bg-feature .bg-body{position:relative;padding:var(--ds-space-9);color:var(--ds-fg);max-width:54ch;}
+.bg-feature h3{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold);letter-spacing:0;}
+.bg-feature p{margin:0 0 var(--ds-space-5);font-size:var(--ds-text-md);color:var(--ds-fg-muted);}
+
+/* ====================== 图标用法 Icon Usage ====================== */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:var(--ds-space-3);}
+.icon-cell{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-4) var(--ds-space-3);text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:10px;transition:transform var(--ds-dur-fast) var(--ds-ease);}
+.icon-cell:hover{transform:translateY(-3px);}
+.icon-cell svg{width:26px;height:26px;color:var(--ds-primary-active);}
+.icon-cell .icn{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.icon-sizes{display:flex;align-items:flex-end;gap:var(--ds-space-6);}
+.icon-sizes figure{margin:0;text-align:center;color:var(--ds-fg);}
+.icon-sizes figcaption{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:8px;}
+.icon-sizes .i16{width:16px;height:16px;} .icon-sizes .i20{width:20px;height:20px;}
+.icon-sizes .i24{width:24px;height:24px;} .icon-sizes .i32{width:32px;height:32px;}
+.icon-panel{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-6);}
+.icon-panel .ip-title{font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);margin-bottom:var(--ds-space-4);}
+.icon-scenes{display:flex;flex-wrap:wrap;gap:var(--ds-space-5);align-items:center;}
+.icon-btn{width:40px;height:40px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
+  background:var(--ds-bg-elevated);color:var(--ds-fg);cursor:pointer;display:grid;place-items:center;box-shadow:var(--ds-shadow-sm);
+  transition:transform var(--ds-dur-fast) var(--ds-ease);}
+.icon-btn:hover{transform:scale(1.06);background:var(--ds-bg-subtle);}
+.icon-btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.icon-btn svg{width:18px;height:18px;}
+.inp-icon{position:relative;width:240px;}
+.inp-icon svg{position:absolute;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ds-fg-subtle);}
+.inp-icon .lead{left:14px;} .inp-icon .trail{right:14px;color:var(--ds-primary-active);}
+.inp-icon .inp{padding-left:42px;padding-right:42px;}
+.status-icons{display:flex;flex-wrap:wrap;gap:var(--ds-space-5);}
+.status-icons .st{display:inline-flex;align-items:center;gap:8px;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);}
+.status-icons .st svg{width:20px;height:20px;}
+.st.s-suc{color:var(--ds-success-fg);} .st.s-war{color:var(--ds-warning-fg);}
+.st.s-dan{color:var(--ds-danger-fg);} .st.s-inf{color:var(--ds-info-fg);}
+.icon-badge{position:relative;width:40px;height:40px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
+  display:grid;place-items:center;color:var(--ds-fg);}
+.icon-badge svg{width:20px;height:20px;}
+.icon-badge .dot{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--ds-radius-full);
+  background:var(--ds-danger);color:var(--ds-primary-fg);font-size:10px;font-weight:var(--ds-weight-bold);display:grid;place-items:center;
+  border:2px solid var(--ds-bg);font-variant-numeric:tabular-nums;}
+.icon-two svg .fill-soft{fill:color-mix(in srgb,var(--ds-primary) 28%,transparent);stroke:none;}
+
+/* ====================== 桌面/移动 布局小样 ====================== */
+.layouts{display:grid;grid-template-columns:1fr;gap:var(--ds-space-8);}
+.frame{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);
+  box-shadow:var(--ds-shadow-lg);overflow:hidden;}
+.frame-bar{display:flex;align-items:center;gap:8px;padding:10px var(--ds-space-4);
+  background:var(--ds-bg-subtle);border-bottom:1px solid var(--ds-border);}
+.frame-bar .dots{display:flex;gap:6px;}
+.frame-bar .dots i{width:11px;height:11px;border-radius:var(--ds-radius-full);display:block;}
+.frame-bar .dots i:nth-child(1){background:var(--ds-decor-tape-pink);} .frame-bar .dots i:nth-child(2){background:var(--ds-decor-tape-mustard);}
+.frame-bar .dots i:nth-child(3){background:var(--ds-decor-tape-sage);}
+.frame-bar .url{flex:1;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);
+  padding:5px 14px;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.frame-bar .lname{font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);color:var(--ds-primary-active);}
+
+/* 仪表盘小样 */
+.dash{display:grid;grid-template-columns:200px 1fr;min-height:420px;}
+.dash-side{background:var(--ds-bg-subtle);border-right:1px solid var(--ds-border);padding:var(--ds-space-5);}
+.dash-side .ds-brand{display:flex;align-items:center;gap:10px;font-weight:var(--ds-weight-bold);margin-bottom:var(--ds-space-6);}
+.dash-side .ds-brand .lg{width:30px;height:30px;border-radius:var(--ds-radius-full);background:var(--ds-primary);
+  color:var(--ds-primary-fg);display:grid;place-items:center;box-shadow:var(--ds-shadow-sm);}
+.dash-side .ds-brand .lg svg{width:18px;height:18px;}
+.dash-nav{display:flex;flex-direction:column;gap:4px;}
+.dash-nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--ds-radius-full);
+  color:var(--ds-fg-muted);text-decoration:none;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);}
+.dash-nav a svg{width:18px;height:18px;}
+.dash-nav a.on{background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-sm);}
+.dash-nav a:not(.on):hover{background:var(--ds-bg-elevated);color:var(--ds-fg);}
+.dash-main{padding:var(--ds-space-6);}
+.dash-top{display:flex;align-items:center;gap:var(--ds-space-3);margin-bottom:var(--ds-space-5);}
+.dash-top h3{margin:0;font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);flex:1;letter-spacing:0;}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-4);margin-bottom:var(--ds-space-5);}
+.kpi{background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-4);}
+.kpi .k-lab{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);display:flex;align-items:center;gap:6px;}
+.kpi .k-lab svg{width:14px;height:14px;color:var(--ds-primary-active);}
+.kpi .k-num{font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;margin-top:4px;}
+.kpi .k-d{font-size:var(--ds-text-xs);color:var(--ds-success-fg);font-weight:var(--ds-weight-bold);}
+.chart{background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  padding:var(--ds-space-5);margin-bottom:var(--ds-space-5);}
+.chart .c-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--ds-space-4);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
+.bars{display:flex;align-items:flex-end;gap:var(--ds-space-3);height:120px;}
+.bars .bar{flex:1;border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 4px 4px;background:var(--ds-primary);opacity:.85;}
+.bars .bar.alt{background:var(--ds-accent);}
+.dash table{box-shadow:none;}
+
+/* 落地页小样 */
+.land{padding:var(--ds-space-7);background:var(--ds-bg);}
+.land-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--ds-space-6);align-items:center;margin-bottom:var(--ds-space-7);}
+.land-hero h3{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold);letter-spacing:0;}
+.land-hero p{margin:0 0 var(--ds-space-4);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+.land-hero img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--ds-radius-md);
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-md),0 0 0 1px var(--ds-border);}
+.feature3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-4);}
+.feat{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  padding:var(--ds-space-5);box-shadow:var(--ds-shadow-sm);}
+.feat .f-ic{width:40px;height:40px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
+  color:var(--ds-primary-active);display:grid;place-items:center;margin-bottom:var(--ds-space-3);}
+.feat .f-ic svg{width:22px;height:22px;}
+.feat h5{margin:0 0 6px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.feat p{margin:0;font-size:var(--ds-text-sm);color:var(--ds-fg-muted);}
+
+/* 移动小样：并排手机 */
+.phones{display:flex;flex-wrap:wrap;gap:var(--ds-space-7);}
+/* 底部 tab bar：贴底（在 dvc-body flex 列里随 margin-top:auto 顶到底部），含 home 指示条留白 */
+.tabbar{display:flex;justify-content:space-around;align-items:center;padding:12px 0 calc(8px + var(--ds-space-5));
+  margin-top:auto;border-top:1px solid var(--ds-border);
+  background:color-mix(in srgb,var(--ds-bg-elevated) 88%,transparent);
+  -webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);}
+.dvc17 .dvc-body > .tabbar{margin-left:calc(-1*var(--ds-space-4));margin-right:calc(-1*var(--ds-space-4));}
+.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:56px;min-height:44px;
+  font-size:10px;color:var(--ds-fg-subtle);text-decoration:none;font-weight:var(--ds-weight-medium);}
+.tabbar a svg{width:23px;height:23px;}
+.tabbar a.on{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+.tabbar a.tab-fab{margin-top:-14px;}
+.tabbar a.tab-fab .fab{width:48px;height:48px;border-radius:var(--ds-radius-full);background:var(--ds-primary);
+  color:var(--ds-primary-fg);display:grid;place-items:center;box-shadow:var(--ds-shadow-md);margin-bottom:1px;}
+.tabbar a.tab-fab .fab svg{width:24px;height:24px;}
+/* 底部主操作条（贴底，含 home 指示条留白） */
+.dvc17 .mbar{margin-top:auto;margin-left:calc(-1*var(--ds-space-4));margin-right:calc(-1*var(--ds-space-4));
+  padding:var(--ds-space-3) var(--ds-space-4) calc(8px + var(--ds-space-5));
+  border-top:1px solid var(--ds-border);
+  background:color-mix(in srgb,var(--ds-bg-elevated) 88%,transparent);
+  -webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);}
+.p-feed-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--ds-radius-md);
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm),0 0 0 1px var(--ds-border);margin-bottom:var(--ds-space-3);}
+.p-profile-hero{position:relative;border-radius:var(--ds-radius-lg);overflow:hidden;margin-bottom:var(--ds-space-4);
+  border:3px solid var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);}
+.p-profile-hero img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;}
+.p-profile-hero .pp-av{position:absolute;left:50%;bottom:-38px;transform:translateX(-50%);
+  width:78px;height:78px;border-radius:var(--ds-radius-full);border:4px solid var(--ds-bg);box-shadow:var(--ds-shadow-md);
+  object-fit:cover;z-index:1;}
+.dvc17 .dvc-body.flush-top .p-profile-hero{margin-bottom:var(--ds-space-9);}
+.p-profile-meta{text-align:center;margin:0 0 var(--ds-space-5);}
+.p-profile-meta .ppm-name{font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);letter-spacing:0;}
+.p-profile-meta .ppm-sub{font-size:var(--ds-text-xs);color:var(--ds-fg-muted);margin-top:2px;}
+.p-stats{display:flex;justify-content:space-around;gap:var(--ds-space-3);margin-bottom:var(--ds-space-5);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-4) var(--ds-space-2);}
+.p-stats .ps-n{font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;}
+.p-stats .ps-l{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);margin-top:2px;}
+.p-list-ava{width:44px;height:44px;border-radius:var(--ds-radius-full);flex:none;object-fit:cover;}
+/* 板块外的次级标题（个人页内复用） */
+.psec-h.in-flush{margin-top:var(--ds-space-2);}
+
+.hero h1,.land-hero h3{text-wrap:balance;}
+
+/* ====================== 色板 ====================== */
+.swatches{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));}
+.sw{border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);overflow:hidden;
+  background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);}
+.sw .chip{height:64px;}
+.sw .meta{padding:10px 12px;}
+.sw .name{font-weight:var(--ds-weight-medium);font-size:var(--ds-text-sm);}
+.sw .hex{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.pair{display:flex;align-items:center;justify-content:center;height:64px;font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);}
+
+/* ====================== 字体 ====================== */
+.type-row{display:flex;align-items:baseline;gap:var(--ds-space-5);padding:var(--ds-space-3) 0;border-bottom:1px dashed var(--ds-border);}
+.type-row:last-child{border-bottom:none;}
+.type-tag{width:120px;flex:none;color:var(--ds-fg-subtle);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);}
+.weights span{margin-right:var(--ds-space-5);}
+
+/* ====================== 按钮 ====================== */
+.btn{font-family:inherit;cursor:pointer;border:none;border-radius:var(--ds-radius-md);
+  font-weight:var(--ds-weight-medium);font-size:var(--ds-text-base);height:40px;padding:0 22px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease);}
+.btn:hover{transform:rotate(-.4deg) translateY(-1px);}
+.btn:active{transform:translateY(1px);}
+.btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none;}
+.btn-primary{background:var(--ds-primary);color:var(--ds-primary-fg);
+  box-shadow:var(--ds-shadow-sm),inset 0 -3px 0 color-mix(in srgb,var(--ds-border-strong) 18%,transparent);}
+.btn-primary:hover{background:var(--ds-primary-hover);}
+.btn-primary:active{background:var(--ds-primary-active);box-shadow:var(--ds-shadow-sm),inset 0 -1px 0 color-mix(in srgb,var(--ds-border-strong) 18%,transparent);}
+.btn-secondary{background:var(--ds-bg-elevated);color:var(--ds-fg);border:1px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);}
+.btn-secondary:hover{background:var(--ds-bg-subtle);}
+.btn-tertiary{background:transparent;color:var(--ds-fg-muted);}
+.btn-tertiary:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.btn-danger{background:var(--ds-danger);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-sm),inset 0 -3px 0 color-mix(in srgb,var(--ds-border-strong) 18%,transparent);}
+.btn-danger:hover{filter:brightness(1.04);}
+.btn-sm{height:32px;padding:0 16px;font-size:var(--ds-text-sm);}
+.btn-lg{height:48px;padding:0 28px;font-size:var(--ds-text-md);}
+.btnrow{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-bottom:var(--ds-space-4);}
+
+/* ====================== 表单 ====================== */
+.field{margin-bottom:var(--ds-space-4);}
+.field label{display:block;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);margin-bottom:6px;}
+.inp,.ta,.sel{width:100%;font-family:inherit;font-size:var(--ds-text-base);color:var(--ds-fg);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-sm);
+  padding:0 14px;height:40px;transition:border-color var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease);}
+.ta{height:auto;padding:10px 14px;resize:vertical;min-height:84px;}
+.inp::placeholder,.ta::placeholder{color:var(--ds-fg-subtle);}
+.inp:focus,.ta:focus,.sel:focus{outline:none;border-color:var(--ds-primary);box-shadow:var(--ds-focus-ring);}
+.inp.err{border-color:var(--ds-danger);}
+.err-msg{color:var(--ds-danger-fg);font-size:var(--ds-text-xs);margin-top:6px;}
+.check{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:var(--ds-text-base);cursor:pointer;}
+.check input{accent-color:var(--ds-primary);width:20px;height:20px;}
+/* switch */
+.switch{position:relative;width:48px;height:28px;flex:none;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:var(--ds-border-strong);border-radius:var(--ds-radius-full);
+  transition:background var(--ds-dur-base) var(--ds-ease);cursor:pointer;}
+.slider::before{content:"";position:absolute;height:22px;width:22px;left:3px;top:3px;background:var(--ds-bg-elevated);
+  border-radius:var(--ds-radius-full);box-shadow:var(--ds-shadow-sm);
+  transition:transform var(--ds-dur-base) var(--ds-ease);}
+.switch input:checked + .slider{background:var(--ds-primary);}
+.switch input:checked + .slider::before{transform:translateX(20px);}
+.switch input:focus-visible + .slider{box-shadow:var(--ds-focus-ring);}
+
+/* ====================== 卡片 ====================== */
+.cards{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
+.card{--tilt:0deg;position:relative;background:var(--ds-bg-elevated);border:1px dashed var(--ds-border-strong);border-radius:var(--ds-radius-md);
+  padding:var(--ds-space-6);box-shadow:var(--ds-shadow-md);
+  transform:rotate(var(--tilt));transition:transform var(--ds-dur-base) var(--ds-ease),box-shadow var(--ds-dur-base) var(--ds-ease);}
+.cards .card:nth-child(1){--tilt:-1.2deg;}.cards .card:nth-child(2){--tilt:.8deg;}.cards .card:nth-child(3){--tilt:-.5deg;}
+.card::before{content:"";position:absolute;top:10px;right:18px;width:78px;height:23px;background:var(--ds-decor-tape-pink);
+  opacity:.72;transform:rotate(5deg);border:1px dashed color-mix(in srgb,var(--ds-border-strong) 35%,transparent);}
+.card:hover{transform:rotate(var(--tilt)) translateY(-3px);box-shadow:var(--ds-shadow-lg);}
+.card .thumb{height:96px;border-radius:var(--ds-radius-sm);margin-bottom:var(--ds-space-4);
+  background:linear-gradient(135deg,var(--ds-decor-tape-mustard),var(--ds-accent));position:relative;overflow:hidden;}
+.card .thumb::after{content:"";position:absolute;width:56px;height:56px;border-radius:var(--ds-radius-full);
+  background:color-mix(in srgb,var(--ds-bg-elevated) 55%,transparent);top:-14px;right:-10px;}
+.card h3{margin:0 0 6px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.card p{margin:0 0 var(--ds-space-4);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+
+/* ====================== 徽章 ====================== */
+.badges{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:var(--ds-radius-full);
+  padding:5px 14px;font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);}
+.badge::before{content:"";width:7px;height:7px;border-radius:var(--ds-radius-full);background:currentColor;}
+.b-pri{background:var(--ds-bg-subtle);color:var(--ds-primary-active);}
+.b-suc{background:var(--ds-success-bg);color:var(--ds-success-fg);}
+.b-war{background:var(--ds-warning-bg);color:var(--ds-warning-fg);}
+.b-dan{background:var(--ds-danger-bg);color:var(--ds-danger-fg);}
+.b-inf{background:var(--ds-info-bg);color:var(--ds-info-fg);}
+.b-solid{background:var(--ds-primary);color:var(--ds-primary-fg);}
+
+/* ====================== Alert ====================== */
+/* 前置语义 SVG 图标 + 浅色底 + 1px 全描边（无侧边粗色条） */
+.alert{display:flex;gap:var(--ds-space-3);border-radius:var(--ds-radius-md);padding:var(--ds-space-4) var(--ds-space-5);
+  margin-bottom:var(--ds-space-3);font-size:var(--ds-text-sm);align-items:flex-start;border:1px solid;}
+.alert .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;}
+.alert .ic svg{width:22px;height:22px;display:block;}
+.alert b{font-weight:var(--ds-weight-bold);}
+.a-suc{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success);}
+.a-suc .ic{color:var(--ds-success-fg);}
+.a-war{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning);}
+.a-war .ic{color:var(--ds-warning-fg);}
+.a-dan{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger);}
+.a-dan .ic{color:var(--ds-danger-fg);}
+.a-inf{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info);}
+.a-inf .ic{color:var(--ds-info-fg);}
+
+/* ====================== 内联 SVG 图标统一规范 ====================== */
+/* 拼贴手帐风：viewBox 0 0 24 24、stroke=currentColor、圆头圆角、线宽 2 */
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex:none;
+  fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ====================== Tabs ====================== */
+.tabs{display:flex;gap:var(--ds-space-2);border-bottom:2px solid var(--ds-border);margin-bottom:var(--ds-space-4);}
+.tab{padding:10px 18px;cursor:pointer;font-weight:var(--ds-weight-medium);color:var(--ds-fg-muted);
+  border:none;background:none;font-family:inherit;font-size:var(--ds-text-base);position:relative;
+  transition:color var(--ds-dur-fast) var(--ds-ease);}
+.tab.active{color:var(--ds-primary);}
+.tab.active::after{content:"";position:absolute;left:14px;right:14px;bottom:-2px;height:3px;
+  background:var(--ds-primary);border-radius:var(--ds-radius-full);}
+
+/* ====================== 表格 ====================== */
+table{width:100%;border-collapse:separate;border-spacing:0;background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);overflow:hidden;box-shadow:var(--ds-shadow-sm);}
+th,td{text-align:left;padding:12px 16px;font-size:var(--ds-text-sm);border-bottom:1px solid var(--ds-border);}
+th{background:var(--ds-bg-subtle);font-weight:var(--ds-weight-bold);color:var(--ds-fg);}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--ds-bg-subtle);}
+td.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;text-align:right;}
+
+/* ====================== 模态框 Modal ====================== */
+.modal-demo{position:relative;background:var(--ds-bg-subtle);border:1px dashed var(--ds-border-strong);
+  border-radius:var(--ds-radius-lg);padding:var(--ds-space-8) var(--ds-space-5);overflow:hidden;}
+.scrim{position:absolute;inset:0;background:color-mix(in srgb,var(--ds-fg) 28%,transparent);}
+.modal{position:relative;max-width:420px;margin:0 auto;background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);
+  padding:var(--ds-space-6);}
+.modal .x{position:absolute;top:var(--ds-space-4);right:var(--ds-space-4);width:32px;height:32px;
+  border:none;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);color:var(--ds-fg-muted);
+  cursor:pointer;font-size:var(--ds-text-md);font-family:inherit;display:grid;place-items:center;
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.modal .x:hover{background:var(--ds-border-strong);color:var(--ds-fg);transform:rotate(90deg);}
+.modal .x:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.modal h3{margin:0 0 var(--ds-space-2);font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);}
+.modal p{margin:0 0 var(--ds-space-5);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+.modal .acts{display:flex;gap:var(--ds-space-3);justify-content:flex-end;}
+
+/* ====================== 下拉菜单 Dropdown ====================== */
+.menu{width:240px;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);
+  border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-lg);padding:var(--ds-space-2);}
+.menu .mlabel{padding:6px 12px;font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);
+  font-weight:var(--ds-weight-medium);text-transform:uppercase;letter-spacing:.04em;}
+.mitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--ds-radius-sm);
+  font-size:var(--ds-text-base);color:var(--ds-fg);cursor:pointer;
+  transition:background var(--ds-dur-fast) var(--ds-ease);}
+.mitem .mi{width:18px;height:18px;flex:none;display:grid;place-items:center;color:var(--ds-fg-muted);}
+.mitem .mi svg{width:18px;height:18px;display:block;}
+.mitem.is-active .mi,.mitem.danger .mi{color:inherit;}
+.mitem:hover{background:var(--ds-bg-subtle);}
+.mitem.is-active{background:var(--ds-bg-subtle);color:var(--ds-primary-active);font-weight:var(--ds-weight-medium);}
+.mitem .check-mark{margin-left:auto;width:16px;height:16px;color:var(--ds-primary-active);}
+.mitem.danger{color:var(--ds-danger-fg);}
+.mitem.danger:hover{background:var(--ds-danger-bg);}
+.msep{height:1px;background:var(--ds-border);margin:var(--ds-space-2) var(--ds-space-1);}
+
+/* ====================== 工具提示 Tooltip ====================== */
+.tip{position:relative;display:inline-block;}
+.tip .bubble{position:relative;display:inline-flex;align-items:center;gap:6px;background:var(--ds-fg);color:var(--ds-bg);
+  font-size:var(--ds-text-xs);font-weight:var(--ds-weight-medium);padding:7px 12px;
+  border-radius:var(--ds-radius-sm);box-shadow:var(--ds-shadow-md);white-space:nowrap;}
+.tip .bubble .ico{width:14px;height:14px;}
+.tip .bubble::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--ds-fg);border-bottom:0;}
+.tip.up .bubble::after{top:auto;bottom:-6px;}
+
+/* ====================== 分页 Pagination ====================== */
+.pager{display:flex;flex-wrap:wrap;gap:var(--ds-space-2);align-items:center;}
+.pg{min-width:40px;height:40px;padding:0 12px;border:1px solid var(--ds-border);background:var(--ds-bg-elevated);
+  color:var(--ds-fg);border-radius:var(--ds-radius-full);font-family:inherit;font-size:var(--ds-text-base);
+  font-weight:var(--ds-weight-medium);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.pg:hover{background:var(--ds-bg-subtle);transform:scale(1.06);}
+.pg:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.pg.is-current{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:transparent;
+  box-shadow:var(--ds-shadow-sm),inset 0 -2px 0 color-mix(in srgb,var(--ds-border-strong) 18%,transparent);}
+.pg[disabled]{opacity:.45;cursor:not-allowed;transform:none;}
+.pg-gap{color:var(--ds-fg-subtle);padding:0 4px;}
+
+/* ====================== Toast 通知 ====================== */
+.toasts{display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:380px;}
+.toast{display:flex;align-items:flex-start;gap:var(--ds-space-3);background:var(--ds-bg-elevated);
+  border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-lg);
+  padding:var(--ds-space-4);position:relative;overflow:hidden;}
+.toast .tic{width:28px;height:28px;border-radius:var(--ds-radius-full);flex:none;display:grid;place-items:center;
+  color:var(--ds-primary-fg);background:var(--ds-primary);}
+.toast .tic svg{width:17px;height:17px;display:block;}
+.toast.t-suc .tic{background:var(--ds-success);} .toast.t-war .tic{background:var(--ds-warning);color:var(--ds-warning-fg);}
+.toast.t-dan .tic{background:var(--ds-danger);}
+.toast .tbody{flex:1;}
+.toast .tt{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);margin-bottom:2px;}
+.toast .td{color:var(--ds-fg-muted);font-size:var(--ds-text-xs);}
+.toast .tx{border:none;background:none;color:var(--ds-fg-subtle);cursor:pointer;font-size:var(--ds-text-md);
+  font-family:inherit;padding:0 2px;line-height:1;transition:color var(--ds-dur-fast) var(--ds-ease);}
+.toast .tx:hover{color:var(--ds-fg);}
+
+/* ====================== 步骤条 Stepper ====================== */
+.stepper{display:flex;align-items:flex-start;gap:0;}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
+.step .sdot{width:36px;height:36px;border-radius:var(--ds-radius-full);display:grid;place-items:center;
+  font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);background:var(--ds-bg-elevated);
+  border:2px solid var(--ds-border-strong);color:var(--ds-fg-muted);position:relative;z-index:1;}
+.step .sdot svg{width:18px;height:18px;display:block;}
+.step .sline{position:absolute;top:18px;left:50%;width:100%;height:3px;background:var(--ds-border);z-index:0;border-radius:var(--ds-radius-full);}
+.step:last-child .sline{display:none;}
+.step .slabel{margin-top:var(--ds-space-2);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);}
+.step .ssub{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.step.done .sdot{background:var(--ds-primary);border-color:var(--ds-primary);color:var(--ds-primary-fg);}
+.step.done .sline{background:var(--ds-primary);}
+.step.current .sdot{background:var(--ds-bg-elevated);border-color:var(--ds-primary);color:var(--ds-primary-active);
+  box-shadow:0 0 0 4px var(--ds-bg-subtle);}
+.step.current .slabel{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+
+/* ====================== 面包屑 Breadcrumb ====================== */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-2);font-size:var(--ds-text-sm);}
+.crumbs a{color:var(--ds-fg-muted);text-decoration:none;padding:4px 10px;border-radius:var(--ds-radius-full);
+  transition:all var(--ds-dur-fast) var(--ds-ease);}
+.crumbs a:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.crumbs .sep{color:var(--ds-fg-subtle);}
+.crumbs .here{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);padding:4px 10px;
+  background:var(--ds-bg-subtle);border-radius:var(--ds-radius-full);}
+
+/* ====================== 移动端示意 Mobile ====================== */
+/* 手机外框统一走共享 _assets/device.css 的 .dvc17；以下仅为屏内内容样式。 */
+/* .dvc-body 已含 padding-top:54px 状态栏留白，这里补充左右/底部内边距与底部安全区。 */
+/* 精致移动 App 屏：dvc-body 撑满 812px 屏高（弹性纵向布局），消除底部留白。 */
+.dvc17 .dvc-body{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);padding-bottom:0;
+  display:flex;flex-direction:column;min-height:100%;}
+/* 内容主区填充剩余高度（grow 不 shrink，避免挤压子项），底部 tab/主操作贴底 */
+.dvc17 .dvc-scroll{flex:1 0 auto;display:block;}
+.dvc17 .dvc-scroll.pad-b{padding-bottom:var(--ds-space-5);}
+/* 个人页：顶图作沉浸式深色 header，铺到状态栏下方（配 .sb-light 让状态栏转白） */
+.dvc17 .dvc-body.flush-top{padding-top:0;padding-left:0;padding-right:0;}
+/* 滚动区内：除全宽顶图外，其余内容左右内缩 */
+.dvc17 .dvc-body.flush-top .dvc-scroll > :not(.p-profile-hero){margin-left:var(--ds-space-4);margin-right:var(--ds-space-4);}
+.dvc17 .dvc-body.flush-top .p-profile-hero{border-radius:0;border:none;margin-bottom:var(--ds-space-7);}
+.dvc17 .dvc-body.flush-top .p-profile-hero img{aspect-ratio:auto;height:228px;}
+/* flush-top 下 tabbar 仍全宽贴底 */
+.dvc17 .dvc-body.flush-top > .tabbar{margin-left:0;margin-right:0;}
+/* 顶图深色 header：在 54px 状态栏下方加渐变压暗，文字/返回不被灵动岛压住 */
+.p-profile-hero .pp-scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--ds-border-strong) 38%,transparent) 0%,transparent 34%,transparent 60%,color-mix(in srgb,var(--ds-border-strong) 30%,transparent) 100%);}
+.p-profile-hero .pp-bar{position:absolute;top:58px;left:0;right:0;display:flex;align-items:center;
+  justify-content:space-between;padding:0 var(--ds-space-4);color:var(--ds-primary-fg);z-index:1;}
+.p-profile-hero .pp-bar .pp-ic{width:38px;height:38px;border-radius:var(--ds-radius-full);
+  background:color-mix(in srgb,var(--ds-bg-elevated) 28%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  border:1px solid color-mix(in srgb,var(--ds-bg-elevated) 38%,transparent);display:grid;place-items:center;cursor:pointer;}
+.p-profile-hero .pp-bar .pp-ic svg{width:19px;height:19px;color:var(--ds-primary-fg);}
+.ptop{display:flex;align-items:center;gap:var(--ds-space-3);margin:var(--ds-space-3) 0 var(--ds-space-4);}
+.ptop .pburger{width:44px;height:44px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
+  background:var(--ds-bg-elevated);display:grid;place-items:center;gap:3px;cursor:pointer;flex:none;box-shadow:var(--ds-shadow-sm);}
+.ptop .pburger span{display:block;width:16px;height:2px;background:var(--ds-fg);border-radius:2px;}
+.ptop .ptitle{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-lg);flex:1;letter-spacing:0;}
+.ptop .ptitle small{display:block;font-size:var(--ds-text-xs);font-weight:var(--ds-weight-normal);color:var(--ds-fg-muted);letter-spacing:0;}
+.ptop .pava{width:44px;height:44px;border-radius:var(--ds-radius-full);flex:none;object-fit:cover;
+  background:radial-gradient(circle at 34% 30%,var(--ds-bg-elevated) 0 18%,var(--ds-primary) 20% 100%);box-shadow:var(--ds-shadow-sm);}
+.ptop .pico-btn{width:44px;height:44px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border-strong);
+  background:var(--ds-bg-elevated);display:grid;place-items:center;cursor:pointer;flex:none;box-shadow:var(--ds-shadow-sm);
+  position:relative;color:var(--ds-fg);}
+.ptop .pico-btn svg{width:20px;height:20px;}
+.ptop .pico-btn .ndot{position:absolute;top:7px;right:8px;width:9px;height:9px;border-radius:var(--ds-radius-full);
+  background:var(--ds-danger);border:2px solid var(--ds-bg-elevated);}
+/* 搜索胶囊（首页 app bar 下方） */
+.psearch{display:flex;align-items:center;gap:var(--ds-space-2);height:44px;padding:0 var(--ds-space-4);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);
+  box-shadow:var(--ds-shadow-sm);color:var(--ds-fg-subtle);font-size:var(--ds-text-sm);margin-bottom:var(--ds-space-4);}
+.psearch svg{width:18px;height:18px;flex:none;}
+/* 横向快捷分类胶囊 */
+.pchips{display:flex;gap:var(--ds-space-2);overflow-x:auto;margin-bottom:var(--ds-space-4);padding-bottom:2px;
+  scrollbar-width:none;}
+.pchips::-webkit-scrollbar{display:none;}
+.pchip{flex:none;height:34px;padding:0 16px;display:inline-flex;align-items:center;gap:6px;border-radius:var(--ds-radius-full);
+  background:var(--ds-bg-elevated);border:1px solid var(--ds-border);color:var(--ds-fg-muted);
+  font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);white-space:nowrap;}
+.pchip.on{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:transparent;box-shadow:var(--ds-shadow-sm);}
+.pchip svg{width:15px;height:15px;}
+/* 小标题行（板块标题 + 更多） */
+.psec-h{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 var(--ds-space-3);}
+.psec-h b{font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);letter-spacing:0;}
+.psec-h a{font-size:var(--ds-text-xs);color:var(--ds-primary-active);text-decoration:none;font-weight:var(--ds-weight-medium);}
+.pcard{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-md);padding:var(--ds-space-4);margin-bottom:var(--ds-space-4);}
+.pcard .pthumb{height:108px;border-radius:var(--ds-radius-sm);margin-bottom:var(--ds-space-3);
+  background:linear-gradient(135deg,var(--ds-primary),var(--ds-accent));}
+.pcard h4{margin:0 0 4px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.pcard p{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-sm);color:var(--ds-fg-muted);}
+.pcard .pcard-meta{display:flex;align-items:center;gap:var(--ds-space-2);margin:0 0 var(--ds-space-3);
+  font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.pcard .pcard-meta .pm-tag{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+.pcard .pcard-meta .pm-dot{width:3px;height:3px;border-radius:var(--ds-radius-full);background:var(--ds-fg-subtle);}
+/* 横滑商品小卡（2.x 露出，暗示可滑动） */
+.prow{display:flex;gap:var(--ds-space-3);overflow-x:auto;margin:0 calc(-1*var(--ds-space-4)) var(--ds-space-5);
+  padding:0 var(--ds-space-4) 4px;scrollbar-width:none;}
+.prow::-webkit-scrollbar{display:none;}
+.pmini{flex:none;width:138px;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);
+  border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);overflow:hidden;}
+.pmini img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.pmini .pmini-b{padding:8px 10px 10px;}
+.pmini .pmini-t{font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pmini .pmini-p{font-size:var(--ds-text-xs);color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);margin-top:2px;}
+.plist{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);
+  box-shadow:var(--ds-shadow-sm);overflow:hidden;}
+.pli{display:flex;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-4);
+  min-height:60px;border-bottom:1px solid var(--ds-border);font-size:var(--ds-text-sm);}
+.pli:last-child{border-bottom:none;}
+.pli .pico{width:38px;height:38px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);
+  display:grid;place-items:center;flex:none;color:var(--ds-primary-active);}
+.pli .pico svg{width:19px;height:19px;display:block;}
+.pli .ptxt{flex:1;min-width:0;}
+.pli .ptxt > div:first-child{font-weight:var(--ds-weight-medium);}
+.pli .pmeta{color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);margin-top:1px;}
+.pli .p-list-ava{width:44px;height:44px;}
+
+.foot{margin-top:var(--ds-space-10);padding-top:var(--ds-space-6);border-top:1px dashed var(--ds-border);
+  color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);text-align:center;}
+
+/* ====================== 响应式断点 ====================== */
+/* 平板 ≤ 960px：放宽容器内边距 */
+@media (max-width: 960px){
+  .wrap{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);}
+}
+/* 平板 ≤ 900px：hero / 分栏 / 布局小样 转单列堆叠 */
+@media (max-width: 900px){
+  .hero{grid-template-columns:1fr;gap:var(--ds-space-6);padding:var(--ds-space-7);}
+  .split{grid-template-columns:1fr;}
+  .dash{grid-template-columns:1fr;}
+  .dash-side{border-right:none;border-bottom:1px solid var(--ds-border);}
+  .land-hero{grid-template-columns:1fr;}
+  .feature3{grid-template-columns:1fr;}
+  .gallery{grid-template-columns:repeat(2,1fr);}
+}
+/* 手机 ≤ 640px：多列栅格收一列、导航折叠为汉堡、英雄区缩小 */
+@media (max-width: 640px){
+  .grid{grid-template-columns:1fr!important;}
+  .swatches{grid-template-columns:repeat(auto-fill,minmax(132px,1fr))!important;}
+  .ratios{grid-template-columns:repeat(2,1fr)!important;}
+  .icon-grid{grid-template-columns:repeat(3,1fr)!important;}
+  .kpis{grid-template-columns:1fr!important;}
+  .topbar-in{flex-wrap:wrap;gap:var(--ds-space-3);}
+  .nav{display:none;}                 /* 折叠：用汉堡代替 */
+  .nav-toggle{display:inline-grid;}   /* 显示汉堡按钮 */
+  .hero h1{font-size:var(--ds-text-2xl);}
+  .hero p{font-size:var(--ds-text-base);}
+  .stepper{flex-direction:column;gap:var(--ds-space-3);align-items:flex-start;}
+  .step{flex-direction:row;gap:var(--ds-space-3);text-align:left;width:100%;}
+  .step .sline{display:none;}
+  .modal .acts{flex-wrap:wrap;}
+  .bg-feature .bg-body{padding:var(--ds-space-6);}
+}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:var(--ds-radius-full);
+  border:1px solid var(--ds-border-strong);background:var(--ds-bg-elevated);cursor:pointer;
+  place-items:center;gap:3px;box-shadow:var(--ds-shadow-sm);}
+.nav-toggle span{display:block;width:16px;height:2px;background:var(--ds-fg);border-radius:2px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition-duration:.01ms!important;animation:none!important;}
+  .btn:hover,.card:hover,.toggle:hover,.btn:active,.toggle:active,
+  .media-card:hover,.icon-cell:hover,.icon-btn:hover,.pg:hover,.modal .x:hover{transform:none!important;}
+}
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<!-- ===== 顶栏 ===== -->
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4.5h9l3 3v12H6z"/><path d="M15 4.5v3h3"/><path d="M9 11h6M9 15h4"/></svg></span> Paperlane <small>· 拼贴手帐风</small></div>
+    <button class="nav-toggle" aria-label="展开导航 (≤640px 折叠)"><span></span><span></span><span></span></button>
+    <nav class="nav">
+      <a href="#" class="active">首页</a>
+      <a href="#">发现</a>
+      <a href="#">我的</a>
+    </nav>
+    <span class="spacer"></span>
+    <button class="toggle" id="themeBtn" onclick="toggleTheme()"><svg class="ico" id="themeIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> 切换暗色</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== Hero（有图首屏） ===== -->
+  <div class="hero">
+    <div class="hero-copy">
+      <span class="hero-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14v8H5z"/><path d="M7 8V6m10 2V6M8 12h8"/></svg> Collage · 拼贴手帐风</span>
+      <h1>Paperlane 旅行手帐，把票根、照片和路线都贴进同一页</h1>
+      <p>Warm kraft paper, washi tape, torn edges, polaroid frames, dashed stitches, and tiny pinned notes. 所有颜色走 <span class="code">var(--ds-*)</span>，亮暗双主题，全程满足 WCAG AA。</p>
+      <div class="torn-note">
+        <svg class="paperclip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 12.5 5.8-5.8a3.2 3.2 0 0 1 4.5 4.5l-7.5 7.5a4.7 4.7 0 0 1-6.6-6.6l7.2-7.2"/></svg>
+        <b>Field note</b>
+        <span>Keep body text on solid paper. Tape, pins, and clips stay decorative.</span>
+      </div>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg">开始拼贴</button>
+        <button class="btn btn-secondary btn-lg">查看组件</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-num">26</div><div class="hs-lab">组件 Components</div></div>
+        <div><div class="hs-num">2</div><div class="hs-lab">亮暗主题 Themes</div></div>
+        <div><div class="hs-num">AA</div><div class="hs-lab">对比达标 WCAG</div></div>
+        <div><div class="hs-num">100%</div><div class="hs-lab">离线自包含 Offline</div></div>
+      </div>
+    </div>
+    <div class="hero-figure">
+      <figure class="polaroid">
+        <span class="washi mustard tl"></span>
+        <img src="../../_assets/photos/travel.jpg" alt="Paperlane 旅行手帐中的海边照片" loading="lazy" />
+        <figcaption>coastal train, page 04</figcaption>
+        <span class="washi sage br"></span>
+      </figure>
+      <div class="sticky-stack" aria-label="Pinned journal notes">
+        <div class="sticky-note"><svg class="pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v7"/><path d="M7 10h10l-2 4H9z"/><path d="M12 14v7"/></svg>Receipt pocket<br><span class="code">#04</span></div>
+        <div class="sticky-note"><svg class="paperclip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 12.5 5.8-5.8a3.2 3.2 0 0 1 4.5 4.5l-7.5 7.5a4.7 4.7 0 0 1-6.6-6.6l7.2-7.2"/></svg>2 postcards<br><span class="code">saved</span></div>
+      </div>
+      <div class="sticker">
+        <span class="av">
+          <img src="../../_assets/avatars/a5.jpg" alt="用户头像" loading="lazy" />
+          <img src="../../_assets/avatars/a12.jpg" alt="用户头像" loading="lazy" />
+          <img src="../../_assets/avatars/a23.jpg" alt="用户头像" loading="lazy" />
+        </span>
+        38 页旅程已归档
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 色板 ===== -->
+  <section>
+    <h2 class="sec">色板 Palette</h2>
+    <p class="sub">表面 / 文字 / 品牌 / 语义状态 —— 标注变量名与取值</p>
+    <div class="grid swatches" id="swatches"></div>
+  </section>
+
+  <!-- ===== 文字落色对 ===== -->
+  <section>
+    <h2 class="sec">文字落色 On-Color</h2>
+    <p class="sub">强调色与状态色上的文字对比（正文用 solid paper，不落在 tape 纹理上）</p>
+    <div class="grid swatches">
+      <div class="sw"><div class="pair" style="background:var(--ds-primary);color:var(--ds-primary-fg)">primary / fg</div><div class="meta"><div class="name">primary</div><div class="hex">light 4.77 · dark 6.53</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-accent);color:var(--ds-accent-fg)">accent / fg</div><div class="meta"><div class="name">accent</div><div class="hex">light 5.28 · dark 6.32</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-success-bg);color:var(--ds-success-fg)">success-bg / fg</div><div class="meta"><div class="name">success</div><div class="hex">light 10.91 · dark 12.19</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-warning-bg);color:var(--ds-warning-fg)">warning-bg / fg</div><div class="meta"><div class="name">warning</div><div class="hex">light 10.56 · dark 13.86</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-danger-bg);color:var(--ds-danger-fg)">danger-bg / fg</div><div class="meta"><div class="name">danger</div><div class="hex">light 10.97 · dark 13.20</div></div></div>
+      <div class="sw"><div class="pair" style="background:var(--ds-info-bg);color:var(--ds-info-fg)">info-bg / fg</div><div class="meta"><div class="name">info</div><div class="hex">light 12.07 · dark 13.10</div></div></div>
+    </div>
+  </section>
+
+  <!-- ===== 字体 ===== -->
+  <section>
+    <h2 class="sec">字体 Typography</h2>
+    <p class="sub">Quicksand rounded sans · Noto Serif journal labels · 字号比例尺 + 字重（500 / 600 / 700）</p>
+    <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+      <div class="type-row"><span class="type-tag">3xl / 48</span><span style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);line-height:var(--ds-leading-tight)">Travel Log Aa</span></div>
+      <div class="type-row"><span class="type-tag">2xl / 32</span><span style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold)">拼贴手帐标题 Aa</span></div>
+      <div class="type-row"><span class="type-tag">xl / 24</span><span style="font-size:var(--ds-text-xl);font-weight:var(--ds-weight-medium)">Journal Heading Aa</span></div>
+      <div class="type-row"><span class="type-tag">lg / 20</span><span style="font-size:var(--ds-text-lg)">副标题 Subtitle 旅途中收集的纸片</span></div>
+      <div class="type-row"><span class="type-tag">md / 16</span><span style="font-size:var(--ds-text-md)">正文加大 Body large 适合段落导语。</span></div>
+      <div class="type-row"><span class="type-tag">base / 14</span><span style="font-size:var(--ds-text-base)">正文 Body 这是一段拼贴手帐风的示例文字。</span></div>
+      <div class="type-row"><span class="type-tag">sm / 13</span><span style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted)">次要说明 Caption muted</span></div>
+      <div class="type-row"><span class="type-tag">xs / 12</span><span style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle)">弱提示 Subtle / placeholder</span></div>
+      <div class="type-row weights"><span class="type-tag">weight</span><span style="font-weight:var(--ds-weight-normal)">normal 500</span><span style="font-weight:var(--ds-weight-medium)">medium 600</span><span style="font-weight:var(--ds-weight-bold)">bold 700</span></div>
+    </div>
+  </section>
+
+  <!-- ===== 按钮 ===== -->
+  <section>
+    <h2 class="sec">按钮 Buttons</h2>
+    <p class="sub">圆角纸片按钮 · 轻下沉边 · hover 小幅手作倾斜 / 按下回位</p>
+    <div class="btnrow">
+      <button class="btn btn-primary">贴进手帐 Primary</button>
+      <button class="btn btn-secondary">保存草稿 Secondary</button>
+      <button class="btn btn-tertiary">文字 Tertiary</button>
+      <button class="btn btn-danger">移除纸片 Danger</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn btn-primary btn-sm">小 Small</button>
+      <button class="btn btn-primary">中 Medium</button>
+      <button class="btn btn-primary btn-lg">大 Large</button>
+    </div>
+    <p class="sub" style="margin:0">提示：用 Tab 键聚焦任意按钮可见双层焦点环。</p>
+  </section>
+
+  <!-- ===== 表单 ===== -->
+  <section>
+    <h2 class="sec">表单 Forms</h2>
+    <p class="sub">input / textarea / select / checkbox / radio / switch（含 focus 态）</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+      <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+        <div class="field"><label>手帐名 Journal name</label><input class="inp" placeholder="Lisbon spring notes"></div>
+        <div class="field"><label>纸张 Paper</label><select class="sel"><option>kraft</option><option>cream</option><option>recycled cotton</option></select></div>
+        <div class="field"><label>记录 Note</label><textarea class="ta" placeholder="贴一段今天的路线、天气和收据编号…"></textarea></div>
+        <div class="field"><label style="color:var(--ds-danger-fg)">邮箱 Email（错误态）</label><input class="inp err" value="not-an-email"><div class="err-msg">请输入有效邮箱，方便同步旅行册。</div></div>
+      </div>
+      <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+        <label class="check"><input type="checkbox" checked> 接收归档提醒</label>
+        <label class="check"><input type="checkbox"> 同意素材使用协议</label>
+        <label class="check"><input type="radio" name="r" checked> kraft cover</label>
+        <label class="check"><input type="radio" name="r"> cream cover</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:var(--ds-space-4)">
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+          <span>夜间 corkboard</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+          <span>静音模式</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 卡片 ===== -->
+  <section>
+    <h2 class="sec">卡片 Cards</h2>
+    <p class="sub">纸卡 + dashed stitch + tape corner · hover 轻微抬升</p>
+    <div class="grid cards">
+      <div class="card"><div class="thumb"></div><h3>晨间路线</h3><p>把咖啡店小票、车票编号和当天温度贴进第 04 页。</p><button class="btn btn-primary btn-sm">贴入页面</button></div>
+      <div class="card"><div class="thumb" style="background:linear-gradient(135deg,var(--ds-accent),var(--ds-success))"></div><h3>材料清单</h3><p>3 卷纸胶带、2 张明信片、1 枚铜色回形针等待归档。</p><button class="btn btn-secondary btn-sm">查看</button></div>
+      <div class="card"><div class="thumb" style="background:linear-gradient(135deg,var(--ds-warning),var(--ds-primary))"></div><h3>Recipe zine</h3><p>把祖母的柠檬派配方拆成纸片步骤，留给周末。</p><button class="btn btn-primary btn-sm">打开</button></div>
+    </div>
+  </section>
+
+  <!-- ===== 徽章 ===== -->
+  <section>
+    <h2 class="sec">徽章 / 标签 Badges</h2>
+    <p class="sub">小标签 · 各语义色</p>
+    <div class="badges">
+      <span class="badge b-solid">主色 Primary</span>
+      <span class="badge b-pri">已选 Selected</span>
+      <span class="badge b-suc">成功 Success</span>
+      <span class="badge b-war">提醒 Warning</span>
+      <span class="badge b-dan">危险 Danger</span>
+      <span class="badge b-inf">信息 Info</span>
+    </div>
+  </section>
+
+  <!-- ===== Alert ===== -->
+  <section>
+    <h2 class="sec">提示条 Alerts</h2>
+    <p class="sub">success / warning / danger / info 四种</p>
+    <div class="alert a-suc"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m8 12.3 2.7 2.7L16 9.3"/></svg></span><div><b>已归档：</b> 今天的照片和票根已贴入旅行册。</div></div>
+    <div class="alert a-war"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5"/><circle cx="12" cy="16.3" r="0.6" fill="currentColor" stroke="none"/></svg></span><div><b>纸张提醒：</b> 本册只剩 6 页，建议开一本新册。</div></div>
+    <div class="alert a-dan"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m9 9 6 6m0-6-6 6"/></svg></span><div><b>同步失败：</b> 这张照片还没传完，请稍后再试。</div></div>
+    <div class="alert a-inf"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.7" r="0.6" fill="currentColor" stroke="none"/></svg></span><div><b>小贴士：</b> 使用 dashed stitch border 给照片分组。</div></div>
+  </section>
+
+  <!-- ===== 导航 Tabs ===== -->
+  <section>
+    <h2 class="sec">导航 Tabs</h2>
+    <p class="sub">选中项主色文字 + 纸片下划线</p>
+    <div class="tabs">
+      <button class="tab active">路线</button>
+      <button class="tab">照片</button>
+      <button class="tab">票根</button>
+      <button class="tab">食谱</button>
+    </div>
+    <p style="color:var(--ds-fg-muted);font-size:var(--ds-text-sm);margin:0">当前内容区演示：选中「路线」标签。</p>
+  </section>
+
+  <!-- ===== 表格 ===== -->
+  <section>
+    <h2 class="sec">表格 Table</h2>
+    <p class="sub">表头分组 + tabular 等宽数字</p>
+    <table>
+      <thead><tr><th>页面</th><th>状态</th><th class="num">素材</th><th class="num">天数</th></tr></thead>
+      <tbody>
+        <tr><td>Lisbon 04</td><td><span class="badge b-suc">已归档</span></td><td class="num">18</td><td class="num">4</td></tr>
+        <tr><td>Kyoto recipes</td><td><span class="badge b-war">待整理</span></td><td class="num">9</td><td class="num">2</td></tr>
+        <tr><td>Train receipts</td><td><span class="badge b-inf">新素材</span></td><td class="num">12</td><td class="num">1</td></tr>
+        <tr><td>Draft pocket</td><td><span class="badge b-dan">需检查</span></td><td class="num">3</td><td class="num">0</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== 模态框 Modal ===== -->
+  <section>
+    <h2 class="sec">模态框 Modal</h2>
+    <p class="sub">遮罩 + torn-paper 弹层 + 关闭按钮 · 静态展示</p>
+    <div class="modal-demo">
+      <div class="scrim"></div>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mdt">
+        <button class="x" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+        <h3 id="mdt">归档本页素材</h3>
+        <p>确认把 4 张照片、2 张票根和一段路线备注贴入 Lisbon 04 页面吗？</p>
+        <div class="acts">
+          <button class="btn btn-tertiary">稍后整理</button>
+          <button class="btn btn-primary">确认归档</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 下拉菜单 Dropdown ===== -->
+  <section>
+    <h2 class="sec">下拉菜单 Dropdown</h2>
+    <p class="sub">分组标题 + 项 hover / 选中（行尾对勾）/ 危险项 · 静态展开态</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-5);align-items:flex-start">
+      <button class="btn btn-secondary">手帐菜单 <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button>
+      <div class="menu" role="menu">
+        <div class="mlabel">Paperlane</div>
+        <div class="mitem" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg></span> 旅程主页</div>
+        <div class="mitem is-active" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v8H5z"/><path d="M7 8V6m10 2V6M8 12h8"/></svg></span> 主题：拼贴手帐 <svg class="check-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div>
+        <div class="mitem" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span> 纸张设置</div>
+        <div class="msep"></div>
+        <div class="mitem danger" role="menuitem"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H14"/><path d="M11 12h9m0 0-3-3m3 3-3 3"/></svg></span> 移除本册</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 工具提示 Tooltip ===== -->
+  <section>
+    <h2 class="sec">工具提示 Tooltip</h2>
+    <p class="sub">深底气泡 + 小尖角 · 此处常驻展示其外观（实际为 hover/focus 触发）</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-7);align-items:center">
+      <span class="tip up"><span class="bubble"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4h9L19 7.5v11A1.5 1.5 0 0 1 17.5 20h-11A1.5 1.5 0 0 1 5 18.5Z"/><path d="M8 4v4h6V4"/><rect x="8" y="12" width="8" height="5" rx="1"/></svg> 保存草稿</span></span>
+      <span class="tip up"><span class="bubble">给照片加一条纸胶带标签</span></span>
+      <span class="tip up"><span class="bubble">Ctrl + S</span></span>
+    </div>
+  </section>
+
+  <!-- ===== 分页 Pagination ===== -->
+  <section>
+    <h2 class="sec">分页 Pagination</h2>
+    <p class="sub">药丸页码 · 当前页主色 / hover 放大 / 禁用态</p>
+    <div class="pager">
+      <button class="pg" disabled>‹</button>
+      <button class="pg">1</button>
+      <button class="pg is-current" aria-current="page">2</button>
+      <button class="pg">3</button>
+      <button class="pg">4</button>
+      <span class="pg-gap">…</span>
+      <button class="pg">12</button>
+      <button class="pg">›</button>
+    </div>
+  </section>
+
+  <!-- ===== Toast 通知 ===== -->
+  <section>
+    <h2 class="sec">Toast 通知</h2>
+    <p class="sub">浮层卡片 + 圆形语义图标 + 关闭键 · 四态</p>
+    <div class="toasts">
+      <div class="toast t-suc"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span><div class="tbody"><div class="tt">页面已保存</div><div class="td">Lisbon 04 已同步到本地册。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></span><div class="tbody"><div class="tt">新素材</div><div class="td">Mira 上传了 3 张咖啡馆照片。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast t-war"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5v5"/><circle cx="12" cy="16.2" r="0.7" fill="currentColor" stroke="none"/></svg></span><div class="tbody"><div class="tt">相册将满</div><div class="td">剩余 8%，建议压缩旧照片。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast t-dan"><span class="tic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8 8 8m0-8-8 8"/></svg></span><div class="tbody"><div class="tt">贴纸丢失</div><div class="td">一个素材路径失效，点此重新选择。</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+    </div>
+  </section>
+
+  <!-- ===== 步骤条 Stepper ===== -->
+  <section>
+    <h2 class="sec">步骤条 Stepper</h2>
+    <p class="sub">已完成（实心主色）/ 当前（描边 + 光晕）/ 未开始 三态</p>
+    <div style="background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);padding:var(--ds-space-7) var(--ds-space-6);box-shadow:var(--ds-shadow-sm)">
+      <div class="stepper">
+        <div class="step done"><div class="sline"></div><div class="sdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div><div class="slabel">导入照片</div><div class="ssub">已完成</div></div>
+        <div class="step done"><div class="sline"></div><div class="sdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div><div class="slabel">贴票根</div><div class="ssub">已完成</div></div>
+        <div class="step current"><div class="sline"></div><div class="sdot">3</div><div class="slabel">写旁注</div><div class="ssub">进行中</div></div>
+        <div class="step"><div class="sline"></div><div class="sdot">4</div><div class="slabel">归档</div><div class="ssub">待开始</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 面包屑 Breadcrumb ===== -->
+  <section>
+    <h2 class="sec">面包屑 Breadcrumb</h2>
+    <p class="sub">药丸链接 + 分隔符 · 当前页高亮</p>
+    <nav class="crumbs" aria-label="面包屑">
+      <a href="#">首页</a>
+      <span class="sep">›</span>
+      <a href="#">旅程</a>
+      <span class="sep">›</span>
+      <a href="#">Lisbon</a>
+      <span class="sep">›</span>
+      <span class="here" aria-current="page">Page 04</span>
+    </nav>
+  </section>
+
+  <!-- ===== 图片用法 Image Usage ===== -->
+  <section>
+    <h2 class="sec">图片用法 Image Usage</h2>
+    <p class="sub">统一处理：polaroid 纸边 + 轻影 + 本地图片 · 全部 <span class="code">object-fit:cover</span> · <span class="code">loading=lazy</span> + alt</p>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-3)">宽高比 Aspect Ratios</h3>
+    <div class="grid ratios ratio">
+      <figure class="r-16x9"><img src="../../_assets/photos/city.jpg" alt="城市天际线" loading="lazy"><figcaption>16 : 9</figcaption></figure>
+      <figure class="r-4x3"><img src="../../_assets/photos/mountain.jpg" alt="远山风景" loading="lazy"><figcaption>4 : 3</figcaption></figure>
+      <figure class="r-1x1"><img src="../../_assets/photos/coffee.jpg" alt="一杯咖啡" loading="lazy"><figcaption>1 : 1</figcaption></figure>
+      <figure class="r-3x4"><img src="../../_assets/photos/portrait1.jpg" alt="人物肖像" loading="lazy"><figcaption>3 : 4</figcaption></figure>
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">媒体卡 Media Cards</h3>
+    <div class="grid media-cards">
+      <article class="media-card">
+        <img src="../../_assets/gen/food-bowl.jpg" alt="一碗缤纷的健康沙拉" loading="lazy">
+        <div class="mc-body">
+          <div class="mc-tag">Recipe zine</div>
+          <h4>柠檬早餐碗</h4>
+          <p>把市场收据、配方步骤和手写备注整理成一页厨房小报。</p>
+          <div class="mc-foot">
+            <span class="mc-user"><img src="../../_assets/avatars/a8.jpg" alt="作者头像" loading="lazy"> Paper Pantry</span>
+            <button class="btn btn-primary btn-sm">贴入</button>
+          </div>
+        </div>
+      </article>
+      <article class="media-card">
+        <img src="../../_assets/gen/product-shoe.jpg" alt="一双粉色运动鞋" loading="lazy">
+        <div class="mc-body">
+          <div class="mc-tag">Craft shelf</div>
+          <h4>布纹封面套组</h4>
+          <p>三色封面、麻绳书签和透明收纳袋，适合城市散步册。</p>
+          <div class="mc-foot">
+            <span class="mc-user"><img src="../../_assets/avatars/a15.jpg" alt="店铺头像" loading="lazy"> Corner Craft</span>
+            <button class="btn btn-primary btn-sm">查看</button>
+          </div>
+        </div>
+      </article>
+      <article class="media-card">
+        <img src="../../_assets/photos/travel.jpg" alt="海边度假风景" loading="lazy">
+        <div class="mc-body">
+          <div class="mc-tag">Travel log</div>
+          <h4>海边火车三日</h4>
+          <p>每一站留一张照片、一句天气和一枚咖啡馆小票。</p>
+          <div class="mc-foot">
+            <span class="mc-user"><img src="../../_assets/avatars/a33.jpg" alt="作者头像" loading="lazy"> Mira on Rails</span>
+            <button class="btn btn-primary btn-sm">阅读</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">画廊网格 Gallery</h3>
+    <div class="gallery">
+      <img class="g-tall" src="../../_assets/photos/forest.jpg" alt="森林小径" loading="lazy">
+      <img class="g-wide" src="../../_assets/photos/ocean.jpg" alt="海面波光" loading="lazy">
+      <img src="../../_assets/photos/desk.jpg" alt="整洁的桌面" loading="lazy">
+      <img src="../../_assets/photos/food.jpg" alt="美食特写" loading="lazy">
+      <img class="g-wide" src="../../_assets/photos/street.jpg" alt="街景一隅" loading="lazy">
+      <img src="../../_assets/photos/architecture.jpg" alt="建筑外立面" loading="lazy">
+      <img src="../../_assets/photos/coffee.jpg" alt="拉花咖啡" loading="lazy">
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">图文混排 Split</h3>
+    <div class="split">
+      <img src="../../_assets/gen/product-watch.jpg" alt="拼贴手帐素材里的小型旅行物件" loading="lazy">
+      <div>
+        <h3>把一天拆成可保存的纸片</h3>
+        <p>照片、票根、路线和一段气味记忆各占一格，像翻手帐一样回到当天。</p>
+        <ul>
+          <li><span class="li-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span> 按日期自动分组照片和收据</li>
+          <li><span class="li-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span> 每页可添加纸胶带、夹子和手写标签</li>
+          <li><span class="li-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span> 导出离线 PDF 或分享只读链接</li>
+        </ul>
+        <button class="btn btn-primary">了解更多</button>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">图上叠字 Overlay（渐变 scrim 保 AA）</h3>
+    <div class="grid overlay-grid">
+      <div class="overlay">
+        <img src="../../_assets/photos/hero-summit.jpg" alt="登顶看到的云海" loading="lazy">
+        <div class="scrim-grad"></div>
+        <div class="ov-body"><span class="ov-tag">Route</span><h4>云海旁的车站</h4><p>海拔、风速、纸质票根</p></div>
+      </div>
+      <div class="overlay">
+        <img src="../../_assets/photos/hero-gallery.jpg" alt="明亮的展览空间" loading="lazy">
+        <div class="scrim-grad"></div>
+        <div class="ov-body"><span class="ov-tag">Studio</span><h4>周末剪贴课</h4><p>纸样、胶带和照片角贴</p></div>
+      </div>
+      <div class="overlay">
+        <img src="../../_assets/gen/abstract-wave.jpg" alt="柔和抽象波浪图形" loading="lazy">
+        <div class="scrim-grad"></div>
+        <div class="ov-body"><span class="ov-tag">Palette</span><h4>纸张配色集</h4><p>kraft、cream、corkboard</p></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">头像用法 Avatars</h3>
+    <div class="avatar-demo">
+      <div class="av-sizes">
+        <figure><img class="s24" src="../../_assets/avatars/a1.jpg" alt="用户头像" loading="lazy"><figcaption>24</figcaption></figure>
+        <figure><img class="s32" src="../../_assets/avatars/a5.jpg" alt="用户头像" loading="lazy"><figcaption>32</figcaption></figure>
+        <figure><img class="s40" src="../../_assets/avatars/a8.jpg" alt="用户头像" loading="lazy"><figcaption>40</figcaption></figure>
+        <figure><img class="s48" src="../../_assets/avatars/a12.jpg" alt="用户头像" loading="lazy"><figcaption>48</figcaption></figure>
+      </div>
+      <div class="av-stack" aria-label="协作成员头像组">
+        <img src="../../_assets/avatars/a15.jpg" alt="成员头像" loading="lazy">
+        <img src="../../_assets/avatars/a23.jpg" alt="成员头像" loading="lazy">
+        <img src="../../_assets/avatars/a33.jpg" alt="成员头像" loading="lazy">
+        <img src="../../_assets/avatars/a47.jpg" alt="成员头像" loading="lazy">
+        <span class="more">+9</span>
+      </div>
+      <div class="user-row">
+        <img src="../../_assets/avatars/a1.jpg" alt="Mira 的头像" loading="lazy">
+        <div><div class="ur-name">Mira</div><div class="ur-sub">42 pages archived · Paperlane member</div></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">背景大图区 Full-bleed</h3>
+    <div class="bg-feature">
+      <img src="../../_assets/photos/hero-studio.jpg" alt="温暖光线下的工作室" loading="lazy">
+      <div class="bg-scrim"></div>
+      <div class="bg-body">
+        <h3>把旅途的粗糙质感留在界面里</h3>
+        <p>full-bleed 背景图 + paper scrim，正文落在稳定纸面上，避免压在胶带或纹理上。</p>
+        <button class="btn btn-primary btn-lg">打开样张</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 图标用法 Icon Usage ===== -->
+  <section>
+    <h2 class="sec">图标用法 Icon Usage</h2>
+    <p class="sub">圆头圆角内联 SVG（viewBox 24 · 线宽 2 · currentColor）· 统一图标语言 · 零 emoji</p>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:0 0 var(--ds-space-3)">图标集 Icon Set</h3>
+    <div class="icon-grid">
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg><span class="icn">home</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg><span class="icn">search</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><span class="icn">heart</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg><span class="icn">star</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="icn">bell</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7.5A1.5 1.5 0 0 1 6.5 6h11A1.5 1.5 0 0 1 19 7.5v7A1.5 1.5 0 0 1 17.5 16H10l-4 3v-3H6.5A1.5 1.5 0 0 1 5 14.5Z"/></svg><span class="icn">chat</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg><span class="icn">user</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg><span class="icn">settings</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="5.5" width="15" height="14" rx="2"/><path d="M8 3.5v4m8-4v4M4.5 10h15"/></svg><span class="icn">calendar</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M5 19.5h14"/></svg><span class="icn">download</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5v-12"/><path d="m7 13 5-5 5 5"/><path d="M5 4.5h14"/></svg><span class="icn">upload</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/></svg><span class="icn">box</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m9 12 2 2 4-4"/></svg><span class="icn">verified</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="9" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/></svg><span class="icn">lock</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7A1.5 1.5 0 0 1 6 5.5h4l2 2h6A1.5 1.5 0 0 1 19.5 9v7.5A1.5 1.5 0 0 1 18 18H6a1.5 1.5 0 0 1-1.5-1.5z"/></svg><span class="icn">folder</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="icn">check</span></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:var(--ds-space-6)">
+      <div class="icon-panel">
+        <div class="ip-title">尺寸阶 Sizes（16 / 20 / 24 / 32 · 基线对齐）</div>
+        <div class="icon-sizes">
+          <figure><svg class="ico i16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>16</figcaption></figure>
+          <figure><svg class="ico i20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>20</figcaption></figure>
+          <figure><svg class="ico i24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>24</figcaption></figure>
+          <figure><svg class="ico i32" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>32</figcaption></figure>
+        </div>
+      </div>
+      <div class="icon-panel">
+        <div class="ip-title">线性 vs 实心 · 单色 vs 双色</div>
+        <div class="icon-sizes" style="gap:var(--ds-space-7)">
+          <figure><svg class="ico i32" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>线性</figcaption></figure>
+          <figure><svg class="i32" viewBox="0 0 24 24" fill="var(--ds-primary)" aria-hidden="true" style="color:var(--ds-primary)"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>实心</figcaption></figure>
+          <figure><svg class="i32 icon-two" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--ds-primary-active)"><path class="fill-soft" d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg><figcaption>双色</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);margin:var(--ds-space-7) 0 var(--ds-space-3)">在场景里 In Context</h3>
+    <div class="icon-panel">
+      <div class="icon-scenes">
+        <button class="icon-btn" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg></button>
+        <button class="icon-btn" aria-label="分享"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="17" cy="6" r="2.5"/><circle cx="17" cy="18" r="2.5"/><path d="m8.2 10.8 6.6-3.6m0 9.6-6.6-3.6"/></svg></button>
+        <button class="btn btn-primary"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M5 19.5h14"/></svg> 下载</button>
+        <button class="btn btn-secondary">下一步 <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+        <div class="inp-icon">
+          <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg>
+          <input class="inp" placeholder="搜索票根、路线、照片…">
+        </div>
+        <div class="icon-badge" aria-label="通知 3 条"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="dot">3</span></div>
+      </div>
+      <div class="status-icons" style="margin-top:var(--ds-space-5)">
+        <span class="st s-suc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16 9.3"/></svg> 已完成</span>
+        <span class="st s-war"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><circle cx="12" cy="16.2" r="0.7" fill="currentColor" stroke="none"/></svg> 待处理</span>
+        <span class="st s-dan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/></svg> 已失败</span>
+        <span class="st s-inf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r="0.7" fill="currentColor" stroke="none"/></svg> 信息</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 桌面端布局 Desktop Layouts ===== -->
+  <section>
+    <h2 class="sec">桌面端布局 Desktop Layouts</h2>
+    <p class="sub">用本风格 token + 真实图片做成可信缩略界面 · 带浏览器 chrome</p>
+    <div class="layouts">
+
+      <!-- 布局 1：仪表盘 -->
+      <div class="frame">
+        <div class="frame-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">app.paperlane.local / dashboard</span>
+          <span class="lname">手帐外壳 / 仪表盘</span>
+        </div>
+        <div class="dash">
+          <aside class="dash-side">
+            <div class="ds-brand"><span class="lg" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4.5h9l3 3v12H6z"/><path d="M15 4.5v3h3"/><path d="M9 11h6M9 15h4"/></svg></span> Paperlane</div>
+            <nav class="dash-nav">
+              <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h7V4H4zM13 9h7V4h-7zM13 20h7v-9h-7zM4 20h7v-5H4z"/></svg> 概览</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> 协作者</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/></svg> 素材</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V9m5 10V5m5 14v-6m4 6V11"/></svg> 报表</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg> 设置</a>
+            </nav>
+          </aside>
+          <main class="dash-main">
+            <div class="dash-top">
+              <h3>手帐概览</h3>
+              <button class="btn btn-secondary btn-sm">导出</button>
+              <button class="btn btn-primary btn-sm">新建页面</button>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><div class="k-lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> 页面</div><div class="k-num">128</div><div class="k-d">+8.2%</div></div>
+              <div class="kpi"><div class="k-lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 8h7a2.5 2.5 0 0 1 0 5H9a2.5 2.5 0 0 0 0 5h8"/></svg> 素材</div><div class="k-num">864</div><div class="k-d">+12.5%</div></div>
+              <div class="kpi"><div class="k-lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg> 归档率</div><div class="k-num">64.3%</div><div class="k-d">+2.1%</div></div>
+            </div>
+            <div class="chart">
+              <div class="c-head"><span>近 7 日素材归档</span><span class="badge b-pri">本周</span></div>
+              <div class="bars">
+                <div class="bar" style="height:48%"></div><div class="bar alt" style="height:66%"></div>
+                <div class="bar" style="height:54%"></div><div class="bar alt" style="height:82%"></div>
+                <div class="bar" style="height:70%"></div><div class="bar alt" style="height:92%"></div>
+                <div class="bar" style="height:78%"></div>
+              </div>
+            </div>
+            <table>
+              <thead><tr><th>页面</th><th>状态</th><th class="num">素材</th></tr></thead>
+              <tbody>
+                <tr><td>Lisbon 04</td><td><span class="badge b-suc">已归档</span></td><td class="num">18</td></tr>
+                <tr><td>Kyoto zine</td><td><span class="badge b-war">待整理</span></td><td class="num">9</td></tr>
+                <tr><td>Market walk</td><td><span class="badge b-inf">新素材</span></td><td class="num">12</td></tr>
+              </tbody>
+            </table>
+          </main>
+        </div>
+      </div>
+
+      <!-- 布局 2：落地页 -->
+      <div class="frame">
+        <div class="frame-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">paperlane.local / home</span>
+          <span class="lname">手帐页 / 介绍</span>
+        </div>
+        <div class="land">
+          <div class="land-hero">
+            <div>
+              <span class="badge b-solid" style="margin-bottom:12px">new journal kit</span>
+              <h3>把旅途装进纸页里</h3>
+              <p>给照片、票根、食谱和手写备注一个温暖的拼贴界面。今天开始，创建你的第一本城市册。</p>
+              <div style="display:flex;gap:var(--ds-space-3);flex-wrap:wrap">
+                <button class="btn btn-primary">创建手帐</button>
+                <button class="btn btn-secondary">查看纸样</button>
+              </div>
+            </div>
+            <img src="../../_assets/photos/desk.jpg" alt="铺着照片和纸片的手帐桌面" loading="lazy">
+          </div>
+          <div class="feature3">
+            <div class="feat"><div class="f-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v8H5z"/><path d="M7 8V6m10 2V6M8 12h8"/></svg></div><h5>纸张配色</h5><p>kraft、cream 与夜间 corkboard 双主题。</p></div>
+            <div class="feat"><div class="f-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg></div><h5>开箱即用</h5><p>26 个组件，复制即用。</p></div>
+            <div class="feat"><div class="f-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="9" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/></svg></div><h5>无障碍</h5><p>全程满足 WCAG AA。</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 移动端布局 Mobile Layouts ===== -->
+  <section>
+    <h2 class="sec">移动端布局 Mobile Layouts</h2>
+    <p class="sub">iPhone 17 Pro Max 套壳 · 真实图片与图标 · 内容饱满</p>
+    <div class="phones">
+
+      <!-- 手机 1：App 首页 feed + 底部标签栏（标准 .dvc17 套壳） -->
+      <div class="dvc17">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="dvc-scroll pad-b">
+              <div class="ptop">
+                <div class="ptitle">早安，Mira<small>今天整理 Lisbon 04</small></div>
+                <button class="pico-btn" aria-label="通知 3 条"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="ndot"></span></button>
+                <img class="pava" src="../../_assets/avatars/a5.jpg" alt="我的头像" loading="lazy">
+              </div>
+              <div class="psearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> 搜索照片、票根、路线…</div>
+              <div class="pchips">
+                <span class="pchip on">路线</span>
+                <span class="pchip">食谱</span>
+                <span class="pchip">照片</span>
+                <span class="pchip">票根</span>
+                <span class="pchip">手作</span>
+              </div>
+              <div class="pcard">
+                <img class="p-feed-img" src="../../_assets/gen/food-bowl.jpg" alt="缤纷沙拉碗" loading="lazy">
+                <div class="pcard-meta"><span class="pm-tag">recipe note</span><span class="pm-dot"></span><span>page 04</span></div>
+                <h4>柠檬早餐碗</h4>
+                <p>市场收据、配方步骤和一张桌面照片已准备好。</p>
+                <button class="btn btn-primary" style="width:100%">贴入页面</button>
+              </div>
+              <div class="psec-h"><b>为你精选</b><a href="#">查看全部</a></div>
+              <div class="prow">
+                <article class="pmini"><img src="../../_assets/photos/travel.jpg" alt="海边旅行照片" loading="lazy"><div class="pmini-b"><div class="pmini-t">海边车站</div><div class="pmini-p">photo</div></div></article>
+                <article class="pmini"><img src="../../_assets/photos/coffee.jpg" alt="拉花咖啡" loading="lazy"><div class="pmini-b"><div class="pmini-t">咖啡小票</div><div class="pmini-p">receipt</div></div></article>
+                <article class="pmini"><img src="../../_assets/photos/desk.jpg" alt="手帐桌面" loading="lazy"><div class="pmini-b"><div class="pmini-t">桌面纸样</div><div class="pmini-p">paper</div></div></article>
+              </div>
+              <div class="psec-h"><b>最新动态</b><a href="#">更多</a></div>
+              <div class="plist">
+                <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a8.jpg" alt="Mira 头像" loading="lazy"><div class="ptxt"><div>Mira 添加了 3 张照片</div><div class="pmeta">2 分钟前</div></div><span class="badge b-suc">新</span></div>
+                <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a12.jpg" alt="Nora 头像" loading="lazy"><div class="ptxt"><div>Nora 共享了一页食谱</div><div class="pmeta">15 分钟前</div></div></div>
+                <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a23.jpg" alt="Ian 头像" loading="lazy"><div class="ptxt"><div>Ian 留下路线备注</div><div class="pmeta">1 小时前</div></div></div>
+              </div>
+            </div>
+            <nav class="tabbar">
+              <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg> 首页</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> 发现</a>
+              <a href="#" class="tab-fab" aria-label="发布"><span class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg> 消息</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> 我的</a>
+            </nav>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+      <!-- 手机 2：个人页 大图 header（深色顶图，套 .dvc17 sb-light） -->
+      <div class="dvc17 sb-light">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body flush-top">
+            <div class="dvc-scroll pad-b">
+              <div class="p-profile-hero">
+                <img src="../../_assets/gen/abstract-wave.jpg" alt="个人页背景图" loading="lazy">
+                <div class="pp-scrim"></div>
+                <div class="pp-bar">
+                  <button class="pp-ic" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button class="pp-ic" aria-label="更多"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/></svg></button>
+                </div>
+                <img class="pp-av" src="../../_assets/avatars/a33.jpg" alt="Mira 的头像" loading="lazy">
+              </div>
+              <div class="p-profile-meta">
+                <div class="ppm-name">Mira Chen</div>
+                <div class="ppm-sub">Paperlane member · 42 pages archived</div>
+              </div>
+              <div class="p-stats">
+                <div style="text-align:center"><div class="ps-n">128</div><div class="ps-l">页面</div></div>
+                <div style="text-align:center"><div class="ps-n">2.4k</div><div class="ps-l">素材</div></div>
+                <div style="text-align:center"><div class="ps-n">980</div><div class="ps-l">分享</div></div>
+              </div>
+              <div style="display:flex;gap:var(--ds-space-3);margin-bottom:var(--ds-space-5)">
+                <button class="btn btn-primary" style="flex:1">关注手帐</button>
+                <button class="btn btn-secondary" style="flex:1">留言</button>
+              </div>
+              <div class="plist">
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg></span><div class="ptxt"><div>收藏纸样</div><div class="pmeta">36 张 paper swatch</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-muted)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/></svg></span><div class="ptxt"><div>待整理素材</div><div class="pmeta">2 组票根待归档</div></div><span class="badge b-war">待整</span></div>
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C7 17 4 14.2 4 10.6 4 8.1 5.9 6.2 8.2 6.2c1.6 0 2.9.9 3.8 2.3.9-1.4 2.2-2.3 3.8-2.3 2.3 0 4.2 1.9 4.2 4.4 0 3.6-3 6.4-8 9.9Z"/></svg></span><div class="ptxt"><div>喜欢的页面</div><div class="pmeta">214 条内容</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-muted)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+                <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+              </div>
+            </div>
+            <nav class="tabbar">
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg> 首页</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> 发现</a>
+              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg> 消息</a>
+              <a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> 我的</a>
+            </nav>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 移动端组件示意 Mobile ===== -->
+  <section>
+    <h2 class="sec">移动端组件 Mobile</h2>
+    <p class="sub">iPhone 17 Pro Max 套壳：顶栏（汉堡 + 标题 + 头像）+ 卡片 + 按钮 + 列表的移动布局示意</p>
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="dvc-scroll pad-b">
+            <div class="ptop">
+              <button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button>
+              <div class="ptitle">素材</div>
+              <button class="pico-btn" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg></button>
+              <img class="pava" src="../../_assets/avatars/a12.jpg" alt="我的头像" loading="lazy">
+            </div>
+              <div class="pcard">
+                <div class="pthumb"></div>
+              <div class="pcard-meta"><span class="pm-tag">today</span><span class="pm-dot"></span><span>23:59 前整理</span></div>
+              <h4>今日素材袋</h4>
+              <p>照片、车票和咖啡小票已准备好，适合做一页城市散步。</p>
+              <button class="btn btn-primary" style="width:100%">开始拼贴</button>
+            </div>
+            <div class="psec-h"><b>我的快捷</b><a href="#">管理</a></div>
+            <div class="plist">
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5 11 14l4.5-5"/><path d="M19 8.5v9A1.5 1.5 0 0 1 17.5 19h-11A1.5 1.5 0 0 1 5 17.5v-11A1.5 1.5 0 0 1 6.5 5H15Z"/></svg></span><div class="ptxt"><div>今日归档</div><div class="pmeta">7 张素材已完成</div></div><span class="badge b-suc">+10</span></div>
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5A1.5 1.5 0 0 1 6.5 6h11A1.5 1.5 0 0 1 19 7.5v7A1.5 1.5 0 0 1 17.5 16H10l-4 3v-3H6.5A1.5 1.5 0 0 1 5 14.5Z"/></svg></span><div class="ptxt"><div>协作留言</div><div class="pmeta">3 条新更新</div></div><span class="badge b-pri">新</span></div>
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="15" height="10.5" rx="1.5"/><path d="M4.5 9h15M12 9v10.5"/><path d="M12 9C10.5 6 7 5.5 7 7.5S10 9 12 9Zm0 0c1.5-3 5-3.5 5-1.5S14 9 12 9Z"/></svg></span><div class="ptxt"><div>纸样包</div><div class="pmeta">2 组待领取</div></div><span class="badge b-war">待领</span></div>
+              <div class="pli"><span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></svg></span><div class="ptxt"><div>设置</div><div class="pmeta">主题 · 通知 · 隐私</div></div><svg class="ico" viewBox="0 0 24 24" style="color:var(--ds-fg-subtle)" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+            </div>
+            <div class="psec-h" style="margin-top:var(--ds-space-5)"><b>协作者在线</b><a href="#">全部</a></div>
+            <div class="plist">
+              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a8.jpg" alt="Mira 头像" loading="lazy"><div class="ptxt"><div>Mira</div><div class="pmeta">刚刚更新了页面</div></div><span class="badge b-suc">在线</span></div>
+              <div class="pli"><img class="p-list-ava" src="../../_assets/avatars/a23.jpg" alt="Nora 头像" loading="lazy"><div class="ptxt"><div>Nora</div><div class="pmeta">3 分钟前活跃</div></div></div>
+            </div>
+          </div>
+          <div class="mbar">
+            <button class="btn btn-primary btn-lg" style="width:100%">新增纸片</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">Collage Design Kit · 全部颜色走 <span class="code">var(--ds-*)</span> · 离线自包含 · WCAG AA · 响应式</div>
+</div>
+
+<script>
+/* 色板数据：所有语义/状态色 swatch */
+const tokens = [
+  ['--ds-bg','#f3ece0 / #1e1913'],['--ds-bg-subtle','#eae0cf / #261f17'],
+  ['--ds-bg-elevated','#fffdf7 / #2c241a'],['--ds-bg-sunken','#e2d6c0 / #15110b'],
+  ['--ds-fg','#2c2620 / #f0e7d6'],['--ds-fg-muted','#5c5446 / #b4a890'],
+  ['--ds-fg-subtle','#7a7060 / #847a66'],['--ds-border','#dccdb2 / #3a3022'],
+  ['--ds-border-strong','#2c2620 / #f0e7d6'],
+  ['--ds-primary','#b5503a / #e07a5f'],['--ds-primary-hover','#9e4530 / #ea8e74'],
+  ['--ds-primary-active','#853a28 / #d06a4f'],['--ds-accent','#2f6f8c / #5fa8c4'],
+  ['--ds-success','#4a8a3a / #6fbf6f'],['--ds-warning','#9a6a14 / #e8b85a'],
+  ['--ds-danger','#b5503a / #e07a5f'],['--ds-info','#2f6f8c / #5fa8c4'],
+  ['--ds-success-bg','#e8f1e0 / #102a10'],['--ds-warning-bg','#f6ead0 / #241a06'],
+  ['--ds-danger-bg','#f7e4de / #2a0f08'],['--ds-info-bg','#e2eef2 / #08222c'],
+  ['--ds-decor-tape-mustard','#d8a23a / #e8b85a'],['--ds-decor-tape-sage','#7a9a5e / #9ab87a'],
+  ['--ds-decor-tape-pink','#d98ca0 / #e8a4b8'],
+];
+const host = document.getElementById('swatches');
+host.innerHTML = tokens.map(([v,hex]) => `
+  <div class="sw">
+    <div class="chip" style="background:var(${v})"></div>
+    <div class="meta"><div class="name code">${v}</div><div class="hex">${hex}</div></div>
+  </div>`).join('');
+
+/* 亮/暗切换：文字与内联 SVG 图标在月亮 / 太阳间切换 */
+const MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+const SUN  = '<circle cx="12" cy="12" r="4"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/>';
+function toggleTheme(){
+  const r = document.documentElement;
+  const dark = r.dataset.theme === 'dark';
+  r.dataset.theme = dark ? 'light' : 'dark';
+  const btn = document.getElementById('themeBtn');
+  const ico = document.getElementById('themeIco');
+  ico.innerHTML = dark ? MOON : SUN;
+  btn.lastChild.textContent = dark ? ' 切换暗色' : ' 切换亮色';
+}
+</script>
+</body>
+</html>
