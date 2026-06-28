@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<!-- Flat Illustration · 扁平插画 (Friendly SaaS) Design Kit Preview -->
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flat Illustration · 扁平插画 Design Kit 预览</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css" />
+<style>
+/* ====================== Tokens: keep in sync with tokens.css ====================== */
+:root {
+  /* Surfaces and text */
+  --ds-bg:#fbfaf7; --ds-bg-subtle:#f1eef6; --ds-bg-elevated:#ffffff; --ds-bg-sunken:#e8e4f0;
+  --ds-fg:#241f33; --ds-fg-muted:#555070; --ds-fg-subtle:#6f6a8a; --ds-fg-on-accent:#ffffff;
+  --ds-border:#e2ddec; --ds-border-strong:#241f33;
+
+  /* Brand and accent */
+  --ds-primary:#5b4bdb; --ds-primary-hover:#4d3fc8; --ds-primary-active:#4234ad; --ds-primary-fg:#ffffff;
+  --ds-accent:#e0533f; --ds-accent-fg:#ffffff;
+
+  /* Semantic states */
+  --ds-success:#1f8a4c; --ds-success-bg:#e2f3e8; --ds-success-fg:#0c3a20;
+  --ds-warning:#9a6a10; --ds-warning-bg:#f6ecd2; --ds-warning-fg:#43300a;
+  --ds-danger:#d23b2e;  --ds-danger-bg:#f9e2df;  --ds-danger-fg:#5a140d;
+  --ds-info:#2f6fe0;    --ds-info-bg:#e2ebfb;    --ds-info-fg:#0e2c5e;
+
+  /* Focus */
+  --ds-focus:#5b4bdb;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* Radius */
+  --ds-radius-sm:8px; --ds-radius-md:14px; --ds-radius-lg:22px; --ds-radius-full:9999px;
+
+  /* Spacing scale from 01-cute */
+  --ds-space-1:4px; --ds-space-2:8px; --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+
+  /* Typography */
+  --ds-font-sans:"Quicksand","Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif:"Quicksand","Inter",Georgia,"PingFang SC",serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs:12px; --ds-text-sm:13px; --ds-text-base:14px; --ds-text-md:16px;
+  --ds-text-lg:20px; --ds-text-xl:24px; --ds-text-2xl:32px; --ds-text-3xl:48px;
+  --ds-leading-tight:1.25; --ds-leading-normal:1.55; --ds-leading-relaxed:1.75;
+  --ds-weight-normal:500; --ds-weight-medium:600; --ds-weight-bold:700;
+  --ds-tracking-tight:0; --ds-tracking-normal:0.01em;
+
+  /* Shadow */
+  --ds-shadow-sm:0 2px 6px -2px rgba(36,31,51,.16);
+  --ds-shadow-md:0 10px 24px -10px rgba(91,75,219,.28);
+  --ds-shadow-lg:0 22px 48px -16px rgba(91,75,219,.34);
+
+  /* Motion from 01-cute */
+  --ds-ease:cubic-bezier(.34,1.56,.64,1);
+  --ds-dur-fast:200ms; --ds-dur-base:260ms; --ds-dur-slow:320ms;
+}
+
+[data-theme="dark"],
+.dark {
+  --ds-bg:#1a1726; --ds-bg-subtle:#221d32; --ds-bg-elevated:#28223a; --ds-bg-sunken:#120f1c;
+  --ds-fg:#ece8f6; --ds-fg-muted:#aaa2c4; --ds-fg-subtle:#867e9e; --ds-fg-on-accent:#160f2e;
+  --ds-border:#352d4a; --ds-border-strong:#ece8f6;
+  --ds-primary:#8a7bff; --ds-primary-hover:#9c8fff; --ds-primary-active:#7a6bf0; --ds-primary-fg:#14102a;
+  --ds-accent:#ff8570; --ds-accent-fg:#3a1006;
+  --ds-success:#5fd38a; --ds-success-bg:#0e2a18; --ds-success-fg:#c9f5d8;
+  --ds-warning:#f0c050; --ds-warning-bg:#241a06; --ds-warning-fg:#f6e6be;
+  --ds-danger:#ff6a5e;  --ds-danger-bg:#2a0e0a;  --ds-danger-fg:#ffd6d0;
+  --ds-info:#6a9aff;    --ds-info-bg:#0c1c3a;    --ds-info-fg:#d6e4ff;
+  --ds-focus:#8a7bff;
+  --ds-shadow-sm:0 2px 6px -2px rgba(0,0,0,.5);
+  --ds-shadow-md:0 10px 24px -10px rgba(0,0,0,.6);
+  --ds-shadow-lg:0 22px 48px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box;}
+html{background:var(--ds-bg);}
+body{
+  margin:0;
+  background:var(--ds-bg);
+  color:var(--ds-fg);
+  font-family:var(--ds-font-sans);
+  font-size:var(--ds-text-base);
+  font-weight:var(--ds-weight-normal);
+  letter-spacing:var(--ds-tracking-normal);
+  line-height:var(--ds-leading-normal);
+  transition:background var(--ds-dur-base) var(--ds-ease),color var(--ds-dur-base) var(--ds-ease);
+}
+svg{max-width:100%;display:block;}
+button,input,textarea,select{font:inherit;}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--ds-space-5) var(--ds-space-12);}
+.section{margin-top:var(--ds-space-10);}
+.sec{margin:0 0 var(--ds-space-2);font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);line-height:var(--ds-leading-tight);letter-spacing:var(--ds-tracking-tight);}
+.sub{margin:0 0 var(--ds-space-5);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);max-width:74ch;}
+.grid{display:grid;gap:var(--ds-space-4);}
+.code{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.panel{background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);}
+.soft-panel{background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);}
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ds-bg) 88%,transparent);border-bottom:1px solid var(--ds-border);backdrop-filter:saturate(1.2) blur(12px);}
+.topbar-in{max-width:1120px;margin:0 auto;padding:var(--ds-space-4) var(--ds-space-5);display:flex;align-items:center;gap:var(--ds-space-4);}
+.brand{display:flex;align-items:center;gap:var(--ds-space-3);font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);min-width:0;}
+.brand small{font-size:var(--ds-text-xs);font-weight:var(--ds-weight-medium);color:var(--ds-fg-muted);white-space:nowrap;}
+.logo{width:34px;height:34px;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-md);flex:none;}
+.logo svg{width:21px;height:21px;}
+.nav{display:flex;gap:var(--ds-space-2);margin-left:var(--ds-space-3);}
+.nav a{color:var(--ds-fg-muted);text-decoration:none;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-medium);padding:8px 14px;border-radius:var(--ds-radius-full);transition:background var(--ds-dur-fast) var(--ds-ease),color var(--ds-dur-fast) var(--ds-ease);}
+.nav a:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.nav a.active{background:var(--ds-primary);color:var(--ds-primary-fg);}
+.spacer{flex:1;}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border);background:var(--ds-bg-elevated);color:var(--ds-fg);place-items:center;box-shadow:var(--ds-shadow-sm);}
+.nav-toggle span{display:block;width:16px;height:2px;background:currentColor;border-radius:2px;margin:2px 0;}
+.toggle{border:1px solid var(--ds-border);background:var(--ds-bg-elevated);color:var(--ds-fg);border-radius:var(--ds-radius-full);height:40px;padding:0 16px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:var(--ds-weight-medium);box-shadow:var(--ds-shadow-sm);transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease);}
+.toggle:hover{transform:translateY(-1px);background:var(--ds-bg-subtle);}
+.toggle:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+
+.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.92fr);gap:var(--ds-space-8);align-items:center;margin-top:var(--ds-space-8);padding:var(--ds-space-9);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);}
+.hero-blobs{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.hero-copy,.hero-art{position:relative;z-index:1;min-width:0;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:var(--ds-space-4);padding:7px 14px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);border:1px solid var(--ds-border);color:var(--ds-primary-active);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;}
+.eyebrow svg{width:14px;height:14px;}
+.hero h1{margin:0 0 var(--ds-space-4);max-width:12ch;font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);line-height:var(--ds-leading-tight);letter-spacing:var(--ds-tracking-tight);}
+.hero p{margin:0 0 var(--ds-space-6);max-width:52ch;color:var(--ds-fg-muted);font-size:var(--ds-text-md);}
+.hero-cta{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-bottom:var(--ds-space-6);}
+.hero-stats{display:flex;flex-wrap:wrap;gap:var(--ds-space-7);}
+.hero-stats b{display:block;font-size:var(--ds-text-xl);line-height:1.1;font-variant-numeric:tabular-nums;}
+.hero-stats span{display:block;color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);}
+.hero-art{animation:floaty 6s var(--ds-ease) infinite;}
+.ill-card-shadow{filter:drop-shadow(0 16px 18px color-mix(in srgb,var(--ds-primary) 22%,transparent));}
+
+.btn{height:40px;padding:0 20px;border:0;border-radius:var(--ds-radius-full);display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-weight:var(--ds-weight-bold);font-size:var(--ds-text-base);transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease),border-color var(--ds-dur-fast) var(--ds-ease);}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0) scale(.98);}
+.btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);}
+.btn[disabled]{opacity:.48;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-primary{background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-md);}
+.btn-primary:hover{background:var(--ds-primary-hover);}
+.btn-primary:active{background:var(--ds-primary-active);}
+.btn-secondary{background:var(--ds-bg-elevated);color:var(--ds-fg);border:1px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);}
+.btn-secondary:hover{background:var(--ds-bg-subtle);}
+.btn-tertiary{background:transparent;color:var(--ds-fg-muted);}
+.btn-tertiary:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.btn-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border:1px solid var(--ds-danger);box-shadow:var(--ds-shadow-sm);}
+.btn-sm{height:32px;padding:0 15px;font-size:var(--ds-text-sm);}
+.btn-lg{height:48px;padding:0 26px;font-size:var(--ds-text-md);}
+.btnrow{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-bottom:var(--ds-space-4);}
+
+.swatches{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));}
+.sw{overflow:hidden;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);}
+.chip{height:62px;border-bottom:1px solid var(--ds-border);}
+.sw .meta{padding:10px 12px;}
+.name{font-size:var(--ds-text-xs);font-family:var(--ds-font-mono);color:var(--ds-fg);}
+.hex{font-size:var(--ds-text-xs);font-family:var(--ds-font-mono);color:var(--ds-fg-subtle);margin-top:2px;}
+.on-grid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));}
+.pair{padding:var(--ds-space-4);border-radius:var(--ds-radius-md);font-weight:var(--ds-weight-bold);border:1px solid var(--ds-border);box-shadow:var(--ds-shadow-sm);}
+
+.type-box{padding:var(--ds-space-6);}
+.type-row{display:flex;gap:var(--ds-space-5);align-items:baseline;padding:var(--ds-space-3) 0;border-bottom:1px dashed var(--ds-border);}
+.type-row:last-child{border-bottom:0;}
+.type-tag{width:116px;flex:none;color:var(--ds-fg-subtle);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);}
+.weights span{margin-right:var(--ds-space-5);}
+
+.field{margin-bottom:var(--ds-space-4);}
+.field label{display:block;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);margin-bottom:6px;}
+.inp,.ta,.sel{width:100%;height:42px;padding:0 14px;color:var(--ds-fg);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-sm);transition:border-color var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease);}
+.ta{height:auto;min-height:92px;padding:11px 14px;resize:vertical;}
+.inp::placeholder,.ta::placeholder{color:var(--ds-fg-subtle);}
+.inp:focus,.ta:focus,.sel:focus{outline:none;border-color:var(--ds-primary);box-shadow:var(--ds-focus-ring);}
+.inp.err{border-color:var(--ds-danger);}
+.err-msg{margin-top:6px;color:var(--ds-danger-fg);font-size:var(--ds-text-xs);}
+.check{display:flex;align-items:center;gap:10px;margin-bottom:12px;min-height:28px;cursor:pointer;}
+.check input{width:20px;height:20px;accent-color:var(--ds-primary);}
+.switch{position:relative;width:50px;height:28px;flex:none;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:var(--ds-bg-sunken);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);cursor:pointer;transition:background var(--ds-dur-base) var(--ds-ease),border-color var(--ds-dur-base) var(--ds-ease);}
+.slider::before{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;background:var(--ds-bg-elevated);border-radius:var(--ds-radius-full);box-shadow:var(--ds-shadow-sm);transition:transform var(--ds-dur-base) var(--ds-ease);}
+.switch input:checked + .slider{background:var(--ds-primary);border-color:var(--ds-primary);}
+.switch input:checked + .slider::before{transform:translateX(22px);}
+.switch input:focus-visible + .slider{box-shadow:var(--ds-focus-ring);}
+
+.cards{grid-template-columns:repeat(auto-fit,minmax(250px,1fr));}
+.card{padding:var(--ds-space-5);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);transition:transform var(--ds-dur-base) var(--ds-ease),box-shadow var(--ds-dur-base) var(--ds-ease);}
+.card:hover{transform:translateY(-4px);box-shadow:var(--ds-shadow-lg);}
+.mini-ill{height:112px;margin-bottom:var(--ds-space-4);border-radius:var(--ds-radius-sm);overflow:hidden;background:var(--ds-bg-subtle);border:1px solid var(--ds-border);}
+.card h3{margin:0 0 6px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.card p{margin:0 0 var(--ds-space-4);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+.badges{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:var(--ds-radius-full);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);}
+.badge::before{content:"";width:7px;height:7px;border-radius:var(--ds-radius-full);background:currentColor;}
+.b-pri{background:var(--ds-bg-subtle);color:var(--ds-primary-active);}
+.b-suc{background:var(--ds-success-bg);color:var(--ds-success-fg);}
+.b-war{background:var(--ds-warning-bg);color:var(--ds-warning-fg);}
+.b-dan{background:var(--ds-danger-bg);color:var(--ds-danger-fg);}
+.b-inf{background:var(--ds-info-bg);color:var(--ds-info-fg);}
+.b-solid{background:var(--ds-primary);color:var(--ds-primary-fg);}
+
+.alert{display:flex;gap:var(--ds-space-3);align-items:flex-start;margin-bottom:var(--ds-space-3);padding:var(--ds-space-4) var(--ds-space-5);border:1px solid;border-radius:var(--ds-radius-md);font-size:var(--ds-text-sm);}
+.alert .ic{width:22px;height:22px;display:grid;place-items:center;flex:none;}
+.alert .ic svg{width:22px;height:22px;}
+.a-suc{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success);}
+.a-war{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning);}
+.a-dan{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger);}
+.a-inf{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info);}
+
+.tabs{display:flex;gap:var(--ds-space-2);border-bottom:2px solid var(--ds-border);margin-bottom:var(--ds-space-4);overflow-x:auto;}
+.tab{position:relative;padding:10px 18px;border:0;background:none;color:var(--ds-fg-muted);cursor:pointer;font-weight:var(--ds-weight-bold);white-space:nowrap;}
+.tab.active{color:var(--ds-primary);}
+.tab.active::after{content:"";position:absolute;left:14px;right:14px;bottom:-2px;height:3px;background:var(--ds-primary);border-radius:var(--ds-radius-full);}
+table{width:100%;border-collapse:separate;border-spacing:0;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);overflow:hidden;box-shadow:var(--ds-shadow-sm);}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--ds-border);font-size:var(--ds-text-sm);}
+th{background:var(--ds-bg-subtle);font-weight:var(--ds-weight-bold);}
+tbody tr:last-child td{border-bottom:0;}
+tbody tr:hover{background:var(--ds-bg-subtle);}
+.num{text-align:right;font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums;}
+
+.modal-demo{position:relative;overflow:hidden;padding:var(--ds-space-8) var(--ds-space-5);border:1px dashed var(--ds-border-strong);border-radius:var(--ds-radius-lg);background:var(--ds-bg-subtle);}
+.scrim{position:absolute;inset:0;background:color-mix(in srgb,var(--ds-fg) 22%,transparent);}
+.modal{position:relative;max-width:430px;margin:0 auto;padding:var(--ds-space-6);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);}
+.modal .x{position:absolute;top:var(--ds-space-4);right:var(--ds-space-4);width:34px;height:34px;border:0;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-bg-subtle);color:var(--ds-fg-muted);cursor:pointer;transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease),color var(--ds-dur-fast) var(--ds-ease);}
+.modal .x:hover{transform:rotate(90deg);background:var(--ds-bg-sunken);color:var(--ds-fg);}
+.modal h3{margin:0 0 var(--ds-space-2);font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);}
+.modal p{margin:0 0 var(--ds-space-5);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+.acts{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--ds-space-3);}
+.menu{width:min(260px,100%);padding:var(--ds-space-2);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-lg);}
+.mlabel{padding:6px 12px;color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;}
+.mitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--ds-radius-sm);cursor:pointer;color:var(--ds-fg);font-size:var(--ds-text-sm);}
+.mitem:hover,.mitem.is-active{background:var(--ds-bg-subtle);}
+.mitem.is-active{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+.mitem .mi{width:18px;height:18px;color:inherit;}
+.mitem .check-mark{margin-left:auto;width:16px;height:16px;color:var(--ds-primary-active);}
+.mitem.danger{color:var(--ds-danger-fg);}
+.mitem.danger:hover{background:var(--ds-danger-bg);}
+.msep{height:1px;margin:var(--ds-space-2) var(--ds-space-1);background:var(--ds-border);}
+.tip{display:inline-block;position:relative;}
+.bubble{position:relative;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--ds-radius-sm);background:var(--ds-fg);color:var(--ds-bg);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);box-shadow:var(--ds-shadow-md);white-space:nowrap;}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ds-fg);border-bottom:0;}
+.pager{display:flex;flex-wrap:wrap;gap:var(--ds-space-2);align-items:center;}
+.pg{min-width:40px;height:40px;padding:0 12px;border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);color:var(--ds-fg);cursor:pointer;font-weight:var(--ds-weight-bold);}
+.pg:hover{background:var(--ds-bg-subtle);}
+.pg.is-current{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:transparent;box-shadow:var(--ds-shadow-sm);}
+.pg[disabled]{opacity:.45;cursor:not-allowed;}
+.pg-gap{color:var(--ds-fg-subtle);}
+.toasts{display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:390px;}
+.toast{display:flex;gap:var(--ds-space-3);align-items:flex-start;padding:var(--ds-space-4);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-lg);}
+.tic{width:30px;height:30px;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-primary);color:var(--ds-primary-fg);flex:none;}
+.tic svg{width:18px;height:18px;}
+.toast.t-suc .tic{background:var(--ds-success-bg);color:var(--ds-success-fg);border:1px solid var(--ds-success);}
+.toast.t-war .tic{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border:1px solid var(--ds-warning);}
+.toast.t-dan .tic{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border:1px solid var(--ds-danger);}
+.tbody{flex:1;min-width:0;}
+.tt{font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);}
+.td{color:var(--ds-fg-muted);font-size:var(--ds-text-xs);}
+.tx{border:0;background:none;color:var(--ds-fg-subtle);cursor:pointer;width:24px;height:24px;display:grid;place-items:center;}
+.stepper{display:flex;align-items:flex-start;}
+.step{flex:1;text-align:center;position:relative;}
+.sdot{position:relative;z-index:1;width:36px;height:36px;margin:0 auto;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);color:var(--ds-fg-muted);font-weight:var(--ds-weight-bold);}
+.sline{position:absolute;top:18px;left:50%;width:100%;height:3px;background:var(--ds-border);border-radius:var(--ds-radius-full);}
+.step:last-child .sline{display:none;}
+.slabel{margin-top:var(--ds-space-2);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
+.ssub{font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.step.done .sdot,.step.done .sline{background:var(--ds-primary);border-color:var(--ds-primary);color:var(--ds-primary-fg);}
+.step.current .sdot{border-color:var(--ds-primary);color:var(--ds-primary-active);box-shadow:0 0 0 4px var(--ds-bg-subtle);}
+.step.current .slabel{color:var(--ds-primary-active);}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-2);font-size:var(--ds-text-sm);}
+.crumbs a{color:var(--ds-fg-muted);text-decoration:none;padding:4px 10px;border-radius:var(--ds-radius-full);}
+.crumbs a:hover{background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.crumbs .sep{color:var(--ds-fg-subtle);}
+.crumbs .here{padding:4px 10px;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+
+.icon-grid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));}
+.icon-cell{display:flex;flex-direction:column;align-items:center;gap:10px;padding:var(--ds-space-4) var(--ds-space-3);text-align:center;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);}
+.icon-cell svg{width:28px;height:28px;color:var(--ds-primary-active);}
+.icn{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-subtle);}
+.icon-scenes{display:flex;flex-wrap:wrap;gap:var(--ds-space-4);align-items:center;}
+.icon-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);color:var(--ds-fg);box-shadow:var(--ds-shadow-sm);cursor:pointer;}
+.icon-btn svg{width:19px;height:19px;}
+.icon-badge{position:relative;width:42px;height:42px;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-bg-subtle);color:var(--ds-fg);}
+.icon-badge .dot{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-danger-bg);color:var(--ds-danger-fg);border:2px solid var(--ds-bg);font-size:10px;font-weight:var(--ds-weight-bold);}
+
+.layouts{display:grid;gap:var(--ds-space-7);}
+.frame{overflow:hidden;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-lg);}
+.frame-bar{display:flex;align-items:center;gap:8px;padding:10px var(--ds-space-4);background:var(--ds-bg-subtle);border-bottom:1px solid var(--ds-border);}
+.dots{display:flex;gap:6px;}
+.dots i{display:block;width:11px;height:11px;border-radius:var(--ds-radius-full);}
+.dots i:nth-child(1){background:#ff7a59;}
+.dots i:nth-child(2){background:#ffc23d;}
+.dots i:nth-child(3){background:#16b3a6;}
+.url{flex:1;min-width:0;padding:5px 14px;border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);color:var(--ds-fg-subtle);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lname{color:var(--ds-primary-active);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);}
+.dash{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:420px;}
+.dash-side{padding:var(--ds-space-5);background:var(--ds-bg-subtle);border-right:1px solid var(--ds-border);}
+.dash-brand{display:flex;align-items:center;gap:10px;margin-bottom:var(--ds-space-6);font-weight:var(--ds-weight-bold);}
+.dash-brand .mark{width:30px;height:30px;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-primary);color:var(--ds-primary-fg);}
+.dash-nav{display:flex;flex-direction:column;gap:5px;}
+.dash-nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--ds-radius-full);color:var(--ds-fg-muted);text-decoration:none;font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
+.dash-nav a svg{width:18px;height:18px;}
+.dash-nav a.on{background:var(--ds-primary);color:var(--ds-primary-fg);box-shadow:var(--ds-shadow-sm);}
+.dash-main{padding:var(--ds-space-6);}
+.dash-top{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-bottom:var(--ds-space-5);}
+.dash-top h3{margin:0;flex:1;font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-4);margin-bottom:var(--ds-space-5);}
+.kpi{padding:var(--ds-space-4);background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);}
+.k-lab{display:flex;align-items:center;gap:6px;color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);}
+.k-lab svg{width:14px;height:14px;color:var(--ds-primary-active);}
+.k-num{margin-top:4px;font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold);font-variant-numeric:tabular-nums;}
+.k-d{color:var(--ds-success-fg);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);}
+.chart{padding:var(--ds-space-5);margin-bottom:var(--ds-space-5);background:var(--ds-bg-subtle);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);}
+.c-head{display:flex;justify-content:space-between;margin-bottom:var(--ds-space-4);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
+.bars{height:120px;display:flex;align-items:flex-end;gap:var(--ds-space-3);}
+.bar{flex:1;border-radius:var(--ds-radius-sm) var(--ds-radius-sm) 4px 4px;background:var(--ds-primary);}
+.bar:nth-child(2n){background:#16b3a6;}
+.bar:nth-child(3n){background:#ff7a59;}
+.land{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.8fr);gap:var(--ds-space-7);align-items:center;padding:var(--ds-space-7);background:var(--ds-bg);}
+.land h3{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold);}
+.land p{margin:0 0 var(--ds-space-5);color:var(--ds-fg-muted);}
+.feature3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-4);padding:0 var(--ds-space-7) var(--ds-space-7);}
+.feat{padding:var(--ds-space-5);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);}
+.f-ic{width:40px;height:40px;margin-bottom:var(--ds-space-3);display:grid;place-items:center;border-radius:var(--ds-radius-full);background:var(--ds-bg-subtle);color:var(--ds-primary-active);}
+.feat h5{margin:0 0 6px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.feat p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+
+.phones{display:flex;flex-wrap:wrap;gap:var(--ds-space-7);align-items:flex-start;}
+.phone-shell{width:min(100%,390px);overflow:hidden;display:flex;justify-content:center;padding-bottom:var(--ds-space-2);}
+.dvc17 .dvc-body{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);padding-bottom:0;display:flex;flex-direction:column;min-height:100%;background:var(--ds-bg);}
+.dvc17 .dvc-scroll{flex:1 0 auto;display:block;padding-bottom:var(--ds-space-5);}
+.ptop{display:flex;align-items:center;gap:var(--ds-space-3);margin:var(--ds-space-3) 0 var(--ds-space-4);}
+.pburger,.pico-btn{width:44px;height:44px;border-radius:var(--ds-radius-full);border:1px solid var(--ds-border);background:var(--ds-bg-elevated);display:grid;place-items:center;box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);flex:none;}
+.pburger span{display:block;width:16px;height:2px;margin:2px 0;background:currentColor;border-radius:2px;}
+.ptitle{flex:1;font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold);}
+.ptitle small{display:block;color:var(--ds-fg-muted);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-normal);}
+.avatar-svg{width:44px;height:44px;border-radius:var(--ds-radius-full);box-shadow:var(--ds-shadow-sm);flex:none;}
+.psearch{height:44px;display:flex;align-items:center;gap:var(--ds-space-2);padding:0 var(--ds-space-4);margin-bottom:var(--ds-space-4);border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);color:var(--ds-fg-subtle);box-shadow:var(--ds-shadow-sm);font-size:var(--ds-text-sm);}
+.psearch svg{width:18px;height:18px;}
+.pchips{display:flex;gap:var(--ds-space-2);overflow-x:auto;margin-bottom:var(--ds-space-4);padding-bottom:2px;scrollbar-width:none;}
+.pchips::-webkit-scrollbar{display:none;}
+.pchip{flex:none;height:34px;padding:0 15px;display:inline-flex;align-items:center;border:1px solid var(--ds-border);border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);}
+.pchip.on{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:transparent;}
+.pcard{padding:var(--ds-space-4);margin-bottom:var(--ds-space-4);background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-md);}
+.pcard h4{margin:0 0 4px;font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.pcard p{margin:0 0 var(--ds-space-3);color:var(--ds-fg-muted);font-size:var(--ds-text-sm);}
+.pcard-meta{display:flex;gap:var(--ds-space-2);align-items:center;margin-bottom:var(--ds-space-3);color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);}
+.pm-tag{color:var(--ds-primary-active);font-weight:var(--ds-weight-bold);}
+.pm-dot{width:3px;height:3px;border-radius:var(--ds-radius-full);background:var(--ds-fg-subtle);}
+.psec-h{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 var(--ds-space-3);}
+.psec-h b{font-size:var(--ds-text-md);font-weight:var(--ds-weight-bold);}
+.psec-h a{color:var(--ds-primary-active);text-decoration:none;font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);}
+.plist{overflow:hidden;background:var(--ds-bg-elevated);border:1px solid var(--ds-border);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);}
+.pli{min-height:60px;display:flex;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-4);border-bottom:1px solid var(--ds-border);font-size:var(--ds-text-sm);}
+.pli:last-child{border-bottom:0;}
+.pico{width:38px;height:38px;border-radius:var(--ds-radius-full);display:grid;place-items:center;background:var(--ds-bg-subtle);color:var(--ds-primary-active);flex:none;}
+.pico svg{width:19px;height:19px;}
+.ptxt{flex:1;min-width:0;}
+.ptxt>div:first-child{font-weight:var(--ds-weight-bold);}
+.pmeta{margin-top:1px;color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);}
+.tabbar{display:flex;justify-content:space-around;align-items:center;margin-top:auto;margin-left:calc(-1*var(--ds-space-4));margin-right:calc(-1*var(--ds-space-4));padding:12px 0 calc(8px + var(--ds-space-5));border-top:1px solid var(--ds-border);background:color-mix(in srgb,var(--ds-bg-elevated) 90%,transparent);backdrop-filter:saturate(1.2) blur(10px);}
+.tabbar a{min-width:56px;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--ds-fg-subtle);font-size:10px;font-weight:var(--ds-weight-bold);text-decoration:none;}
+.tabbar a svg{width:22px;height:22px;}
+.tabbar a.on{color:var(--ds-primary-active);}
+.mbar{margin-top:auto;margin-left:calc(-1*var(--ds-space-4));margin-right:calc(-1*var(--ds-space-4));padding:var(--ds-space-3) var(--ds-space-4) calc(8px + var(--ds-space-5));border-top:1px solid var(--ds-border);background:color-mix(in srgb,var(--ds-bg-elevated) 90%,transparent);}
+
+.foot{margin-top:var(--ds-space-10);padding-top:var(--ds-space-6);border-top:1px dashed var(--ds-border);color:var(--ds-fg-subtle);font-size:var(--ds-text-xs);text-align:center;}
+
+@keyframes floaty{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+@media (max-width:960px){
+  .wrap{padding-left:var(--ds-space-4);padding-right:var(--ds-space-4);}
+  .hero,.land{grid-template-columns:1fr;}
+  .dash{grid-template-columns:1fr;}
+  .dash-side{border-right:0;border-bottom:1px solid var(--ds-border);}
+}
+@media (max-width:700px){
+  .hero{padding:var(--ds-space-6);}
+  .hero h1{font-size:var(--ds-text-2xl);max-width:14ch;}
+  .hero p{font-size:var(--ds-text-base);}
+  .nav{display:none;}
+  .nav-toggle{display:grid;}
+  .topbar-in{flex-wrap:wrap;}
+  .kpis,.feature3{grid-template-columns:1fr;}
+  .stepper{flex-direction:column;gap:var(--ds-space-3);}
+  .step{display:flex;align-items:center;gap:var(--ds-space-3);width:100%;text-align:left;}
+  .sdot{margin:0;}
+  .sline{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition-duration:.01ms!important;}
+  .btn:hover,.toggle:hover,.card:hover{transform:none!important;}
+}
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="5" width="14" height="14" rx="4" fill="currentColor" opacity=".26"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+      <span>Loopnest <small>· Flat Illustration</small></span>
+    </div>
+    <button class="nav-toggle" aria-label="展开导航"><span></span><span></span><span></span></button>
+    <nav class="nav" aria-label="主导航">
+      <a href="#" class="active">Overview</a>
+      <a href="#">Habits</a>
+      <a href="#">Teams</a>
+      <a href="#">Insights</a>
+    </nav>
+    <span class="spacer"></span>
+    <button class="toggle" id="themeBtn" onclick="toggleTheme()"><svg class="ico" id="themeIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> 切换暗色</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="hero-title">
+    <svg class="hero-blobs" viewBox="0 0 1120 520" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M780 30C900-10 1040 38 1070 142c32 108-52 182-166 174-96-7-169-70-166-154 2-58 22-109 42-132Z" fill="var(--ds-bg-subtle)"/>
+      <path d="M-80 330C34 236 162 248 214 338c56 96-4 188-128 202-102 12-184-30-210-103-18-52 1-84 44-107Z" fill="var(--ds-bg-sunken)"/>
+      <circle cx="1008" cy="424" r="58" fill="#ffd45e" opacity=".32"/>
+      <circle cx="872" cy="90" r="20" fill="#2dd4bf" opacity=".42"/>
+    </svg>
+    <div class="hero-copy">
+      <span class="eyebrow"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"/><path d="M8 12h8M12 8v8"/></svg> Friendly SaaS Kit</span>
+      <h1 id="hero-title">Team habits made visual and calm.</h1>
+      <p>Loopnest is a fictional team-habits app for product squads. This kit uses clean geometric flat illustrations, indigo actions, coral accents, teal/yellow fills, pill buttons, soft shadows, and rounded type without sketchy strokes or character clichés.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg> Start a ritual</button>
+        <button class="btn btn-secondary btn-lg"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/></svg> Browse kit</button>
+      </div>
+      <div class="hero-stats">
+        <div><b>36</b><span>Style number</span></div>
+        <div><b>AA</b><span>Contrast baseline</span></div>
+        <div><b>0</b><span>External images</span></div>
+      </div>
+    </div>
+    <div class="hero-art" aria-label="Geometric flat illustration of Loopnest planning cards">
+      <svg viewBox="0 0 520 420" role="img">
+        <title>Clean geometric flat illustration with cards, device, plant, stars, and blobs</title>
+        <path d="M64 314C22 260 36 174 100 127c69-50 155-24 197 20 42 44 77 19 126 44 67 35 64 128 16 174-54 52-145 38-209 24-63-14-123-21-166-75Z" fill="var(--ds-bg-subtle)"/>
+        <rect x="152" y="70" width="230" height="270" rx="32" fill="var(--ds-bg-elevated)" stroke="var(--ds-border)" stroke-width="3" class="ill-card-shadow"/>
+        <rect x="184" y="104" width="166" height="22" rx="11" fill="var(--ds-primary)"/>
+        <rect x="184" y="146" width="134" height="18" rx="9" fill="var(--ds-bg-sunken)"/>
+        <rect x="184" y="176" width="166" height="56" rx="18" fill="#2dd4bf"/>
+        <rect x="202" y="194" width="74" height="14" rx="7" fill="var(--ds-bg-elevated)" opacity=".88"/>
+        <circle cx="320" cy="204" r="16" fill="#ffc23d"/>
+        <rect x="184" y="248" width="74" height="58" rx="18" fill="#ff7a59"/>
+        <rect x="276" y="248" width="74" height="58" rx="18" fill="#b08bff"/>
+        <path d="M112 248h68v76h-68z" fill="#16b3a6"/>
+        <path d="M146 164c28 38 28 72 0 102-28-30-28-64 0-102Z" fill="#2dd4bf"/>
+        <path d="M116 190c26 22 35 47 27 75-32-13-44-38-27-75Z" fill="#16b3a6"/>
+        <rect x="96" y="318" width="92" height="24" rx="12" fill="var(--ds-accent)"/>
+        <rect x="366" y="118" width="84" height="132" rx="24" fill="var(--ds-primary-active)" class="ill-card-shadow"/>
+        <rect x="382" y="140" width="52" height="74" rx="14" fill="var(--ds-bg-elevated)"/>
+        <circle cx="408" cy="228" r="8" fill="#ffc23d"/>
+        <path d="M426 68l8 17 18 3-13 13 3 19-16-9-16 9 3-19-13-13 18-3Z" fill="#ffd45e"/>
+        <path d="M90 114l6 13 14 2-10 10 3 14-13-7-12 7 2-14-10-10 14-2Z" fill="#9b6bff"/>
+        <circle cx="420" cy="302" r="28" fill="#ff8570"/>
+        <circle cx="84" cy="300" r="16" fill="#ffc23d"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="palette">
+    <h2 class="sec">色板 Palette</h2>
+    <p class="sub">All semantic colors are exposed as fixed <span class="code">--ds-*</span> variables. Illustration brights are reserved for flat SVG fills, not body text.</p>
+    <div class="grid swatches" id="swatches"></div>
+  </section>
+
+  <section class="section" id="on-color">
+    <h2 class="sec">文字落色 On-Color</h2>
+    <p class="sub">Primary buttons use AA foreground pairs. Illustration brights remain decorative fills.</p>
+    <div class="grid on-grid">
+      <div class="pair" style="background:var(--ds-primary);color:var(--ds-primary-fg)">Primary action text</div>
+      <div class="pair" style="background:var(--ds-success-bg);color:var(--ds-success-fg)">Success surface text</div>
+      <div class="pair" style="background:var(--ds-warning-bg);color:var(--ds-warning-fg)">Warning surface text</div>
+      <div class="pair" style="background:var(--ds-danger-bg);color:var(--ds-danger-fg)">Danger surface text</div>
+      <div class="pair" style="background:var(--ds-info-bg);color:var(--ds-info-fg)">Info surface text</div>
+    </div>
+  </section>
+
+  <section class="section" id="type">
+    <h2 class="sec">字体 Typography</h2>
+    <p class="sub">Quicksand-led rounded display stack, Inter-capable body fallback, local fonts only.</p>
+    <div class="panel type-box">
+      <div class="type-row"><span class="type-tag">3xl / 48</span><span style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-bold);line-height:var(--ds-leading-tight)">Friendly geometry Aa</span></div>
+      <div class="type-row"><span class="type-tag">2xl / 32</span><span style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold)">Rounded SaaS heading</span></div>
+      <div class="type-row"><span class="type-tag">xl / 24</span><span style="font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold)">Habit overview title</span></div>
+      <div class="type-row"><span class="type-tag">lg / 20</span><span style="font-size:var(--ds-text-lg)">Team planning subtitle</span></div>
+      <div class="type-row"><span class="type-tag">md / 16</span><span style="font-size:var(--ds-text-md)">Readable product copy with friendly rhythm.</span></div>
+      <div class="type-row"><span class="type-tag">base / 14</span><span style="font-size:var(--ds-text-base)">Default interface body text for cards, forms, and rows.</span></div>
+      <div class="type-row"><span class="type-tag">sm / 13</span><span style="font-size:var(--ds-text-sm);color:var(--ds-fg-muted)">Muted support text and table details.</span></div>
+      <div class="type-row"><span class="type-tag">xs / 12</span><span style="font-size:var(--ds-text-xs);color:var(--ds-fg-subtle)">Labels, captions, helper copy.</span></div>
+      <div class="type-row weights"><span class="type-tag">weight</span><span style="font-weight:var(--ds-weight-normal)">normal 500</span><span style="font-weight:var(--ds-weight-medium)">medium 600</span><span style="font-weight:var(--ds-weight-bold)">bold 700</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="buttons">
+    <h2 class="sec">按钮 Buttons</h2>
+    <p class="sub">Pill buttons with sturdy rounded type, crisp focus rings, and soft indigo shadow.</p>
+    <div class="btnrow">
+      <button class="btn btn-primary"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg>Primary</button>
+      <button class="btn btn-secondary"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"/></svg>Secondary</button>
+      <button class="btn btn-tertiary">Tertiary</button>
+      <button class="btn btn-danger"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>Danger</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Medium</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+    </div>
+  </section>
+
+  <section class="section" id="forms">
+    <h2 class="sec">表单 Forms</h2>
+    <p class="sub">Inputs, textarea, select, checkbox, radio, and switch with visible focus states.</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(290px,1fr))">
+      <div class="panel" style="padding:var(--ds-space-6)">
+        <div class="field"><label>Ritual name</label><input class="inp" placeholder="Design critique Friday"></div>
+        <div class="field"><label>Cadence</label><select class="sel"><option>Weekly</option><option>Daily</option><option>Monthly</option></select></div>
+        <div class="field"><label>Team note</label><textarea class="ta" placeholder="Add a clear note for the team"></textarea></div>
+        <div class="field"><label style="color:var(--ds-danger-fg)">Workspace URL</label><input class="inp err" value="loopnest"><div class="err-msg">Use a complete workspace URL.</div></div>
+      </div>
+      <div class="panel" style="padding:var(--ds-space-6)">
+        <label class="check"><input type="checkbox" checked> Send a Monday summary</label>
+        <label class="check"><input type="checkbox"> Ask for retro notes</label>
+        <label class="check"><input type="radio" name="ritual" checked> Team ritual</label>
+        <label class="check"><input type="radio" name="ritual"> Personal ritual</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:var(--ds-space-4)">
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+          <span>Auto-nudge owners</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+          <span>Quiet weekend mode</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="cards">
+    <h2 class="sec">卡片 Cards</h2>
+    <p class="sub">Friendly cards use flat SVG thumbnails, soft tinted shadows, and rounded content rhythm.</p>
+    <div class="grid cards">
+      <article class="card">
+        <div class="mini-ill"><svg viewBox="0 0 320 112" aria-hidden="true"><rect width="320" height="112" fill="var(--ds-bg-subtle)"/><rect x="28" y="28" width="110" height="56" rx="18" fill="#2dd4bf"/><rect x="154" y="22" width="92" height="68" rx="18" fill="var(--ds-primary)"/><circle cx="262" cy="38" r="18" fill="#ffc23d"/><path d="M270 72l28 20h-56Z" fill="#ff7a59"/></svg></div>
+        <h3>Weekly shape-up</h3>
+        <p>Collect goals, blockers, and one team promise before Monday standup.</p>
+        <button class="btn btn-primary btn-sm">Open ritual</button>
+      </article>
+      <article class="card">
+        <div class="mini-ill"><svg viewBox="0 0 320 112" aria-hidden="true"><rect width="320" height="112" fill="var(--ds-bg-subtle)"/><circle cx="72" cy="56" r="34" fill="#ffd45e"/><rect x="130" y="24" width="152" height="64" rx="20" fill="#b08bff"/><rect x="154" y="44" width="74" height="10" rx="5" fill="var(--ds-bg-elevated)"/><rect x="154" y="62" width="96" height="10" rx="5" fill="var(--ds-bg-elevated)"/></svg></div>
+        <h3>Learning loop</h3>
+        <p>Turn post-launch findings into small lessons the team actually reuses.</p>
+        <button class="btn btn-secondary btn-sm">Review</button>
+      </article>
+      <article class="card">
+        <div class="mini-ill"><svg viewBox="0 0 320 112" aria-hidden="true"><rect width="320" height="112" fill="var(--ds-bg-subtle)"/><rect x="44" y="22" width="72" height="68" rx="20" fill="#ff8570"/><rect x="136" y="34" width="72" height="44" rx="18" fill="#16b3a6"/><path d="M244 18l14 28 31 5-22 22 5 31-28-15-27 15 5-31-22-22 30-5Z" fill="#ffc23d"/></svg></div>
+        <h3>Maker payout</h3>
+        <p>Celebrate small launches with a simple reward queue for contributors.</p>
+        <button class="btn btn-primary btn-sm">Queue reward</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="badges">
+    <h2 class="sec">徽章 / 标签 Badges</h2>
+    <p class="sub">Sticker-style pills with state backgrounds and AA foreground pairs.</p>
+    <div class="badges">
+      <span class="badge b-solid">Primary</span>
+      <span class="badge b-pri">Selected</span>
+      <span class="badge b-suc">On track</span>
+      <span class="badge b-war">Needs owner</span>
+      <span class="badge b-dan">Blocked</span>
+      <span class="badge b-inf">New insight</span>
+    </div>
+  </section>
+
+  <section class="section" id="alerts">
+    <h2 class="sec">提示条 Alerts</h2>
+    <p class="sub">Four semantic alerts with simple inline SVG icons and full-border treatment.</p>
+    <div class="alert a-suc"><span class="ic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><div><b>Ritual saved.</b> The team summary is ready for Monday.</div></div>
+    <div class="alert a-war"><span class="ic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><circle cx="12" cy="16.5" r="0.7" fill="currentColor" stroke="none"/></svg></span><div><b>Owner missing.</b> Assign one person before publishing.</div></div>
+    <div class="alert a-dan"><span class="ic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg></span><div><b>Sync failed.</b> Try again after checking workspace access.</div></div>
+    <div class="alert a-inf"><span class="ic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.7" r="0.7" fill="currentColor" stroke="none"/></svg></span><div><b>Insight added.</b> Similar teams review rituals every 9 days.</div></div>
+  </section>
+
+  <section class="section" id="nav">
+    <h2 class="sec">导航 Tabs</h2>
+    <p class="sub">Rounded top navigation and tab states stay calm, simple, and scan-friendly.</p>
+    <div class="tabs">
+      <button class="tab active">Overview</button>
+      <button class="tab">Rituals</button>
+      <button class="tab">Owners</button>
+      <button class="tab">Signals</button>
+    </div>
+    <p style="margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm)">Current panel: ritual overview and team signals.</p>
+  </section>
+
+  <section class="section" id="table">
+    <h2 class="sec">表格 Table</h2>
+    <p class="sub">Compact enough for SaaS workflows, softened with rounded surfaces and tabular numbers.</p>
+    <table>
+      <thead><tr><th>Ritual</th><th>Owner</th><th>Status</th><th class="num">Completion</th></tr></thead>
+      <tbody>
+        <tr><td>Weekly shape-up</td><td>Mina</td><td><span class="badge b-suc">Live</span></td><td class="num">94%</td></tr>
+        <tr><td>Launch review</td><td>Owen</td><td><span class="badge b-war">Draft</span></td><td class="num">68%</td></tr>
+        <tr><td>Bug harvest</td><td>Rae</td><td><span class="badge b-inf">New</span></td><td class="num">42%</td></tr>
+        <tr><td>Partner sync</td><td>No owner</td><td><span class="badge b-dan">Blocked</span></td><td class="num">0%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section" id="modal">
+    <h2 class="sec">模态框 Modal</h2>
+    <p class="sub">Rounded elevated surface, quiet scrim, and clear pill actions.</p>
+    <div class="modal-demo">
+      <div class="scrim"></div>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="x" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+        <h3 id="modal-title">Publish ritual?</h3>
+        <p>This will send the first prompt to 12 teammates and create a summary card for Friday.</p>
+        <div class="acts"><button class="btn btn-tertiary">Keep draft</button><button class="btn btn-primary">Publish</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="dropdown">
+    <h2 class="sec">下拉菜单 Dropdown</h2>
+    <p class="sub">Simple icon rows, selected state, separator, and danger item.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-5);align-items:flex-start">
+      <button class="btn btn-secondary">Workspace menu <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button>
+      <div class="menu" role="menu">
+        <div class="mlabel">Workspace</div>
+        <div class="mitem" role="menuitem"><svg class="mi ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> Members</div>
+        <div class="mitem is-active" role="menuitem"><svg class="mi ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"/><path d="M8 12h8M12 8v8"/></svg> Rituals <svg class="check-mark ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg></div>
+        <div class="mitem" role="menuitem"><svg class="mi ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2m0 13v2M3.5 12h2m13 0h2"/></svg> Settings</div>
+        <div class="msep"></div>
+        <div class="mitem danger" role="menuitem"><svg class="mi ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H14"/><path d="M11 12h9m0 0-3-3m3 3-3 3"/></svg> Leave workspace</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="tooltip">
+    <h2 class="sec">工具提示 Tooltip</h2>
+    <p class="sub">Deep inverse tooltip with a compact rounded pointer.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--ds-space-7);align-items:center">
+      <span class="tip"><span class="bubble"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4h9L19 7.5v11A1.5 1.5 0 0 1 17.5 20h-11A1.5 1.5 0 0 1 5 18.5Z"/><path d="M8 4v4h6V4"/></svg> Save draft</span></span>
+      <span class="tip"><span class="bubble">Invite owners before publish</span></span>
+    </div>
+  </section>
+
+  <section class="section" id="pagination">
+    <h2 class="sec">分页 Pagination</h2>
+    <p class="sub">Pill page controls with clear current and disabled states.</p>
+    <div class="pager">
+      <button class="pg" disabled>‹</button>
+      <button class="pg">1</button>
+      <button class="pg is-current" aria-current="page">2</button>
+      <button class="pg">3</button>
+      <span class="pg-gap">…</span>
+      <button class="pg">8</button>
+      <button class="pg">›</button>
+    </div>
+  </section>
+
+  <section class="section" id="toast">
+    <h2 class="sec">Toast 通知</h2>
+    <p class="sub">Raised notification cards with solid geometry icons.</p>
+    <div class="toasts">
+      <div class="toast t-suc"><span class="tic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg></span><div class="tbody"><div class="tt">Summary sent</div><div class="td">Friday recap reached 12 teammates.</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast"><span class="tic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></span><div class="tbody"><div class="tt">Nudge queued</div><div class="td">Three owners will get a reminder.</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+      <div class="toast t-war"><span class="tic" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><path d="M12 7.5v5"/><circle cx="12" cy="16.2" r="0.7" fill="currentColor" stroke="none"/></svg></span><div class="tbody"><div class="tt">Owner needed</div><div class="td">Launch review has no accountable owner.</div></div><button class="tx" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+    </div>
+  </section>
+
+  <section class="section" id="stepper">
+    <h2 class="sec">步骤条 Stepper</h2>
+    <p class="sub">Completed, current, and pending steps with stable geometry.</p>
+    <div class="panel" style="padding:var(--ds-space-7) var(--ds-space-6)">
+      <div class="stepper">
+        <div class="step done"><div class="sline"></div><div class="sdot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg></div><div><div class="slabel">Name</div><div class="ssub">Done</div></div></div>
+        <div class="step done"><div class="sline"></div><div class="sdot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg></div><div><div class="slabel">Owners</div><div class="ssub">Done</div></div></div>
+        <div class="step current"><div class="sline"></div><div class="sdot">3</div><div><div class="slabel">Prompts</div><div class="ssub">Current</div></div></div>
+        <div class="step"><div class="sline"></div><div class="sdot">4</div><div><div class="slabel">Publish</div><div class="ssub">Next</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="breadcrumb">
+    <h2 class="sec">面包屑 Breadcrumb</h2>
+    <p class="sub">Small pill links that stay readable on dense SaaS screens.</p>
+    <nav class="crumbs" aria-label="面包屑">
+      <a href="#">Home</a><span class="sep">›</span><a href="#">Teams</a><span class="sep">›</span><a href="#">Product</a><span class="sep">›</span><span class="here" aria-current="page">Rituals</span>
+    </nav>
+  </section>
+
+  <section class="section" id="icons">
+    <h2 class="sec">图标用法 Icon Usage</h2>
+    <p class="sub">Simple flat line and solid icons, all inline SVG, no emoji.</p>
+    <div class="grid icon-grid">
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg><span class="icn">home</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg><span class="icn">search</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"/><path d="M8 12h8M12 8v8"/></svg><span class="icn">ritual</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg><span class="icn">star</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="icn">bell</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg><span class="icn">user</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9m5 10V5m5 14v-7m5 7V8"/></svg><span class="icn">chart</span></div>
+      <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg><span class="icn">check</span></div>
+    </div>
+    <div class="panel" style="padding:var(--ds-space-5);margin-top:var(--ds-space-6)">
+      <div class="icon-scenes">
+        <button class="icon-btn" aria-label="收藏"><svg class="ico" viewBox="0 0 24 24"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg></button>
+        <button class="btn btn-primary"><svg class="ico" viewBox="0 0 24 24"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M5 19.5h14"/></svg> Export</button>
+        <button class="btn btn-secondary">Next <svg class="ico" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <div class="icon-badge" aria-label="通知 3 条"><svg class="ico" viewBox="0 0 24 24"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><span class="dot">3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="desktop-layouts">
+    <h2 class="sec">桌面端布局 Desktop Layouts</h2>
+    <p class="sub">Product screens use geometry, cards, and small flat illustrations instead of decorative photography.</p>
+    <div class="layouts">
+      <div class="frame">
+        <div class="frame-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">app.loopnest.example / dashboard</span><span class="lname">Dashboard</span></div>
+        <div class="dash">
+          <aside class="dash-side">
+            <div class="dash-brand"><span class="mark"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="4"/><path d="M8 12h8M12 8v8"/></svg></span> Loopnest</div>
+            <nav class="dash-nav">
+              <a class="on" href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M4 13h7V4H4zM13 9h7V4h-7zM13 20h7v-9h-7zM4 20h7v-5H4z"/></svg> Overview</a>
+              <a href="#"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="4"/><path d="M8 12h8M12 8v8"/></svg> Rituals</a>
+              <a href="#"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> Team</a>
+              <a href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M5 19V9m5 10V5m5 14v-7m5 7V8"/></svg> Signals</a>
+            </nav>
+          </aside>
+          <div class="dash-main">
+            <div class="dash-top"><h3>Product rituals</h3><button class="btn btn-primary btn-sm">New ritual</button></div>
+            <div class="kpis">
+              <div class="kpi"><div class="k-lab"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg> Completion</div><div class="k-num">86%</div><div class="k-d">+12% this month</div></div>
+              <div class="kpi"><div class="k-lab"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> Owners</div><div class="k-num">18</div><div class="k-d">3 new</div></div>
+              <div class="kpi"><div class="k-lab"><svg class="ico" viewBox="0 0 24 24"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg> Signals</div><div class="k-num">142</div><div class="k-d">steady</div></div>
+            </div>
+            <div class="chart">
+              <div class="c-head"><span>Weekly participation</span><span class="code">last 8 weeks</span></div>
+              <div class="bars"><span class="bar" style="height:42%"></span><span class="bar" style="height:62%"></span><span class="bar" style="height:54%"></span><span class="bar" style="height:74%"></span><span class="bar" style="height:66%"></span><span class="bar" style="height:80%"></span><span class="bar" style="height:88%"></span><span class="bar" style="height:84%"></span></div>
+            </div>
+            <table>
+              <thead><tr><th>Queue</th><th>Owner</th><th class="num">Items</th></tr></thead>
+              <tbody><tr><td>Launch review</td><td>Mina</td><td class="num">12</td></tr><tr><td>Bug harvest</td><td>Rae</td><td class="num">34</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">loopnest.example / teams</span><span class="lname">Landing</span></div>
+        <div class="land">
+          <div>
+            <span class="eyebrow">For thoughtful teams</span>
+            <h3>Make small team habits visible before they disappear.</h3>
+            <p>Run lightweight rituals, keep owners accountable, and turn lessons into a shared rhythm.</p>
+            <button class="btn btn-primary">Create workspace</button>
+          </div>
+          <svg viewBox="0 0 360 260" aria-label="Flat landing illustration">
+            <rect x="42" y="44" width="230" height="150" rx="30" fill="var(--ds-bg-elevated)" stroke="var(--ds-border)" stroke-width="3"/>
+            <rect x="70" y="76" width="120" height="18" rx="9" fill="var(--ds-primary)"/>
+            <rect x="70" y="112" width="170" height="16" rx="8" fill="var(--ds-bg-sunken)"/>
+            <rect x="70" y="144" width="76" height="36" rx="15" fill="#2dd4bf"/>
+            <rect x="160" y="144" width="80" height="36" rx="15" fill="#ff8570"/>
+            <circle cx="284" cy="66" r="26" fill="#ffd45e"/>
+            <path d="M290 140l38 70h-76Z" fill="#9b6bff"/>
+          </svg>
+        </div>
+        <div class="feature3">
+          <div class="feat"><div class="f-ic"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="4"/></svg></div><h5>Geometric cards</h5><p>Rounded rectangles, arcs, and simple shapes keep it polished.</p></div>
+          <div class="feat"><div class="f-ic"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg></div><h5>AA controls</h5><p>Buttons and semantic surfaces use tested foreground pairs.</p></div>
+          <div class="feat"><div class="f-ic"><svg class="ico" viewBox="0 0 24 24"><path d="M12 4l2.3 5 5.5.5-4.1 3.6 1.2 5.4L12 16.9 7.1 18.5l1.2-5.4L4.2 9.5l5.5-.5z"/></svg></div><h5>Bright fills</h5><p>Teal, yellow, coral, and violet stay in SVG scenes.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mobile-layouts">
+    <h2 class="sec">移动端布局 Mobile Layouts</h2>
+    <p class="sub">The shared <span class="code">.dvc17</span> device frame remains from <span class="code">../../_assets/device.css</span>; only screen content is themed.</p>
+    <div class="phones">
+      <div class="phone-shell">
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span><span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb"><span>9:41</span><span class="ico"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg><svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg></span></div>
+            <div class="dvc-body">
+              <div class="dvc-scroll">
+                <div class="ptop"><div class="ptitle">Morning loops<small>Three rituals need input</small></div><button class="pico-btn" aria-label="通知"><svg class="ico" viewBox="0 0 24 24"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></button><svg class="avatar-svg" viewBox="0 0 44 44" aria-label="avatar"><circle cx="22" cy="22" r="22" fill="#ffd45e"/><rect x="12" y="16" width="20" height="16" rx="8" fill="var(--ds-primary)"/></svg></div>
+                <div class="psearch"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> Search rituals</div>
+                <div class="pchips"><span class="pchip on">Today</span><span class="pchip">Owners</span><span class="pchip">Signals</span><span class="pchip">Drafts</span></div>
+                <div class="pcard">
+                  <svg viewBox="0 0 300 116" aria-hidden="true"><rect width="300" height="116" rx="18" fill="var(--ds-bg-subtle)"/><rect x="24" y="24" width="90" height="54" rx="18" fill="#2dd4bf"/><rect x="134" y="34" width="92" height="34" rx="16" fill="var(--ds-primary)"/><circle cx="252" cy="44" r="20" fill="#ffc23d"/></svg>
+                  <div class="pcard-meta"><span class="pm-tag">Today</span><span class="pm-dot"></span><span>12 teammates</span></div>
+                  <h4>Weekly shape-up</h4>
+                  <p>Collect one commitment and one risk before standup.</p>
+                  <button class="btn btn-primary" style="width:100%">Add my input</button>
+                </div>
+                <div class="psec-h"><b>Quick list</b><a href="#">Manage</a></div>
+                <div class="plist">
+                  <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg></span><div class="ptxt"><div>Design critique</div><div class="pmeta">Due Friday</div></div><span class="badge b-suc">Ready</span></div>
+                  <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/></svg></span><div class="ptxt"><div>Launch review</div><div class="pmeta">Needs owner</div></div><span class="badge b-war">Draft</span></div>
+                  <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="4"/></svg></span><div class="ptxt"><div>Bug harvest</div><div class="pmeta">34 open notes</div></div></div>
+                </div>
+              </div>
+              <nav class="tabbar"><a class="on" href="#"><svg class="ico" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7"/><path d="M5 10v9.5h14V10"/></svg> Home</a><a href="#"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg> Search</a><a href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/></svg> Alerts</a><a href="#"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg> Me</a></nav>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-shell">
+        <div class="dvc17">
+          <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span><span class="k k-cam"></span><span class="k k-pwr"></span>
+          <div class="scr">
+            <div class="island"></div>
+            <div class="sb"><span>9:41</span><span class="ico"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg><svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg></span></div>
+            <div class="dvc-body">
+              <div class="dvc-scroll">
+                <div class="ptop"><button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button><div class="ptitle">Ritual detail</div><button class="pico-btn" aria-label="更多"><svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></button></div>
+                <div class="pcard">
+                  <svg viewBox="0 0 300 160" aria-hidden="true"><rect width="300" height="160" rx="20" fill="var(--ds-bg-subtle)"/><path d="M36 116C14 88 20 48 54 32c32-15 70-4 88 21 18 24 48 2 78 18 40 20 36 74-2 94-46 24-84-16-128-14-24 1-40-7-54-35Z" fill="#b08bff"/><rect x="56" y="50" width="104" height="56" rx="18" fill="var(--ds-bg-elevated)"/><rect x="78" y="68" width="60" height="10" rx="5" fill="var(--ds-primary)"/><circle cx="220" cy="74" r="24" fill="#ffd45e"/><rect x="190" y="108" width="66" height="24" rx="12" fill="#16b3a6"/></svg>
+                  <div class="pcard-meta"><span class="pm-tag">Live</span><span class="pm-dot"></span><span>86% complete</span></div>
+                  <h4>Friday launch review</h4>
+                  <p>What did we learn, what should change, and who owns the next pass?</p>
+                  <button class="btn btn-secondary" style="width:100%">View prompts</button>
+                </div>
+                <div class="psec-h"><b>Checklist</b><a href="#">Edit</a></div>
+                <div class="plist">
+                  <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg></span><div class="ptxt"><div>Collect notes</div><div class="pmeta">Completed by 9 members</div></div><span class="badge b-suc">Done</span></div>
+                  <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 7.5v5"/><circle cx="12" cy="16.2" r="0.7" fill="currentColor" stroke="none"/></svg></span><div class="ptxt"><div>Assign action owner</div><div class="pmeta">Needs 1 decision</div></div><span class="badge b-war">Open</span></div>
+                  <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><path d="M5 19V9m5 10V5m5 14v-7m5 7V8"/></svg></span><div class="ptxt"><div>Publish trend</div><div class="pmeta">After all answers arrive</div></div></div>
+                </div>
+              </div>
+              <div class="mbar"><button class="btn btn-primary btn-lg" style="width:100%">Add response</button></div>
+            </div>
+            <div class="home"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mobile">
+    <h2 class="sec">移动端组件 Mobile</h2>
+    <p class="sub">A compact mobile component stack: top bar, illustration card, full-width action, and list rows.</p>
+    <div class="phone-shell">
+      <div class="dvc17">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span><span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb"><span>9:41</span><span class="ico"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg><svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg></span></div>
+          <div class="dvc-body">
+            <div class="dvc-scroll">
+              <div class="ptop"><button class="pburger" aria-label="菜单"><span></span><span></span><span></span></button><div class="ptitle">Create ritual</div><button class="pico-btn" aria-label="关闭"><svg class="ico" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+              <div class="pcard">
+                <svg viewBox="0 0 300 122" aria-hidden="true"><rect width="300" height="122" rx="20" fill="var(--ds-bg-subtle)"/><rect x="32" y="34" width="92" height="54" rx="18" fill="#ff8570"/><rect x="148" y="24" width="92" height="74" rx="22" fill="var(--ds-primary)"/><circle cx="252" cy="60" r="28" fill="#2dd4bf"/><path d="M82 28l8 16 18 3-13 12 3 18-16-8-16 8 3-18-13-12 18-3Z" fill="#ffd45e"/></svg>
+                <div class="pcard-meta"><span class="pm-tag">Template</span><span class="pm-dot"></span><span>Friendly prompt set</span></div>
+                <h4>Start with a weekly loop</h4>
+                <p>Pick owners, write one prompt, and send a clean summary when the ritual closes.</p>
+                <button class="btn btn-primary" style="width:100%">Use this template</button>
+              </div>
+              <div class="plist">
+                <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/></svg></span><div class="ptxt"><div>Prompt tone</div><div class="pmeta">Helpful, concise, optimistic</div></div></div>
+                <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19a6.5 6.5 0 0 1 13 0"/></svg></span><div class="ptxt"><div>Default owner</div><div class="pmeta">Product lead</div></div><span class="badge b-inf">Set</span></div>
+                <div class="pli"><span class="pico"><svg class="ico" viewBox="0 0 24 24"><path d="M6.5 17V11a5.5 5.5 0 0 1 11 0v6l1.5 2H5Z"/></svg></span><div class="ptxt"><div>Reminder</div><div class="pmeta">Before Friday close</div></div><span class="badge b-suc">On</span></div>
+              </div>
+            </div>
+            <div class="mbar"><button class="btn btn-primary btn-lg" style="width:100%">Continue</button></div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">Flat Illustration Design Kit · fixed <span class="code">--ds-*</span> contract · inline SVG visuals · local fonts and device frame only</div>
+</main>
+
+<script>
+const tokens = [
+  ['--ds-bg','#fbfaf7 / #1a1726'],['--ds-bg-subtle','#f1eef6 / #221d32'],
+  ['--ds-bg-elevated','#ffffff / #28223a'],['--ds-bg-sunken','#e8e4f0 / #120f1c'],
+  ['--ds-fg','#241f33 / #ece8f6'],['--ds-fg-muted','#555070 / #aaa2c4'],
+  ['--ds-fg-subtle','#6f6a8a / #867e9e'],['--ds-fg-on-accent','#ffffff / #160f2e'],
+  ['--ds-border','#e2ddec / #352d4a'],['--ds-border-strong','#241f33 / #ece8f6'],
+  ['--ds-primary','#5b4bdb / #8a7bff'],['--ds-primary-hover','#4d3fc8 / #9c8fff'],
+  ['--ds-primary-active','#4234ad / #7a6bf0'],['--ds-primary-fg','#ffffff / #14102a'],
+  ['--ds-accent','#e0533f / #ff8570'],['--ds-accent-fg','#ffffff / #3a1006'],
+  ['--ds-success','#1f8a4c / #5fd38a'],['--ds-success-bg','#e2f3e8 / #0e2a18'],
+  ['--ds-success-fg','#0c3a20 / #c9f5d8'],['--ds-warning','#9a6a10 / #f0c050'],
+  ['--ds-warning-bg','#f6ecd2 / #241a06'],['--ds-warning-fg','#43300a / #f6e6be'],
+  ['--ds-danger','#d23b2e / #ff6a5e'],['--ds-danger-bg','#f9e2df / #2a0e0a'],
+  ['--ds-danger-fg','#5a140d / #ffd6d0'],['--ds-info','#2f6fe0 / #6a9aff'],
+  ['--ds-info-bg','#e2ebfb / #0c1c3a'],['--ds-info-fg','#0e2c5e / #d6e4ff'],
+  ['--ds-focus','#5b4bdb / #8a7bff']
+];
+const host = document.getElementById('swatches');
+host.innerHTML = tokens.map(([v,hex]) => `
+  <div class="sw">
+    <div class="chip" style="background:var(${v})"></div>
+    <div class="meta"><div class="name">${v}</div><div class="hex">${hex}</div></div>
+  </div>`).join('');
+
+const MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+const SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/>';
+function toggleTheme(){
+  const root = document.documentElement;
+  const isDark = root.dataset.theme === 'dark';
+  root.dataset.theme = isDark ? 'light' : 'dark';
+  const btn = document.getElementById('themeBtn');
+  const ico = document.getElementById('themeIco');
+  ico.innerHTML = isDark ? MOON : SUN;
+  btn.lastChild.textContent = isDark ? ' 切换暗色' : ' 切换亮色';
+}
+</script>
+</body>
+</html>
