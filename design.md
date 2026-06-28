@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 38 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 39 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 38 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 39 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -172,6 +172,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 38 黑色电影 · Film Noir (Cinematic) — `/styles/38-noir/`（暗色优先）
 电影黑白 + 单一暖强调：明暗强对比、百叶阴影条、主光径向、戏剧衬线标题、场记板、颗粒、灰度双色照。`:root`=暗（夜）：bg `#0c0c0e`·elevated `#1a1a1d` / fg `#ece9e2` / primary 琥珀 `#d9a441`(深字) / accent 深红 `#c83a30`｜亮（高调纸档）bg `#f2f0ea` / primary `#8a5a14` / accent `#b3302a` / fg `#16140f`｜1·2·4（锐）｜Noto Serif 戏剧标题 + Inter 大写标签 + JetBrains Mono 场号｜百叶阴影条 + 明暗径向 + 场记板 + 颗粒 + 灰度双色；深红仅大号粗体。与 11 奢侈（金极简留白）、26 报刊（印刷）、20 瑞士（克制网格）刻意区分（黑白电影戏剧光影）。
+
+### 39 终端绿磷 · Terminal / TUI (Phosphor CRT) — `/styles/39-terminal/`（暗色优先）
+复古终端/TUI：全等宽、ASCII 框线、闪烁块光标、扫描线 + 磷光辉、vim/tmux 状态行、shell 提示符、ANSI 色块。`:root`=暗（绿磷 CRT）：bg `#050a06`·elevated `#0e1a10` / fg `#c8f5d2` / primary 磷绿 `#2ee06a`(深字) / accent 琥珀 `#ffb000`｜亮（纸面终端）bg `#eef2ec` / primary `#157a3e` / accent `#8a5a00` / fg `#0e2014`｜0·0·2（方）｜全 JetBrains Mono + VT323 大标题｜ASCII 框线 + 闪烁光标▍ + 扫描线/磷光(reduced-motion 停) + 状态行 + 提示符 + ANSI chips；宽行在自身容器横滚。与 06 暗黑科技（霓虹青紫现代控制台）、13 赛博朋克（粉青故障）刻意区分（纯等宽 CRT 终端）。
 
 ---
 

@@ -1,0 +1,133 @@
+/**
+ * Terminal / TUI 终端绿磷 (Phosphor CRT) — tokens.css
+ * ---------------------------------------------------------------------------
+ * 严格遵守 ds-token-contract@1：变量名固定，仅取值随风格变。
+ *
+ * 本风格暗色优先：
+ *   :root                         = 暗色 phosphor CRT
+ *   [data-theme="light"], .light   = 亮色 paper terminal / printout
+ *
+ * 气质：全等宽、绿磷 CRT、琥珀次强调、硬边 ASCII/TUI 框、状态行、扫描线。
+ */
+
+/* ============================================================ */
+/* :root —— 默认暗色（DARK FIRST）                              */
+/* ============================================================ */
+:root {
+  /* 表面与文字 */
+  --ds-bg: #050a06;            --ds-bg-subtle: #0a140c;
+  --ds-bg-elevated: #0e1a10;   --ds-bg-sunken: #020503;
+  --ds-fg: #c8f5d2;            --ds-fg-muted: #7fb890;
+  --ds-fg-subtle: #5a8568;     --ds-fg-on-accent: #04140a;
+  --ds-border: #1c3322;        --ds-border-strong: #2ee06a;
+
+  /* 品牌与强调 —— 绿磷主色 + 琥珀 ANSI alt */
+  --ds-primary: #2ee06a;       --ds-primary-hover: #4af07f;
+  --ds-primary-active: #25c85a; --ds-primary-fg: #04140a;
+  --ds-accent: #ffb000;        --ds-accent-fg: #1a1200;
+
+  /* 语义状态 */
+  --ds-success: #2ee06a; --ds-success-bg: #06200f; --ds-success-fg: #bff5cd;
+  --ds-warning: #ffb000; --ds-warning-bg: #241800; --ds-warning-fg: #ffe6b0;
+  --ds-danger:  #ff5f56; --ds-danger-bg:  #260a08; --ds-danger-fg:  #ffd2ce;
+  --ds-info:    #56d4ff; --ds-info-bg:    #06202a; --ds-info-fg:    #cdeeff;
+
+  /* 焦点 */
+  --ds-focus: #2ee06a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* 圆角 */
+  --ds-radius-sm: 0px; --ds-radius-md: 0px; --ds-radius-lg: 2px; --ds-radius-full: 9999px;
+
+  /* 间距（4px 基） */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* 字体 —— 全部等宽 */
+  --ds-font-sans: "JetBrains Mono", ui-monospace, monospace;
+  --ds-font-serif: "JetBrains Mono", ui-monospace, monospace;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* 阴影 / 高度 */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border-strong);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong), 0 0 24px -6px rgba(46,224,106,.4);
+
+  /* 动效 */
+  --ds-ease: cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+/* ============================================================ */
+/* 亮色覆盖 —— [data-theme="light"], .light                     */
+/* ============================================================ */
+[data-theme="light"],
+.light {
+  /* 表面与文字 */
+  --ds-bg: #eef2ec;            --ds-bg-subtle: #e2e8df;
+  --ds-bg-elevated: #f7faf4;   --ds-bg-sunken: #d8e0d4;
+  --ds-fg: #0e2014;            --ds-fg-muted: #3f5a48;
+  --ds-fg-subtle: #5f7a68;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #c8d4c6;        --ds-border-strong: #0e2014;
+
+  /* 品牌与强调 */
+  --ds-primary: #157a3e;       --ds-primary-hover: #126a36;
+  --ds-primary-active: #0f5a2e; --ds-primary-fg: #ffffff;
+  --ds-accent: #8a5a00;        --ds-accent-fg: #ffffff;
+
+  /* 语义状态 */
+  --ds-success: #157a3e; --ds-success-bg: #e2f0e6; --ds-success-fg: #0a3a1e;
+  --ds-warning: #8a5a00; --ds-warning-bg: #f4ecd2; --ds-warning-fg: #3e2a00;
+  --ds-danger:  #b3302a; --ds-danger-bg:  #f6e0dd; --ds-danger-fg:  #511210;
+  --ds-info:    #1f5f8a; --ds-info-bg:    #e2edf4; --ds-info-fg:    #0c2a3e;
+
+  /* 焦点 */
+  --ds-focus: #157a3e;
+
+  /* 阴影 / 高度 */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border-strong);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong);
+}
+
+/* ============================================================ */
+/* [data-theme="dark"], .dark —— 显式暗色（与 :root 同值）       */
+/* ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg: #050a06;            --ds-bg-subtle: #0a140c;
+  --ds-bg-elevated: #0e1a10;   --ds-bg-sunken: #020503;
+  --ds-fg: #c8f5d2;            --ds-fg-muted: #7fb890;
+  --ds-fg-subtle: #5a8568;     --ds-fg-on-accent: #04140a;
+  --ds-border: #1c3322;        --ds-border-strong: #2ee06a;
+
+  --ds-primary: #2ee06a;       --ds-primary-hover: #4af07f;
+  --ds-primary-active: #25c85a; --ds-primary-fg: #04140a;
+  --ds-accent: #ffb000;        --ds-accent-fg: #1a1200;
+
+  --ds-success: #2ee06a; --ds-success-bg: #06200f; --ds-success-fg: #bff5cd;
+  --ds-warning: #ffb000; --ds-warning-bg: #241800; --ds-warning-fg: #ffe6b0;
+  --ds-danger:  #ff5f56; --ds-danger-bg:  #260a08; --ds-danger-fg:  #ffd2ce;
+  --ds-info:    #56d4ff; --ds-info-bg:    #06202a; --ds-info-fg:    #cdeeff;
+
+  --ds-focus: #2ee06a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border-strong);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong), 0 0 24px -6px rgba(46,224,106,.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
