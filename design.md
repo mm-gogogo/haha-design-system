@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 32 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 33 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 32 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 33 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -154,6 +154,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 32 拟物写实 · Skeuomorphism (Rich Skeuo) — `/styles/32-skeuomorphism/`
 旧 iOS 拟物：缝线皮革 + 毛毡 + 拉丝金属 + 玻璃凝胶按钮 + 木纹 + 雕版文字 + 真实多层投影/高光/斜面。primary 凝胶蓝 `#2f6fd0` / accent 黄铜 `#8a6a1e` / bg 亚麻 `#e7ddc9`·elevated `#fbf6ea` / fg `#2c2419`｜暗（夜间皮革/深木）primary `#5d97f0`(深字) / accent `#c9a259` / bg `#1f1a12`·fg `#efe6d2`｜6·12·18｜Inter + Noto Serif 雕版标签｜玻璃凝胶按钮(顶部高光+内阴影+斜面) + 缝线皮革面板 + 拉丝金属开关 + 浮雕输入；正文落实色面。与 08 新拟物（单色柔挤压）刻意区分（真实材质 + 色彩 + 光泽）。
+
+### 33 构成主义 · Constructivism (Soviet Agitprop) — `/styles/33-constructivism/`
+1920s 罗德琴科/利西茨基海报：红 + 黑 + 旧纸米色、斜切动势、粗黑规则线、红黑双色照片拼贴、重型无衬线。primary 构成红 `#c1271f` / accent 墨黑 `#1a1714` / bg 旧纸 `#ece4d3`·elevated `#f7f1e3` / fg `#1a1714`｜暗（夜间鼓动）primary `#e0392c` / accent 米白 `#f0e8d6` / bg `#15120e`·fg `#f0e8d6`｜0·0·2（锐）｜Inter 黑体大斜标题 + JetBrains Mono 大写口号｜斜切红楔 + 几何块 + 粗黑线 + 红黑双色照拼 + 星/喇叭/齿轮；红色仅大号粗体按钮、正文落米/墨；硬投影。与 23 包豪斯（嬉色正圆、正交）、20 瑞士（克制正交网格）刻意区分（红黑斜切鼓动）。
 
 ---
 

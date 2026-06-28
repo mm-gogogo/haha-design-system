@@ -1,0 +1,84 @@
+/* ============================================================
+   Constructivism · 构成主义 Design Tokens
+   Soviet agitprop poster energy: aged cream, red, black, hard
+   rules, diagonal force, photomontage blocks, sharp geometry.
+   Contract: variable names are fixed (--ds-*); only values change.
+   Light :root | Dark [data-theme="dark"] + .dark
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces & text ---- */
+  --ds-bg: #ece4d3;            --ds-bg-subtle: #e0d6c0;
+  --ds-bg-elevated: #f7f1e3;   --ds-bg-sunken: #d4c8ac;
+  --ds-fg: #1a1714;            --ds-fg-muted: #4a4339;
+  --ds-fg-subtle: #6e6454;     --ds-fg-on-accent: #f7f1e3;
+  --ds-border: #c9bb9c;        --ds-border-strong: #1a1714;
+
+  /* ---- Brand & accent ---- */
+  --ds-primary: #c1271f;       --ds-primary-hover: #a51f18;
+  --ds-primary-active: #8a1812;--ds-primary-fg: #f7f1e3;
+  --ds-accent: #1a1714;        --ds-accent-fg: #f7f1e3;
+
+  /* ---- Semantic states ---- */
+  --ds-success: #3a6b2e; --ds-success-bg: #e6efe0; --ds-success-fg: #13310e;
+  --ds-warning: #9a6a14; --ds-warning-bg: #f4e8cf; --ds-warning-fg: #43300a;
+  --ds-danger:  #c1271f; --ds-danger-bg:  #f6e0dc; --ds-danger-fg:  #5a120c;
+  --ds-info:    #1f4a6b; --ds-info-bg:    #e0e9f0; --ds-info-fg:    #0c2436;
+
+  /* ---- Focus ---- */
+  --ds-focus: #c1271f;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- Radius · cut paper geometry ---- */
+  --ds-radius-sm: 0px; --ds-radius-md: 0px; --ds-radius-lg: 2px; --ds-radius-full: 9999px;
+
+  /* ---- Spacing scale (4px base, inherited from Bauhaus) ---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- Typography · heavy grotesque + mono labels ---- */
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", sans-serif;
+  --ds-font-serif: "Noto Serif", serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: -0.02em; --ds-tracking-normal: 0;
+
+  /* ---- Shadows · hard offset ink ---- */
+  --ds-shadow-sm: 2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 8px 8px 0 var(--ds-border-strong);
+
+  /* ---- Motion · functional ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- Night agitprop ---- */
+  --ds-bg: #15120e;            --ds-bg-subtle: #1c1813;
+  --ds-bg-elevated: #221d16;   --ds-bg-sunken: #0d0b08;
+  --ds-fg: #f0e8d6;            --ds-fg-muted: #b4a890;
+  --ds-fg-subtle: #847a64;     --ds-fg-on-accent: #fff8ec;
+  --ds-border: #342d22;        --ds-border-strong: #f0e8d6;
+
+  --ds-primary: #e0392c;       --ds-primary-hover: #ec4d40;
+  --ds-primary-active: #cf2e22;--ds-primary-fg: #fff8ec;
+  --ds-accent: #f0e8d6;        --ds-accent-fg: #15120e;
+
+  --ds-success: #6fbf6f; --ds-success-bg: #102a10; --ds-success-fg: #cdeec0;
+  --ds-warning: #e0b35a; --ds-warning-bg: #241a06; --ds-warning-fg: #f6e6be;
+  --ds-danger:  #e0392c; --ds-danger-bg:  #2a0c08; --ds-danger-fg:  #f8d6cf;
+  --ds-info:    #5a9fd0; --ds-info-bg:    #0a2030; --ds-info-fg:    #d6e8f5;
+
+  --ds-focus: #e0392c;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  --ds-shadow-sm: 2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 8px 8px 0 rgba(0,0,0,.6);
+}
