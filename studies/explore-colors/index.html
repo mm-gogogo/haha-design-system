@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tonal Bench - Palette Explorer</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root{
+      --page:#f2f3ef;
+      --panel:#ffffff;
+      --panel-2:#eceee8;
+      --ink:#171816;
+      --muted:#646963;
+      --faint:#8d928a;
+      --line:#d9ddd4;
+      --line-strong:#bfc5ba;
+      --focus:#1f6feb;
+      --radius:8px;
+      --shadow:0 18px 50px rgba(27,31,25,.12);
+      --ease:cubic-bezier(.2,.8,.2,1);
+      --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+    }
+
+    *{box-sizing:border-box}
+
+    html{
+      min-height:100%;
+      background:var(--page);
+    }
+
+    body{
+      min-height:100vh;
+      margin:0;
+      color:var(--ink);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,0) 28rem),
+        var(--page);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    button{
+      font:inherit;
+    }
+
+    .app{
+      width:min(100% - 32px,1180px);
+      min-height:calc(100vh - 48px);
+      margin:24px auto;
+      display:grid;
+      grid-template-rows:auto 1fr;
+      gap:14px;
+    }
+
+    .chrome{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:16px;
+      align-items:end;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.78);
+      box-shadow:0 1px 0 rgba(255,255,255,.9) inset;
+    }
+
+    .brand{
+      min-width:0;
+    }
+
+    .mono-label{
+      margin:0 0 8px;
+      color:var(--muted);
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      line-height:1.2;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      max-width:680px;
+      margin:0;
+      font-size:32px;
+      line-height:1.05;
+      letter-spacing:-.02em;
+      text-wrap:balance;
+    }
+
+    .subcopy{
+      max-width:660px;
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+      text-wrap:pretty;
+    }
+
+    .controls{
+      display:grid;
+      grid-template-columns:auto auto;
+      gap:10px;
+      align-items:center;
+      justify-content:end;
+    }
+
+    .segments{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      padding:3px;
+      border:1px solid var(--line);
+      border-radius:9px;
+      background:var(--panel-2);
+    }
+
+    .segment{
+      min-height:34px;
+      padding:0 12px;
+      border:0;
+      border-radius:6px;
+      color:var(--muted);
+      background:transparent;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background-color .18s var(--ease),color .18s var(--ease),box-shadow .18s var(--ease);
+    }
+
+    .segment:hover{
+      color:var(--ink);
+      background:rgba(255,255,255,.72);
+    }
+
+    .segment[aria-pressed="true"]{
+      color:var(--ink);
+      background:var(--panel);
+      box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 3px rgba(27,31,25,.08);
+    }
+
+    .generate{
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      padding:0 15px;
+      border:1px solid #151713;
+      border-radius:8px;
+      color:#fff;
+      background:#151713;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .18s var(--ease),background-color .18s var(--ease),border-color .18s var(--ease);
+    }
+
+    .generate:hover{
+      background:#2a2d27;
+      border-color:#2a2d27;
+      transform:translateY(-1px);
+    }
+
+    .generate:active{
+      transform:translateY(0);
+    }
+
+    .generate svg{
+      width:15px;
+      height:15px;
+      flex:0 0 auto;
+    }
+
+    .segment:focus-visible,
+    .generate:focus-visible,
+    .swatch:focus-visible{
+      outline:2px solid var(--focus);
+      outline-offset:3px;
+    }
+
+    .workspace{
+      min-height:0;
+      display:grid;
+      grid-template-rows:auto minmax(420px,1fr);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+
+    .palette-meta{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:16px;
+      align-items:center;
+      min-height:72px;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:#fbfcf9;
+    }
+
+    .palette-title{
+      min-width:0;
+    }
+
+    .palette-title strong{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      letter-spacing:-.01em;
+    }
+
+    .palette-title span{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-family:var(--mono);
+      font-size:11px;
+      line-height:1.35;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+
+    .readout{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:8px;
+      min-width:0;
+    }
+
+    .pill{
+      min-height:30px;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:0 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      background:#fff;
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      line-height:1;
+      white-space:nowrap;
+    }
+
+    .pill b{
+      color:var(--ink);
+      font-weight:600;
+    }
+
+    .palette-grid{
+      min-height:0;
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      background:#111;
+    }
+
+    .swatch{
+      position:relative;
+      min-width:0;
+      min-height:100%;
+      display:flex;
+      align-items:stretch;
+      justify-content:stretch;
+      padding:0;
+      border:0;
+      border-right:1px solid rgba(0,0,0,.16);
+      color:var(--swatch-ink,#fff);
+      background:var(--swatch,#000);
+      cursor:pointer;
+      overflow:hidden;
+      isolation:isolate;
+      transition:flex .2s var(--ease),filter .2s var(--ease),transform .2s var(--ease);
+    }
+
+    .swatch:last-child{
+      border-right:0;
+    }
+
+    .swatch::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 34%),
+        linear-gradient(0deg,rgba(0,0,0,.1),rgba(0,0,0,0) 42%);
+      opacity:.58;
+      transition:opacity .2s var(--ease);
+    }
+
+    .swatch:hover::before,
+    .swatch.is-copied::before{
+      opacity:.82;
+    }
+
+    .swatch-inner{
+      width:100%;
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:20px;
+      padding:22px;
+      text-align:left;
+    }
+
+    .swatch-index{
+      width:28px;
+      height:28px;
+      display:inline-grid;
+      place-items:center;
+      border:1px solid var(--swatch-line,rgba(255,255,255,.42));
+      border-radius:999px;
+      color:var(--swatch-soft,currentColor);
+      background:var(--swatch-chip,rgba(0,0,0,.12));
+      font-family:var(--mono);
+      font-size:11px;
+      line-height:1;
+    }
+
+    .hex-stack{
+      display:grid;
+      gap:9px;
+    }
+
+    .hex{
+      display:block;
+      color:var(--swatch-ink,#fff);
+      font-family:var(--mono);
+      font-size:18px;
+      font-weight:500;
+      line-height:1;
+      letter-spacing:.02em;
+    }
+
+    .copy-line{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:var(--swatch-soft,currentColor);
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .copy-line svg{
+      width:13px;
+      height:13px;
+      flex:0 0 auto;
+    }
+
+    .copied-label{
+      display:none;
+    }
+
+    .swatch.is-copied .copy-label{
+      display:none;
+    }
+
+    .swatch.is-copied .copied-label{
+      display:inline;
+    }
+
+    .copy-status{
+      position:fixed;
+      left:50%;
+      bottom:86px;
+      z-index:40;
+      transform:translate(-50%,10px);
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      color:#f5f6f1;
+      background:rgba(18,20,17,.9);
+      box-shadow:0 10px 24px rgba(0,0,0,.2);
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      line-height:1;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s var(--ease),transform .18s var(--ease);
+    }
+
+    .copy-status.is-visible{
+      opacity:1;
+      transform:translate(-50%,0);
+    }
+
+    @media (max-width:980px){
+      .chrome{
+        grid-template-columns:1fr;
+        align-items:start;
+      }
+
+      .controls{
+        width:100%;
+        grid-template-columns:1fr auto;
+        justify-content:stretch;
+      }
+
+      .segments{
+        min-width:0;
+        overflow:auto;
+        scrollbar-width:none;
+      }
+
+      .segments::-webkit-scrollbar{
+        display:none;
+      }
+    }
+
+    @media (max-width:680px){
+      .app{
+        width:min(100% - 20px,1180px);
+        min-height:calc(100vh - 20px);
+        margin:10px auto;
+        gap:10px;
+      }
+
+      .chrome{
+        padding:14px;
+      }
+
+      h1{
+        font-size:26px;
+      }
+
+      .controls{
+        grid-template-columns:1fr;
+      }
+
+      .segments{
+        width:100%;
+      }
+
+      .segment{
+        flex:1 0 auto;
+        padding:0 10px;
+      }
+
+      .generate{
+        width:100%;
+      }
+
+      .workspace{
+        grid-template-rows:auto auto;
+      }
+
+      .palette-meta{
+        grid-template-columns:1fr;
+        align-items:start;
+        padding:13px 14px;
+      }
+
+      .readout{
+        justify-content:flex-start;
+      }
+
+      .palette-grid{
+        grid-template-columns:1fr;
+      }
+
+      .swatch{
+        min-height:112px;
+        border-right:0;
+        border-bottom:1px solid rgba(0,0,0,.16);
+      }
+
+      .swatch:last-child{
+        border-bottom:0;
+      }
+
+      .swatch-inner{
+        min-height:112px;
+        flex-direction:row;
+        align-items:flex-end;
+        gap:14px;
+        padding:18px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,
+      *::before,
+      *::after{
+        transition:none!important;
+        animation:none!important;
+        scroll-behavior:auto!important;
+      }
+    }
+
+    @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} }
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="Tonal Bench palette explorer">
+    <section class="chrome" aria-labelledby="page-title">
+      <div class="brand">
+        <p class="mono-label">Tonal Bench / Fixed Harmony Sets</p>
+        <h1 id="page-title">A compact palette bench for reviewing color relationships.</h1>
+        <p class="subcopy">Pick a harmony, generate the next curated set, then click any column to copy its hex value.</p>
+      </div>
+
+      <div class="controls" aria-label="Palette controls">
+        <div class="segments" role="group" aria-label="Harmony">
+          <button class="segment" type="button" data-harmony="Analogous" aria-pressed="true">Analogous</button>
+          <button class="segment" type="button" data-harmony="Complementary" aria-pressed="false">Complementary</button>
+          <button class="segment" type="button" data-harmony="Triadic" aria-pressed="false">Triadic</button>
+          <button class="segment" type="button" data-harmony="Monochrome" aria-pressed="false">Monochrome</button>
+        </div>
+        <button class="generate" type="button" id="generate-button">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 1-15.2 6.5"/>
+            <path d="M3 12A9 9 0 0 1 18.2 5.5"/>
+            <path d="M18 2v4h-4"/>
+            <path d="M6 22v-4h4"/>
+          </svg>
+          Generate
+        </button>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="Generated palette">
+      <div class="palette-meta">
+        <div class="palette-title">
+          <strong id="palette-name">Market Morning</strong>
+          <span id="palette-note">Analogous range for warm product accents</span>
+        </div>
+        <div class="readout" aria-label="Palette details">
+          <span class="pill">Harmony <b id="palette-harmony">Analogous</b></span>
+          <span class="pill">Set <b id="palette-count">01 / 08</b></span>
+        </div>
+      </div>
+      <div class="palette-grid" id="palette-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div class="copy-status" id="copy-status" role="status" aria-live="polite">Hex copied</div>
+
+  <script>
+    const PALETTES = [
+      {
+        name: "Market Morning",
+        harmony: "Analogous",
+        note: "Analogous range for warm product accents",
+        colors: ["#F05A28", "#F78E3D", "#F2C94C", "#A6C65B", "#4D9278"]
+      },
+      {
+        name: "North Window",
+        harmony: "Analogous",
+        note: "Cool adjacent hues for calm inspection flows",
+        colors: ["#DCE9E7", "#A8CCC8", "#6CA9A7", "#337F88", "#1D5265"]
+      },
+      {
+        name: "Signal Pair",
+        harmony: "Complementary",
+        note: "Balanced contrast for primary and opposing states",
+        colors: ["#173F5F", "#2B6C8F", "#F6F4EA", "#F7A044", "#D64B2A"]
+      },
+      {
+        name: "Violet Field",
+        harmony: "Complementary",
+        note: "Soft violet and orchard yellow with neutral support",
+        colors: ["#2A1E45", "#6E4BA7", "#D7C8F6", "#F2D76B", "#7A681F"]
+      },
+      {
+        name: "Studio Triad",
+        harmony: "Triadic",
+        note: "Three clear color families with quiet bridge tones",
+        colors: ["#26547C", "#4EA5A3", "#F6F7EF", "#FFD166", "#EF476F"]
+      },
+      {
+        name: "Archive Triad",
+        harmony: "Triadic",
+        note: "Earth, blue, and red arranged for editorial tooling",
+        colors: ["#233D4D", "#619B8A", "#FCCA46", "#FE7F2D", "#A23E48"]
+      },
+      {
+        name: "Ink Wash",
+        harmony: "Monochrome",
+        note: "Single-hue blue ramp for dense interface layers",
+        colors: ["#F3F7FB", "#C9DAEC", "#7EA7CF", "#376F9E", "#123B5D"]
+      },
+      {
+        name: "Olive Draft",
+        harmony: "Monochrome",
+        note: "A green-gray ramp for understated system surfaces",
+        colors: ["#F4F5EE", "#CED7BE", "#97A97C", "#5F734E", "#27361F"]
+      }
+    ];
+
+    const grid = document.getElementById("palette-grid");
+    const nameEl = document.getElementById("palette-name");
+    const noteEl = document.getElementById("palette-note");
+    const harmonyEl = document.getElementById("palette-harmony");
+    const countEl = document.getElementById("palette-count");
+    const statusEl = document.getElementById("copy-status");
+    const generateButton = document.getElementById("generate-button");
+    const segmentButtons = Array.from(document.querySelectorAll("[data-harmony]"));
+
+    let currentIndex = 0;
+    let activeHarmony = PALETTES[0].harmony;
+    let statusTimer = 0;
+
+    function hexToRgb(hex){
+      const clean = hex.replace("#","");
+      return {
+        r: parseInt(clean.slice(0,2),16),
+        g: parseInt(clean.slice(2,4),16),
+        b: parseInt(clean.slice(4,6),16)
+      };
+    }
+
+    function channelToLinear(value){
+      const ratio = value / 255;
+      return ratio <= 0.03928 ? ratio / 12.92 : Math.pow((ratio + 0.055) / 1.055, 2.4);
+    }
+
+    function luminance(hex){
+      const rgb = hexToRgb(hex);
+      return 0.2126 * channelToLinear(rgb.r) + 0.7152 * channelToLinear(rgb.g) + 0.0722 * channelToLinear(rgb.b);
+    }
+
+    function contrastInk(hex){
+      const lum = luminance(hex);
+      const blackContrast = (lum + 0.05) / 0.05;
+      const whiteContrast = 1.05 / (lum + 0.05);
+      return whiteContrast >= blackContrast ? "#FFFFFF" : "#111312";
+    }
+
+    function inkTokens(hex){
+      const ink = contrastInk(hex);
+      const darkInk = ink === "#111312";
+      return {
+        ink,
+        soft: darkInk ? "rgba(17,19,18,.68)" : "rgba(255,255,255,.74)",
+        line: darkInk ? "rgba(17,19,18,.28)" : "rgba(255,255,255,.42)",
+        chip: darkInk ? "rgba(255,255,255,.26)" : "rgba(0,0,0,.16)"
+      };
+    }
+
+    function formatIndex(index){
+      return String(index + 1).padStart(2,"0");
+    }
+
+    function renderPalette(index){
+      const palette = PALETTES[index];
+      currentIndex = index;
+      activeHarmony = palette.harmony;
+      nameEl.textContent = palette.name;
+      noteEl.textContent = palette.note;
+      harmonyEl.textContent = palette.harmony;
+      countEl.textContent = `${formatIndex(index)} / ${formatIndex(PALETTES.length - 1)}`;
+
+      segmentButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.harmony === palette.harmony));
+      });
+
+      grid.innerHTML = "";
+      palette.colors.forEach((hex, colorIndex) => {
+        const tokens = inkTokens(hex);
+        const swatch = document.createElement("button");
+        swatch.type = "button";
+        swatch.className = "swatch";
+        swatch.style.setProperty("--swatch", hex);
+        swatch.style.setProperty("--swatch-ink", tokens.ink);
+        swatch.style.setProperty("--swatch-soft", tokens.soft);
+        swatch.style.setProperty("--swatch-line", tokens.line);
+        swatch.style.setProperty("--swatch-chip", tokens.chip);
+        swatch.setAttribute("aria-label", `Copy ${hex}`);
+        swatch.innerHTML = `
+          <span class="swatch-inner">
+            <span class="swatch-index">${formatIndex(colorIndex)}</span>
+            <span class="hex-stack">
+              <span class="hex">${hex}</span>
+              <span class="copy-line">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span class="copy-label">Copy hex</span>
+                <span class="copied-label">Copied</span>
+              </span>
+            </span>
+          </span>
+        `;
+        swatch.addEventListener("click", () => copyHex(hex, swatch));
+        grid.appendChild(swatch);
+      });
+    }
+
+    function nextIndexForHarmony(harmony, fromIndex){
+      const matches = PALETTES
+        .map((palette, index) => palette.harmony === harmony ? index : -1)
+        .filter((index) => index >= 0);
+      const currentPosition = matches.indexOf(fromIndex);
+      return matches[(currentPosition + 1) % matches.length];
+    }
+
+    async function copyHex(hex, swatch){
+      let copied = false;
+
+      if(navigator.clipboard && window.isSecureContext){
+        try{
+          await navigator.clipboard.writeText(hex);
+          copied = true;
+        }catch(error){
+          copied = false;
+        }
+      }
+
+      if(!copied){
+        const field = document.createElement("textarea");
+        field.value = hex;
+        field.setAttribute("readonly","");
+        field.style.position = "fixed";
+        field.style.top = "-100px";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        try{
+          copied = document.execCommand("copy");
+        }catch(error){
+          copied = false;
+        }
+        field.remove();
+      }
+
+      showCopiedState(swatch, copied ? `${hex} copied` : `${hex} ready to select`);
+    }
+
+    function showCopiedState(swatch, message){
+      document.querySelectorAll(".swatch.is-copied").forEach((item) => item.classList.remove("is-copied"));
+      swatch.classList.add("is-copied");
+      statusEl.textContent = message;
+      statusEl.classList.add("is-visible");
+
+      window.clearTimeout(statusTimer);
+      statusTimer = window.setTimeout(() => {
+        swatch.classList.remove("is-copied");
+        statusEl.classList.remove("is-visible");
+      }, 1300);
+    }
+
+    segmentButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const harmony = button.dataset.harmony;
+        const firstMatch = PALETTES.findIndex((palette) => palette.harmony === harmony);
+        if(firstMatch >= 0){
+          renderPalette(firstMatch);
+        }
+      });
+    });
+
+    generateButton.addEventListener("click", () => {
+      renderPalette(nextIndexForHarmony(activeHarmony, currentIndex));
+    });
+
+    renderPalette(currentIndex);
+  </script>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Explore Colors》 by tylers · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>

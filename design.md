@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 34 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 35 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 34 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 35 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -160,6 +160,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 34 暗黑学院 · Dark Academia (Literary / Library) — `/styles/34-dark-academia/`
 学院文学、烛光藏书：手稿纸 + 牛血红 + 瓶绿 + 烛光铜、衬线为主。primary 牛血红 `#7c2b22` / accent 瓶绿 `#2f4a32` / 铜 `#9a7b2e`(仅印章/装饰线) / bg 手稿纸 `#ece3d0`·elevated `#f6efdd` / fg 棕墨 `#2a2018`｜暗（烛夜书房）primary `#b8463a` / accent 苔绿 `#8fb07a` / 铜 `#c9a86a` / bg `#16110c`·fg `#ece0c8`｜3·6·10｜Noto Serif 为主 + Inter 小型大写标签 + JetBrains Mono 脚注号｜首字下沉 + 脚注/边注 + 火漆印章 + 缎带书签 + 藏书票/目录卡 + 花饰分隔线；正文落纸/墨、铜仅装饰。与 11 奢侈（极简炭金大留白）、07 编辑（现代赭橙阅读）刻意区分（更文学、更密、牛血红/瓶绿学院气）。
+
+### 35 90s 网页 · Web 1.0 (Geocities / Win95) — `/styles/35-web1/`
+早期个人主页的「作品级」致敬（保持干净易读、不做坏）：平铺壁纸 + 立体斜面按钮 + 跑马灯 + 访客计数器 + 网络环导航 + NEW!/施工中徽章 + 彩虹分隔线 + 表格式版面。primary 超链接蓝 `#1818c0` / accent 品红 `#c01878` / bg 银灰 `#dfe3ec`·elevated `#fff` / fg `#0a0a1a`｜暗（星空 BBS）primary `#5ab0ff`(深字) / accent `#ff5ad8` / bg `#07071a`·fg `#e4e4ff`｜0·2·4（方）｜Noto Serif(Times) 标题 + Inter 正文 + VT323 计数/跑马灯｜立体斜面 + 跑马灯(reduced-motion 停) + 计数器 + 网络环。与 02 像素（8-bit 游戏、Press Start）刻意区分（文档主页感、Times + 斜面）。
 
 ---
 
