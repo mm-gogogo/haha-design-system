@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relayframe Stream Manager · Effect Study</title>
+  <style>
+    :root{
+      --bg:#080b0d;
+      --panel:#0d1317;
+      --panel-2:#111a1f;
+      --panel-3:#151d22;
+      --line:rgba(174,199,204,.17);
+      --line-strong:rgba(195,224,230,.34);
+      --text:#edf5f3;
+      --muted:#8fa1a4;
+      --dim:#536367;
+      --green:#69f0a3;
+      --amber:#ffd166;
+      --red:#ff5f57;
+      --cyan:#60d5ff;
+      --blue:#76a9ff;
+      --ink:#030506;
+      --radius:6px;
+      --mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100%;overflow-x:hidden}
+    body{
+      margin:0;
+      min-height:100dvh;
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/48px 48px,
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px) 0 0/48px 48px,
+        radial-gradient(circle at 14% 0%,rgba(96,213,255,.13),transparent 34%),
+        radial-gradient(circle at 88% 18%,rgba(105,240,163,.08),transparent 32%),
+        var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+      padding:16px 16px 96px;
+    }
+
+    button,input{font:inherit}
+    button{color:inherit}
+    svg{display:block}
+
+    .shell{
+      width:min(1660px,100%);
+      margin:0 auto;
+      border:1px solid var(--line-strong);
+      background:linear-gradient(180deg,rgba(14,22,26,.94),rgba(7,10,12,.96));
+      box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06);
+      min-width:0;
+    }
+
+    .topbar{
+      display:grid;
+      grid-template-columns:minmax(220px,1.1fr) minmax(320px,1.5fr) minmax(190px,.7fr);
+      min-width:0;
+      border-bottom:1px solid var(--line-strong);
+      background:#0a0f12;
+    }
+
+    .brand,
+    .clock,
+    .health{
+      min-width:0;
+      padding:14px 16px;
+      border-right:1px solid var(--line);
+    }
+
+    .health{border-right:0}
+
+    .brand-mark{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .mark{
+      width:38px;
+      height:38px;
+      border:1px solid var(--line-strong);
+      background:#0f191d;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+    }
+
+    .brand h1{
+      margin:0;
+      font:700 17px/1.05 var(--sans);
+      letter-spacing:0;
+      color:#f8fffd;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand p,
+    .clock p,
+    .health p{
+      margin:5px 0 0;
+      font-size:10px;
+      line-height:1.4;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.11em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .clock{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:1px;
+      background:
+        linear-gradient(#0a0f12,#0a0f12) padding-box,
+        linear-gradient(90deg,transparent,var(--line),transparent) border-box;
+      padding:0;
+    }
+
+    .clock-cell{
+      padding:13px 14px;
+      background:#0a0f12;
+      min-width:0;
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+
+    .clock-cell:last-child{border-right:0}
+
+    .clock strong{
+      display:block;
+      font-size:15px;
+      line-height:1;
+      color:#f4fbf8;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .health{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      min-height:24px;
+      border:1px solid var(--line-strong);
+      background:#10191d;
+      color:#cfe0df;
+      padding:0 9px;
+      border-radius:999px;
+      font-size:10px;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      white-space:nowrap;
+    }
+
+    .chip.hot{border-color:rgba(105,240,163,.48);color:#dffff0;background:rgba(105,240,163,.08)}
+    .chip.warn{border-color:rgba(255,209,102,.44);color:#ffe7a3;background:rgba(255,209,102,.08)}
+    .chip.cold{border-color:rgba(96,213,255,.42);color:#d8f5ff;background:rgba(96,213,255,.08)}
+    .chip.stop{border-color:rgba(255,95,87,.38);color:#ffc5c1;background:rgba(255,95,87,.08)}
+
+    .led{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--dim);
+      box-shadow:0 0 0 1px rgba(255,255,255,.12);
+      flex:0 0 auto;
+    }
+
+    .led.on{background:var(--green);box-shadow:0 0 0 1px rgba(105,240,163,.48),0 0 14px rgba(105,240,163,.42)}
+    .led.warn{background:var(--amber);box-shadow:0 0 0 1px rgba(255,209,102,.48),0 0 14px rgba(255,209,102,.32)}
+    .led.stop{background:var(--red);box-shadow:0 0 0 1px rgba(255,95,87,.48),0 0 14px rgba(255,95,87,.35)}
+
+    .status-lane{
+      display:grid;
+      grid-template-columns:repeat(8,minmax(104px,1fr));
+      border-bottom:1px solid var(--line);
+      background:#0b1114;
+      overflow:hidden;
+    }
+
+    .status-item{
+      min-width:0;
+      padding:10px 12px;
+      border-right:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:10px;
+      color:#b8c6c5;
+      text-transform:uppercase;
+      letter-spacing:.09em;
+    }
+
+    .status-item:last-child{border-right:0}
+    .status-item b{font-weight:700;color:#f1faf7;white-space:nowrap}
+    .status-item span{white-space:nowrap;color:var(--muted)}
+
+    .main-grid{
+      display:grid;
+      grid-template-columns:minmax(310px,.95fr) minmax(420px,1.18fr) minmax(320px,.95fr);
+      min-width:0;
+      border-bottom:1px solid var(--line-strong);
+    }
+
+    .module{
+      min-width:0;
+      border-right:1px solid var(--line-strong);
+      background:rgba(11,17,20,.76);
+    }
+
+    .module:last-child{border-right:0}
+
+    .module-head{
+      min-height:86px;
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.04),transparent),
+        #0c1316;
+    }
+
+    .module-title{
+      min-width:0;
+    }
+
+    .kicker{
+      display:block;
+      margin-bottom:7px;
+      font-size:10px;
+      line-height:1;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+
+    .module h2{
+      margin:0;
+      font:700 22px/1.05 var(--sans);
+      letter-spacing:0;
+      color:#f8fffd;
+    }
+
+    .module-copy{
+      margin:8px 0 0;
+      max-width:44ch;
+      color:#8fa1a4;
+      font-size:11px;
+      line-height:1.5;
+    }
+
+    .plate{
+      display:grid;
+      place-items:center;
+      width:48px;
+      height:48px;
+      border:1px solid var(--line-strong);
+      background:#121d22;
+      color:#d9e8e6;
+      font-size:12px;
+      font-weight:800;
+      flex:0 0 auto;
+    }
+
+    .scroll-x{
+      overflow-x:auto;
+      overflow-y:hidden;
+      max-width:100%;
+      min-width:0;
+      scrollbar-color:rgba(170,196,199,.28) transparent;
+      scrollbar-width:thin;
+    }
+
+    .scroll-x::-webkit-scrollbar{height:8px}
+    .scroll-x::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
+    .scroll-x::-webkit-scrollbar-thumb{background:rgba(170,196,199,.26);border-radius:99px}
+
+    .channel-bank{
+      min-width:760px;
+      display:grid;
+      grid-template-columns:repeat(8,1fr);
+      border-bottom:1px solid var(--line);
+    }
+
+    .strip{
+      min-height:520px;
+      padding:12px 10px;
+      border-right:1px solid var(--line);
+      display:grid;
+      grid-template-rows:auto auto 1fr auto auto;
+      gap:12px;
+      background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,0));
+    }
+
+    .strip:last-child{border-right:0}
+
+    .strip-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+
+    .mono-label{
+      color:#f4fbf8;
+      font-size:11px;
+      line-height:1;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .tiny{
+      color:var(--dim);
+      font-size:9px;
+      line-height:1;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+
+    .toggle{
+      width:42px;
+      height:20px;
+      border:1px solid var(--line-strong);
+      border-radius:999px;
+      background:#070b0d;
+      position:relative;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);
+    }
+
+    .toggle::after{
+      content:"";
+      position:absolute;
+      top:3px;
+      left:3px;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#445257;
+      transition:transform .2s ease,background .2s ease;
+    }
+
+    .toggle.on::after{transform:translateX(20px);background:var(--green);box-shadow:0 0 11px rgba(105,240,163,.45)}
+    .toggle.warn::after{transform:translateX(20px);background:var(--amber);box-shadow:0 0 11px rgba(255,209,102,.36)}
+
+    .meter-stack{
+      display:grid;
+      grid-template-columns:12px 1fr;
+      gap:7px;
+      min-height:252px;
+      align-items:stretch;
+    }
+
+    .vu{
+      --level:54;
+      display:grid;
+      align-content:end;
+      gap:3px;
+      padding:3px;
+      border:1px solid rgba(180,207,211,.18);
+      background:#070b0d;
+      min-height:252px;
+    }
+
+    .vu span{
+      display:block;
+      height:7px;
+      background:#182327;
+      border:1px solid rgba(255,255,255,.035);
+    }
+
+    .vu span:nth-child(-n+3){background:linear-gradient(90deg,#40201f,#6b2926)}
+    .vu span:nth-child(n+4):nth-child(-n+7){background:linear-gradient(90deg,#3b3116,#806821)}
+    .vu span:nth-child(n+8){background:linear-gradient(90deg,#123525,#1f9c65)}
+    .vu[data-meter="quiet"] span:nth-child(-n+8){background:#182327}
+
+    .vu span:nth-child(1){opacity:calc((var(--level) - 88) / 12)}
+    .vu span:nth-child(2){opacity:calc((var(--level) - 80) / 12)}
+    .vu span:nth-child(3){opacity:calc((var(--level) - 72) / 12)}
+    .vu span:nth-child(4){opacity:calc((var(--level) - 64) / 12)}
+    .vu span:nth-child(5){opacity:calc((var(--level) - 56) / 12)}
+    .vu span:nth-child(6){opacity:calc((var(--level) - 48) / 12)}
+    .vu span:nth-child(7){opacity:calc((var(--level) - 40) / 12)}
+    .vu span:nth-child(8){opacity:calc((var(--level) - 32) / 12)}
+    .vu span:nth-child(9){opacity:calc((var(--level) - 24) / 12)}
+    .vu span:nth-child(10){opacity:calc((var(--level) - 16) / 12)}
+    .vu span:nth-child(11){opacity:calc((var(--level) - 8) / 12)}
+    .vu span:nth-child(12){opacity:.96}
+
+    .scale{
+      display:grid;
+      align-content:space-between;
+      padding:4px 0;
+      color:#536367;
+      font-size:8px;
+      text-align:right;
+    }
+
+    .fader{
+      height:100%;
+      min-height:252px;
+      display:grid;
+      grid-template-columns:1fr 22px;
+      gap:7px;
+    }
+
+    .rail{
+      position:relative;
+      height:100%;
+      border-left:1px solid rgba(255,255,255,.18);
+      border-right:1px solid rgba(255,255,255,.08);
+      background:
+        repeating-linear-gradient(180deg,rgba(255,255,255,.16) 0 1px,transparent 1px 24px),
+        linear-gradient(90deg,transparent 45%,rgba(255,255,255,.18) 45% 55%,transparent 55%);
+    }
+
+    .cap{
+      position:absolute;
+      left:50%;
+      bottom:var(--pos,52%);
+      width:36px;
+      height:12px;
+      transform:translate(-50%,50%);
+      border:1px solid rgba(255,255,255,.4);
+      background:linear-gradient(180deg,#e7f2ee,#8ca09f);
+      box-shadow:0 7px 18px rgba(0,0,0,.45);
+    }
+
+    .level-value{
+      align-self:end;
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+      color:#c2d3d1;
+      font-size:10px;
+      letter-spacing:.1em;
+    }
+
+    .strip-foot{
+      display:grid;
+      gap:8px;
+    }
+
+    .strip-meta{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+      align-items:center;
+      color:#9caeae;
+      font-size:9px;
+      line-height:1.2;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .mini-buttons{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:4px;
+    }
+
+    .mini-buttons button{
+      border:1px solid rgba(180,207,211,.16);
+      background:#10171b;
+      min-height:26px;
+      font-size:9px;
+      color:#b7c6c5;
+      padding:0;
+    }
+
+    .mini-buttons button.active{
+      color:#07100c;
+      background:var(--green);
+      border-color:var(--green);
+    }
+
+    .matrix-wrap{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .matrix{
+      min-width:700px;
+      display:grid;
+      grid-template-columns:92px repeat(8,1fr);
+      grid-auto-rows:42px;
+      border:1px solid var(--line-strong);
+      background:#080d10;
+    }
+
+    .matrix > div{
+      border-right:1px solid rgba(174,199,204,.14);
+      border-bottom:1px solid rgba(174,199,204,.14);
+      display:grid;
+      place-items:center;
+      position:relative;
+      min-width:0;
+      color:#8fa1a4;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .matrix > div:nth-child(9n){border-right:0}
+    .matrix > div:nth-last-child(-n+9){border-bottom:0}
+
+    .axis{
+      background:#0e161a;
+      color:#d5e5e3!important;
+      font-weight:800;
+    }
+
+    .corner{
+      background:
+        linear-gradient(135deg,transparent calc(50% - 1px),rgba(174,199,204,.22) 50%,transparent calc(50% + 1px)),
+        #0e161a;
+    }
+
+    .node::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border:1px solid rgba(180,207,211,.3);
+      border-radius:50%;
+      background:#10191d;
+    }
+
+    .node.patch::before{
+      background:var(--green);
+      border-color:rgba(105,240,163,.9);
+      box-shadow:0 0 16px rgba(105,240,163,.48);
+    }
+
+    .node.cue::before{
+      background:var(--amber);
+      border-color:rgba(255,209,102,.9);
+      box-shadow:0 0 13px rgba(255,209,102,.36);
+    }
+
+    .node.lock::before{
+      background:var(--cyan);
+      border-color:rgba(96,213,255,.9);
+      box-shadow:0 0 13px rgba(96,213,255,.36);
+    }
+
+    .matrix-legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:12px 0 0;
+    }
+
+    .trace-panel{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      border-bottom:1px solid var(--line);
+    }
+
+    .trace{
+      min-height:172px;
+      padding:14px;
+      border-right:1px solid var(--line);
+      background:#0b1114;
+    }
+
+    .trace:last-child{border-right:0}
+
+    .trace h3,
+    .lane h3,
+    .queue h3{
+      margin:0 0 10px;
+      font-size:11px;
+      line-height:1;
+      color:#e7f2ef;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .scope{
+      height:96px;
+      border:1px solid rgba(180,207,211,.18);
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px) 0 0/18px 18px,
+        linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px) 0 0/18px 18px,
+        #080d10;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .scope svg{
+      width:100%;
+      height:100%;
+    }
+
+    .scope path{
+      fill:none;
+      stroke:var(--cyan);
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      filter:drop-shadow(0 0 7px rgba(96,213,255,.4));
+    }
+
+    .scope .amber path{stroke:var(--amber);filter:drop-shadow(0 0 7px rgba(255,209,102,.34))}
+
+    .sweep{
+      position:absolute;
+      inset:0 auto 0 -30%;
+      width:30%;
+      background:linear-gradient(90deg,transparent,rgba(96,213,255,.12),transparent);
+      animation:sweep 3.8s linear infinite;
+    }
+
+    @keyframes sweep{
+      to{transform:translateX(430%)}
+    }
+
+    .right-stack{
+      display:grid;
+      grid-template-rows:auto auto 1fr;
+    }
+
+    .buses{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      display:grid;
+      gap:10px;
+    }
+
+    .bus{
+      display:grid;
+      grid-template-columns:74px 1fr auto;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .bus label{
+      color:#e6f0ee;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .bar{
+      --level:50;
+      height:12px;
+      border:1px solid rgba(180,207,211,.18);
+      background:#070b0d;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .bar::before{
+      content:"";
+      position:absolute;
+      inset:2px auto 2px 2px;
+      width:calc(var(--level)*1%);
+      max-width:calc(100% - 4px);
+      background:linear-gradient(90deg,var(--green),var(--amber) 72%,var(--red));
+      box-shadow:0 0 13px rgba(105,240,163,.28);
+    }
+
+    .bus output{
+      color:#9cafae;
+      font-size:10px;
+      min-width:48px;
+      text-align:right;
+    }
+
+    .queue{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .queue-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .queue-card{
+      min-width:0;
+      min-height:82px;
+      padding:10px;
+      border:1px solid rgba(180,207,211,.18);
+      background:#0c1316;
+      display:grid;
+      align-content:space-between;
+      gap:10px;
+    }
+
+    .queue-card strong{
+      font-size:13px;
+      line-height:1.1;
+      color:#f7fffc;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .queue-card span{
+      color:var(--muted);
+      font-size:9px;
+      line-height:1.35;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .lane{
+      padding:16px;
+      min-height:220px;
+    }
+
+    .lane-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .lane-row{
+      min-width:0;
+      display:grid;
+      grid-template-columns:56px 1fr auto;
+      align-items:center;
+      gap:10px;
+      padding:8px;
+      border:1px solid rgba(180,207,211,.16);
+      background:#0b1114;
+      color:#aebfbe;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .lane-row b{color:#f2fbf8}
+    .lane-row span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .console{
+      display:grid;
+      grid-template-columns:minmax(300px,.95fr) minmax(380px,1.45fr) minmax(240px,.8fr);
+      min-width:0;
+      background:#070b0d;
+    }
+
+    .console > section{
+      min-width:0;
+      padding:14px 16px;
+      border-right:1px solid var(--line);
+    }
+
+    .console > section:last-child{border-right:0}
+
+    .console h2{
+      margin:0 0 10px;
+      font-size:11px;
+      line-height:1;
+      color:#e7f2ef;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .command-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:6px;
+    }
+
+    .command{
+      border:1px solid rgba(180,207,211,.18);
+      background:#0e1518;
+      color:#c5d4d3;
+      min-height:34px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .command.primary{
+      color:#07100c;
+      background:var(--green);
+      border-color:var(--green);
+      font-weight:800;
+    }
+
+    .log{
+      height:146px;
+      overflow:auto;
+      border:1px solid rgba(180,207,211,.16);
+      background:#050809;
+      scrollbar-color:rgba(170,196,199,.28) transparent;
+      scrollbar-width:thin;
+    }
+
+    .log-line{
+      display:grid;
+      grid-template-columns:78px 58px 1fr;
+      gap:10px;
+      min-width:0;
+      padding:7px 9px;
+      border-bottom:1px solid rgba(180,207,211,.09);
+      color:#9eb0af;
+      font-size:10px;
+      line-height:1.35;
+    }
+
+    .log-line:last-child{border-bottom:0}
+    .log-line b{color:#e8f3f0;font-weight:800}
+    .log-line .ok{color:var(--green)}
+    .log-line .warn{color:var(--amber)}
+    .log-line .stop{color:var(--red)}
+
+    .readout-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .readout{
+      border:1px solid rgba(180,207,211,.16);
+      background:#0b1114;
+      padding:10px;
+      min-width:0;
+    }
+
+    .readout span{
+      display:block;
+      color:var(--muted);
+      font-size:9px;
+      text-transform:uppercase;
+      letter-spacing:.09em;
+    }
+
+    .readout strong{
+      display:block;
+      margin-top:6px;
+      color:#f4fbf8;
+      font-size:18px;
+      line-height:1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .study-note{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 16px;
+      border-top:1px solid rgba(255,255,255,.05);
+      background:#06090a;
+      color:#75878a;
+      font-size:10px;
+      line-height:1.45;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .study-note b{color:#ffd166}
+
+    @media (max-width:1180px){
+      body{padding:12px 12px 110px}
+      .topbar{grid-template-columns:1fr}
+      .brand,.clock,.health{border-right:0;border-bottom:1px solid var(--line)}
+      .health{border-bottom:0}
+      .main-grid{grid-template-columns:1fr}
+      .module{border-right:0;border-bottom:1px solid var(--line-strong)}
+      .module:last-child{border-bottom:0}
+      .console{grid-template-columns:1fr}
+      .console > section{border-right:0;border-bottom:1px solid var(--line)}
+      .console > section:last-child{border-bottom:0}
+    }
+
+    @media (max-width:760px){
+      body{padding:8px 8px 132px}
+      .shell{border-left:0;border-right:0}
+      .clock{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .status-lane{grid-template-columns:repeat(4,minmax(104px,1fr));overflow-x:auto}
+      .module-head{min-height:74px;padding:13px}
+      .module h2{font-size:19px}
+      .module-copy{display:none}
+      .plate{width:42px;height:42px}
+      .channel-bank{min-width:690px}
+      .strip{min-height:472px}
+      .matrix-wrap,.buses,.queue,.lane,.console > section{padding:12px}
+      .trace-panel{grid-template-columns:1fr}
+      .trace{border-right:0;border-bottom:1px solid var(--line)}
+      .trace:last-child{border-bottom:0}
+      .queue-grid{grid-template-columns:1fr}
+      .command-grid{grid-template-columns:1fr 1fr}
+      .log-line{grid-template-columns:62px 48px 1fr;font-size:9px;gap:7px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:0ms!important}
+      .sweep{animation:none!important;transform:translateX(180%)}
+    }
+
+    @media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} };
+  </style>
+</head>
+<body>
+  <main class="shell" aria-label="Relayframe Stream Manager console">
+    <header class="topbar">
+      <section class="brand" aria-label="Product identity">
+        <div class="brand-mark">
+          <div class="mark" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <rect x="4" y="4" width="18" height="18" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+              <path d="M7 16.5h3.6L12.8 9l2.4 10 2.1-6.2H20" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="bevel"/>
+              <path d="M4 4h18M4 22h18" stroke="currentColor" stroke-width="1.2" opacity=".25"/>
+            </svg>
+          </div>
+          <div>
+            <h1>Relayframe Stream Manager</h1>
+            <p>Effect study · original control-console copy</p>
+          </div>
+        </div>
+      </section>
+      <section class="clock" aria-label="System readouts">
+        <div class="clock-cell"><strong>48.0k</strong><p>Sample clock</p></div>
+        <div class="clock-cell"><strong>01.732ms</strong><p>Round trip</p></div>
+        <div class="clock-cell"><strong>128</strong><p>Frame buffer</p></div>
+        <div class="clock-cell"><strong>12/16</strong><p>Active lanes</p></div>
+      </section>
+      <section class="health" aria-label="Transport health">
+        <span class="chip hot"><span class="led on"></span>stream armed</span>
+        <span class="chip cold">scene 07</span>
+      </section>
+    </header>
+
+    <section class="status-lane" aria-label="Status chips">
+      <div class="status-item"><b>Core A</b><span><span class="led on"></span></span></div>
+      <div class="status-item"><b>Core B</b><span><span class="led on"></span></span></div>
+      <div class="status-item"><b>Clock</b><span>Ext</span></div>
+      <div class="status-item"><b>Router</b><span>Matrix</span></div>
+      <div class="status-item"><b>Limiter</b><span><span class="led warn"></span></span></div>
+      <div class="status-item"><b>Codec</b><span>24bit</span></div>
+      <div class="status-item"><b>Archive</b><span>Hot</span></div>
+      <div class="status-item"><b>Patch</b><span>R7.3</span></div>
+    </section>
+
+    <section class="main-grid">
+      <article class="module">
+        <div class="module-head">
+          <div class="module-title">
+            <span class="kicker">Channel strips</span>
+            <h2>Input Gain Bank</h2>
+            <p class="module-copy">Eight live stream lanes with deterministic VU bars, fader positions, mute states, and bus targets.</p>
+          </div>
+          <div class="plate">IN</div>
+        </div>
+        <div class="scroll-x" aria-label="Scrollable channel strips">
+          <div class="channel-bank">
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">AUX-01</span><span class="led on"></span></div>
+              <div class="strip-meta"><span>optic</span><span class="chip hot">live</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:74%"></span></div>
+                  <div class="vu" style="--level:76">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-05.4 DB</div>
+              <div class="strip-foot">
+                <div class="toggle on" aria-label="AUX-01 enabled"></div>
+                <div class="mini-buttons"><button class="active">PFL</button><button>ISO</button><button>DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">AUX-02</span><span class="led on"></span></div>
+              <div class="strip-meta"><span>coax</span><span class="chip hot">lock</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:63%"></span></div>
+                  <div class="vu" style="--level:64">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-09.2 DB</div>
+              <div class="strip-foot">
+                <div class="toggle on" aria-label="AUX-02 enabled"></div>
+                <div class="mini-buttons"><button>PFL</button><button class="active">ISO</button><button>DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">VOX-03</span><span class="led warn"></span></div>
+              <div class="strip-meta"><span>gate</span><span class="chip warn">trim</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:56%"></span></div>
+                  <div class="vu" style="--level:58">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-14.0 DB</div>
+              <div class="strip-foot">
+                <div class="toggle warn" aria-label="VOX-03 warning"></div>
+                <div class="mini-buttons"><button>PFL</button><button>ISO</button><button class="active">DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">DAT-04</span><span class="led on"></span></div>
+              <div class="strip-meta"><span>aes</span><span class="chip cold">sync</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:81%"></span></div>
+                  <div class="vu" style="--level:83">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-03.8 DB</div>
+              <div class="strip-foot">
+                <div class="toggle on" aria-label="DAT-04 enabled"></div>
+                <div class="mini-buttons"><button class="active">PFL</button><button>ISO</button><button>DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">BUS-05</span><span class="led"></span></div>
+              <div class="strip-meta"><span>hold</span><span class="chip">idle</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:34%"></span></div>
+                  <div class="vu" data-meter="quiet" style="--level:18">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-38.6 DB</div>
+              <div class="strip-foot">
+                <div class="toggle" aria-label="BUS-05 disabled"></div>
+                <div class="mini-buttons"><button>PFL</button><button>ISO</button><button>DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">FXR-06</span><span class="led on"></span></div>
+              <div class="strip-meta"><span>return</span><span class="chip hot">wet</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:68%"></span></div>
+                  <div class="vu" style="--level:70">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-07.5 DB</div>
+              <div class="strip-foot">
+                <div class="toggle on" aria-label="FXR-06 enabled"></div>
+                <div class="mini-buttons"><button>PFL</button><button class="active">ISO</button><button>DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">NET-07</span><span class="led on"></span></div>
+              <div class="strip-meta"><span>packet</span><span class="chip cold">udp</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:51%"></span></div>
+                  <div class="vu" style="--level:52">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-17.1 DB</div>
+              <div class="strip-foot">
+                <div class="toggle on" aria-label="NET-07 enabled"></div>
+                <div class="mini-buttons"><button>PFL</button><button>ISO</button><button class="active">DIM</button></div>
+              </div>
+            </section>
+            <section class="strip">
+              <div class="strip-top"><span class="mono-label">REC-08</span><span class="led stop"></span></div>
+              <div class="strip-meta"><span>tape</span><span class="chip stop">safe</span></div>
+              <div class="meter-stack">
+                <div class="scale"><span>0</span><span>-6</span><span>-18</span><span>-42</span></div>
+                <div class="fader">
+                  <div class="rail"><span class="cap" style="--pos:45%"></span></div>
+                  <div class="vu" style="--level:44">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="level-value">-22.8 DB</div>
+              <div class="strip-foot">
+                <div class="toggle" aria-label="REC-08 safe"></div>
+                <div class="mini-buttons"><button>PFL</button><button>ISO</button><button>DIM</button></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </article>
+
+      <article class="module">
+        <div class="module-head">
+          <div class="module-title">
+            <span class="kicker">Routing matrix</span>
+            <h2>Crosspoint Patch Field</h2>
+            <p class="module-copy">CSS-grid signal matrix with input and output nodes, connection dots, cue locks, and patch-state chips.</p>
+          </div>
+          <div class="plate">64</div>
+        </div>
+        <div class="matrix-wrap">
+          <div class="scroll-x" aria-label="Scrollable routing matrix">
+            <div class="matrix">
+              <div class="corner"></div>
+              <div class="axis">OUT 1</div><div class="axis">OUT 2</div><div class="axis">OUT 3</div><div class="axis">OUT 4</div>
+              <div class="axis">OUT 5</div><div class="axis">OUT 6</div><div class="axis">OUT 7</div><div class="axis">OUT 8</div>
+              <div class="axis">IN A</div><div class="node patch"></div><div class="node"></div><div class="node lock"></div><div class="node"></div><div class="node"></div><div class="node cue"></div><div class="node"></div><div class="node"></div>
+              <div class="axis">IN B</div><div class="node"></div><div class="node patch"></div><div class="node"></div><div class="node"></div><div class="node lock"></div><div class="node"></div><div class="node cue"></div><div class="node"></div>
+              <div class="axis">IN C</div><div class="node cue"></div><div class="node"></div><div class="node patch"></div><div class="node"></div><div class="node"></div><div class="node"></div><div class="node lock"></div><div class="node"></div>
+              <div class="axis">IN D</div><div class="node"></div><div class="node lock"></div><div class="node"></div><div class="node patch"></div><div class="node"></div><div class="node"></div><div class="node"></div><div class="node cue"></div>
+              <div class="axis">IN E</div><div class="node"></div><div class="node"></div><div class="node cue"></div><div class="node"></div><div class="node patch"></div><div class="node lock"></div><div class="node"></div><div class="node"></div>
+              <div class="axis">IN F</div><div class="node lock"></div><div class="node"></div><div class="node"></div><div class="node cue"></div><div class="node"></div><div class="node patch"></div><div class="node"></div><div class="node"></div>
+              <div class="axis">IN G</div><div class="node"></div><div class="node cue"></div><div class="node"></div><div class="node"></div><div class="node lock"></div><div class="node"></div><div class="node patch"></div><div class="node"></div>
+              <div class="axis">IN H</div><div class="node"></div><div class="node"></div><div class="node lock"></div><div class="node"></div><div class="node cue"></div><div class="node"></div><div class="node"></div><div class="node patch"></div>
+            </div>
+          </div>
+          <div class="matrix-legend">
+            <span class="chip hot"><span class="led on"></span>patched</span>
+            <span class="chip warn"><span class="led warn"></span>cue send</span>
+            <span class="chip cold">locked</span>
+            <span class="chip">empty node</span>
+          </div>
+        </div>
+        <div class="trace-panel">
+          <section class="trace">
+            <h3>Clock waveform</h3>
+            <div class="scope">
+              <div class="sweep"></div>
+              <svg viewBox="0 0 220 96" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 55 L14 55 L20 31 L28 72 L38 44 L50 44 L58 20 L70 80 L82 52 L94 52 L103 35 L118 70 L132 46 L147 46 L156 25 L168 78 L181 52 L197 52 L207 40 L220 58"/>
+              </svg>
+            </div>
+          </section>
+          <section class="trace">
+            <h3>Packet envelope</h3>
+            <div class="scope amber">
+              <div class="sweep"></div>
+              <svg viewBox="0 0 220 96" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 72 C16 70 22 38 37 36 C52 34 60 73 76 70 C92 67 96 28 113 27 C130 26 137 76 154 73 C171 70 178 42 194 41 C208 40 213 56 220 51"/>
+              </svg>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="module">
+        <div class="module-head">
+          <div class="module-title">
+            <span class="kicker">Mix buses</span>
+            <h2>Output Watchtower</h2>
+            <p class="module-copy">Meter bars, lock state, transport queues, and lane status for the rendered stream destinations.</p>
+          </div>
+          <div class="plate">OUT</div>
+        </div>
+        <div class="right-stack">
+          <section class="buses" aria-label="Output meters">
+            <div class="bus"><label>Main</label><div class="bar" style="--level:78"></div><output>-4.1dB</output></div>
+            <div class="bus"><label>Fold</label><div class="bar" style="--level:62"></div><output>-8.8dB</output></div>
+            <div class="bus"><label>Cast</label><div class="bar" style="--level:54"></div><output>-12dB</output></div>
+            <div class="bus"><label>Aux 1</label><div class="bar" style="--level:46"></div><output>-18dB</output></div>
+            <div class="bus"><label>Aux 2</label><div class="bar" style="--level:32"></div><output>-28dB</output></div>
+          </section>
+          <section class="queue">
+            <h3>Transport queue</h3>
+            <div class="queue-grid">
+              <div class="queue-card"><strong>Patch 7C</strong><span>Armed in 024 frames</span><span class="chip hot">ready</span></div>
+              <div class="queue-card"><strong>North Uplink</strong><span>Codec handoff locked</span><span class="chip cold">paired</span></div>
+              <div class="queue-card"><strong>Dry Archive</strong><span>Split capture enabled</span><span class="chip warn">watch</span></div>
+              <div class="queue-card"><strong>Return Tap</strong><span>Limiter before bus</span><span class="chip">standby</span></div>
+            </div>
+          </section>
+          <section class="lane">
+            <h3>Lane health</h3>
+            <div class="lane-list">
+              <div class="lane-row"><b>R-01</b><span>main stereo carrier</span><span class="led on"></span></div>
+              <div class="lane-row"><b>R-02</b><span>foldback monitor</span><span class="led on"></span></div>
+              <div class="lane-row"><b>R-03</b><span>remote codec tap</span><span class="led warn"></span></div>
+              <div class="lane-row"><b>R-04</b><span>archive safety lane</span><span class="led on"></span></div>
+              <div class="lane-row"><b>R-05</b><span>spare output muted</span><span class="led stop"></span></div>
+            </div>
+          </section>
+        </div>
+      </article>
+    </section>
+
+    <section class="console" aria-label="Console log and controls">
+      <section>
+        <h2>Command strip</h2>
+        <div class="command-grid">
+          <button class="command primary">Commit</button>
+          <button class="command">Latch</button>
+          <button class="command">Mute</button>
+          <button class="command">Probe</button>
+          <button class="command">Route</button>
+          <button class="command">Hold</button>
+        </div>
+      </section>
+      <section>
+        <h2>Console log</h2>
+        <div class="log">
+          <div class="log-line"><span>13:42:01</span><b class="ok">OK</b><span>crosspoint A1 to OUT 1 committed</span></div>
+          <div class="log-line"><span>13:42:03</span><b>INFO</b><span>matrix cache rebuilt from scene 07</span></div>
+          <div class="log-line"><span>13:42:05</span><b class="warn">WARN</b><span>VOX-03 input trim exceeds soft range</span></div>
+          <div class="log-line"><span>13:42:08</span><b class="ok">OK</b><span>return tap limiter inserted before bus</span></div>
+          <div class="log-line"><span>13:42:11</span><b>INFO</b><span>north uplink codec lock retained</span></div>
+          <div class="log-line"><span>13:42:12</span><b class="stop">SAFE</b><span>REC-08 remains isolated from program bus</span></div>
+        </div>
+      </section>
+      <section>
+        <h2>Session readouts</h2>
+        <div class="readout-grid">
+          <div class="readout"><span>Patch CRC</span><strong>7F2A</strong></div>
+          <div class="readout"><span>Drift</span><strong>+0.02</strong></div>
+          <div class="readout"><span>Headroom</span><strong>11.6</strong></div>
+          <div class="readout"><span>Dropouts</span><strong>000</strong></div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="study-note">
+      <span><b>效果临摹 · 非原创</b> · Instrument-console technique study with original implementation and copy.</span>
+      <span>No external libraries, images, fonts, or network calls.</span>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const meters = Array.from(document.querySelectorAll(".vu:not([data-meter='quiet']), .bar"));
+      if (reduced.matches || meters.length === 0) return;
+
+      const tick = (time) => {
+        const t = time / 620;
+        meters.forEach((meter, index) => {
+          const base = meter.classList.contains("bar") ? 42 : 48;
+          const span = meter.classList.contains("bar") ? 44 : 42;
+          const wave = Math.sin(t + index * 0.72) * 0.5 + 0.5;
+          const step = ((Math.floor(t * 2 + index) % 5) / 5) * 10;
+          const level = Math.max(12, Math.min(96, base + wave * span - step));
+          meter.style.setProperty("--level", level.toFixed(1));
+        });
+        requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+<div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Bitstream Control Manager》 by 0xtutti · 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
