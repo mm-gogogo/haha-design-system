@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 36 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 37 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 36 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 37 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -166,6 +166,9 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 36 扁平插画 · Flat Illustration (Friendly SaaS) — `/styles/36-flat-illustration/`
 插画主导的友好产品风（克制不土）：干净几何扁平插画（非手绘潦草、非 blob 小人）、靛紫 + 珊瑚 + 青 + 黄、圆润大字、药丸按钮、有机 blob 背景。primary 靛紫 `#5b4bdb` / accent 珊瑚 `#e0533f` / bg `#fbfaf7`·elevated `#fff` / fg `#241f33`｜暗（友好夜）primary `#8a7bff`(深字) / accent `#ff8570` / bg `#1a1726`·fg `#ece8f6`｜8·14·22（圆）｜Quicksand 圆体 + Inter｜几何扁平插画 hero + blob 背景 + 药丸/贴纸徽章；插画亮色 青/黄/珊瑚/紫仅作 SVG 填充、非正文。与 01 可爱（糖果粉 kawaii）、24 孟菲斯（80s 撞色几何碎屑）刻意区分（插画主导 SaaS）。
+
+### 37 多巴胺撞色 · Dopamine (Maximalist colour-blocking) — `/styles/37-dopamine/`
+高饱和大色块 + 超大胖圆字 + 贴纸徽章 + 粗药丸：现代多巴胺。primary 品红 `#e6187f` / accent 紫 `#7b2ff0` / bg 暖奶油 `#fdf4ec`·elevated `#fff` / fg `#1f1320`｜暗（霓虹多巴胺夜）primary `#ff4d9e`(深字) / accent `#a36bff` / bg `#161018`·fg `#f6ecf6`｜10·18·28（圆）｜Quicksand 最重字超大标题 + Inter｜大色块整屏面板（每段一种亮色）+ 多色单词标题 + 贴纸 blob/爆星 + 硬偏移投影粗药丸；色块亮色 橘/青柠/青/紫/阳光 仅作填充、色块上文字按对比走白/近黑。与 01 可爱（柔粉）、24 孟菲斯（碎屑几何）、28 波普（漫画网点）、36 扁平插画（克制友好）刻意区分（大色块 + 超大字 + 高饱和）。
 
 ---
 

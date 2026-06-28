@@ -1,0 +1,136 @@
+/* ============================================================
+   Dopamine · 多巴胺撞色 Design System Tokens
+   Contract: all core variable names stay fixed as --ds-*.
+   Light-first :root plus [data-theme="dark"] and .dark compatibility.
+   ============================================================ */
+
+:root {
+  /* Surfaces and text */
+  --ds-bg: #fdf4ec;
+  --ds-bg-subtle: #f6e7d8;
+  --ds-bg-elevated: #ffffff;
+  --ds-bg-sunken: #f0dcc8;
+  --ds-fg: #1f1320;
+  --ds-fg-muted: #4f3f50;
+  --ds-fg-subtle: #6f5f70;
+  --ds-fg-on-accent: #ffffff;
+  --ds-border: #ecd9c8;
+  --ds-border-strong: #1f1320;
+
+  /* Brand and accent */
+  --ds-primary: #e6187f;
+  --ds-primary-hover: #cc1570;
+  --ds-primary-active: #b01160;
+  --ds-primary-fg: #ffffff;
+  --ds-accent: #7b2ff0;
+  --ds-accent-fg: #ffffff;
+
+  /* Semantic states */
+  --ds-success: #1f8a4c;
+  --ds-success-bg: #e2f3e8;
+  --ds-success-fg: #0c3a20;
+  --ds-warning: #b5790a;
+  --ds-warning-bg: #f8edcf;
+  --ds-warning-fg: #43300a;
+  --ds-danger: #e0322a;
+  --ds-danger-bg: #fbe2df;
+  --ds-danger-fg: #5a120d;
+  --ds-info: #1f6fe0;
+  --ds-info-bg: #e2ebfb;
+  --ds-info-fg: #0e2c5e;
+
+  /* Focus */
+  --ds-focus: #e6187f;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* Radius */
+  --ds-radius-sm: 10px;
+  --ds-radius-md: 18px;
+  --ds-radius-lg: 28px;
+  --ds-radius-full: 9999px;
+
+  /* Spacing scale, inherited from the shared light-first baseline */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-7: 32px;
+  --ds-space-8: 40px;
+  --ds-space-9: 48px;
+  --ds-space-10: 64px;
+  --ds-space-11: 80px;
+  --ds-space-12: 96px;
+
+  /* Local font stack only; ../../_fonts/fonts.css supplies local faces */
+  --ds-font-sans: "Quicksand","Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif: "Quicksand","Inter",Georgia,"Songti SC",serif;
+  --ds-font-mono: "JetBrains Mono",monospace;
+  --ds-text-xs: 12px;
+  --ds-text-sm: 13px;
+  --ds-text-base: 14px;
+  --ds-text-md: 16px;
+  --ds-text-lg: 20px;
+  --ds-text-xl: 24px;
+  --ds-text-2xl: 32px;
+  --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.25;
+  --ds-leading-normal: 1.55;
+  --ds-leading-relaxed: 1.75;
+  --ds-weight-normal: 500;
+  --ds-weight-medium: 600;
+  --ds-weight-bold: 700;
+  --ds-tracking-tight: 0;
+  --ds-tracking-normal: 0.01em;
+
+  /* Shadows */
+  --ds-shadow-sm: 0 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 8px 8px 0 var(--ds-border-strong);
+
+  /* Motion, inherited from the shared light-first baseline */
+  --ds-ease: cubic-bezier(.34,1.56,.64,1);
+  --ds-dur-fast: 200ms;
+  --ds-dur-base: 260ms;
+  --ds-dur-slow: 320ms;
+}
+
+[data-theme="dark"],
+.dark {
+  --ds-bg: #161018;
+  --ds-bg-subtle: #1e1622;
+  --ds-bg-elevated: #251a2a;
+  --ds-bg-sunken: #0e0a10;
+  --ds-fg: #f6ecf6;
+  --ds-fg-muted: #c0a8c4;
+  --ds-fg-subtle: #8e7a92;
+  --ds-fg-on-accent: #2a0414;
+  --ds-border: #382a3e;
+  --ds-border-strong: #f6ecf6;
+
+  --ds-primary: #ff4d9e;
+  --ds-primary-hover: #ff66ad;
+  --ds-primary-active: #f03a8e;
+  --ds-primary-fg: #2a0414;
+  --ds-accent: #a36bff;
+  --ds-accent-fg: #16002e;
+
+  --ds-success: #5fd38a;
+  --ds-success-bg: #0e2a18;
+  --ds-success-fg: #c9f5d8;
+  --ds-warning: #f0c050;
+  --ds-warning-bg: #241a06;
+  --ds-warning-fg: #f6e6be;
+  --ds-danger: #ff6a5e;
+  --ds-danger-bg: #2a0e0a;
+  --ds-danger-fg: #ffd6d0;
+  --ds-info: #6a9aff;
+  --ds-info-bg: #0c1c3a;
+  --ds-info-fg: #d6e4ff;
+  --ds-focus: #ff4d9e;
+
+  --ds-shadow-sm: 0 2px 0 rgba(0,0,0,.5);
+  --ds-shadow-md: 4px 4px 0 rgba(0,0,0,.55);
+  --ds-shadow-lg: 8px 8px 0 rgba(0,0,0,.6);
+}

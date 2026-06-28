@@ -3,13 +3,13 @@
 # 哈哈设计系统 · haha-design-system
 
 **一套基于 [Geist (Vercel Design System)](https://vercel.com/geist) 衍生的多风格设计系统库**
-36 套可复用风格 + 6 个开源项目的定制设计系统，共享同一 `--ds-*` Token 契约 — 换一份 `tokens.css` 即可整体换肤。
+37 套可复用风格 + 6 个开源项目的定制设计系统，共享同一 `--ds-*` Token 契约 — 换一份 `tokens.css` 即可整体换肤。
 
-*A multi-flavor design-system library derived from Geist. 36 reusable style packs + 6 open-source project kits, all sharing one `--ds-*` token contract — swap a single `tokens.css` to re-skin everything.*
+*A multi-flavor design-system library derived from Geist. 37 reusable style packs + 6 open-source project kits, all sharing one `--ds-*` token contract — swap a single `tokens.css` to re-skin everything.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
 [![Live Demo](https://img.shields.io/badge/Live-design.hahaha.chat-006bff.svg)](https://design.hahaha.chat)
-[![Styles](https://img.shields.io/badge/Styles-36-7c3aed.svg)](#36-套通用风格)
+[![Styles](https://img.shields.io/badge/Styles-37-7c3aed.svg)](#37-套通用风格)
 [![Projects](https://img.shields.io/badge/Custom%20kits-6-f59e0b.svg)](#6-个开源项目定制)
 [![WCAG AA](https://img.shields.io/badge/Contrast-WCAG%20AA-16a34a.svg)](#)
 
@@ -21,7 +21,7 @@
 
 ## 这是什么
 
-每套设计系统都继承 Geist 的骨架与思想 —— **语义分层、比例尺驱动、状态色成对、可见焦点环、明暗双主题** —— 但替换了色彩气质、字体性格、圆角/阴影的软硬、动效个性与组件造型，形成 36 种截然不同的视觉风格；再以这些风格为底，为 6 个开源项目做了逐个定制。
+每套设计系统都继承 Geist 的骨架与思想 —— **语义分层、比例尺驱动、状态色成对、可见焦点环、明暗双主题** —— 但替换了色彩气质、字体性格、圆角/阴影的软硬、动效个性与组件造型，形成 37 种截然不同的视觉风格；再以这些风格为底，为 6 个开源项目做了逐个定制。
 
 每套 Kit 都是**完整可落地的作品级展示**：
 
@@ -32,7 +32,7 @@
 
 所有 Kit 共享同一套 **Token 契约**（见 [`_base/KIT-TEMPLATE.md`](./_base/KIT-TEMPLATE.md)），**任意项目都能无痛切换风格**。图标全部内联 SVG（零 emoji），图片走本地素材（gpt-image-2 生成的风格美术图 + 无版权照片），全部色彩对满足 **WCAG AA**。
 
-## 36 套通用风格
+## 37 套通用风格
 
 <table>
 <tr>
@@ -107,6 +107,10 @@
 <td><b>90s 网页 Web 1.0 (Geocities)</b><br><img src="screenshots/style-35-web1.png" alt="90s网页"></td>
 <td><b>扁平插画 Flat Illustration (SaaS)</b><br><img src="screenshots/style-36-flat-illustration.png" alt="扁平插画"></td>
 </tr>
+<tr>
+<td><b>多巴胺撞色 Dopamine (Maximalist)</b><br><img src="screenshots/style-37-dopamine.png" alt="多巴胺撞色"></td>
+<td valign="top"><b>更多风格持续扩展中…</b><br><sub>接下来：黑色电影、酸性镀铬、终端 TUI、蒸汽波…</sub></td>
+</tr>
 </table>
 
 > 每套均含亮 / 暗两态，移动端演示统一用 iPhone 17 Pro Max 套壳；全部截图见 [`screenshots/`](./screenshots)。
@@ -156,7 +160,7 @@ module.exports = { presets: [require('./styles/03-enterprise/tailwind.preset.js'
 ├── _base/                     # geist-base · KIT-TEMPLATE · SHOWCASE-SPEC · POLISH-SPEC · DEVICE-FRAME · shoot.js
 ├── _fonts/                    # 本地 OFL 开源字体 (woff2) + fonts.css
 ├── _assets/                   # 共享素材：gpt-image-2 风格美术图 + 无版权照片/头像 + device.css(iPhone 套壳)
-├── styles/                    # 36 套可复用风格
+├── styles/                    # 37 套可复用风格
 │   └── <kit>/  README.md · tokens.css · tokens.json · tailwind.preset.js · preview.html
 ├── projects/                  # 6 个开源项目定制
 │   └── <kit>/  README.md · tokens.css · tailwind.preset.js · preview.html
