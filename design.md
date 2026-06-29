@@ -3,7 +3,7 @@
 > 一个可直接「加载成 skill / context」的多风格设计系统规范。基于 [Geist (Vercel)](https://vercel.com/geist) 衍生。
 > 在线：https://design.hahaha.chat ｜ 本文件：https://design.hahaha.chat/design.md ｜ 源码：https://github.com/mm-gogogo/haha-design-system
 >
-> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 40 套风格的关键取值 + 6 个项目定制 + 接入方式。
+> **怎么用（给 AI/agent）**：把本文件整篇读入即可。它完整定义了 `--ds-*` Token 契约 + 42 套风格的关键取值 + 6 个项目定制 + 接入方式。
 > 要落地某套风格：① 直接 `<link>` 它的 `tokens.css`（下方有线上直链），或 ② 照抄该风格取值，组件里一律用 `var(--ds-*)`。换风格 = 换一份 `tokens.css`。
 
 ---
@@ -55,7 +55,7 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ---
 
-## 4. 40 套通用风格（关键取值；完整值见各 tokens.css）
+## 4. 42 套通用风格（关键取值；完整值见各 tokens.css）
 
 > 格式：主色 / 背景 / 文字 / 强调（亮）｜暗色主色 ｜ 圆角 sm·md·lg ｜ 字体 ｜ 身份
 
@@ -178,6 +178,12 @@ Tailwind：每套有 `tailwind.preset.js`（`presets:[require('.../styles/<slug>
 
 ### 40 酸性镀铬 · Acid Chrome (Y2K Chrome) — `/styles/40-acid-chrome/`（暗色优先）
 千禧液态镀铬 + 酸性：液态金属镀铬字标 + 酸性 lime + 虹彩 blob + 玻璃 3D 镀铬体。`:root`=暗：bg `#0a0c0a`·elevated `#161a13` / fg `#eaffea` / primary lime `#b6ff3a`(深字) / accent 紫 `#a85cff`｜亮（白底镀铬）bg `#f4f6f0` / primary `#4a8a00` / accent `#7b2ff0` / fg `#14180e`｜8·16·28（blobby）｜Quicksand 圆体 + Inter｜镀铬字标(金属渐变 + 高光，仅 hero 用 gradient-clip) + 虹彩 blob(锥/径向渐变 lime/紫/青/品红) + 玻璃 3D 镀铬体 + 厚圆角 glossy；虹彩仅填充、正文 solid。与 27 蒸汽波（霓虹网格 outrun）、13 赛博朋克（粉故障）、19 Y2K 水光（蓝水胶 Frutiger）刻意区分（lime + 液态镀铬 + 虹彩，更躁）。
+
+### 41 朋克拼贴 · Grunge / Zine (Photocopy Punk) — `/styles/41-grunge-zine/`
+DIY 复印朋克 zine：高对比 xerox 半调颗粒 + 勒索信切字（每字不同字体 + 黑白互填 + 微旋转）+ 胶带/撕纸/订书钉 + 马克笔涂划 + 模板章。primary 安全橙 `#d6320f` / accent 荧光粉 `#d6147a` / bg 复印纸 `#e8e6df` / fg 油墨黑 `#141210`｜暗（黑光演出海报夜）primary `#ff5a2c`(深字) / accent `#ff4b9e` / bg `#0d0c0a`·fg `#ece8df`｜0·1·2（方）｜Inter 黑 + Noto Serif + JetBrains Mono 混排勒索信｜半调颗粒 + 切字标题 + 胶带/订书钉 + 涂划 + 硬偏移；切字每片自身对比达 AA。与 31 拼贴（暖手帐）、22 孔版（柔印）、12 粗野、33 构成（红黑海报）刻意区分（粗粝复印朋克 + 安全橙）。
+
+### 42 极光渐变 · Aurora (Gradient Mesh) — `/styles/42-aurora/`（暗色优先）
+现代 AI 品牌「鲜艳渐变」：大面积流动 gradient mesh（indigo→magenta→cyan→teal 混合柔焦、drenched）作品牌舞台 + 极光光带/光球 + 实底卡片浮于其上 + 柔色辉光；正文一律 solid 不做渐变字。`:root`=暗：bg `#0a0a14`·elevated `#16162a` / fg `#f0eefb` / primary 靛紫 `#8b7bff`(深字) / accent 青 `#22d3ee`｜亮 bg `#f6f5fc` / primary `#5b3df0` / accent `#0a7186` / fg `#14121f`｜8·14·22（圆）｜Inter｜渐变 mesh hero + 光球(reduced-motion 停) + 实底卡 + 辉光；mesh 仅背景装饰、文字落实底。与 09 玻璃（磨砂玻璃面）、40 酸性镀铬（金属）、27 蒸汽波（霓虹网格）、19 Y2K 水光刻意区分（流动渐变 mesh 为主体、卡片不磨砂）。
 
 ---
 

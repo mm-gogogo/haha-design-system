@@ -1,0 +1,735 @@
+<!--
+  Grunge / Zine Photocopy Punk — Design System Preview
+  STATIC PIT RECORDS: fictional record shop, gig desk, and skate-zine counter.
+  Offline preview. Only local fonts.css and device.css are linked; texture and
+  flourishes use inline CSS/SVG.
+-->
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grunge / Zine Photocopy Punk — Design System Preview</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css">
+<style>
+:root {
+  --ds-bg:#e8e6df; --ds-bg-subtle:#ddd9cf; --ds-bg-elevated:#f4f2ea; --ds-bg-sunken:#cfcabb;
+  --ds-fg:#141210; --ds-fg-muted:#44403a; --ds-fg-subtle:#66615a; --ds-fg-on-accent:#ffffff;
+  --ds-border:#bcb4a4; --ds-border-strong:#141210;
+  --ds-primary:#d6320f; --ds-primary-hover:#bb2a0c; --ds-primary-active:#9c2209; --ds-primary-fg:#ffffff;
+  --ds-accent:#d6147a; --ds-accent-fg:#ffffff;
+  --ds-success:#2f7a3a; --ds-success-bg:#e3efe2; --ds-success-fg:#0e3314;
+  --ds-warning:#8a5e0a; --ds-warning-bg:#f3e9cd; --ds-warning-fg:#3e2c04;
+  --ds-danger:#d6320f;  --ds-danger-bg:#f8e0d9;  --ds-danger-fg:#551407;
+  --ds-info:#1f5f8a;    --ds-info-bg:#e0eaf0;    --ds-info-fg:#0c2a3e;
+  --ds-focus:#d6320f;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+  --ds-radius-sm:0px; --ds-radius-md:1px; --ds-radius-lg:2px; --ds-radius-full:9999px;
+  --ds-shadow-sm:2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md:4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg:7px 7px 0 var(--ds-border-strong);
+  --ds-space-1:4px;  --ds-space-2:8px;  --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+  --ds-font-sans:"Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif:"Noto Serif",serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs:12px; --ds-text-sm:14px; --ds-text-base:16px; --ds-text-md:19px;
+  --ds-text-lg:24px; --ds-text-xl:34px; --ds-text-2xl:52px; --ds-text-3xl:76px;
+  --ds-leading-tight:1.02; --ds-leading-normal:1.5; --ds-leading-relaxed:1.7;
+  --ds-weight-normal:400; --ds-weight-medium:600; --ds-weight-bold:800;
+  --ds-tracking-tight:-0.04em; --ds-tracking-normal:0;
+  --ds-ease:cubic-bezier(.2,0,0,1);
+  --ds-dur-fast:80ms; --ds-dur-base:140ms; --ds-dur-slow:240ms;
+}
+[data-theme="dark"],.dark{
+  --ds-bg:#0d0c0a; --ds-bg-subtle:#14120f; --ds-bg-elevated:#1a1714; --ds-bg-sunken:#060504;
+  --ds-fg:#ece8df; --ds-fg-muted:#b0a898; --ds-fg-subtle:#837c6e; --ds-fg-on-accent:#2a0c00;
+  --ds-border:#2e2a22; --ds-border-strong:#ece8df;
+  --ds-primary:#ff5a2c; --ds-primary-hover:#ff6e44; --ds-primary-active:#ee4c20; --ds-primary-fg:#2a0c00;
+  --ds-accent:#ff4b9e; --ds-accent-fg:#2a0418;
+  --ds-success:#6fbf6f; --ds-success-bg:#0e260e; --ds-success-fg:#cdeec0;
+  --ds-warning:#e0b35a; --ds-warning-bg:#241a06; --ds-warning-fg:#f6e6be;
+  --ds-danger:#ff5a2c;  --ds-danger-bg:#2a0c04;  --ds-danger-fg:#ffd6c8;
+  --ds-info:#5fa0d8;    --ds-info-bg:#0a1f2e;    --ds-info-fg:#d6e8f5;
+  --ds-focus:#ff5a2c;
+  --ds-shadow-sm:2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md:4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg:7px 7px 0 rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html{background:var(--ds-bg);color:var(--ds-fg);font-family:var(--ds-font-sans);font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+body{margin:0;min-height:100vh;background:var(--ds-bg);color:var(--ds-fg);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(circle at 18% 12%,color-mix(in srgb,var(--ds-primary) 13%,transparent) 0 1px,transparent 1.7px) 0 0/9px 9px,
+  radial-gradient(circle at 70% 28%,color-mix(in srgb,var(--ds-fg) 10%,transparent) 0 1px,transparent 1.8px) 0 0/13px 13px;
+  opacity:.55;mix-blend-mode:multiply}
+[data-theme="dark"] body::before{mix-blend-mode:screen;opacity:.34}
+a{color:var(--ds-accent);text-decoration-thickness:2px;text-underline-offset:3px}
+button,input,textarea,select{font:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:0;box-shadow:var(--ds-focus-ring)}
+.copy-grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.1;mix-blend-mode:multiply}
+[data-theme="dark"] .copy-grain{mix-blend-mode:screen;opacity:.13}
+.copy-grain svg{display:block;width:100%;height:100%}
+.copy-grain rect{fill:var(--ds-fg)}
+.page{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:var(--ds-space-7) var(--ds-space-5) var(--ds-space-12)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-4);margin-bottom:var(--ds-space-8);padding:var(--ds-space-3) 0;border-bottom:3px solid var(--ds-border-strong)}
+.brand{display:flex;align-items:center;gap:var(--ds-space-3);font-weight:var(--ds-weight-bold);text-transform:uppercase;letter-spacing:var(--ds-tracking-normal)}
+.brand-mark{display:grid;place-items:center;width:42px;height:42px;background:var(--ds-fg);color:var(--ds-bg);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.brand small{display:block;color:var(--ds-fg-muted);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-medium);text-transform:none}
+.theme-toggle{min-height:44px;display:inline-flex;align-items:center;gap:var(--ds-space-2);border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);color:var(--ds-fg);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-sm);padding:0 var(--ds-space-4);font-weight:var(--ds-weight-bold);cursor:pointer;transition:transform var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease)}
+.theme-toggle:hover{transform:translate(-1px,-1px);box-shadow:var(--ds-shadow-md)}
+.theme-toggle svg{width:18px;height:18px}
+.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:var(--ds-space-8);align-items:stretch;padding:var(--ds-space-7);background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg)}
+.hero::after{content:"";position:absolute;inset:auto -12px -8px -12px;height:28px;background:linear-gradient(135deg,transparent 0 14px,var(--ds-bg-sunken) 14px 24px,transparent 24px 36px);border-top:2px solid var(--ds-border-strong);pointer-events:none}
+.hero-copy{position:relative;z-index:2;min-width:0}
+.kicker{display:inline-flex;align-items:center;gap:var(--ds-space-2);margin-bottom:var(--ds-space-4);padding:var(--ds-space-2) var(--ds-space-3);background:var(--ds-primary);color:var(--ds-primary-fg);border:2px solid var(--ds-border-strong);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;box-shadow:var(--ds-shadow-sm)}
+.kicker svg{width:16px;height:16px}
+.ransom-line{display:flex;flex-wrap:wrap;gap:clamp(4px,1vw,8px);max-width:100%;padding:var(--ds-space-2) var(--ds-space-1) var(--ds-space-3);overflow:hidden;contain:paint}
+.ransom-chip{display:inline-grid;place-items:center;min-width:clamp(34px,7vw,70px);height:clamp(44px,8vw,82px);padding:0 .12em;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);font-size:clamp(30px,6vw,70px);font-weight:var(--ds-weight-bold);line-height:1;text-transform:uppercase}
+.chip-ink{background:var(--ds-border-strong);color:var(--ds-bg-elevated)}
+.chip-paper{background:var(--ds-bg-elevated);color:var(--ds-fg)}
+.f-sans{font-family:var(--ds-font-sans)}
+.f-serif{font-family:var(--ds-font-serif)}
+.f-mono{font-family:var(--ds-font-mono)}
+.rot-a{transform:rotate(-3deg)}.rot-b{transform:rotate(2deg)}.rot-c{transform:rotate(-2deg)}.rot-d{transform:rotate(4deg)}.rot-e{transform:rotate(-4deg)}
+.hero-sub{max-width:64ch;margin:var(--ds-space-4) 0 0;color:var(--ds-fg);font-size:var(--ds-text-md);line-height:var(--ds-leading-relaxed)}
+.marker-line{display:block;width:min(520px,100%);height:26px;margin:var(--ds-space-2) 0 var(--ds-space-5);color:var(--ds-accent)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;margin-top:var(--ds-space-5)}
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:var(--ds-space-2);border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);padding:0 var(--ds-space-5);font-weight:var(--ds-weight-bold);text-decoration:none;cursor:pointer;box-shadow:var(--ds-shadow-sm);transition:transform var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:var(--ds-shadow-md)}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ds-border-strong)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-primary{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.btn-primary:hover{background:var(--ds-primary-hover)}
+.btn-primary:active{background:var(--ds-primary-active)}
+.btn-secondary{background:var(--ds-bg-elevated);color:var(--ds-fg)}
+.btn-tertiary{background:transparent;color:var(--ds-fg);box-shadow:none;border-color:transparent;text-decoration:underline;text-decoration-color:var(--ds-accent);text-decoration-thickness:4px;text-underline-offset:4px}
+.btn-danger{background:var(--ds-danger);color:var(--ds-primary-fg)}
+.btn[disabled],.btn.is-disabled{opacity:.52;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-sm{min-height:36px;padding:0 var(--ds-space-3);font-size:var(--ds-text-sm)}
+.btn-lg{min-height:52px;padding:0 var(--ds-space-6);font-size:var(--ds-text-md)}
+.hero-art{position:relative;min-height:440px;border:3px solid var(--ds-border-strong);background:var(--ds-bg-subtle);overflow:hidden;box-shadow:var(--ds-shadow-md)}
+.hero-art svg{position:absolute;display:block}
+.tape-svg{z-index:3;color:var(--ds-bg-sunken);filter:drop-shadow(2px 2px 0 var(--ds-border-strong))}
+.tape-a{top:22px;left:24px;width:64%;height:48px;transform:rotate(-3deg)}
+.tape-b{right:28px;bottom:48px;width:58%;height:44px;transform:rotate(3deg);color:var(--ds-primary)}
+.staple-svg{z-index:4;top:84px;right:38px;width:76px;height:112px;color:var(--ds-border-strong)}
+.tear-svg{z-index:2;left:-8px;right:-8px;bottom:-4px;width:calc(100% + 16px);height:58px;color:var(--ds-bg-elevated)}
+.poster-stack{position:absolute;inset:76px 52px 78px 48px;display:grid;grid-template-columns:1fr;place-items:center}
+.poster{position:absolute;width:min(330px,78%);min-height:250px;padding:var(--ds-space-5);background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);display:flex;flex-direction:column;justify-content:space-between;gap:var(--ds-space-4)}
+.poster.one{transform:rotate(-4deg) translate(-18px,4px)}
+.poster.two{transform:rotate(3deg) translate(26px,30px);background:var(--ds-bg)}
+.stamp{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;padding:var(--ds-space-2) var(--ds-space-3);border:3px solid currentColor;color:var(--ds-primary);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;transform:rotate(-3deg)}
+.poster h2{margin:0;font-size:var(--ds-text-xl);line-height:var(--ds-leading-tight);text-transform:uppercase;letter-spacing:var(--ds-tracking-tight)}
+.poster p{margin:0;color:var(--ds-fg);font-family:var(--ds-font-mono);font-size:var(--ds-text-sm)}
+.poster .bars{display:grid;gap:var(--ds-space-2)}
+.poster .bars span{display:block;height:16px;background:var(--ds-fg)}
+.poster .bars span:nth-child(2){width:74%;background:var(--ds-primary)}
+.poster .bars span:nth-child(3){width:58%;background:var(--ds-accent)}
+.section{margin-top:var(--ds-space-10)}
+.sec-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ds-space-5);margin-bottom:var(--ds-space-5);padding-bottom:var(--ds-space-3);border-bottom:3px solid var(--ds-border-strong)}
+.sec-title{margin:0;font-size:var(--ds-text-xl);line-height:var(--ds-leading-tight);letter-spacing:var(--ds-tracking-tight);text-transform:uppercase}
+.sec-title span{font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);letter-spacing:var(--ds-tracking-normal);color:var(--ds-fg-muted)}
+.lead{max-width:78ch;margin:0;color:var(--ds-fg);line-height:var(--ds-leading-relaxed)}
+.muted{color:var(--ds-fg-muted)}
+.grid{display:grid;gap:var(--ds-space-4)}
+.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.panel{position:relative;background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-md);padding:var(--ds-space-5);overflow:hidden}
+.panel h3{margin:0 0 var(--ds-space-3);font-size:var(--ds-text-lg);line-height:var(--ds-leading-tight)}
+.panel p{margin:0;color:var(--ds-fg);line-height:var(--ds-leading-relaxed)}
+.paper-note{background:var(--ds-bg);border-style:dashed}
+.swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--ds-space-4)}
+.swatch{min-height:132px;display:flex;flex-direction:column;justify-content:space-between;padding:var(--ds-space-3);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.swatch-color{height:48px;border:2px solid var(--ds-border-strong);background:var(--ds-bg)}
+.swatch code,.token-chip{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold)}
+.swatch strong{font-size:var(--ds-text-sm)}
+.c-bg{background:var(--ds-bg)}.c-bg-subtle{background:var(--ds-bg-subtle)}.c-bg-elevated{background:var(--ds-bg-elevated)}.c-bg-sunken{background:var(--ds-bg-sunken)}
+.c-fg{background:var(--ds-fg)}.c-border{background:var(--ds-border)}.c-border-strong{background:var(--ds-border-strong)}
+.c-primary{background:var(--ds-primary)}.c-accent{background:var(--ds-accent)}.c-success{background:var(--ds-success)}.c-warning{background:var(--ds-warning)}.c-danger{background:var(--ds-danger)}.c-info{background:var(--ds-info)}
+.type-row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:var(--ds-space-4);align-items:baseline;padding:var(--ds-space-4) 0;border-bottom:2px solid var(--ds-border)}
+.type-row:last-child{border-bottom:0}
+.type-label{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.sample-xs{font-size:var(--ds-text-xs)}.sample-sm{font-size:var(--ds-text-sm)}.sample-base{font-size:var(--ds-text-base)}.sample-md{font-size:var(--ds-text-md)}.sample-lg{font-size:var(--ds-text-lg)}.sample-xl{font-size:var(--ds-text-xl);line-height:var(--ds-leading-tight)}.sample-2xl{font-size:var(--ds-text-2xl);line-height:var(--ds-leading-tight);letter-spacing:var(--ds-tracking-tight)}.sample-3xl{font-size:var(--ds-text-3xl);line-height:var(--ds-leading-tight);letter-spacing:var(--ds-tracking-tight)}
+.button-board{display:grid;gap:var(--ds-space-4)}
+.button-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-3);align-items:center;padding:var(--ds-space-4);background:var(--ds-bg-subtle);border:2px solid var(--ds-border)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-4)}
+.field{display:grid;gap:var(--ds-space-2)}
+.field label{font-weight:var(--ds-weight-bold)}
+.input,.textarea,.select{width:100%;min-height:46px;background:var(--ds-bg-elevated);color:var(--ds-fg);border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-md);padding:0 var(--ds-space-3);box-shadow:inset 2px 2px 0 var(--ds-bg-sunken)}
+.textarea{min-height:112px;padding:var(--ds-space-3);resize:vertical}
+.input::placeholder,.textarea::placeholder{color:var(--ds-fg-subtle)}
+.checks{display:flex;flex-wrap:wrap;gap:var(--ds-space-4);align-items:center}
+.choice{display:inline-flex;align-items:center;gap:var(--ds-space-2);min-height:44px;font-weight:var(--ds-weight-medium)}
+.choice input{accent-color:var(--ds-primary);width:18px;height:18px}
+.switch{position:relative;display:inline-flex;align-items:center;width:58px;height:32px;border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);background:var(--ds-bg-sunken);box-shadow:inset 2px 2px 0 color-mix(in srgb,var(--ds-fg) 18%,transparent)}
+.switch span{position:absolute;left:4px;width:22px;height:22px;border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);background:var(--ds-bg-elevated);transition:transform var(--ds-dur-base) var(--ds-ease),background var(--ds-dur-base) var(--ds-ease)}
+.switch input{position:absolute;opacity:0}
+.switch input:checked+span{transform:translateX(24px);background:var(--ds-primary)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-4)}
+.card-meta{display:flex;flex-wrap:wrap;gap:var(--ds-space-2);margin-bottom:var(--ds-space-4);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-3)}
+.badge{display:inline-flex;align-items:center;gap:var(--ds-space-2);min-height:30px;padding:0 var(--ds-space-3);border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase}
+.badge-primary{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.badge-accent{background:var(--ds-accent);color:var(--ds-accent-fg)}
+.badge-success{background:var(--ds-success-bg);color:var(--ds-success-fg)}
+.badge-warning{background:var(--ds-warning-bg);color:var(--ds-warning-fg)}
+.badge-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg)}
+.badge-info{background:var(--ds-info-bg);color:var(--ds-info-fg)}
+.alert{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--ds-space-3);padding:var(--ds-space-4);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.alert svg{width:22px;height:22px;margin-top:2px}
+.alert h3{margin:0 0 var(--ds-space-1);font-size:var(--ds-text-base)}
+.alert p{margin:0;color:inherit}
+.alert-success{background:var(--ds-success-bg);color:var(--ds-success-fg)}
+.alert-warning{background:var(--ds-warning-bg);color:var(--ds-warning-fg)}
+.alert-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg)}
+.alert-info{background:var(--ds-info-bg);color:var(--ds-info-fg)}
+.nav-demo{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-4);padding:var(--ds-space-3);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.nav-links{display:flex;flex-wrap:wrap;gap:var(--ds-space-2)}
+.nav-link{min-height:40px;display:inline-flex;align-items:center;padding:0 var(--ds-space-3);border:2px solid transparent;color:var(--ds-fg);text-decoration:none;font-weight:var(--ds-weight-bold)}
+.nav-link[aria-current="page"]{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.tabs{display:flex;flex-wrap:wrap;gap:var(--ds-space-2);margin-top:var(--ds-space-4)}
+.tab{min-height:40px;padding:0 var(--ds-space-4);border:2px solid var(--ds-border-strong);background:var(--ds-bg-subtle);color:var(--ds-fg);font-weight:var(--ds-weight-bold);box-shadow:var(--ds-shadow-sm)}
+.tab.is-active{background:var(--ds-accent);color:var(--ds-accent-fg)}
+.table-wrap{max-width:100%;overflow-x:auto;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);background:var(--ds-bg-elevated)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:var(--ds-space-3) var(--ds-space-4);border-bottom:2px solid var(--ds-border);text-align:left;white-space:nowrap}
+th{background:var(--ds-fg);color:var(--ds-bg);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);text-transform:uppercase}
+td{color:var(--ds-fg)}
+tr:last-child td{border-bottom:0}
+.media-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:var(--ds-space-4)}
+.poster-frame{min-height:320px;background:var(--ds-bg-subtle);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);position:relative;overflow:hidden}
+.poster-frame svg{width:100%;height:100%;display:block}
+.image-card{display:grid;gap:var(--ds-space-4)}
+.aspect{aspect-ratio:16/9;border:3px solid var(--ds-border-strong);background:var(--ds-bg-subtle);box-shadow:var(--ds-shadow-md);overflow:hidden}
+.icon-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--ds-space-3)}
+.icon-tile{min-height:94px;display:grid;place-items:center;background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.icon-tile svg{width:32px;height:32px}
+.desktop-shell{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:440px;background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);overflow:hidden}
+.side{padding:var(--ds-space-4);background:var(--ds-fg);color:var(--ds-bg);display:grid;align-content:start;gap:var(--ds-space-3)}
+.side a{color:var(--ds-bg);text-decoration:none;padding:var(--ds-space-2);border:2px solid transparent;font-weight:var(--ds-weight-bold)}
+.side a.is-active{background:var(--ds-primary);color:var(--ds-primary-fg);border-color:var(--ds-bg)}
+.desk-main{padding:var(--ds-space-5);display:grid;gap:var(--ds-space-4)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-4)}
+.stat{padding:var(--ds-space-4);border:2px solid var(--ds-border-strong);background:var(--ds-bg);box-shadow:var(--ds-shadow-sm)}
+.stat b{display:block;font-size:var(--ds-text-xl);line-height:var(--ds-leading-tight)}
+.phone-row{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:var(--ds-space-8);align-items:start;justify-items:center}
+.phone-ui{min-height:100%;padding:var(--ds-space-4);background:var(--ds-bg);color:var(--ds-fg);display:flex;flex-direction:column;gap:var(--ds-space-4);font-family:var(--ds-font-sans)}
+.phone-hero{padding:var(--ds-space-4);background:var(--ds-fg);color:var(--ds-bg);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.phone-hero h3{margin:0;font-size:var(--ds-text-xl);line-height:var(--ds-leading-tight)}
+.phone-list{display:grid;gap:var(--ds-space-3)}
+.phone-item{padding:var(--ds-space-3);background:var(--ds-bg-elevated);color:var(--ds-fg);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.phone-nav{margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-2)}
+.phone-nav a{min-height:48px;display:grid;place-items:center;background:var(--ds-bg-elevated);color:var(--ds-fg);border:2px solid var(--ds-border-strong);text-decoration:none;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs)}
+.phone-nav a.is-active{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.more-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-4)}
+.crumbs{display:flex;flex-wrap:wrap;gap:var(--ds-space-2);font-family:var(--ds-font-mono);font-size:var(--ds-text-sm)}
+.dropdown{width:min(320px,100%);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md)}
+.drop-row{display:flex;align-items:center;justify-content:space-between;padding:var(--ds-space-3);border-bottom:2px solid var(--ds-border);color:var(--ds-fg)}
+.drop-row:last-child{border-bottom:0}
+.tooltip-demo{display:inline-flex;position:relative;padding:var(--ds-space-3);border:2px solid var(--ds-border-strong);background:var(--ds-bg-subtle)}
+.tooltip-demo span{position:absolute;left:12px;bottom:calc(100% + 10px);width:max-content;max-width:240px;padding:var(--ds-space-2) var(--ds-space-3);background:var(--ds-fg);color:var(--ds-bg);border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);font-size:var(--ds-text-sm)}
+.steps{display:grid;gap:var(--ds-space-3)}
+.step{display:flex;gap:var(--ds-space-3);align-items:flex-start}
+.step-num{display:grid;place-items:center;width:34px;height:34px;background:var(--ds-primary);color:var(--ds-primary-fg);border:2px solid var(--ds-border-strong);font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold)}
+.pagination{display:flex;flex-wrap:wrap;gap:var(--ds-space-2)}
+.page-btn{min-width:40px;min-height:40px;border:2px solid var(--ds-border-strong);background:var(--ds-bg-elevated);color:var(--ds-fg);font-weight:var(--ds-weight-bold);box-shadow:var(--ds-shadow-sm)}
+.page-btn.is-active{background:var(--ds-accent);color:var(--ds-accent-fg)}
+.toast,.modal-demo{border:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-lg);padding:var(--ds-space-5)}
+.modal-demo{max-width:520px;margin:0 auto}
+.footer-note{margin-top:var(--ds-space-10);padding:var(--ds-space-5);background:var(--ds-fg);color:var(--ds-bg);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);font-family:var(--ds-font-mono)}
+.footer-note p{margin:0;color:inherit}
+@media (max-width:980px){
+  .hero,.media-grid,.desktop-shell{grid-template-columns:1fr}
+  .hero-art{min-height:360px}
+  .grid.cols-4,.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards,.grid.cols-3,.stats{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .page{padding:var(--ds-space-5) var(--ds-space-4) var(--ds-space-10)}
+  .topbar,.sec-head,.nav-demo{align-items:flex-start;flex-direction:column}
+  .hero{padding:var(--ds-space-4);gap:var(--ds-space-5)}
+  .form-grid,.grid.cols-2,.more-grid,.phone-row{grid-template-columns:1fr}
+  .icon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .type-row{grid-template-columns:1fr;gap:var(--ds-space-1)}
+}
+@media (max-width:430px){
+  .ransom-chip{min-width:clamp(31px,10vw,42px);height:clamp(38px,12vw,48px);font-size:clamp(28px,9vw,40px)}
+  .hero-art{min-height:330px}
+  .poster-stack{inset:68px 18px 58px}
+  .poster{width:88%;min-height:220px}
+  .tape-a,.tape-b{left:12px;right:12px;width:calc(100% - 24px)}
+}
+@media (max-width:390px){
+  .page,.hero,.hero-art,.panel,.ransom-line{max-width:100%;overflow:hidden}
+  .button-row,.badge-row,.checks,.nav-links,.tabs,.pagination{max-width:100%;overflow-x:auto}
+}
+@media (max-width:680px){ html{overflow-x:hidden!important;} body{overflow-x:clip!important;} table{display:block;width:max-content;max-width:100%;overflow-x:auto;} }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<div class="copy-grain" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <filter id="copyNoise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#copyNoise)"/>
+  </svg>
+</div>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<main class="page">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 6h16M4 12h16M4 18h10"/><path d="M16 16l4 4M20 16l-4 4"/></svg>
+      </span>
+      <span>STATIC PIT RECORDS <small>photocopy punk kit · no external assets</small></span>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 3v18M5 7h14M7 17h10"/></svg>
+      Toggle theme
+    </button>
+  </header>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <span class="kicker">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M4 8h16v8H4z"/><path d="M7 8V5h10v3M8 16v3h8v-3"/></svg>
+        gig desk · skate zine · record bin
+      </span>
+      <h1 id="hero-title" class="ransom-line" aria-label="STATIC PIT">
+        <span class="ransom-chip chip-ink f-sans rot-a">S</span>
+        <span class="ransom-chip chip-paper f-serif rot-b">T</span>
+        <span class="ransom-chip chip-ink f-mono rot-c">A</span>
+        <span class="ransom-chip chip-paper f-sans rot-d">T</span>
+        <span class="ransom-chip chip-ink f-serif rot-e">I</span>
+        <span class="ransom-chip chip-paper f-mono rot-a">C</span>
+        <span class="ransom-chip chip-ink f-serif rot-b">P</span>
+        <span class="ransom-chip chip-paper f-mono rot-c">I</span>
+        <span class="ransom-chip chip-ink f-sans rot-d">T</span>
+      </h1>
+      <svg class="marker-line" viewBox="0 0 520 26" fill="none" aria-hidden="true">
+        <path d="M6 15c58-7 118-9 178-5 72 5 140 6 203-1 48-5 86-3 126 5" stroke="currentColor" stroke-width="11" stroke-linecap="round" opacity=".9"/>
+        <path d="M14 17c70-4 139-2 205 2 69 4 137-12 291-4" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <p class="hero-sub">A square-edged design-system kit for noisy cultural software: venue calendars, used vinyl drops, zine issue pages, counter checkout, and event ops. The surface is torn and stamped; the tokens keep contrast, focus, and layout under control.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="#palette">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          View tokens
+        </a>
+        <a class="btn btn-secondary btn-lg" href="#mobile">Mobile demos</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-label="Torn flyer composition">
+      <svg class="tape-svg tape-a" viewBox="0 0 420 72" aria-hidden="true">
+        <path d="M12 18c48-6 103-8 165-6 62 3 119-3 174 1 22 2 38 9 53 15-14 8-34 13-60 14-87 2-176 6-266 13-31 2-53-1-66-9 8-9 6-18 0-28z" fill="currentColor" opacity=".72"/>
+        <path d="M34 35h332" stroke="var(--ds-border-strong)" stroke-width="2" stroke-dasharray="9 7" opacity=".5"/>
+      </svg>
+      <svg class="tape-svg tape-b" viewBox="0 0 420 72" aria-hidden="true">
+        <path d="M14 20c52-10 98-8 154-7 71 2 142-7 226 6-4 11-6 19 2 31-88 7-178 1-267 8-50 4-86-1-112-13 9-8 8-16-3-25z" fill="currentColor" opacity=".78"/>
+      </svg>
+      <svg class="staple-svg" viewBox="0 0 80 120" aria-hidden="true">
+        <path d="M25 10c18 2 28 11 30 28" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <path d="M24 78c17-1 28 8 33 25" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+      <div class="poster-stack" aria-hidden="true">
+        <article class="poster one">
+          <span class="stamp">door list open</span>
+          <h2>Noise night below the shop</h2>
+          <div class="bars"><span></span><span></span><span></span></div>
+          <p>FRI 22:30 / all ages until sold out</p>
+        </article>
+        <article class="poster two">
+          <span class="stamp">issue 004</span>
+          <h2>Deck scuffs, tape hiss, local ads</h2>
+          <p>24 pages, folded by hand, priced for the counter.</p>
+        </article>
+      </div>
+      <svg class="tear-svg" viewBox="0 0 900 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 28l37 12 45-18 49 26 42-16 61 18 55-24 62 20 51-17 56 19 65-25 42 27 61-21 53 18 68-17 60 20 42-18v48H0z" fill="currentColor"/>
+        <path d="M0 28l37 12 45-18 49 26 42-16 61 18 55-24 62 20 51-17 56 19 65-25 42 27 61-21 53 18 68-17 60 20 42-18" fill="none" stroke="var(--ds-border-strong)" stroke-width="3"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="palette">
+    <div class="sec-head">
+      <h2 class="sec-title">色板 <span>/ Palette</span></h2>
+      <p class="lead">Safety orange, ink black, highlighter pink, and photocopy paper. Labels show the fixed token names and current theme values.</p>
+    </div>
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-color c-bg"></div><strong>Background</strong><code>--ds-bg</code><span>#e8e6df / #0d0c0a</span></div>
+      <div class="swatch"><div class="swatch-color c-bg-subtle"></div><strong>Subtle</strong><code>--ds-bg-subtle</code><span>#ddd9cf / #14120f</span></div>
+      <div class="swatch"><div class="swatch-color c-bg-elevated"></div><strong>Elevated</strong><code>--ds-bg-elevated</code><span>#f4f2ea / #1a1714</span></div>
+      <div class="swatch"><div class="swatch-color c-bg-sunken"></div><strong>Sunken</strong><code>--ds-bg-sunken</code><span>#cfcabb / #060504</span></div>
+      <div class="swatch"><div class="swatch-color c-fg"></div><strong>Ink</strong><code>--ds-fg</code><span>#141210 / #ece8df</span></div>
+      <div class="swatch"><div class="swatch-color c-border"></div><strong>Border</strong><code>--ds-border</code><span>#bcb4a4 / #2e2a22</span></div>
+      <div class="swatch"><div class="swatch-color c-primary"></div><strong>Action</strong><code>--ds-primary</code><span>#d6320f / #ff5a2c</span></div>
+      <div class="swatch"><div class="swatch-color c-accent"></div><strong>Highlight</strong><code>--ds-accent</code><span>#d6147a / #ff4b9e</span></div>
+      <div class="swatch"><div class="swatch-color c-success"></div><strong>Success</strong><code>--ds-success</code><span>#2f7a3a / #6fbf6f</span></div>
+      <div class="swatch"><div class="swatch-color c-warning"></div><strong>Warning</strong><code>--ds-warning</code><span>#8a5e0a / #e0b35a</span></div>
+      <div class="swatch"><div class="swatch-color c-danger"></div><strong>Danger</strong><code>--ds-danger</code><span>#d6320f / #ff5a2c</span></div>
+      <div class="swatch"><div class="swatch-color c-info"></div><strong>Info</strong><code>--ds-info</code><span>#1f5f8a / #5fa0d8</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">字体 <span>/ Type Scale</span></h2>
+      <p class="lead">Inter, Noto Serif, and JetBrains Mono are mixed for cut-letter identity while controls stay predictable.</p>
+    </div>
+    <div class="panel">
+      <div class="type-row"><span class="type-label">3xl 76</span><span class="sample-3xl">STATIC PIT</span></div>
+      <div class="type-row"><span class="type-label">2xl 52</span><span class="sample-2xl f-serif">folded zine desk</span></div>
+      <div class="type-row"><span class="type-label">xl 34</span><span class="sample-xl">Gig calendar, back-room stock, and hand-stamped holds.</span></div>
+      <div class="type-row"><span class="type-label">lg 24</span><span class="sample-lg f-mono">JETBRAINS MONO / ISSUE 004 / $08.00</span></div>
+      <div class="type-row"><span class="type-label">md 19</span><span class="sample-md">Readable feature text with photocopy attitude.</span></div>
+      <div class="type-row"><span class="type-label">base 16</span><span class="sample-base">Body copy sits on paper or raised paper only.</span></div>
+      <div class="type-row"><span class="type-label">sm 14</span><span class="sample-sm">Secondary labels and compact metadata.</span></div>
+      <div class="type-row"><span class="type-label">xs 12</span><span class="sample-xs f-mono">TABULAR SKU / BIN / TIME / PRICE</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">按钮 <span>/ Buttons</span></h2>
+      <p class="lead">Square paper controls with ink borders and hard offset states.</p>
+    </div>
+    <div class="button-board">
+      <div class="button-row">
+        <button class="btn btn-primary">Primary <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-tertiary">Tertiary</button>
+        <button class="btn btn-danger">Danger</button>
+        <button class="btn btn-secondary is-disabled" disabled>Disabled</button>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-primary btn-lg">Large action</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">表单 <span>/ Form</span></h2>
+      <p class="lead">Forms look like labeled slips but keep plain values, clear focus, and standard controls.</p>
+    </div>
+    <div class="panel">
+      <div class="form-grid">
+        <div class="field"><label for="artist">Artist / crew</label><input class="input" id="artist" placeholder="Basement Static" /></div>
+        <div class="field"><label for="drop">Drop type</label><select class="select" id="drop"><option>Used vinyl bin</option><option>Skate zine issue</option><option>Back-room gig</option></select></div>
+        <div class="field"><label for="email">Contact</label><input class="input" id="email" type="email" placeholder="desk@staticpit.local" /></div>
+        <div class="field"><label for="qty">Copies</label><input class="input" id="qty" type="number" value="80" /></div>
+        <div class="field" style="grid-column:1/-1"><label for="notes">Counter note</label><textarea class="textarea" id="notes" placeholder="Hold 12 copies for Friday door list."></textarea></div>
+      </div>
+      <div class="checks" style="margin-top:var(--ds-space-5)">
+        <label class="choice"><input type="checkbox" checked /> Staple pack</label>
+        <label class="choice"><input type="radio" name="bin" checked /> Front bin</label>
+        <label class="choice"><input type="radio" name="bin" /> Back wall</label>
+        <label class="choice">Open desk <span class="switch"><input type="checkbox" checked /><span></span></span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">卡片 <span>/ Cards</span></h2>
+      <p class="lead">Cards are individual paper pieces: strong border, hard shadow, optional stamp, no nested card stacks.</p>
+    </div>
+    <div class="cards">
+      <article class="panel">
+        <div class="card-meta"><span>FRI 22:30</span><span>CAP 80</span></div>
+        <h3>Noise night below the shop</h3>
+        <p>Door list, merch table, and one backline note handled in the same square card.</p>
+      </article>
+      <article class="panel paper-note">
+        <div class="card-meta"><span>ISSUE 004</span><span>24 PAGES</span></div>
+        <h3>Cutline skate zine</h3>
+        <p>Pricing, stock, and pickup status stay readable inside the rough paper treatment.</p>
+      </article>
+      <article class="panel">
+        <span class="stamp">staff pick</span>
+        <h3 style="margin-top:var(--ds-space-4)">Split tape restock</h3>
+        <p>Highlighter-pink metadata calls attention without stealing the primary action color.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">徽章 <span>/ Badges</span></h2>
+      <p class="lead">Badges carry status, format, and counter labels using semantic token pairs.</p>
+    </div>
+    <div class="panel">
+      <div class="badge-row">
+        <span class="badge badge-primary">door open</span>
+        <span class="badge badge-accent">new issue</span>
+        <span class="badge badge-success">in stock</span>
+        <span class="badge badge-warning">low copies</span>
+        <span class="badge badge-danger">sold out</span>
+        <span class="badge badge-info">local press</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">提示条 <span>/ Alerts</span></h2>
+      <p class="lead">Alerts behave like stamped notices with semantic background and foreground pairs.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="alert alert-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><div><h3>Stock counted</h3><p>All new zines are logged and ready for the counter.</p></div></div>
+      <div class="alert alert-warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 3l10 18H2L12 3z"/><path d="M12 9v5M12 18h.01"/></svg><div><h3>Low copies</h3><p>Only nine folded copies remain for tonight.</p></div></div>
+      <div class="alert alert-danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><div><h3>Hold closed</h3><p>Reserved copies expired after the pickup window.</p></div></div>
+      <div class="alert alert-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 17v-6M12 7h.01"/><circle cx="12" cy="12" r="9"/></svg><div><h3>Desk note</h3><p>Gig wristbands move to the back counter at 21:00.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">导航 <span>/ Tabs</span></h2>
+      <p class="lead">Navigation uses explicit selected states, square hit areas, and visible ink structure.</p>
+    </div>
+    <div class="nav-demo">
+      <strong>STATIC PIT</strong>
+      <nav class="nav-links" aria-label="Main">
+        <a class="nav-link" href="#" aria-current="page">Drops</a>
+        <a class="nav-link" href="#">Gigs</a>
+        <a class="nav-link" href="#">Zines</a>
+        <a class="nav-link" href="#">Desk</a>
+      </nav>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Inventory tabs">
+      <button class="tab is-active" role="tab" aria-selected="true">New in</button>
+      <button class="tab" role="tab">Holds</button>
+      <button class="tab" role="tab">Sold</button>
+      <button class="tab" role="tab">Archived</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">表格 <span>/ Table</span></h2>
+      <p class="lead">Tables keep tabular numbers and scroll locally on narrow screens.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Format</th><th>Bin</th><th>Copies</th><th>Price</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Static split tape</td><td>Cassette</td><td>A-03</td><td>18</td><td>$08.00</td><td><span class="badge badge-success">in stock</span></td></tr>
+          <tr><td>Cutline issue 004</td><td>Zine</td><td>Z-01</td><td>9</td><td>$05.00</td><td><span class="badge badge-warning">low copies</span></td></tr>
+          <tr><td>Back-room ticket</td><td>Door</td><td>G-22</td><td>0</td><td>$12.00</td><td><span class="badge badge-danger">sold out</span></td></tr>
+          <tr><td>Local press bundle</td><td>Pack</td><td>P-10</td><td>24</td><td>$16.00</td><td><span class="badge badge-info">local press</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">图片用法 <span>/ Image Usage</span></h2>
+      <p class="lead">This offline kit uses inline SVG poster fields instead of external photos. Product teams can replace them with local media while keeping the same border, grain, and caption rules.</p>
+    </div>
+    <div class="media-grid">
+      <div class="poster-frame" aria-label="Inline poster treatment">
+        <svg viewBox="0 0 640 360" role="img" aria-label="Abstract photocopy poster block">
+          <rect width="640" height="360" fill="var(--ds-bg-subtle)"/>
+          <path d="M42 54h250v48H42zM42 126h420v26H42zM42 170h356v26H42zM42 214h292v26H42z" fill="var(--ds-fg)"/>
+          <path d="M392 42l150 34-42 188-150-34z" fill="var(--ds-primary)" stroke="var(--ds-border-strong)" stroke-width="7"/>
+          <path d="M422 76l84 20M412 124l70 16M402 172l96 22" stroke="var(--ds-primary-fg)" stroke-width="12"/>
+          <circle cx="510" cy="268" r="46" fill="var(--ds-accent)" stroke="var(--ds-border-strong)" stroke-width="7"/>
+        </svg>
+      </div>
+      <div class="image-card">
+        <div class="aspect">
+          <svg viewBox="0 0 480 270" role="img" aria-label="Sixteen by nine media block">
+            <rect width="480" height="270" fill="var(--ds-bg)"/>
+            <path d="M0 210l120-74 78 38 91-84 191 120v60H0z" fill="var(--ds-fg)"/>
+            <path d="M40 38h238v38H40z" fill="var(--ds-primary)"/>
+          </svg>
+        </div>
+        <div class="panel">
+          <h3>Media card</h3>
+          <p>Use local media, convert it to high-contrast monochrome, then keep captions on solid token surfaces.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">图标用法 <span>/ Icon Usage</span></h2>
+      <p class="lead">Icons are inline SVG, two-stroke, and placed inside clear button or tile affordances.</p>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 7h16v12H4z"/><path d="M8 7V5h8v2"/></svg></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/></svg></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9h12M8 5h8M8 13h8M10 17h4"/></svg></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">桌面布局 <span>/ Desktop Layouts</span></h2>
+      <p class="lead">Operational layouts stay dense and scannable; punk texture frames the work instead of hiding the work.</p>
+    </div>
+    <div class="desktop-shell">
+      <aside class="side">
+        <strong>Desk OS</strong>
+        <a class="is-active" href="#">Overview</a>
+        <a href="#">Inventory</a>
+        <a href="#">Calendar</a>
+        <a href="#">Orders</a>
+      </aside>
+      <div class="desk-main">
+        <div class="nav-demo">
+          <strong>Tonight</strong>
+          <button class="btn btn-primary btn-sm">Add item</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>128</b><span class="muted">counter sales</span></div>
+          <div class="stat"><b>42</b><span class="muted">zines folded</span></div>
+          <div class="stat"><b>06</b><span class="muted">door holds</span></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Run</th><th>Owner</th><th>Due</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Poster pack</td><td>Mara</td><td>18:00</td><td><span class="badge badge-success">ready</span></td></tr>
+              <tr><td>Door list</td><td>Ren</td><td>20:30</td><td><span class="badge badge-warning">check</span></td></tr>
+              <tr><td>Restock tape</td><td>Ivo</td><td>Sat</td><td><span class="badge badge-info">queued</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mobile">
+    <div class="sec-head">
+      <h2 class="sec-title">移动布局 <span>/ Mobile Layouts</span></h2>
+      <p class="lead">The `.dvc17` shell comes from the shared local device stylesheet; this kit only styles the content inside the screen.</p>
+    </div>
+    <div class="phone-row">
+      <div class="dvc17" aria-label="Mobile inventory demo">
+        <div class="scr">
+          <div class="phone-ui">
+            <div class="phone-hero">
+              <span class="badge badge-primary">tonight</span>
+              <h3>Back-room gig desk</h3>
+            </div>
+            <div class="phone-list">
+              <div class="phone-item"><strong>Door list</strong><br><span class="muted">64 names checked</span></div>
+              <div class="phone-item"><strong>Merch float</strong><br><span class="muted">$120 starting cash</span></div>
+              <div class="phone-item"><strong>Last call</strong><br><span class="muted">Move holds at 21:00</span></div>
+            </div>
+            <nav class="phone-nav" aria-label="Mobile tabs">
+              <a class="is-active" href="#">desk</a><a href="#">bins</a><a href="#">gigs</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="dvc17" aria-label="Mobile zine profile demo">
+        <div class="scr">
+          <div class="phone-ui">
+            <div class="phone-hero" style="background:var(--ds-primary);color:var(--ds-primary-fg)">
+              <span class="badge badge-accent">issue 004</span>
+              <h3>Cutline skate zine</h3>
+            </div>
+            <div class="phone-list">
+              <div class="phone-item"><strong>24 pages</strong><br><span class="muted">folded and stapled</span></div>
+              <div class="phone-item"><strong>9 copies</strong><br><span class="muted">front counter only</span></div>
+              <button class="btn btn-primary">Reserve copy</button>
+            </div>
+            <nav class="phone-nav" aria-label="Mobile profile tabs">
+              <a href="#">info</a><a class="is-active" href="#">hold</a><a href="#">share</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 class="sec-title">更多组件 <span>/ More Components</span></h2>
+      <p class="lead">Additional primitives keep the same ink, paper, square radius, and focus behavior.</p>
+    </div>
+    <div class="more-grid">
+      <div class="panel">
+        <h3>Breadcrumb</h3>
+        <div class="crumbs"><a href="#">Desk</a><span>/</span><a href="#">Inventory</a><span>/</span><strong>Issue 004</strong></div>
+      </div>
+      <div class="panel">
+        <h3>Dropdown</h3>
+        <div class="dropdown">
+          <div class="drop-row"><span>Move to front bin</span><span class="token-chip">A</span></div>
+          <div class="drop-row"><span>Mark as held</span><span class="token-chip">H</span></div>
+          <div class="drop-row"><span>Archive run</span><span class="token-chip">X</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Tooltip</h3>
+        <div style="padding-top:52px"><span class="tooltip-demo">Hover target<span role="tooltip">Use for short operational notes only.</span></span></div>
+      </div>
+      <div class="panel">
+        <h3>Stepper</h3>
+        <div class="steps">
+          <div class="step"><span class="step-num">1</span><div><strong>Fold</strong><p>Prepare issue pages.</p></div></div>
+          <div class="step"><span class="step-num">2</span><div><strong>Staple</strong><p>Bind the run cleanly.</p></div></div>
+          <div class="step"><span class="step-num">3</span><div><strong>Stock</strong><p>Move copies to the counter.</p></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Pagination</h3>
+        <div class="pagination"><button class="page-btn">1</button><button class="page-btn is-active">2</button><button class="page-btn">3</button><button class="page-btn">4</button></div>
+      </div>
+      <div class="panel">
+        <h3>Toast</h3>
+        <div class="toast"><strong>Hold added</strong><p style="margin:var(--ds-space-1) 0 0">One copy reserved until 20:00.</p></div>
+      </div>
+    </div>
+    <div class="modal-demo" style="margin-top:var(--ds-space-5)">
+      <span class="stamp">modal block</span>
+      <h3 style="margin-top:var(--ds-space-4)">Confirm counter close</h3>
+      <p>Closing the counter locks tonight's holds and prints the staff note.</p>
+      <div class="hero-actions"><button class="btn btn-secondary">Cancel</button><button class="btn btn-primary">Close counter</button></div>
+    </div>
+  </section>
+
+  <footer class="footer-note">
+    <p>All visible colors and component surfaces are token-backed. Decorative grain, tape, torn edges, staple marks, marker underline, and stamp blocks are inline CSS/SVG and marked decorative where appropriate.</p>
+  </footer>
+</main>
+
+<script>
+const root = document.documentElement;
+const toggle = document.getElementById('themeToggle');
+function applyTheme(theme){
+  root.dataset.theme = theme;
+  toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+}
+applyTheme(localStorage.getItem('ds-theme-41') || 'light');
+toggle.addEventListener('click', () => {
+  const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('ds-theme-41', next);
+  applyTheme(next);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* ============================================================
+   Aurora · 极光渐变 (Gradient Mesh) 设计系统 Tokens
+   契约：所有核心变量名固定为 --ds-*，只换取值与气质。
+   DARK-first：:root = aurora night；[data-theme="light"], .light = aurora daylight。
+   渐变网格是品牌表面与装饰层；承载文字的卡片保持 solid surface。
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字 · aurora night ---- */
+  --ds-bg:#0a0a14; --ds-bg-subtle:#11111f; --ds-bg-elevated:#16162a; --ds-bg-sunken:#050509;
+  --ds-fg:#f0eefb; --ds-fg-muted:#b4b2d2; --ds-fg-subtle:#8482a4; --ds-fg-on-accent:#0c0820;
+  --ds-border:#262446; --ds-border-strong:#b9a8ff;
+
+  /* ---- 品牌与强调 ---- */
+  --ds-primary:#8b7bff; --ds-primary-hover:#9d8fff; --ds-primary-active:#7a6bf0; --ds-primary-fg:#0c0820;
+  --ds-accent:#22d3ee; --ds-accent-fg:#04222a;
+
+  /* ---- 语义状态 ---- */
+  --ds-success:#4fd38a; --ds-success-bg:#072018; --ds-success-fg:#c9f5dd;
+  --ds-warning:#ffce5a; --ds-warning-bg:#241c06; --ds-warning-fg:#f6e6be;
+  --ds-danger:#ff6a8a;  --ds-danger-bg:#2a0c14;  --ds-danger-fg:#ffd6e0;
+  --ds-info:#5ab0ff;    --ds-info-bg:#08182e;    --ds-info-fg:#d6e8ff;
+
+  /* ---- 焦点 ---- */
+  --ds-focus:#8b7bff;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 ---- */
+  --ds-radius-sm:8px; --ds-radius-md:14px; --ds-radius-lg:22px; --ds-radius-full:9999px;
+
+  /* ---- 间距比例（继承 09） ---- */
+  --ds-space-1:4px;  --ds-space-2:8px;  --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+
+  /* ---- 字体（本地 fonts.css + 系统回退） ---- */
+  --ds-font-sans:"Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif:"Noto Serif",serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs:12px; --ds-text-sm:13px; --ds-text-base:14px; --ds-text-md:16px;
+  --ds-text-lg:20px; --ds-text-xl:24px; --ds-text-2xl:32px; --ds-text-3xl:48px;
+  --ds-leading-tight:1.2; --ds-leading-normal:1.55; --ds-leading-relaxed:1.75;
+  --ds-weight-normal:400; --ds-weight-medium:500; --ds-weight-bold:600;
+  --ds-tracking-tight:-0.02em; --ds-tracking-normal:0;
+
+  /* ---- 阴影 / 高度 ---- */
+  --ds-shadow-sm:0 2px 8px -2px rgba(0,0,0,.5);
+  --ds-shadow-md:0 12px 30px -10px rgba(0,0,0,.6);
+  --ds-shadow-lg:0 28px 60px -16px rgba(0,0,0,.7), 0 0 40px -10px rgba(139,123,255,.35);
+
+  /* ---- 动效（继承 09） ---- */
+  --ds-ease:cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast:140ms; --ds-dur-base:220ms; --ds-dur-slow:360ms;
+
+  /* ---- 语义层级（与 09 preset 结构保持一致） ---- */
+  --ds-z-dropdown:1000; --ds-z-sticky:1100; --ds-z-modal-backdrop:1200;
+  --ds-z-modal:1300; --ds-z-toast:1400; --ds-z-tooltip:1500;
+}
+
+[data-theme="light"],
+.light {
+  /* ---- 表面与文字 · aurora daylight ---- */
+  --ds-bg:#f6f5fc; --ds-bg-subtle:#eceaf6; --ds-bg-elevated:#ffffff; --ds-bg-sunken:#e2def2;
+  --ds-fg:#14121f; --ds-fg-muted:#4a4660; --ds-fg-subtle:#6a6688; --ds-fg-on-accent:#ffffff;
+  --ds-border:#ddd9ee; --ds-border-strong:#14121f;
+
+  /* ---- 品牌与强调 ---- */
+  --ds-primary:#5b3df0; --ds-primary-hover:#4f34d8; --ds-primary-active:#4329bc; --ds-primary-fg:#ffffff;
+  --ds-accent:#0a7186; --ds-accent-fg:#ffffff;
+
+  /* ---- 语义状态 ---- */
+  --ds-success:#1f8a5a; --ds-success-bg:#e2f3ea; --ds-success-fg:#0c3a26;
+  --ds-warning:#9a6a10; --ds-warning-bg:#f6ecd2; --ds-warning-fg:#43300a;
+  --ds-danger:#d23b5e;  --ds-danger-bg:#fbe2e8;  --ds-danger-fg:#551020;
+  --ds-info:#2f6fe0;    --ds-info-bg:#e2ebfb;    --ds-info-fg:#0e2c5e;
+
+  /* ---- 焦点 / 阴影 ---- */
+  --ds-focus:#5b3df0;
+  --ds-shadow-sm:0 2px 8px -2px rgba(20,18,31,.14);
+  --ds-shadow-md:0 12px 30px -10px rgba(20,18,31,.2);
+  --ds-shadow-lg:0 28px 60px -16px rgba(91,61,240,.22);
+}

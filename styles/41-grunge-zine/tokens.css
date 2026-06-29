@@ -1,0 +1,74 @@
+/* ============================================================================
+   Grunge / Zine Photocopy Punk Design System — tokens.css
+   ----------------------------------------------------------------------------
+   Fixed --ds-* token contract. Light-first paper, ink-black structure, safety
+   orange action, highlighter pink accent, hard photocopy offset shadows.
+   ============================================================================ */
+
+:root {
+  /* Surfaces and text */
+  --ds-bg:#e8e6df; --ds-bg-subtle:#ddd9cf; --ds-bg-elevated:#f4f2ea; --ds-bg-sunken:#cfcabb;
+  --ds-fg:#141210; --ds-fg-muted:#44403a; --ds-fg-subtle:#66615a; --ds-fg-on-accent:#ffffff;
+  --ds-border:#bcb4a4; --ds-border-strong:#141210;
+
+  /* Brand and accent */
+  --ds-primary:#d6320f; --ds-primary-hover:#bb2a0c; --ds-primary-active:#9c2209; --ds-primary-fg:#ffffff;
+  --ds-accent:#d6147a; --ds-accent-fg:#ffffff;
+
+  /* Semantic states */
+  --ds-success:#2f7a3a; --ds-success-bg:#e3efe2; --ds-success-fg:#0e3314;
+  --ds-warning:#8a5e0a; --ds-warning-bg:#f3e9cd; --ds-warning-fg:#3e2c04;
+  --ds-danger:#d6320f;  --ds-danger-bg:#f8e0d9;  --ds-danger-fg:#551407;
+  --ds-info:#1f5f8a;    --ds-info-bg:#e0eaf0;    --ds-info-fg:#0c2a3e;
+
+  /* Focus */
+  --ds-focus:#d6320f;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* Radius */
+  --ds-radius-sm:0px; --ds-radius-md:1px; --ds-radius-lg:2px; --ds-radius-full:9999px;
+
+  /* Spacing scale inherited from source kit */
+  --ds-space-1:4px;  --ds-space-2:8px;  --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+
+  /* Type */
+  --ds-font-sans:"Inter",-apple-system,"PingFang SC",sans-serif;
+  --ds-font-serif:"Noto Serif",serif;
+  --ds-font-mono:"JetBrains Mono",monospace;
+  --ds-text-xs:12px; --ds-text-sm:14px; --ds-text-base:16px; --ds-text-md:19px;
+  --ds-text-lg:24px; --ds-text-xl:34px; --ds-text-2xl:52px; --ds-text-3xl:76px;
+  --ds-leading-tight:1.02; --ds-leading-normal:1.5; --ds-leading-relaxed:1.7;
+  --ds-weight-normal:400; --ds-weight-medium:600; --ds-weight-bold:800;
+  --ds-tracking-tight:-0.04em; --ds-tracking-normal:0;
+
+  /* Shadows */
+  --ds-shadow-sm:2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md:4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg:7px 7px 0 var(--ds-border-strong);
+
+  /* Motion */
+  --ds-ease:cubic-bezier(.2,0,0,1);
+  --ds-dur-fast:80ms; --ds-dur-base:140ms; --ds-dur-slow:240ms;
+}
+
+[data-theme="dark"], .dark {
+  --ds-bg:#0d0c0a; --ds-bg-subtle:#14120f; --ds-bg-elevated:#1a1714; --ds-bg-sunken:#060504;
+  --ds-fg:#ece8df; --ds-fg-muted:#b0a898; --ds-fg-subtle:#837c6e; --ds-fg-on-accent:#2a0c00;
+  --ds-border:#2e2a22; --ds-border-strong:#ece8df;
+
+  --ds-primary:#ff5a2c; --ds-primary-hover:#ff6e44; --ds-primary-active:#ee4c20; --ds-primary-fg:#2a0c00;
+  --ds-accent:#ff4b9e; --ds-accent-fg:#2a0418;
+
+  --ds-success:#6fbf6f; --ds-success-bg:#0e260e; --ds-success-fg:#cdeec0;
+  --ds-warning:#e0b35a; --ds-warning-bg:#241a06; --ds-warning-fg:#f6e6be;
+  --ds-danger:#ff5a2c;  --ds-danger-bg:#2a0c04;  --ds-danger-fg:#ffd6c8;
+  --ds-info:#5fa0d8;    --ds-info-bg:#0a1f2e;    --ds-info-fg:#d6e8f5;
+
+  --ds-focus:#ff5a2c;
+
+  --ds-shadow-sm:2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md:4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg:7px 7px 0 rgba(0,0,0,.6);
+}
