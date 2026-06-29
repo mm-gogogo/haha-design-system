@@ -1,0 +1,138 @@
+/**
+ * 天文星图 · Celestial Star-Atlas — tokens.css
+ * ---------------------------------------------------------------------------
+ * 严格遵守 ds-token-contract@1：变量名固定，仅取值随风格变。
+ *
+ * 暗色优先：
+ *   :root                         = 暗色（默认即深夜星图）
+ *   [data-theme="light"], .light  = 亮色覆盖（冷调天文纸图）
+ *   [data-theme="dark"], .dark    = 显式暗色（与 :root 同值）
+ *
+ * 气质：深午夜靛蓝星空、古金发丝线、星点分级、赤经/赤纬网格、
+ * 黄道弧与星盘装饰。所有层级依靠 crisp hairline、墨色压痕与细点，
+ * 不使用发光、霓虹或科技终端语言。
+ */
+
+/* ============================================================ */
+/* :root —— 默认暗色（DARK FIRST）                              */
+/* ============================================================ */
+:root {
+  /* 表面与文字 */
+  --ds-bg: #0b1026;            --ds-bg-subtle: #0e1430;
+  --ds-bg-elevated: #161c3c;   --ds-bg-sunken: #070a1c;
+  --ds-fg: #e9e7f6;            --ds-fg-muted: #aaacce;
+  --ds-fg-subtle: #7e81a6;     --ds-fg-on-accent: #07131c;
+  --ds-border: #272e54;        --ds-border-strong: #3c4577;
+
+  /* 品牌与强调 —— 古金主线 + 冷蓝星名注记 */
+  --ds-primary: #d4a94a;       --ds-primary-hover: #e2b95e;
+  --ds-primary-active: #c19a3c; --ds-primary-fg: #1a1530;
+  --ds-accent: #74bcd8;        --ds-accent-fg: #07131c;
+
+  /* 语义状态 */
+  --ds-success: #7bb893; --ds-success-bg: #16261d; --ds-success-fg: #aee0bf;
+  --ds-warning: #e0b25e; --ds-warning-bg: #2a2010; --ds-warning-fg: #f3d79a;
+  --ds-danger:  #e08a80; --ds-danger-bg:  #2c1614; --ds-danger-fg:  #f4b8b0;
+  --ds-info:    #74bcd8; --ds-info-bg:    #0e2530; --ds-info-fg:    #b0e0f0;
+
+  /* 焦点 —— 双层清晰描边 */
+  --ds-focus: #d4a94a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* 圆角 —— 锐利纸版与铜版刻线 */
+  --ds-radius-sm: 3px; --ds-radius-md: 6px; --ds-radius-lg: 10px; --ds-radius-full: 999px;
+
+  /* 间距（4px 基） */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* 字体 —— Serif 承担星图标题与拉丁星座名，Mono 承担 RA/Dec 与星等 */
+  --ds-font-sans: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.2; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 500; --ds-weight-bold: 600;
+  --ds-tracking-tight: 0; --ds-tracking-normal: 0;
+
+  /* 阴影 —— 非发光；以发丝线与墨色压痕表达层级 */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border), 0 1px 0 rgba(212,169,74,.14);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border), 0 1px 0 rgba(212,169,74,.12), inset 0 1px 0 rgba(233,231,246,.04);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong), 0 2px 0 rgba(0,0,0,.28), inset 0 1px 0 rgba(212,169,74,.10);
+
+  /* 动效 */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 140ms; --ds-dur-base: 220ms; --ds-dur-slow: 360ms;
+}
+
+/* ============================================================ */
+/* 亮色覆盖 —— [data-theme="light"], .light                     */
+/* 冷调天文纸图：浅蓝灰纸面、深墨文字、古金主线                  */
+/* ============================================================ */
+[data-theme="light"],
+.light {
+  /* 表面与文字 */
+  --ds-bg: #eaecf4;            --ds-bg-subtle: #e2e5f0;
+  --ds-bg-elevated: #f7f8fc;   --ds-bg-sunken: #dadeec;
+  --ds-fg: #181c30;            --ds-fg-muted: #474c69;
+  --ds-fg-subtle: #6a6f8e;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #ccd2e4;        --ds-border-strong: #aab2cf;
+
+  /* 品牌与强调 */
+  --ds-primary: #876219;       --ds-primary-hover: #6f5113;
+  --ds-primary-active: #5c4310; --ds-primary-fg: #ffffff;
+  --ds-accent: #2a6b86;        --ds-accent-fg: #ffffff;
+
+  /* 语义状态 */
+  --ds-success: #2f7d54; --ds-success-bg: #e2f0e7; --ds-success-fg: #14502f;
+  --ds-warning: #8a6410; --ds-warning-bg: #f5ecd6; --ds-warning-fg: #5a4108;
+  --ds-danger:  #b23b30; --ds-danger-bg:  #f6e2df; --ds-danger-fg:  #7d2019;
+  --ds-info:    #2a6b86; --ds-info-bg:    #ddeef4; --ds-info-fg:    #134456;
+
+  /* 焦点 */
+  --ds-focus: #876219;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* 阴影 —— 纸面压线，不做模糊外发光 */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border), 0 1px 0 rgba(24,28,48,.06);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border), 0 1px 0 rgba(24,28,48,.08), inset 0 1px 0 rgba(255,255,255,.6);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong), 0 2px 0 rgba(24,28,48,.10), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+/* ============================================================ */
+/* [data-theme="dark"], .dark —— 显式暗色（与 :root 同值）       */
+/* ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg: #0b1026;            --ds-bg-subtle: #0e1430;
+  --ds-bg-elevated: #161c3c;   --ds-bg-sunken: #070a1c;
+  --ds-fg: #e9e7f6;            --ds-fg-muted: #aaacce;
+  --ds-fg-subtle: #7e81a6;     --ds-fg-on-accent: #07131c;
+  --ds-border: #272e54;        --ds-border-strong: #3c4577;
+
+  --ds-primary: #d4a94a;       --ds-primary-hover: #e2b95e;
+  --ds-primary-active: #c19a3c; --ds-primary-fg: #1a1530;
+  --ds-accent: #74bcd8;        --ds-accent-fg: #07131c;
+
+  --ds-success: #7bb893; --ds-success-bg: #16261d; --ds-success-fg: #aee0bf;
+  --ds-warning: #e0b25e; --ds-warning-bg: #2a2010; --ds-warning-fg: #f3d79a;
+  --ds-danger:  #e08a80; --ds-danger-bg:  #2c1614; --ds-danger-fg:  #f4b8b0;
+  --ds-info:    #74bcd8; --ds-info-bg:    #0e2530; --ds-info-fg:    #b0e0f0;
+
+  --ds-focus: #d4a94a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border), 0 1px 0 rgba(212,169,74,.14);
+  --ds-shadow-md: 0 0 0 1px var(--ds-border), 0 1px 0 rgba(212,169,74,.12), inset 0 1px 0 rgba(233,231,246,.04);
+  --ds-shadow-lg: 0 0 0 1px var(--ds-border-strong), 0 2px 0 rgba(0,0,0,.28), inset 0 1px 0 rgba(212,169,74,.10);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
