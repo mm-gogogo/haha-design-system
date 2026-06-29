@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>霁友 AI Companion Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #ffffff;
+      --ink: #0a0a0a;
+      --ink-soft: #111111;
+      --muted: #666666;
+      --quiet: #999999;
+      --line: rgba(10, 10, 10, .08);
+      --line-strong: rgba(10, 10, 10, .12);
+      --accent: #e8a33d;
+      --shadow: rgba(20, 20, 20, .08);
+      --shadow-deep: rgba(20, 20, 20, .14);
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #ffffff;
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      background: var(--page);
+      font-family: var(--font);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img,
+    svg {
+      display: block;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px clamp(18px, 4.8vw, 64px) 132px;
+    }
+
+    .topbar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .wordmark-mark {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 8px 22px rgba(232, 163, 61, .22);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: clamp(16px, 3vw, 32px);
+      color: #777777;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+    }
+
+    .hero {
+      display: grid;
+      justify-items: center;
+      text-align: center;
+      padding: clamp(66px, 11vw, 126px) 0 34px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 100%;
+      color: var(--ink);
+      font-size: clamp(72px, 15vw, 168px);
+      font-weight: 900;
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      width: min(620px, 100%);
+      margin: clamp(18px, 2.8vw, 28px) auto 0;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 520;
+      line-height: 1.6;
+    }
+
+    .download-row {
+      width: min(720px, 100%);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: clamp(26px, 4vw, 42px);
+    }
+
+    .download-pill {
+      min-width: 148px;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 20px;
+      border: 1px solid #0f0f0f;
+      border-radius: 999px;
+      background: var(--ink-soft);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 760;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: 0 12px 28px -18px rgba(0, 0, 0, .55);
+    }
+
+    .download-pill svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      color: #ffffff;
+    }
+
+    .mascot-stage {
+      display: grid;
+      place-items: center;
+      margin: clamp(38px, 7vw, 78px) auto 0;
+    }
+
+    .mascot {
+      width: min(820px, 100%);
+      border-radius: 28px;
+      filter: drop-shadow(0 36px 42px rgba(11, 11, 11, .11));
+      will-change: transform;
+    }
+
+    .features {
+      padding: clamp(74px, 10vw, 126px) 0 clamp(50px, 8vw, 94px);
+    }
+
+    .section-head {
+      width: min(680px, 100%);
+      margin: 0 auto clamp(30px, 5vw, 48px);
+      text-align: center;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(30px, 4.6vw, 56px);
+      font-weight: 880;
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 16px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.7;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      min-width: 0;
+      min-height: 248px;
+      padding: clamp(22px, 3vw, 30px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow:
+        0 18px 46px -40px var(--shadow-deep),
+        0 1px 0 rgba(255, 255, 255, .92) inset;
+    }
+
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 26px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(250, 250, 250, .72));
+    }
+
+    .feature-icon svg {
+      width: 23px;
+      height: 23px;
+    }
+
+    .feature-card h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 830;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .accent-line {
+      width: 22px;
+      height: 2px;
+      margin: 14px 0 16px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.74;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 28px 0 0;
+      border-top: 1px solid var(--line);
+      color: var(--quiet);
+      font-size: 12px;
+      font-weight: 560;
+      line-height: 1.5;
+    }
+
+    .footer b {
+      color: var(--ink);
+      font-weight: 820;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 980px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        padding: 20px 18px 156px;
+      }
+
+      .topbar {
+        height: 42px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+
+      h1 {
+        font-size: clamp(68px, 22vw, 94px);
+      }
+
+      .subtitle {
+        font-size: 15px;
+        line-height: 1.62;
+      }
+
+      .download-row {
+        gap: 10px;
+      }
+
+      .download-pill {
+        min-width: min(154px, calc(50vw - 24px));
+        padding: 13px 16px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: 0;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        animation: reveal-up .82s cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: var(--delay, 0ms);
+      }
+
+      .mascot {
+        animation: mascot-float 6.8s ease-in-out infinite;
+      }
+
+      .download-pill,
+      .feature-card,
+      .nav-links a,
+      .footer-links a {
+        transition:
+          transform .28s cubic-bezier(.16, 1, .3, 1),
+          border-color .28s cubic-bezier(.16, 1, .3, 1),
+          box-shadow .28s cubic-bezier(.16, 1, .3, 1),
+          color .28s cubic-bezier(.16, 1, .3, 1),
+          background-color .28s cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .download-pill:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 34px -20px rgba(0, 0, 0, .72);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(10, 10, 10, .16);
+        box-shadow:
+          0 26px 70px -46px rgba(20, 20, 20, .25),
+          0 1px 0 rgba(255, 255, 255, .94) inset;
+      }
+
+      .nav-links a:hover,
+      .footer-links a:hover {
+        color: var(--ink);
+      }
+
+      @keyframes reveal-up {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes mascot-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .reveal,
+      .mascot {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar" aria-label="页面导航">
+      <a class="wordmark" href="#" aria-label="霁友首页">
+        <span class="wordmark-mark" aria-hidden="true"></span>
+        <span>霁友</span>
+      </a>
+      <nav class="nav-links" aria-label="辅助导航">
+        <a href="#download">下载</a>
+        <a href="#features">能力</a>
+        <a href="#privacy">隐私</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="reveal" style="--delay: 70ms;">霁友</h1>
+      <p class="subtitle reveal" style="--delay: 150ms;">一个安静在线的智能伙伴，帮你记住重要线索，也陪你把想法慢慢理清。</p>
+      <div id="download" class="download-row reveal" aria-label="下载霁友" style="--delay: 230ms;">
+        <a class="download-pill" href="#" aria-label="下载霁友 Windows 版本">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="5" width="7" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="13" y="5" width="7" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="4" y="13" width="7" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="13" y="13" width="7" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Windows</span>
+        </a>
+        <a class="download-pill" href="#" aria-label="下载霁友 macOS 版本">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="13" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M13.4 7.2c.8-1.8 2.2-2.9 4.1-3.2-.1 1.8-1 3.1-2.7 3.9-.6.3-1.2.4-1.9.3.1-.3.2-.6.5-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 9.2v-2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <span>macOS</span>
+        </a>
+        <a class="download-pill" href="#" aria-label="下载霁友 Android 版本">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7.2 9.5h9.6a1.8 1.8 0 0 1 1.8 1.8v5.4a3.1 3.1 0 0 1-3.1 3.1h-7A3.1 3.1 0 0 1 5.4 16.7v-5.4a1.8 1.8 0 0 1 1.8-1.8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8.2 6.1 6.9 3.9M15.8 6.1l1.3-2.2M8.5 9.5c.6-1.9 1.8-2.9 3.5-2.9s2.9 1 3.5 2.9M9.5 14h.1M14.4 14h.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Android</span>
+        </a>
+        <a class="download-pill" href="#" aria-label="下载霁友 iOS 版本">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="7" y="3" width="10" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10.2 6h3.6M11.2 18h1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>iOS</span>
+        </a>
+      </div>
+
+      <div class="mascot-stage reveal" style="--delay: 320ms;">
+        <img class="mascot" src="./hero.jpg" alt="戴着琥珀围巾的霁友机器人伙伴">
+      </div>
+    </section>
+
+    <section id="features" class="features" aria-labelledby="features-title">
+      <div class="section-head reveal" style="--delay: 80ms;">
+        <h2 id="features-title">轻轻接住每天的复杂</h2>
+        <p>霁友不抢注意力，只在你需要的时候整理、提醒、联想和筛选。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card reveal" style="--delay: 130ms;">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M6.5 5.5h11A2.5 2.5 0 0 1 20 8v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16V8a2.5 2.5 0 0 1 2.5-2.5Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M8 9h8M8 12h5M8 15h7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>口袋记忆</h3>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p>把文档、链接和片段收进同一个空间。提问时，它会先回到你的资料里找答案。</p>
+        </article>
+
+        <article class="feature-card reveal" style="--delay: 190ms;">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="4.5" y="5.5" width="15" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M8 4v3M16 4v3M4.5 10h15M8 14l2.1 2.1L15.8 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>轻日程</h3>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p>从聊天和邮件里识别时间线索。临近之前给出温和提醒，不制造新的压力。</p>
+        </article>
+
+        <article class="feature-card reveal" style="--delay: 250ms;">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 4.5v4M12 15.5v4M19.5 12h-4M8.5 12h-4M16.9 7.1l-2.8 2.8M9.9 14.1l-2.8 2.8M16.9 16.9l-2.8-2.8M9.9 9.9 7.1 7.1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="2.7" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </div>
+          <h3>灵感回声</h3>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p>当想法还没成形，它会给出几条可继续推敲的方向，让空白页先动起来。</p>
+        </article>
+
+        <article class="feature-card reveal" style="--delay: 310ms;">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M12 4.5V7M19.5 12H17M12 17v2.5M7 12H4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>消息筛网</h3>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p>把重复资讯、弱相关提醒和真正重要的变化分开。你只看值得处理的部分。</p>
+        </article>
+      </div>
+    </section>
+
+    <footer id="privacy" class="footer">
+      <div><b>霁友</b> 是一个虚构 AI 伙伴概念，专注安静、清晰和可控。</div>
+      <div class="footer-links" aria-label="页脚链接">
+        <a href="#download">下载</a>
+        <a href="#features">功能</a>
+        <a href="#">隐私说明</a>
+      </div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 marvis.qq.com（Marvis 马维斯）的视觉风格 · 仅作前端技法学习，版权归原网站</div>
+</body>
+</html>
