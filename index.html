@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>哈哈设计系统 · 截图总览</title>
-<meta name="description" content="一份 --ds-* Token 契约，换出 49 套设计风格 + 6 个开源项目定制 + 24 例效果临摹。亮 / 暗双主题，含 iPhone 真机布局。">
+<meta name="description" content="一份 --ds-* Token 契约，换出 49 套设计风格 + 6 个开源项目定制 + 25 例效果临摹。亮 / 暗双主题，含 iPhone 真机布局。">
 <link rel="stylesheet" href="_fonts/fonts.css">
 <style>
   :root{
@@ -174,7 +174,7 @@
       <div class="stats">
         <span class="stat"><b id="statStyles">49</b><span>通用风格</span></span>
         <span class="stat"><b>6</b><span>项目定制</span></span>
-        <span class="stat"><b>24</b><span>效果临摹</span></span>
+        <span class="stat"><b id="statStudies">24</b><span>效果临摹</span></span>
         <span class="stat"><b>AA</b><span>对比度</span></span>
       </div>
       <div class="curl" id="curl" role="button" tabindex="0" title="点击复制">
@@ -198,7 +198,7 @@
     </section>
 
     <section class="sec" id="sec-studies" data-sec>
-      <div class="sec-head"><h2>效果临摹 · Effect Studies</h2><span class="count">24</span><span class="rule"></span></div>
+      <div class="sec-head"><h2>效果临摹 · Effect Studies</h2><span class="count" id="cntStudies">24</span><span class="rule"></span></div>
       <div class="disclaim">
         <b>这一栏是临摹练习。</b>每个页面都照着社区作品的视觉效果<strong>从零重写</strong>了一遍，用来练前端手感 ——
         都是<strong>非原创</strong>：自己写代码、配自己的文案，页内也标了原作和作者。版权归原作者所有，只作学习展示、不商用。
@@ -211,7 +211,7 @@
   </main>
 
   <footer>
-    <code>~/mineproj/designsystem</code> · 40 套风格 + 6 个项目定制 + 24 例临摹。<br>
+    <code>~/mineproj/designsystem</code> · <span id="ftStyles">49</span> 套风格 + 6 个项目定制 + <span id="ftStudies">25</span> 例临摹。<br>
     骨架与思想基于 <a href="https://vercel.com/geist" target="_blank" rel="noopener">Geist（Vercel）</a> 衍生。顶部可切亮 / 暗预览；每个 preview.html 双击就能离线打开。
   </footer>
 </div>
@@ -309,6 +309,7 @@ const studies = [
   ["study-mosaic-landing","mosaic-landing","马赛克拼贴落地页","《Mosaic Redesigned Landing》 by brianjyip","#3a7a5e"],
   ["study-voice-recorder","voice-recorder","语音录制 App · 波形","《Voice Recording App》 by gonzaloenei","#e0584a"],
   ["study-designer-portfolio","designer-portfolio","设计师个人作品集","《Stephanie Portfolio Website》 by stephjivoderova","#c0563f"],
+  ["study-aura-sso","aura-sso","科幻单点登录 · Sci-Fi SSO","《Sci-Fi SSO Login》 by shukaizhang · 社区 #2","#4a88ff"],
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -333,6 +334,10 @@ document.getElementById("heroArt").innerHTML =
     `<a class="sw" href="styles/${slug}/preview.html" target="_blank" rel="noopener" style="--c:${color}" title="${esc(name)}" aria-label="${esc(name)}"></a>`
   ).join("") +
   `</div><div class="sw-cap">${styles.length} 套风格 · 每格一套，点开看 preview</div>`;
+document.getElementById("cntStudies").textContent = studies.length;
+document.getElementById("statStudies").textContent = studies.length;
+document.getElementById("ftStudies").textContent = studies.length;
+document.getElementById("ftStyles").textContent = styles.length;
 document.getElementById("studies").innerHTML = studies.map(([f,slug,name,cite,color],i)=>`
   <div class="card" style="--i:${Math.min(i,14)}" data-name="${esc((name+' '+slug+' '+cite).toLowerCase())}">
     <div class="ttl"><span class="dot" style="background:${color}"></span><b>${esc(name)}</b><a class="open" href="studies/${slug}/index.html" target="_blank" rel="noopener">打开</a></div>
