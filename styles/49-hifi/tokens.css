@@ -1,0 +1,194 @@
+/* ============================================================
+   复古音响 · Hi-Fi / Vintage Audio Design System Tokens
+   Contract: variable names stay fixed as --ds-*; values carry
+   a light-first champagne faceplate and dark walnut console.
+   ============================================================ */
+
+:root {
+  /* ---- surfaces and text: champagne brushed-aluminum daylight ---- */
+  --ds-bg:#e7e5df;
+  --ds-bg-subtle:#dcd9d1;
+  --ds-bg-elevated:#f4f2ec;
+  --ds-bg-sunken:#cdcabf;
+  --ds-fg:#26241f;
+  --ds-fg-muted:#54514a;
+  --ds-fg-subtle:#57544c;
+  --ds-fg-on-accent:#ffffff;
+  --ds-border:#bcb9af;
+  --ds-border-strong:#8f8c82;
+
+  /* ---- brand and accent ---- */
+  --ds-primary:#a8621a;
+  --ds-primary-hover:#925416;
+  --ds-primary-active:#7c4712;
+  --ds-primary-fg:#ffffff;
+  --ds-accent:#1f6f6a;
+  --ds-accent-fg:#ffffff;
+
+  /* ---- semantic states ---- */
+  --ds-success:#2f7a4a;
+  --ds-success-bg:#e0efe5;
+  --ds-success-fg:#1b4a2c;
+  --ds-warning:#9a6510;
+  --ds-warning-bg:#f3ead2;
+  --ds-warning-fg:#5e3e08;
+  --ds-danger:#b23b2e;
+  --ds-danger-bg:#f6e3df;
+  --ds-danger-fg:#7a2018;
+  --ds-info:#1f6f6a;
+  --ds-info-bg:#dcecea;
+  --ds-info-fg:#124542;
+
+  /* ---- focus ---- */
+  --ds-focus:#a8621a;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- radius: machined hardware ---- */
+  --ds-radius-sm:3px;
+  --ds-radius-md:6px;
+  --ds-radius-lg:10px;
+  --ds-radius-full:999px;
+
+  /* ---- spacing scale ---- */
+  --ds-space-1:4px;
+  --ds-space-2:8px;
+  --ds-space-3:12px;
+  --ds-space-4:16px;
+  --ds-space-5:20px;
+  --ds-space-6:24px;
+  --ds-space-7:32px;
+  --ds-space-8:40px;
+  --ds-space-9:48px;
+  --ds-space-10:64px;
+  --ds-space-11:80px;
+  --ds-space-12:96px;
+
+  /* ---- local fonts only ---- */
+  --ds-font-sans:'Inter',-apple-system,'BlinkMacSystemFont','Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  --ds-font-serif:Georgia,'Songti SC',serif;
+  --ds-font-mono:'JetBrains Mono','SF Mono','Cascadia Code',ui-monospace,monospace;
+  --ds-text-xs:12px;
+  --ds-text-sm:13px;
+  --ds-text-base:14px;
+  --ds-text-md:16px;
+  --ds-text-lg:20px;
+  --ds-text-xl:24px;
+  --ds-text-2xl:32px;
+  --ds-text-3xl:48px;
+  --ds-leading-tight:1.22;
+  --ds-leading-normal:1.52;
+  --ds-leading-relaxed:1.72;
+  --ds-weight-normal:400;
+  --ds-weight-medium:500;
+  --ds-weight-bold:600;
+  --ds-tracking-tight:0;
+  --ds-tracking-normal:0;
+
+  /* ---- elevation: low brushed-metal bevels and walnut cast ---- */
+  --ds-shadow-sm:inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(38,36,31,.18);
+  --ds-shadow-md:inset 0 1px 0 rgba(255,255,255,.62), 0 8px 18px -12px rgba(38,36,31,.38), 0 2px 6px rgba(38,36,31,.16);
+  --ds-shadow-lg:inset 0 1px 0 rgba(255,255,255,.68), 0 18px 38px -18px rgba(38,36,31,.42), 0 6px 14px rgba(38,36,31,.18);
+  --ds-shadow-inset:inset 0 2px 5px rgba(38,36,31,.28), inset 0 -1px 0 rgba(255,255,255,.45);
+  --ds-shadow-inset-sm:inset 0 1px 3px rgba(38,36,31,.22), inset 0 -1px 0 rgba(255,255,255,.42);
+
+  /* ---- motion: analog settle and knob turn ---- */
+  --ds-ease:cubic-bezier(.2,.72,.18,1);
+  --ds-dur-fast:140ms;
+  --ds-dur-base:220ms;
+  --ds-dur-slow:420ms;
+}
+
+[data-theme=dark],
+.dark {
+  /* ---- surfaces and text: walnut and graphite console at night ---- */
+  --ds-bg:#1a1816;
+  --ds-bg-subtle:#221f1c;
+  --ds-bg-elevated:#2a2622;
+  --ds-bg-sunken:#131110;
+  --ds-fg:#ece6da;
+  --ds-fg-muted:#b0a99b;
+  --ds-fg-subtle:#938d82;
+  --ds-fg-on-accent:#1a0f02;
+  --ds-border:#36312b;
+  --ds-border-strong:#4d463e;
+
+  /* ---- brand and accent ---- */
+  --ds-primary:#e0962f;
+  --ds-primary-hover:#eaa648;
+  --ds-primary-active:#cf8526;
+  --ds-primary-fg:#1a0f02;
+  --ds-accent:#4fb8ad;
+  --ds-accent-fg:#04201d;
+
+  /* ---- semantic states ---- */
+  --ds-success:#6ccb87;
+  --ds-success-bg:#122b1b;
+  --ds-success-fg:#b6e6c6;
+  --ds-warning:#e0b25e;
+  --ds-warning-bg:#2a2010;
+  --ds-warning-fg:#f3d79a;
+  --ds-danger:#e3675a;
+  --ds-danger-bg:#2c1614;
+  --ds-danger-fg:#f4b0a8;
+  --ds-info:#4fb8ad;
+  --ds-info-bg:#0e2a28;
+  --ds-info-fg:#b6e8e2;
+
+  /* ---- focus ---- */
+  --ds-focus:#e0962f;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg),0 0 0 4px var(--ds-focus);
+
+  /* ---- radius: machined hardware ---- */
+  --ds-radius-sm:3px;
+  --ds-radius-md:6px;
+  --ds-radius-lg:10px;
+  --ds-radius-full:999px;
+
+  /* ---- spacing scale ---- */
+  --ds-space-1:4px;
+  --ds-space-2:8px;
+  --ds-space-3:12px;
+  --ds-space-4:16px;
+  --ds-space-5:20px;
+  --ds-space-6:24px;
+  --ds-space-7:32px;
+  --ds-space-8:40px;
+  --ds-space-9:48px;
+  --ds-space-10:64px;
+  --ds-space-11:80px;
+  --ds-space-12:96px;
+
+  /* ---- local fonts only ---- */
+  --ds-font-sans:'Inter',-apple-system,'BlinkMacSystemFont','Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  --ds-font-serif:Georgia,'Songti SC',serif;
+  --ds-font-mono:'JetBrains Mono','SF Mono','Cascadia Code',ui-monospace,monospace;
+  --ds-text-xs:12px;
+  --ds-text-sm:13px;
+  --ds-text-base:14px;
+  --ds-text-md:16px;
+  --ds-text-lg:20px;
+  --ds-text-xl:24px;
+  --ds-text-2xl:32px;
+  --ds-text-3xl:48px;
+  --ds-leading-tight:1.22;
+  --ds-leading-normal:1.52;
+  --ds-leading-relaxed:1.72;
+  --ds-weight-normal:400;
+  --ds-weight-medium:500;
+  --ds-weight-bold:600;
+  --ds-tracking-tight:0;
+  --ds-tracking-normal:0;
+
+  /* ---- elevation: dark graphite bevels and walnut cast ---- */
+  --ds-shadow-sm:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.58);
+  --ds-shadow-md:inset 0 1px 0 rgba(255,255,255,.07), 0 10px 20px -12px rgba(0,0,0,.8), 0 2px 6px rgba(0,0,0,.55);
+  --ds-shadow-lg:inset 0 1px 0 rgba(255,255,255,.08), 0 22px 44px -20px rgba(0,0,0,.86), 0 8px 16px rgba(0,0,0,.58);
+  --ds-shadow-inset:inset 0 2px 5px rgba(0,0,0,.72), inset 0 -1px 0 rgba(255,255,255,.06);
+  --ds-shadow-inset-sm:inset 0 1px 3px rgba(0,0,0,.64), inset 0 -1px 0 rgba(255,255,255,.05);
+
+  /* ---- motion: analog settle and knob turn ---- */
+  --ds-ease:cubic-bezier(.2,.72,.18,1);
+  --ds-dur-fast:140ms;
+  --ds-dur-base:220ms;
+  --ds-dur-slow:420ms;
+}
