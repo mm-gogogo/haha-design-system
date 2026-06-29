@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>橙班 ChengBan AI Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #fafaf8;
+      --surface: #f7f7f4;
+      --card: #ffffff;
+      --ink: #26251e;
+      --ink-strong: #1f1e1a;
+      --muted: rgba(38, 37, 30, .55);
+      --muted-light: rgba(38, 37, 30, .38);
+      --line: rgba(38, 37, 30, .11);
+      --line-soft: rgba(38, 37, 30, .075);
+      --accent: #f27348;
+      --accent-hot: #ff6a00;
+      --accent-text: #b84625;
+      --shadow: 0 26px 70px -44px rgba(38, 37, 30, .44);
+      --soft-shadow: 0 18px 52px -40px rgba(38, 37, 30, .32);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        linear-gradient(180deg, #fafaf8 0%, #f8f8f5 52%, #f7f7f4 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 18px 0 124px;
+    }
+
+    .halftone {
+      position: fixed;
+      left: -72px;
+      bottom: -64px;
+      width: 380px;
+      height: 260px;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(242, 115, 72, .2) 0 1.2px, transparent 1.35px);
+      background-size: 13px 13px;
+      mask-image: radial-gradient(ellipse at 34% 58%, #000 0%, rgba(0, 0, 0, .84) 28%, transparent 72%);
+      -webkit-mask-image: radial-gradient(ellipse at 34% 58%, #000 0%, rgba(0, 0, 0, .84) 28%, transparent 72%);
+      z-index: 0;
+    }
+
+    .topbar {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 12px;
+      border: 1px solid rgba(38, 37, 30, .09);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .72);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 48px -38px rgba(38, 37, 30, .42);
+    }
+
+    .brand {
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 8px 14px rgba(38, 37, 30, .12));
+    }
+
+    .brand-type {
+      display: grid;
+      gap: 2px;
+      line-height: 1;
+    }
+
+    .brand-type strong {
+      color: var(--ink-strong);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand-type em {
+      color: var(--muted);
+      font-size: 11px;
+      font-style: normal;
+      font-weight: 650;
+    }
+
+    .nav-links {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: rgba(38, 37, 30, .66);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink-strong);
+      background: rgba(242, 115, 72, .08);
+    }
+
+    .nav-caret {
+      color: var(--accent-text);
+      font-size: 10px;
+      transform: translateY(1px);
+    }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .nav-button {
+      display: inline-flex;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 17px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .nav-button.login {
+      color: #fffdf8;
+      background: var(--ink-strong);
+      border: 1px solid var(--ink-strong);
+      box-shadow: 0 10px 24px -18px rgba(38, 37, 30, .84);
+    }
+
+    .nav-button.signup {
+      color: var(--accent-text);
+      background: rgba(255, 255, 255, .84);
+      border: 1px solid rgba(242, 115, 72, .42);
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 54px 0 0;
+    }
+
+    .mascot-stage {
+      width: 244px;
+      max-width: 62vw;
+      margin: 0 auto 20px;
+    }
+
+    .mascot {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .hero h1 {
+      max-width: 920px;
+      margin: 0;
+      color: var(--ink-strong);
+      font-size: 2.72rem;
+      line-height: 1.08;
+      font-weight: 850;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .hero h1 .accent {
+      color: var(--accent);
+    }
+
+    .hero-copy {
+      max-width: 600px;
+      margin: 18px auto 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.68;
+      font-weight: 450;
+    }
+
+    .chat-card {
+      width: min(780px, 100%);
+      min-height: 182px;
+      margin: 34px auto 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(38, 37, 30, .105);
+      border-radius: 22px;
+      background: var(--card);
+      box-shadow:
+        0 30px 72px -50px rgba(38, 37, 30, .5),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+
+    .chat-card:focus-within {
+      border-color: rgba(242, 115, 72, .36);
+      box-shadow:
+        0 30px 72px -50px rgba(38, 37, 30, .52),
+        0 0 0 4px rgba(242, 115, 72, .11),
+        inset 0 1px 0 rgba(255, 255, 255, .94);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .chat-card textarea {
+      width: 100%;
+      min-height: 92px;
+      margin: 0;
+      padding: 0;
+      resize: none;
+      border: 0;
+      outline: none;
+      color: var(--ink);
+      background: transparent;
+      font-size: 1.03rem;
+      line-height: 1.62;
+    }
+
+    .chat-card textarea::placeholder {
+      color: var(--muted-light);
+      opacity: 1;
+    }
+
+    .chat-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .chat-footer span {
+      color: rgba(38, 37, 30, .34);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .send-button {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(242, 115, 72, .58);
+      color: var(--accent-text);
+      background: #fffaf7;
+      font-size: 14px;
+      font-weight: 820;
+      white-space: nowrap;
+      box-shadow: 0 10px 26px -24px rgba(242, 115, 72, .6);
+    }
+
+    .send-button b {
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 820;
+    }
+
+    .suggestions {
+      width: min(960px, 100%);
+      margin: 32px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .suggestion-card {
+      min-width: 0;
+      min-height: 188px;
+      padding: 22px;
+      text-align: left;
+      border: 1px solid rgba(38, 37, 30, .08);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border: 1px solid rgba(38, 37, 30, .075);
+      border-radius: 14px;
+      color: var(--accent);
+      background: rgba(255, 255, 255, .78);
+    }
+
+    .card-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .suggestion-card h2 {
+      margin: 0;
+      color: var(--ink-strong);
+      font-size: 1.05rem;
+      line-height: 1.25;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .suggestion-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .94rem;
+      line-height: 1.64;
+    }
+
+    .logo-soft {
+      fill: #ffffff;
+    }
+
+    .logo-side {
+      fill: #e5e4de;
+    }
+
+    .logo-front {
+      fill: #f2f1ec;
+    }
+
+    .logo-coral {
+      fill: var(--accent);
+    }
+
+    @media (min-width: 720px) {
+      .hero h1 {
+        font-size: 4.75rem;
+        line-height: 1.01;
+      }
+
+      .hero-copy {
+        font-size: 1.08rem;
+      }
+    }
+
+    @media (min-width: 1040px) {
+      .hero h1 {
+        font-size: 5.55rem;
+        line-height: .99;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page {
+        width: min(1120px, calc(100% - 24px));
+        padding-top: 12px;
+      }
+
+      .topbar {
+        min-height: 60px;
+        gap: 10px;
+        padding: 9px 10px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand-type strong {
+        font-size: 16px;
+      }
+
+      .brand-type em {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 38px;
+      }
+
+      .mascot-stage {
+        width: 214px;
+        margin-bottom: 18px;
+      }
+
+      .chat-card {
+        min-height: 194px;
+        margin-top: 28px;
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      .chat-card textarea {
+        min-height: 112px;
+        font-size: .98rem;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .suggestion-card {
+        min-height: 0;
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .page {
+        width: min(1120px, calc(100% - 20px));
+      }
+
+      .nav-button.login {
+        display: none;
+      }
+
+      .nav-button {
+        min-height: 38px;
+        padding: 0 13px;
+        font-size: 13px;
+      }
+
+      .hero h1 {
+        font-size: 2.42rem;
+      }
+
+      .hero-copy {
+        font-size: .96rem;
+      }
+
+      .chat-footer {
+        align-items: flex-end;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .mascot {
+        animation: mascot-bob 5.8s ease-in-out infinite;
+        will-change: transform;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        animation: reveal-in .72s cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: var(--delay, 0ms);
+      }
+
+      .chat-card,
+      .suggestion-card,
+      .nav-links a,
+      .nav-button,
+      .send-button {
+        transition:
+          transform .26s cubic-bezier(.16, 1, .3, 1),
+          border-color .26s cubic-bezier(.16, 1, .3, 1),
+          background-color .26s cubic-bezier(.16, 1, .3, 1),
+          color .26s cubic-bezier(.16, 1, .3, 1),
+          box-shadow .26s cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .suggestion-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(242, 115, 72, .22);
+        background: #fbfbf8;
+        box-shadow: var(--shadow);
+      }
+
+      .nav-button:hover,
+      .send-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .send-button:hover {
+        border-color: rgba(242, 115, 72, .78);
+        background: #fff2ea;
+        box-shadow: 0 16px 34px -26px rgba(242, 115, 72, .84);
+      }
+
+      .nav-button:active,
+      .send-button:active {
+        transform: translateY(1px);
+      }
+
+      @keyframes mascot-bob {
+        0%, 100% {
+          transform: translateY(0) rotate(.001deg);
+        }
+        50% {
+          transform: translateY(-8px) rotate(.001deg);
+        }
+      }
+
+      @keyframes reveal-in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="halftone" aria-hidden="true"></div>
+  <div class="page">
+    <header class="topbar reveal" style="--delay: 40ms">
+      <a class="brand" href="#dialogue" aria-label="橙班 ChengBan 首页">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M32 5 55 18.4 32 31.8 9 18.4 32 5Z" class="logo-soft"/>
+          <path d="M9 18.4 32 31.8v26.7L9 45.2V18.4Z" class="logo-side"/>
+          <path d="M32 31.8 55 18.4v26.8L32 58.5V31.8Z" class="logo-front"/>
+          <path d="M24.6 32.9c0-2.7 2.2-4.9 4.9-4.9h8.9c2.7 0 4.9 2.2 4.9 4.9v7.3c0 2.7-2.2 4.9-4.9 4.9h-8.9c-2.7 0-4.9-2.2-4.9-4.9v-7.3Z" fill="#fbfbf8"/>
+          <path d="M28.8 36.3h10.3" fill="none" stroke="#26251e" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M17.2 21.7 32 13.1l14.8 8.6" fill="none" stroke="#f27348" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M22.6 50.2 18 47.5v-8.3" fill="none" stroke="#d5d3ca" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-type">
+          <strong>橙班</strong>
+          <em>ChengBan AI</em>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#dialogue">对话</a>
+        <a href="#scenes">使用场景</a>
+        <a href="#resources">资源<span class="nav-caret" aria-hidden="true">▾</span></a>
+        <a href="#pricing">定价</a>
+        <a href="#blog">博客</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="nav-button login" href="#login">登录</a>
+        <a class="nav-button signup" href="#signup">免费注册</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="dialogue" aria-labelledby="hero-title">
+        <div class="mascot-stage reveal" style="--delay: 120ms">
+          <svg class="mascot" viewBox="0 0 320 250" role="img" aria-label="橙班盒子助手">
+            <defs>
+              <linearGradient id="mascotTop" x1="76" x2="224" y1="36" y2="114" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset=".58" stop-color="#f1f0ea"/>
+                <stop offset="1" stop-color="#e7e5dc"/>
+              </linearGradient>
+              <linearGradient id="mascotLeft" x1="72" x2="151" y1="82" y2="202" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#efeee8"/>
+                <stop offset="1" stop-color="#d9d7ce"/>
+              </linearGradient>
+              <linearGradient id="mascotRight" x1="150" x2="232" y1="86" y2="199" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#fbfaf6"/>
+                <stop offset="1" stop-color="#e8e6dd"/>
+              </linearGradient>
+              <linearGradient id="screenGlow" x1="118" x2="188" y1="124" y2="174" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset="1" stop-color="#f7f6f1"/>
+              </linearGradient>
+              <filter id="softShadow" x="34" y="18" width="252" height="220" color-interpolation-filters="sRGB">
+                <feDropShadow dx="0" dy="18" stdDeviation="15" flood-color="#26251e" flood-opacity=".16"/>
+              </filter>
+            </defs>
+            <ellipse cx="160" cy="219" rx="91" ry="16" fill="rgba(38,37,30,.09)"/>
+            <g filter="url(#softShadow)">
+              <path d="M149 32.5c6.8-3.9 15.2-3.9 22 0l64.4 37.2c6.8 3.9 11 11.2 11 19.1v74.4c0 7.9-4.2 15.2-11 19.1L171 219.5c-6.8 3.9-15.2 3.9-22 0l-64.4-37.2c-6.8-3.9-11-11.2-11-19.1V88.8c0-7.9 4.2-15.2 11-19.1L149 32.5Z" fill="#dedbd1"/>
+              <path d="M160 34 246.4 84 160 133.9 73.6 84 160 34Z" fill="url(#mascotTop)"/>
+              <path d="M73.6 84 160 133.9v99.8l-86.4-49.9V84Z" fill="url(#mascotLeft)"/>
+              <path d="M160 133.9 246.4 84v99.8L160 233.7v-99.8Z" fill="url(#mascotRight)"/>
+              <path d="M101.5 100.8 160 67l58.5 33.8" fill="none" stroke="rgba(242,115,72,.78)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M112.8 133.4c0-8.1 6.6-14.7 14.7-14.7h65c8.1 0 14.7 6.6 14.7 14.7v37c0 8.1-6.6 14.7-14.7 14.7h-65c-8.1 0-14.7-6.6-14.7-14.7v-37Z" fill="url(#screenGlow)" stroke="rgba(38,37,30,.1)" stroke-width="2"/>
+              <path d="M135.2 151.2h1.2M183.6 151.2h1.2" fill="none" stroke="#26251e" stroke-width="8.5" stroke-linecap="round"/>
+              <path d="M147.1 165.2c7.8 5.9 18.1 5.9 25.9 0" fill="none" stroke="#f27348" stroke-width="5" stroke-linecap="round"/>
+              <path d="M73.6 126.5c-22.2 3.4-34.7 13.4-37.7 30" fill="none" stroke="#d8d5ca" stroke-width="8" stroke-linecap="round"/>
+              <path d="M246.4 126.5c22.2 3.4 34.7 13.4 37.7 30" fill="none" stroke="#d8d5ca" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="34.8" cy="160.8" r="9.2" fill="#f27348"/>
+              <circle cx="285.2" cy="160.8" r="9.2" fill="#f27348"/>
+              <path d="M122 215.5v18.2M198 215.5v18.2" fill="none" stroke="#cfcbbf" stroke-width="9" stroke-linecap="round"/>
+              <path d="M108.5 237.5h27M184.5 237.5h27" fill="none" stroke="#f27348" stroke-width="8" stroke-linecap="round"/>
+              <path d="M204.8 113.2 226 101" fill="none" stroke="#fffdf8" stroke-width="5" stroke-linecap="round" opacity=".72"/>
+              <path d="M88.5 153.5 88.5 175.5 134.6 202.1" fill="none" stroke="rgba(255,255,255,.36)" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+
+        <h1 class="reveal" id="hero-title" style="--delay: 210ms">把日常任务交给 <span class="accent">AI 小队</span>，马上开工</h1>
+        <p class="hero-copy reveal" style="--delay: 290ms">一句话交代目标，橙班帮你拆解流程、启动执行，并把进展说清楚。</p>
+
+        <form class="chat-card reveal" style="--delay: 370ms" aria-label="AI 任务对话框">
+          <label class="sr-only" for="work-prompt">告诉橙班你要完成的工作</label>
+          <textarea id="work-prompt" rows="4" placeholder="例：帮我把这 12 条客户反馈整理成优先级清单，并写一封跟进邮件。"></textarea>
+          <div class="chat-footer">
+            <span>Task brief</span>
+            <button class="send-button" type="button">聊一聊 <b aria-hidden="true">↑</b></button>
+          </div>
+        </form>
+      </section>
+
+      <section class="suggestions" id="scenes" aria-label="建议任务">
+        <article class="suggestion-card reveal" style="--delay: 450ms">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M8 4.5h8M9.5 3h5c.8 0 1.5.7 1.5 1.5v1H8v-1C8 3.7 8.7 3 9.5 3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6.5 5.5h11c1.1 0 2 .9 2 2v11c0 1.1-.9 2-2 2h-11c-1.1 0-2-.9-2-2v-11c0-1.1.9-2 2-2Z" stroke="#26251e" stroke-opacity=".38" stroke-width="1.8"/>
+              <path d="m8 12 2.2 2.2L16.5 8M8 17h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h2>整理线索</h2>
+          <p>把表格、聊天记录和邮件合并成清晰清单，标出优先级与下一步动作。</p>
+        </article>
+
+        <article class="suggestion-card reveal" style="--delay: 520ms">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4.5 7.5c0-1.1.9-2 2-2h11c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2h-11c-1.1 0-2-.9-2-2v-9Z" stroke="#26251e" stroke-opacity=".38" stroke-width="1.8"/>
+              <path d="m5.5 8 5.4 4.2c.7.5 1.5.5 2.2 0L18.5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17.8 4.2V2.6M20 6.1h1.6M18.9 5l1.1-1.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2>准备外联</h2>
+          <p>根据目标客户画像生成三版开场话术，语气自然，并保留人工审核空间。</p>
+        </article>
+
+        <article class="suggestion-card reveal" style="--delay: 590ms">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6.5 7.5h4.2c1.5 0 2.7 1.2 2.7 2.7v0c0 1.5-1.2 2.7-2.7 2.7H8.2c-1.5 0-2.7 1.2-2.7 2.7v0c0 1.5 1.2 2.7 2.7 2.7h9.3" stroke="#26251e" stroke-opacity=".38" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M6.5 7.5 8.8 5M6.5 7.5 8.8 10M17.5 18.3 15.2 16M17.5 18.3 15.2 20.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h2>跟进项目</h2>
+          <p>把会议纪要拆成负责人、时间点和风险提醒，每天汇总需要你决策的事项。</p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 mulerun.com（MuleRun）的视觉风格 · 仅作前端技法学习，版权归原网站</div>
+</body>
+</html>
