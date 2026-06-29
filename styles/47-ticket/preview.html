@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>票据印章 · Ticketing / Pass & Postal · 预览</title>
+<style>
+  /* ============================================================
+     Token contract: inline, self-contained, light :root + dark override.
+     ============================================================ */
+  :root {
+    --ds-bg:#f0efe9; --ds-bg-subtle:#e7e5dd; --ds-bg-elevated:#faf9f5; --ds-bg-sunken:#dedcd3;
+    --ds-fg:#1f1d1a; --ds-fg-muted:#55524b; --ds-fg-subtle:#6f6c63; --ds-fg-on-accent:#ffffff;
+    --ds-border:#cbc8bd; --ds-border-strong:#a8a497;
+    --ds-primary:#22324f; --ds-primary-hover:#1a2840; --ds-primary-active:#141f33; --ds-primary-fg:#ffffff;
+    --ds-accent:#b8362a; --ds-accent-fg:#ffffff;
+    --ds-success:#2f6b3f; --ds-success-bg:#e2efe4; --ds-success-fg:#1c4a28;
+    --ds-warning:#8a5a10; --ds-warning-bg:#f6ecd6; --ds-warning-fg:#5a3a08;
+    --ds-danger:#b8362a; --ds-danger-bg:#f7e3e0; --ds-danger-fg:#7e2019;
+    --ds-info:#1f6f86; --ds-info-bg:#ddeef2; --ds-info-fg:#124654;
+    --ds-focus:#22324f; --ds-focus-ring:0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm:2px; --ds-radius-md:4px; --ds-radius-lg:8px; --ds-radius-full:999px;
+    --ds-space-1:4px; --ds-space-2:8px; --ds-space-3:12px; --ds-space-4:16px; --ds-space-5:20px; --ds-space-6:24px;
+    --ds-space-7:32px; --ds-space-8:40px; --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+    --ds-font-sans:"Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --ds-font-serif:"Noto Serif", Georgia, "Songti SC", serif;
+    --ds-font-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --ds-text-xs:12px; --ds-text-sm:13px; --ds-text-base:15px; --ds-text-md:17px; --ds-text-lg:20px;
+    --ds-text-xl:24px; --ds-text-2xl:32px; --ds-text-3xl:44px;
+    --ds-leading-tight:1.2; --ds-leading-normal:1.5; --ds-leading-relaxed:1.7;
+    --ds-weight-normal:400; --ds-weight-medium:500; --ds-weight-bold:700;
+    --ds-tracking-tight:0; --ds-tracking-normal:0;
+    --ds-shadow-sm:0 1px 0 rgba(31,29,26,.05), 0 0 0 1px var(--ds-border);
+    --ds-shadow-md:0 8px 18px -14px rgba(31,29,26,.28), 0 0 0 1px var(--ds-border);
+    --ds-shadow-lg:0 18px 40px -26px rgba(31,29,26,.38), 0 0 0 1px var(--ds-border-strong);
+    --ds-ease:cubic-bezier(.2,.8,.2,1);
+    --ds-dur-fast:120ms; --ds-dur-base:200ms; --ds-dur-slow:320ms;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg:#16181c; --ds-bg-subtle:#1c1f24; --ds-bg-elevated:#23262c; --ds-bg-sunken:#101216;
+    --ds-fg:#ece9e2; --ds-fg-muted:#b0ada4; --ds-fg-subtle:#88857c; --ds-fg-on-accent:#0c1420;
+    --ds-border:#2e323a; --ds-border-strong:#434853;
+    --ds-primary:#6fa8d6; --ds-primary-hover:#88b9e2; --ds-primary-active:#5b97c8; --ds-primary-fg:#0c1420;
+    --ds-accent:#e3675a; --ds-accent-fg:#1a0e0c;
+    --ds-success:#6ccb87; --ds-success-bg:#122b1b; --ds-success-fg:#b6e6c6;
+    --ds-warning:#e0b25e; --ds-warning-bg:#2a2010; --ds-warning-fg:#f3d79a;
+    --ds-danger:#e3675a; --ds-danger-bg:#2c1614; --ds-danger-fg:#f4b0a8;
+    --ds-info:#6fc0d6; --ds-info-bg:#0e2a30; --ds-info-fg:#b6e4ef;
+    --ds-focus:#6fa8d6;
+    --ds-shadow-sm:0 1px 0 rgba(0,0,0,.28), 0 0 0 1px var(--ds-border);
+    --ds-shadow-md:0 12px 22px -16px rgba(0,0,0,.62), 0 0 0 1px var(--ds-border);
+    --ds-shadow-lg:0 22px 48px -26px rgba(0,0,0,.72), 0 0 0 1px var(--ds-border-strong);
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0;
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--ds-border) 16%, transparent) 1px, transparent 1px) 0 0 / 36px 36px,
+      linear-gradient(0deg, color-mix(in srgb, var(--ds-border) 12%, transparent) 1px, transparent 1px) 0 0 / 36px 36px,
+      var(--ds-bg);
+    color:var(--ds-fg);
+    font-family:var(--ds-font-sans);
+    font-size:var(--ds-text-base);
+    line-height:var(--ds-leading-normal);
+    -webkit-font-smoothing:antialiased;
+    transition:background var(--ds-dur-slow) var(--ds-ease), color var(--ds-dur-slow) var(--ds-ease);
+  }
+  a { color:inherit; }
+  svg { display:block; }
+  code, .mono { font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; }
+  .serif { font-family:var(--ds-font-serif); }
+  .page { width:min(1120px, 100%); margin:0 auto; padding:var(--ds-space-8) var(--ds-space-6) var(--ds-space-12); }
+  section { margin:0 0 var(--ds-space-11); }
+  .section-head { display:flex; align-items:end; justify-content:space-between; gap:var(--ds-space-5); margin-bottom:var(--ds-space-5); border-bottom:1px dashed var(--ds-border-strong); padding-bottom:var(--ds-space-3); }
+  .section-head h2 { margin:0; font-size:var(--ds-text-xl); line-height:var(--ds-leading-tight); }
+  .section-head p { margin:0; max-width:620px; color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+  .kicker { color:var(--ds-accent); font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); text-transform:uppercase; }
+  .lede { color:var(--ds-fg-muted); font-size:var(--ds-text-md); line-height:var(--ds-leading-relaxed); max-width:720px; margin:0; }
+  .muted { color:var(--ds-fg-muted); }
+  .subtle { color:var(--ds-fg-subtle); }
+  .ico-svg { width:18px; height:18px; flex:none; }
+
+  .topbar {
+    position:sticky; top:0; z-index:20;
+    display:flex; align-items:center; gap:var(--ds-space-4);
+    min-height:64px; padding:0 var(--ds-space-6);
+    border-bottom:1px solid var(--ds-border);
+    background:color-mix(in srgb, var(--ds-bg) 90%, transparent);
+    backdrop-filter:blur(10px);
+  }
+  .brand {
+    display:flex; align-items:center; gap:var(--ds-space-3);
+    font-weight:var(--ds-weight-bold);
+  }
+  .brand-mark {
+    width:32px; height:32px; display:grid; place-items:center; color:var(--ds-primary);
+    border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-md);
+    background:var(--ds-bg-elevated);
+  }
+  .topbar .spacer { flex:1; }
+
+  .btn {
+    min-height:40px; display:inline-flex; align-items:center; justify-content:center; gap:var(--ds-space-2);
+    padding:0 var(--ds-space-4); border-radius:var(--ds-radius-md); border:1px solid transparent;
+    font:var(--ds-weight-medium) var(--ds-text-sm)/1 var(--ds-font-sans);
+    color:var(--ds-fg); background:transparent; cursor:pointer; text-decoration:none;
+    transition:background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease), border-color var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-fast) var(--ds-ease);
+  }
+  .btn:hover { transform:translateY(-1px); }
+  .btn:active { transform:translateY(0); }
+  .btn:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:none; box-shadow:var(--ds-focus-ring); }
+  .btn-primary { background:var(--ds-primary); color:var(--ds-primary-fg); }
+  .btn-primary:hover { background:var(--ds-primary-hover); }
+  .btn-primary:active { background:var(--ds-primary-active); }
+  .btn-secondary { background:var(--ds-bg-elevated); border-color:var(--ds-border-strong); }
+  .btn-secondary:hover { background:var(--ds-bg-subtle); }
+  .btn-tertiary { color:var(--ds-primary); }
+  .btn-tertiary:hover { background:var(--ds-bg-subtle); }
+  .btn-danger { background:var(--ds-danger); color:var(--ds-accent-fg); }
+  .btn:disabled, .btn.is-disabled { opacity:.5; pointer-events:none; }
+  .btn-sm { min-height:32px; padding:0 var(--ds-space-3); font-size:var(--ds-text-xs); }
+  .btn-lg { min-height:48px; padding:0 var(--ds-space-6); font-size:var(--ds-text-base); }
+  .btn-grid { display:flex; flex-wrap:wrap; gap:var(--ds-space-3); align-items:center; }
+
+  .hero { padding-top:var(--ds-space-8); }
+  .hero-grid { display:grid; grid-template-columns:minmax(0, 380px) minmax(0, 1fr); gap:var(--ds-space-8); align-items:center; }
+  h1 {
+    margin:var(--ds-space-3) 0 var(--ds-space-4);
+    font-size:var(--ds-text-3xl); line-height:var(--ds-leading-tight);
+    font-weight:var(--ds-weight-bold);
+  }
+  .authority-line { display:flex; flex-wrap:wrap; gap:var(--ds-space-3); margin-top:var(--ds-space-6); }
+  .authority-pill {
+    display:inline-flex; align-items:center; gap:var(--ds-space-2); min-height:32px; padding:0 var(--ds-space-3);
+    border:1px dashed var(--ds-border-strong); border-radius:var(--ds-radius-full);
+    background:var(--ds-bg-elevated); color:var(--ds-fg-muted); font-family:var(--ds-font-mono); font-size:var(--ds-text-xs);
+  }
+
+  .ticket-card {
+    position:relative; overflow:hidden; isolation:isolate;
+    display:grid; grid-template-columns:minmax(0, 1fr) 214px;
+    background:var(--ds-bg-elevated); border:1px solid var(--ds-border-strong);
+    border-radius:var(--ds-radius-lg); box-shadow:var(--ds-shadow-lg);
+  }
+  .ticket-card::before {
+    content:""; position:absolute; inset:0; z-index:-1; opacity:.55;
+    background:
+      radial-gradient(circle at 12% 24%, color-mix(in srgb, var(--ds-primary) 14%, transparent) 0 1px, transparent 1.4px) 0 0 / 16px 16px,
+      linear-gradient(120deg, transparent 0 48%, color-mix(in srgb, var(--ds-border) 50%, transparent) 49% 51%, transparent 52% 100%);
+  }
+  .ticket-main { position:relative; min-height:330px; padding:var(--ds-space-6); overflow:hidden; }
+  .ticket-stub {
+    position:relative; padding:var(--ds-space-5) var(--ds-space-4);
+    border-left:1px dashed var(--ds-border-strong);
+    background:color-mix(in srgb, var(--ds-bg-subtle) 42%, var(--ds-bg-elevated));
+    display:flex; flex-direction:column; gap:var(--ds-space-4);
+  }
+  .ticket-stub::before {
+    content:""; position:absolute; left:-8px; top:18px; bottom:18px; width:16px;
+    background:radial-gradient(circle at 8px 8px, var(--ds-bg) 0 5px, transparent 5.5px) 0 0 / 16px 28px repeat-y;
+    pointer-events:none;
+  }
+  .guilloche {
+    position:absolute; inset:auto -60px -72px auto; width:430px; height:240px;
+    color:var(--ds-primary); opacity:.18; pointer-events:none;
+  }
+  .ticket-top {
+    display:flex; align-items:flex-start; justify-content:space-between; gap:var(--ds-space-5);
+    padding-bottom:var(--ds-space-4); border-bottom:1px dashed var(--ds-border-strong);
+  }
+  .authority-title { font-family:var(--ds-font-serif); font-size:var(--ds-text-lg); font-weight:var(--ds-weight-bold); }
+  .pass-type { color:var(--ds-fg-muted); margin-top:var(--ds-space-1); font-size:var(--ds-text-sm); }
+  .serial-box {
+    border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-md); padding:var(--ds-space-2) var(--ds-space-3);
+    background:var(--ds-bg); text-align:right;
+  }
+  .serial-box b { display:block; font-family:var(--ds-font-mono); font-size:var(--ds-text-md); font-variant-numeric:tabular-nums; }
+  .serial-box span { display:block; color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); margin-top:2px; }
+  .route-band {
+    display:grid; grid-template-columns:1fr auto 1fr; gap:var(--ds-space-4);
+    align-items:center; margin:var(--ds-space-6) 0;
+  }
+  .station { min-width:0; }
+  .station .code { font-family:var(--ds-font-mono); font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); line-height:1; color:var(--ds-primary); }
+  .station .name { margin-top:var(--ds-space-1); color:var(--ds-fg-muted); }
+  .route-line { display:flex; align-items:center; gap:var(--ds-space-2); color:var(--ds-border-strong); }
+  .route-line::before, .route-line::after { content:""; width:54px; border-top:1px dashed currentColor; }
+  .route-dot { width:14px; height:14px; border:2px solid var(--ds-primary); border-radius:var(--ds-radius-full); background:var(--ds-bg-elevated); }
+  .field-grid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:var(--ds-space-3); }
+  .field-tile { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); padding:var(--ds-space-3); background:color-mix(in srgb, var(--ds-bg-elevated) 72%, transparent); }
+  .field-tile span { display:block; color:var(--ds-fg-subtle); font-size:var(--ds-text-xs); margin-bottom:var(--ds-space-1); }
+  .field-tile b { font-family:var(--ds-font-mono); font-size:var(--ds-text-md); font-variant-numeric:tabular-nums; }
+  .stamp {
+    position:absolute; right:var(--ds-space-6); bottom:var(--ds-space-5);
+    width:116px; height:116px; border:3px solid var(--ds-accent); border-radius:50%;
+    color:var(--ds-accent); display:grid; place-items:center; transform:rotate(-9deg);
+    font-family:var(--ds-font-serif); text-align:center; background:color-mix(in srgb, var(--ds-bg-elevated) 70%, transparent);
+    opacity:.92;
+  }
+  .stamp::before { content:""; position:absolute; inset:8px; border:1px solid currentColor; border-radius:50%; }
+  .stamp::after { content:""; position:absolute; inset:17px; border:1px dashed currentColor; border-radius:50%; }
+  .stamp strong { font-size:var(--ds-text-lg); line-height:1; }
+  .stamp span { display:block; font-size:var(--ds-text-xs); margin-top:3px; }
+  .stub-label { color:var(--ds-fg-subtle); font-size:var(--ds-text-xs); }
+  .stub-serial { font-family:var(--ds-font-mono); font-size:var(--ds-text-xl); font-weight:var(--ds-weight-bold); color:var(--ds-primary); line-height:1.1; word-break:break-word; }
+  .barcode { height:78px; display:flex; align-items:stretch; gap:2px; margin-top:auto; padding:var(--ds-space-2); border:1px solid var(--ds-border); background:var(--ds-bg); }
+  .barcode i { display:block; background:var(--ds-fg); min-width:1px; }
+  .barcode .w1 { width:2px; } .barcode .w2 { width:4px; } .barcode .w3 { width:7px; }
+  .stub-note { font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); color:var(--ds-fg-muted); line-height:var(--ds-leading-normal); }
+
+  @keyframes stampPress {
+    0% { transform:rotate(-9deg) scale(1); filter:none; }
+    45% { transform:rotate(-9deg) scale(.92); filter:saturate(1.25); }
+    100% { transform:rotate(-9deg) scale(1); filter:none; }
+  }
+  .ticket-card:hover .stamp { animation:stampPress var(--ds-dur-slow) var(--ds-ease); }
+
+  .swatches { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:var(--ds-space-3); }
+  .swatch { border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); background:var(--ds-bg-elevated); overflow:hidden; box-shadow:var(--ds-shadow-sm); }
+  .chip { height:58px; border-bottom:1px solid var(--ds-border); }
+  .swatch .info { padding:var(--ds-space-2) var(--ds-space-3); }
+  .swatch b { display:block; font-size:var(--ds-text-xs); }
+  .swatch span { display:block; margin-top:2px; font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); color:var(--ds-fg-subtle); }
+  .state-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:var(--ds-space-3); margin-top:var(--ds-space-4); }
+  .state-card { padding:var(--ds-space-4); border:1px solid; border-radius:var(--ds-radius-md); }
+  .state-card b { display:block; margin-bottom:var(--ds-space-1); }
+
+  .type-grid { display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, .9fr); gap:var(--ds-space-6); }
+  .type-scale { border-top:1px solid var(--ds-border); }
+  .type-row { display:grid; grid-template-columns:120px 1fr; gap:var(--ds-space-4); align-items:baseline; padding:var(--ds-space-3) 0; border-bottom:1px solid var(--ds-border); }
+  .type-row .tag { color:var(--ds-fg-subtle); font-family:var(--ds-font-mono); font-size:var(--ds-text-xs); }
+  .specimen { border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); background:var(--ds-bg-elevated); padding:var(--ds-space-6); box-shadow:var(--ds-shadow-sm); }
+  .specimen h3 { margin:0 0 var(--ds-space-3); font-size:var(--ds-text-xl); }
+  .specimen .serial { font-family:var(--ds-font-mono); color:var(--ds-primary); font-size:var(--ds-text-2xl); font-weight:var(--ds-weight-bold); margin:var(--ds-space-4) 0; }
+
+  .coupon-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:var(--ds-space-4); }
+  .coupon {
+    position:relative; display:grid; grid-template-columns:minmax(0,1fr) 86px; min-height:150px;
+    border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-lg); background:var(--ds-bg-elevated); overflow:hidden; box-shadow:var(--ds-shadow-md);
+  }
+  .coupon-body { padding:var(--ds-space-4); }
+  .coupon h3 { margin:var(--ds-space-2) 0; font-size:var(--ds-text-lg); }
+  .coupon-code { font-family:var(--ds-font-mono); color:var(--ds-primary); font-weight:var(--ds-weight-bold); margin-top:var(--ds-space-3); }
+  .coupon-stub {
+    position:relative; border-left:1px dashed var(--ds-border-strong); display:grid; place-items:center;
+    background:var(--ds-bg-subtle); font-family:var(--ds-font-mono); color:var(--ds-primary); font-weight:var(--ds-weight-bold);
+    writing-mode:vertical-rl;
+  }
+  .coupon-stub::before {
+    content:""; position:absolute; left:-7px; top:12px; bottom:12px; width:14px;
+    background:radial-gradient(circle at 7px 7px, var(--ds-bg) 0 4.5px, transparent 5px) 0 0 / 14px 24px repeat-y;
+  }
+
+  .dispatch-list { display:grid; gap:var(--ds-space-2); }
+  .dispatch-row {
+    display:grid; grid-template-columns:96px 1fr 110px 100px 120px; gap:var(--ds-space-4);
+    align-items:center; padding:var(--ds-space-3) var(--ds-space-4);
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); background:var(--ds-bg-elevated);
+  }
+  .dispatch-row .time, .dispatch-row .zone, .dispatch-row .gate, .dispatch-row .seat { font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; }
+  .dispatch-row .route { min-width:0; }
+  .dispatch-row .route b { display:block; }
+  .dispatch-row .route span { color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+
+  .panel {
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); background:var(--ds-bg-elevated);
+    padding:var(--ds-space-5); box-shadow:var(--ds-shadow-sm);
+  }
+  .component-grid { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:var(--ds-space-5); }
+  .form-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:var(--ds-space-4); }
+  label { display:block; margin-bottom:var(--ds-space-2); font-size:var(--ds-text-sm); font-weight:var(--ds-weight-medium); }
+  input[type=text], input[type=email], textarea, select {
+    width:100%; min-height:40px; padding:0 var(--ds-space-3);
+    border:1px solid var(--ds-border); border-radius:var(--ds-radius-md);
+    background:var(--ds-bg); color:var(--ds-fg);
+    font:var(--ds-text-sm)/var(--ds-leading-normal) var(--ds-font-sans);
+  }
+  textarea { min-height:96px; padding:var(--ds-space-3); resize:vertical; }
+  input::placeholder, textarea::placeholder { color:var(--ds-fg-subtle); }
+  .choice-row { display:flex; flex-wrap:wrap; gap:var(--ds-space-4); margin-top:var(--ds-space-4); }
+  .choice { display:inline-flex; align-items:center; gap:var(--ds-space-2); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+  input[type=checkbox], input[type=radio] { width:18px; height:18px; accent-color:var(--ds-primary); }
+  .switch { position:relative; width:46px; height:26px; display:inline-flex; }
+  .switch input { position:absolute; inset:0; opacity:0; margin:0; cursor:pointer; }
+  .switch .track { position:absolute; inset:0; border-radius:var(--ds-radius-full); background:var(--ds-border-strong); }
+  .switch .thumb { position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:var(--ds-bg-elevated); transition:transform var(--ds-dur-base) var(--ds-ease); }
+  .switch input:checked + .track { background:var(--ds-primary); }
+  .switch input:checked + .track + .thumb { transform:translateX(20px); }
+  .switch input:focus-visible + .track { box-shadow:var(--ds-focus-ring); }
+
+  .badge-row, .alert-grid { display:flex; flex-wrap:wrap; gap:var(--ds-space-2); }
+  .badge {
+    display:inline-flex; align-items:center; min-height:24px; padding:0 var(--ds-space-2);
+    border-radius:var(--ds-radius-full); border:1px solid transparent;
+    font:var(--ds-weight-medium) var(--ds-text-xs)/1 var(--ds-font-sans);
+    background:var(--ds-bg-subtle); color:var(--ds-fg-muted);
+  }
+  .badge.primary { background:var(--ds-primary); color:var(--ds-primary-fg); }
+  .badge.success { background:var(--ds-success-bg); color:var(--ds-success-fg); }
+  .badge.warning { background:var(--ds-warning-bg); color:var(--ds-warning-fg); }
+  .badge.danger { background:var(--ds-danger-bg); color:var(--ds-danger-fg); }
+  .badge.info { background:var(--ds-info-bg); color:var(--ds-info-fg); }
+  .alert {
+    display:flex; gap:var(--ds-space-3); padding:var(--ds-space-4); border-radius:var(--ds-radius-md);
+    border:1px solid; min-width:min(100%, 260px); flex:1 1 260px;
+  }
+  .alert svg { color:currentColor; }
+  .alert b { display:block; margin-bottom:2px; }
+  .alert p { margin:0; font-size:var(--ds-text-sm); }
+  .alert.success { background:var(--ds-success-bg); color:var(--ds-success-fg); border-color:var(--ds-success); }
+  .alert.warning { background:var(--ds-warning-bg); color:var(--ds-warning-fg); border-color:var(--ds-warning); }
+  .alert.danger { background:var(--ds-danger-bg); color:var(--ds-danger-fg); border-color:var(--ds-danger); }
+  .alert.info { background:var(--ds-info-bg); color:var(--ds-info-fg); border-color:var(--ds-info); }
+  .nav-strip { display:flex; align-items:center; gap:var(--ds-space-4); padding:var(--ds-space-3); border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); background:var(--ds-bg-elevated); }
+  .nav-strip a { text-decoration:none; color:var(--ds-fg-muted); font-size:var(--ds-text-sm); padding:var(--ds-space-2) var(--ds-space-3); border-radius:var(--ds-radius-md); }
+  .nav-strip a.active { color:var(--ds-primary); background:var(--ds-bg-subtle); font-weight:var(--ds-weight-bold); }
+  .tabs { display:flex; border-bottom:1px solid var(--ds-border); margin-top:var(--ds-space-4); }
+  .tab { padding:var(--ds-space-3) var(--ds-space-4); color:var(--ds-fg-muted); border-bottom:2px solid transparent; font-size:var(--ds-text-sm); }
+  .tab.active { color:var(--ds-primary); border-bottom-color:var(--ds-primary); font-weight:var(--ds-weight-bold); }
+
+  .table-wrap { overflow-x:auto; border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); background:var(--ds-bg-elevated); }
+  table { border-collapse:collapse; width:100%; min-width:680px; font-size:var(--ds-text-sm); }
+  th, td { padding:var(--ds-space-3) var(--ds-space-4); border-bottom:1px solid var(--ds-border); text-align:left; }
+  th { color:var(--ds-fg-muted); background:var(--ds-bg-subtle); font-size:var(--ds-text-xs); font-weight:var(--ds-weight-bold); }
+  td.mono, th.mono { font-family:var(--ds-font-mono); font-variant-numeric:tabular-nums; }
+  tr:last-child td { border-bottom:0; }
+
+  .asset-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:var(--ds-space-5); }
+  .art-card { border:1px solid var(--ds-border); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg-elevated); box-shadow:var(--ds-shadow-sm); }
+  .art-card svg { width:100%; height:auto; background:var(--ds-bg-sunken); }
+  .art-card .caption { padding:var(--ds-space-4); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+  .icon-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:var(--ds-space-3); }
+  .icon-tile { display:flex; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-3); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); background:var(--ds-bg-elevated); font-size:var(--ds-text-sm); color:var(--ds-fg-muted); }
+  .icon-tile svg { color:var(--ds-primary); }
+
+  .desktop-layout {
+    display:grid; grid-template-columns:220px minmax(0, 1fr) 260px; gap:0;
+    min-height:520px; border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-lg);
+    background:var(--ds-bg-elevated); overflow:hidden; box-shadow:var(--ds-shadow-lg);
+  }
+  .side-rail, .inspector { background:var(--ds-bg-subtle); padding:var(--ds-space-5); }
+  .side-rail { border-right:1px solid var(--ds-border); }
+  .inspector { border-left:1px solid var(--ds-border); }
+  .side-rail h3, .inspector h3 { margin:0 0 var(--ds-space-4); font-size:var(--ds-text-lg); }
+  .rail-item { display:flex; align-items:center; gap:var(--ds-space-2); padding:var(--ds-space-3); border-radius:var(--ds-radius-md); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+  .rail-item.active { background:var(--ds-primary); color:var(--ds-primary-fg); }
+  .desk-main { padding:var(--ds-space-5); }
+  .mini-ticket { display:grid; grid-template-columns:1fr 92px; gap:0; margin-bottom:var(--ds-space-3); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); overflow:hidden; background:var(--ds-bg); }
+  .mini-ticket .body { padding:var(--ds-space-3); }
+  .mini-ticket .stub { border-left:1px dashed var(--ds-border-strong); display:grid; place-items:center; color:var(--ds-primary); font-family:var(--ds-font-mono); background:var(--ds-bg-subtle); }
+  .checklist { display:grid; gap:var(--ds-space-3); }
+  .check { display:flex; align-items:center; justify-content:space-between; gap:var(--ds-space-3); padding:var(--ds-space-3); border:1px solid var(--ds-border); border-radius:var(--ds-radius-md); background:var(--ds-bg-elevated); }
+
+  .phones { display:flex; gap:var(--ds-space-8); flex-wrap:wrap; align-items:flex-start; }
+  .dvc17 {
+    --phone-w:390px;
+    position:relative; width:var(--phone-w); max-width:100%; height:844px; border-radius:58px;
+    padding:12px; background:#111318; box-shadow:0 28px 70px -34px rgba(0,0,0,.72), inset 0 0 0 2px rgba(255,255,255,.08);
+  }
+  .dvc17 .k { position:absolute; display:block; background:#0b0d10; border-radius:999px; }
+  .dvc17 .k-act { left:-2px; top:118px; width:3px; height:36px; }
+  .dvc17 .k-vu { left:-2px; top:176px; width:3px; height:62px; }
+  .dvc17 .k-vd { left:-2px; top:252px; width:3px; height:62px; }
+  .dvc17 .k-pwr { right:-2px; top:214px; width:3px; height:86px; }
+  .dvc17 .scr { position:relative; width:100%; height:100%; overflow:hidden; border-radius:46px; background:var(--ds-bg); color:var(--ds-fg); }
+  .dvc17 .island { position:absolute; z-index:5; top:12px; left:50%; width:126px; height:36px; transform:translateX(-50%); border-radius:999px; background:#08090b; }
+  .dvc17 .sb { height:54px; padding:15px 30px 0; display:flex; justify-content:space-between; align-items:flex-start; font:var(--ds-weight-bold) 13px/1 var(--ds-font-sans); position:relative; z-index:3; }
+  .dvc17 .sb .ico { display:flex; gap:6px; align-items:center; }
+  .dvc17 .dvc-body { height:calc(100% - 54px); overflow:auto; padding:var(--ds-space-4); scrollbar-width:none; }
+  .dvc17 .dvc-body::-webkit-scrollbar { width:0; height:0; }
+  .dvc17 .home { position:absolute; left:50%; bottom:9px; width:140px; height:5px; transform:translateX(-50%); border-radius:999px; background:color-mix(in srgb, var(--ds-fg) 78%, transparent); z-index:4; }
+  .mobile-ticket { border:1px solid var(--ds-border-strong); border-radius:var(--ds-radius-lg); overflow:hidden; background:var(--ds-bg-elevated); box-shadow:var(--ds-shadow-lg); }
+  .mobile-ticket .mobile-main { padding:var(--ds-space-4); position:relative; }
+  .mobile-ticket .mobile-stub { border-top:1px dashed var(--ds-border-strong); padding:var(--ds-space-4); background:var(--ds-bg-subtle); display:flex; justify-content:space-between; gap:var(--ds-space-3); }
+  .mobile-route { display:flex; align-items:center; justify-content:space-between; gap:var(--ds-space-3); margin:var(--ds-space-5) 0; }
+  .mobile-route b { display:block; font-family:var(--ds-font-mono); font-size:var(--ds-text-2xl); color:var(--ds-primary); }
+  .mobile-fields { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-2); }
+  .mobile-fields .field-tile { padding:var(--ds-space-2); }
+  .mobile-ticket .stamp { position:static; width:96px; height:96px; margin:var(--ds-space-4) auto 0; }
+  .mobile-actions { display:grid; grid-template-columns:1fr 1fr; gap:var(--ds-space-3); margin-top:var(--ds-space-4); }
+
+  footer { border-top:1px dashed var(--ds-border-strong); padding-top:var(--ds-space-5); color:var(--ds-fg-muted); font-size:var(--ds-text-sm); }
+
+  @media (max-width: 900px) {
+    .hero-grid, .type-grid, .component-grid, .asset-grid, .desktop-layout { grid-template-columns:1fr; }
+    .inspector, .side-rail { border:0; border-bottom:1px solid var(--ds-border); }
+    .ticket-card { grid-template-columns:1fr; }
+    .ticket-stub { border-left:0; border-top:1px dashed var(--ds-border-strong); }
+    .ticket-stub::before {
+      left:18px; right:18px; top:-8px; bottom:auto; width:auto; height:16px;
+      background:radial-gradient(circle at 8px 8px, var(--ds-bg) 0 5px, transparent 5.5px) 0 0 / 28px 16px repeat-x;
+    }
+    .coupon-grid { grid-template-columns:1fr; }
+    .dispatch-row { grid-template-columns:86px 1fr 86px; }
+    .dispatch-row .seat, .dispatch-row .zone { display:none; }
+  }
+  @media (max-width: 640px) {
+    .topbar { padding:0 var(--ds-space-4); }
+    .topbar .brand span:last-child { display:none; }
+    .page { padding:var(--ds-space-6) var(--ds-space-4) var(--ds-space-10); }
+    section { margin-bottom:var(--ds-space-9); }
+    .section-head { display:block; }
+    .section-head p { margin-top:var(--ds-space-2); }
+    h1 { font-size:var(--ds-text-2xl); }
+    .ticket-main { padding:var(--ds-space-4); }
+    .ticket-top, .route-band { display:block; }
+    .serial-box { text-align:left; margin-top:var(--ds-space-3); }
+    .route-line { margin:var(--ds-space-4) 0; justify-content:center; }
+    .field-grid, .form-grid, .icon-grid { grid-template-columns:1fr; }
+    .stamp { position:relative; right:auto; bottom:auto; margin:var(--ds-space-5) 0 0 auto; }
+    .dispatch-row { grid-template-columns:1fr; gap:var(--ds-space-2); }
+    .nav-strip { overflow-x:auto; }
+    .dvc17 { --phone-w:358px; height:774px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+    .ticket-card:hover .stamp { animation:none !important; }
+  }
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}
+  body{overflow-x:clip!important;}
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v10H4z"/><path d="M8 7v10"/><path d="M16 7v10"/><path d="M4 11h4"/><path d="M16 13h4"/></svg>
+    </span>
+    <span>环线票务 · Loop Transit & Post</span>
+  </div>
+  <span class="spacer"></span>
+  <button class="btn btn-secondary" id="themeBtn" type="button" onclick="toggleTheme()" aria-label="切换明暗主题">
+    <svg class="ico-svg" id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v2"/><path d="M12 19v2"/><path d="M3 12h2"/><path d="M19 12h2"/><path d="m5.6 5.6 1.4 1.4"/><path d="m17 17 1.4 1.4"/><path d="m18.4 5.6-1.4 1.4"/><path d="m7 17-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+    <span id="themeText">夜间终端</span>
+  </button>
+</header>
+
+<main class="page">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker">STYLE 47 · PASS VALIDATION SYSTEM</p>
+        <h1 id="hero-title">票据印章 · Ticketing / Pass & Postal</h1>
+        <p class="lede">轻色票据纸、蓝黑权威墨、邮政红验讫章、可撕票根、单色条码与精细安全线纹，组成一个虚构都市铁路与邮递服务的官方通行证界面。</p>
+        <div class="authority-line" aria-label="票据元信息">
+          <span class="authority-pill"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/><path d="M12 8v8"/></svg> LTP-VALID-2026</span>
+          <span class="authority-pill"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v18l-5-3-5 3z"/></svg> Zone R2</span>
+          <span class="authority-pill"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg> Gate 04</span>
+        </div>
+      </div>
+
+      <article class="ticket-card" aria-label="Loop Transit & Post validated ticket">
+        <div class="ticket-main">
+          <svg class="guilloche" viewBox="0 0 420 240" fill="none" aria-hidden="true">
+            <g stroke="currentColor" stroke-width="1">
+              <ellipse cx="220" cy="120" rx="178" ry="54"/>
+              <ellipse cx="220" cy="120" rx="156" ry="72"/>
+              <ellipse cx="220" cy="120" rx="132" ry="88"/>
+              <path d="M18 122c54-42 96-42 150 0s96 42 150 0 62-42 84-28"/>
+              <path d="M18 146c54-42 96-42 150 0s96 42 150 0 62-42 84-28"/>
+              <path d="M18 98c54 42 96 42 150 0s96-42 150 0 62 42 84 28"/>
+              <path d="M18 74c54 42 96 42 150 0s96-42 150 0 62 42 84 28"/>
+            </g>
+          </svg>
+          <div class="ticket-top">
+            <div>
+              <div class="authority-title">环线票务 · Loop Transit & Post</div>
+              <div class="pass-type">Metropolitan rail pass and postal dispatch receipt</div>
+            </div>
+            <div class="serial-box">
+              <b>LTP 47-0926</b>
+              <span>ISSUED 2026.06.29</span>
+            </div>
+          </div>
+          <div class="route-band">
+            <div class="station">
+              <div class="code">R04</div>
+              <div class="name">环线北站 · North Loop</div>
+            </div>
+            <div class="route-line"><span class="route-dot" aria-hidden="true"></span></div>
+            <div class="station" style="text-align:right;">
+              <div class="code">P17</div>
+              <div class="name">邮政中庭 · Postal Court</div>
+            </div>
+          </div>
+          <div class="field-grid">
+            <div class="field-tile"><span>DATE</span><b>06-29</b></div>
+            <div class="field-tile"><span>GATE</span><b>04</b></div>
+            <div class="field-tile"><span>SEAT</span><b>12A</b></div>
+            <div class="field-tile"><span>ZONE</span><b>R2</b></div>
+          </div>
+          <div class="stamp" aria-label="valid stamp"><div><strong>VALID</strong><span>已验讫</span></div></div>
+        </div>
+        <aside class="ticket-stub" aria-label="tear off stub">
+          <div>
+            <div class="stub-label">TEAR STUB</div>
+            <div class="stub-serial">LTP-6F9A</div>
+          </div>
+          <div class="barcode" aria-label="barcode">
+            <i class="w2"></i><i class="w1"></i><i class="w3"></i><i class="w1"></i><i class="w2"></i><i class="w2"></i><i class="w1"></i><i class="w3"></i><i class="w1"></i><i class="w1"></i><i class="w2"></i><i class="w3"></i><i class="w1"></i><i class="w2"></i>
+          </div>
+          <div class="stub-note">MONO SERIAL · COUPON 47 · KEEP FOR INSPECTION</div>
+        </aside>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="colors-title">
+    <div class="section-head">
+      <div><p class="kicker">Tokens</p><h2 id="colors-title">Color System</h2></div>
+      <p>Default is a near-neutral ticket stock. Dark mode becomes a night terminal board with paper-white ink.</p>
+    </div>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:var(--ds-bg);"></div><div class="info"><b>--ds-bg</b><span>#f0efe9</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-bg-subtle);"></div><div class="info"><b>--ds-bg-subtle</b><span>#e7e5dd</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-bg-elevated);"></div><div class="info"><b>--ds-bg-elevated</b><span>#faf9f5</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-bg-sunken);"></div><div class="info"><b>--ds-bg-sunken</b><span>#dedcd3</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-fg);"></div><div class="info"><b>--ds-fg</b><span>#1f1d1a</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-primary);"></div><div class="info"><b>--ds-primary</b><span>#22324f</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-accent);"></div><div class="info"><b>--ds-accent</b><span>#b8362a</span></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ds-border);"></div><div class="info"><b>--ds-border</b><span>#cbc8bd</span></div></div>
+    </div>
+    <div class="state-grid">
+      <div class="state-card" style="background:var(--ds-success-bg); color:var(--ds-success-fg); border-color:var(--ds-success);"><b>Success</b><span class="mono">#2f6b3f / #e2efe4</span></div>
+      <div class="state-card" style="background:var(--ds-warning-bg); color:var(--ds-warning-fg); border-color:var(--ds-warning);"><b>Warning</b><span class="mono">#8a5a10 / #f6ecd6</span></div>
+      <div class="state-card" style="background:var(--ds-danger-bg); color:var(--ds-danger-fg); border-color:var(--ds-danger);"><b>Danger</b><span class="mono">#b8362a / #f7e3e0</span></div>
+      <div class="state-card" style="background:var(--ds-info-bg); color:var(--ds-info-fg); border-color:var(--ds-info);"><b>Info</b><span class="mono">#1f6f86 / #ddeef2</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="type-title">
+    <div class="section-head">
+      <div><p class="kicker">Typography</p><h2 id="type-title">Serial-First Type</h2></div>
+      <p>Inter runs labels and controls, JetBrains Mono carries the identity through codes and fields, and Noto Serif appears on authority seals.</p>
+    </div>
+    <div class="type-grid">
+      <div class="type-scale">
+        <div class="type-row"><span class="tag">xs 12</span><span style="font-size:var(--ds-text-xs);">Gate label · Coupon metadata · 2026-06-29</span></div>
+        <div class="type-row"><span class="tag">sm 13</span><span style="font-size:var(--ds-text-sm);">Form text, table labels, compact document chrome.</span></div>
+        <div class="type-row"><span class="tag">base 15</span><span style="font-size:var(--ds-text-base);">Default body copy for official pass instructions.</span></div>
+        <div class="type-row"><span class="tag">md 17</span><span style="font-size:var(--ds-text-md);">Important field values and route summaries.</span></div>
+        <div class="type-row"><span class="tag">lg 20</span><span style="font-size:var(--ds-text-lg);">Section titles and coupon headings.</span></div>
+        <div class="type-row"><span class="tag">xl 24</span><span style="font-size:var(--ds-text-xl);">Ticket module headings.</span></div>
+        <div class="type-row"><span class="tag">2xl 32</span><span style="font-size:var(--ds-text-2xl);">Station codes and pass numbers.</span></div>
+        <div class="type-row"><span class="tag">3xl 44</span><span style="font-size:var(--ds-text-3xl);">Hero identity and high-level signage.</span></div>
+      </div>
+      <div class="specimen">
+        <p class="kicker">Authority Specimen</p>
+        <h3 class="serif">环线票务验讫专用章</h3>
+        <p class="muted">Formal seal titles use the serif family. Every operational value below is mono and tabular.</p>
+        <div class="serial">LTP-2026-47A9</div>
+        <div class="field-grid" style="grid-template-columns:repeat(2, minmax(0,1fr));">
+          <div class="field-tile"><span>VALID</span><b>14:35</b></div>
+          <div class="field-tile"><span>PLATFORM</span><b>R2-04</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="coupon-title">
+    <div class="section-head">
+      <div><p class="kicker">Stub Cards</p><h2 id="coupon-title">Coupons and Tear-Offs</h2></div>
+      <p>Small cards keep the tactile pattern: a main body, a dashed perforation, a stub serial, and document-paper borders.</p>
+    </div>
+    <div class="coupon-grid">
+      <article class="coupon"><div class="coupon-body"><p class="kicker">Parcel Claim</p><h3>Postal counter pickup</h3><p class="muted">Valid at window 07 before 18:00.</p><div class="coupon-code">PKG-LP-1184</div></div><div class="coupon-stub">A1184</div></article>
+      <article class="coupon"><div class="coupon-body"><p class="kicker">Transfer Slip</p><h3>Rail to post link</h3><p class="muted">One transfer within Zone R2.</p><div class="coupon-code">TRF-04-17B</div></div><div class="coupon-stub">B17</div></article>
+      <article class="coupon"><div class="coupon-body"><p class="kicker">Gate Check</p><h3>Inspector validation</h3><p class="muted">Stamp after manual review.</p><div class="coupon-code">CHK-6F9A</div></div><div class="coupon-stub">6F9A</div></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="dispatch-title">
+    <div class="section-head">
+      <div><p class="kicker">Dispatch</p><h2 id="dispatch-title">Itinerary Rows</h2></div>
+      <p>Operational rows use mono time, gate, seat, zone and dispatch IDs for dense scanning.</p>
+    </div>
+    <div class="dispatch-list">
+      <div class="dispatch-row"><div class="time">08:12</div><div class="route"><b>R04 North Loop to P17 Postal Court</b><span>Transit pouch and passenger validation</span></div><div class="gate">Gate 04</div><div class="seat">12A</div><div class="zone"><span class="badge success">Valid</span></div></div>
+      <div class="dispatch-row"><div class="time">10:45</div><div class="route"><b>P17 Postal Court to R09 Archive Hall</b><span>Registered mail handoff</span></div><div class="gate">Gate 11</div><div class="seat">03C</div><div class="zone"><span class="badge info">Boarding</span></div></div>
+      <div class="dispatch-row"><div class="time">14:35</div><div class="route"><b>R02 Civic Ring to P21 Sorting Annex</b><span>Manual stamp required</span></div><div class="gate">Gate 02</div><div class="seat">18D</div><div class="zone"><span class="badge warning">Review</span></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="components-title">
+    <div class="section-head">
+      <div><p class="kicker">Components</p><h2 id="components-title">Official Document Chrome</h2></div>
+      <p>Buttons, forms, badges, alerts, navigation and table states keep the same token contract while adopting pass-office details.</p>
+    </div>
+    <div class="component-grid">
+      <div class="panel">
+        <h3>Buttons</h3>
+        <div class="btn-grid" style="margin-bottom:var(--ds-space-5);">
+          <button class="btn btn-primary"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Issue Pass</button>
+          <button class="btn btn-secondary"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 7v10"/><path d="M16 7v10"/></svg>Scan Code</button>
+          <button class="btn btn-tertiary"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5h20v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>Print Stub</button>
+          <button class="btn btn-danger"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Void</button>
+          <button class="btn btn-secondary is-disabled">Disabled</button>
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+        </div>
+        <h3>Badges</h3>
+        <div class="badge-row">
+          <span class="badge primary">Primary</span><span class="badge success">Cleared</span><span class="badge warning">Pending</span><span class="badge danger">Void</span><span class="badge info">Info</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Forms</h3>
+        <div class="form-grid">
+          <div><label for="serial">Serial</label><input id="serial" type="text" value="LTP-47-0926"></div>
+          <div><label for="gate">Gate</label><select id="gate"><option>Gate 04</option><option>Gate 11</option><option>Gate 21</option></select></div>
+          <div><label for="holder">Holder</label><input id="holder" type="text" placeholder="Registered holder"></div>
+          <div><label for="mail">Dispatch email</label><input id="mail" type="email" placeholder="ops@example.local"></div>
+          <div style="grid-column:1/-1;"><label for="note">Validation note</label><textarea id="note">Manual seal applied at Postal Court counter.</textarea></div>
+        </div>
+        <div class="choice-row">
+          <label class="choice"><input type="checkbox" checked> Require stamp</label>
+          <label class="choice"><input type="radio" name="mode" checked> Rail</label>
+          <label class="choice"><input type="radio" name="mode"> Post</label>
+          <label class="choice"><span class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></span> Active</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="nav-alert-title">
+    <div class="section-head">
+      <div><p class="kicker">States</p><h2 id="nav-alert-title">Navigation, Alerts and Table</h2></div>
+      <p>Document chrome stays quiet; status surfaces carry the semantic tokens.</p>
+    </div>
+    <nav class="nav-strip" aria-label="Ticket office navigation">
+      <a class="active" href="#">Passes</a><a href="#">Dispatch</a><a href="#">Coupons</a><a href="#">Archive</a><a href="#">Inspection</a>
+    </nav>
+    <div class="tabs" role="tablist" aria-label="Status tabs">
+      <span class="tab active">Today</span><span class="tab">Pending stamp</span><span class="tab">Postal transfer</span><span class="tab">Voided</span>
+    </div>
+    <div class="alert-grid" style="margin:var(--ds-space-5) 0;">
+      <div class="alert success"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><b>Pass cleared</b><p>Gate 04 accepted serial LTP-47-0926.</p></div></div>
+      <div class="alert warning"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 4.3 2.5 18a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"/></svg><div><b>Stamp required</b><p>Manual inspection must complete before transfer.</p></div></div>
+      <div class="alert danger"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9 9 15"/><path d="m9 9 6 6"/></svg><div><b>Serial voided</b><p>Coupon code no longer matches the stub ledger.</p></div></div>
+      <div class="alert info"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><div><b>Dispatch note</b><p>Postal pouch departs after the 14:35 validation.</p></div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="mono">Serial</th><th>Holder</th><th class="mono">Route</th><th class="mono">Gate</th><th>Status</th><th class="mono">Updated</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">LTP-47-0926</td><td>Visitor Pass</td><td class="mono">R04-P17</td><td class="mono">04</td><td><span class="badge success">Valid</span></td><td class="mono">14:35</td></tr>
+          <tr><td class="mono">LTP-31-1184</td><td>Parcel Claim</td><td class="mono">P17-R09</td><td class="mono">11</td><td><span class="badge info">Boarding</span></td><td class="mono">10:45</td></tr>
+          <tr><td class="mono">LTP-88-02C1</td><td>Inspection Stub</td><td class="mono">R02-P21</td><td class="mono">02</td><td><span class="badge warning">Review</span></td><td class="mono">08:12</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="assets-title">
+    <div class="section-head">
+      <div><p class="kicker">Assets</p><h2 id="assets-title">Image Usage and Icon Usage</h2></div>
+      <p>Use document-like generated or inline vector assets: maps, counters, tickets, seals, barcodes and guilloche patterns. Avoid generic photos when the user needs to inspect pass details.</p>
+    </div>
+    <div class="asset-grid">
+      <div class="art-card">
+        <svg viewBox="0 0 720 360" role="img" aria-label="Ticket counter illustration with route lines and stamp">
+          <rect width="720" height="360" fill="var(--ds-bg-sunken)"/>
+          <g fill="none" stroke="var(--ds-border-strong)" stroke-width="1">
+            <path d="M40 60h640v240H40z"/>
+            <path d="M40 112h640"/>
+            <path d="M190 112v188"/>
+            <path d="M508 112v188"/>
+          </g>
+          <g stroke="var(--ds-primary)" stroke-width="2" fill="none">
+            <path d="M96 225 C190 110, 280 308, 380 178 S562 110, 624 230"/>
+            <circle cx="96" cy="225" r="8" fill="var(--ds-bg-elevated)"/>
+            <circle cx="380" cy="178" r="8" fill="var(--ds-bg-elevated)"/>
+            <circle cx="624" cy="230" r="8" fill="var(--ds-bg-elevated)"/>
+          </g>
+          <g fill="var(--ds-primary)" font-family="JetBrains Mono, monospace" font-size="18">
+            <text x="76" y="258">R04</text><text x="360" y="156">P17</text><text x="604" y="260">R09</text>
+          </g>
+          <g transform="translate(500 138) rotate(-8 66 66)" fill="none" stroke="var(--ds-accent)">
+            <circle cx="66" cy="66" r="54" stroke-width="4"/>
+            <circle cx="66" cy="66" r="42" stroke-width="1.5"/>
+            <text x="66" y="62" text-anchor="middle" fill="var(--ds-accent)" font-family="Noto Serif, serif" font-size="21" font-weight="700">VALID</text>
+            <text x="66" y="86" text-anchor="middle" fill="var(--ds-accent)" font-family="Noto Serif, serif" font-size="16">已验讫</text>
+          </g>
+          <g transform="translate(78 138)" fill="var(--ds-fg)">
+            <rect width="3" height="78"/><rect x="8" width="6" height="78"/><rect x="20" width="2" height="78"/><rect x="28" width="8" height="78"/><rect x="42" width="4" height="78"/><rect x="52" width="2" height="78"/><rect x="60" width="7" height="78"/>
+          </g>
+        </svg>
+        <div class="caption">Image direction: show the actual ticket, route, barcode or counter state. Keep it crisp, official and inspectable.</div>
+      </div>
+      <div class="panel">
+        <h3>Inline SVG Icon Set</h3>
+        <div class="icon-grid">
+          <span class="icon-tile"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 7v10"/><path d="M16 7v10"/></svg>Ticket</span>
+          <span class="icon-tile"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>Seal</span>
+          <span class="icon-tile"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5v14"/><path d="M9 5v14"/><path d="M15 5v14"/><path d="M19 5v14"/></svg>Barcode</span>
+          <span class="icon-tile"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-3-6 3z"/></svg>Stub</span>
+          <span class="icon-tile"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18c4-8 8 8 12 0s4-4 4-4"/><path d="M4 12c4-8 8 8 12 0s4-4 4-4"/></svg>Guilloche</span>
+          <span class="icon-tile"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>Gate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="desktop-title">
+    <div class="section-head">
+      <div><p class="kicker">Desktop</p><h2 id="desktop-title">Multi-Layout Ticket Office</h2></div>
+      <p>A dense operational layout with navigation, ticket ledger, and validation inspector.</p>
+    </div>
+    <div class="desktop-layout">
+      <aside class="side-rail">
+        <h3>Ticket Desk</h3>
+        <div class="rail-item active"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 7v10"/><path d="M16 7v10"/></svg>Pass ledger</div>
+        <div class="rail-item"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18"/><path d="M6 7v13h12V7"/><path d="M9 7V4h6v3"/></svg>Dispatch bins</div>
+        <div class="rail-item"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>Stamp queue</div>
+        <div class="rail-item"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5v14"/><path d="M9 5v14"/><path d="M15 5v14"/><path d="M19 5v14"/></svg>Barcode scan</div>
+      </aside>
+      <main class="desk-main">
+        <div class="section-head" style="margin-bottom:var(--ds-space-4);">
+          <div><p class="kicker">TODAY · 29 JUN 2026</p><h2>Validated Passes</h2></div>
+          <button class="btn btn-primary btn-sm"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New</button>
+        </div>
+        <article class="mini-ticket"><div class="body"><b>LTP-47-0926</b><p class="muted" style="margin:4px 0 0;">R04 to P17 · Gate 04 · Seat 12A</p></div><div class="stub">6F9A</div></article>
+        <article class="mini-ticket"><div class="body"><b>LTP-31-1184</b><p class="muted" style="margin:4px 0 0;">P17 to R09 · Gate 11 · Parcel claim</p></div><div class="stub">A1184</div></article>
+        <article class="mini-ticket"><div class="body"><b>LTP-88-02C1</b><p class="muted" style="margin:4px 0 0;">R02 to P21 · Manual stamp</p></div><div class="stub">02C1</div></article>
+      </main>
+      <aside class="inspector">
+        <h3>Inspector</h3>
+        <div class="barcode" aria-label="inspector barcode"><i class="w3"></i><i class="w1"></i><i class="w2"></i><i class="w1"></i><i class="w3"></i><i class="w2"></i><i class="w1"></i><i class="w1"></i><i class="w2"></i><i class="w3"></i></div>
+        <p class="mono" style="color:var(--ds-primary); font-weight:var(--ds-weight-bold);">SCAN OK · LTP-47-0926</p>
+        <div class="checklist">
+          <div class="check"><span>Serial match</span><span class="badge success">Yes</span></div>
+          <div class="check"><span>Stub present</span><span class="badge success">Yes</span></div>
+          <div class="check"><span>Stamp pressure</span><span class="badge warning">Manual</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section aria-labelledby="mobile-title">
+    <div class="section-head">
+      <div><p class="kicker">Mobile</p><h2 id="mobile-title">iPhone 17 Pro Max Mobile Pass</h2></div>
+      <p>The same pass collapses to one column: ticket body first, stub below, barcode still scannable, no horizontal overflow at 390px.</p>
+    </div>
+    <div class="phones">
+      <div class="dvc17" aria-label="iPhone 17 Pro Max ticketing layout">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--ds-space-4);">
+              <div><div class="kicker">Loop Transit & Post</div><strong>Mobile pass</strong></div>
+              <button class="btn btn-secondary btn-sm" aria-label="Scan"><svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 7v10"/><path d="M16 7v10"/></svg></button>
+            </div>
+            <article class="mobile-ticket">
+              <div class="mobile-main">
+                <div class="serial-box" style="text-align:left;"><b>LTP 47-0926</b><span>VALID TODAY · ZONE R2</span></div>
+                <div class="mobile-route">
+                  <div><b>R04</b><span class="subtle">North Loop</span></div>
+                  <div class="route-dot" aria-hidden="true"></div>
+                  <div style="text-align:right;"><b>P17</b><span class="subtle">Postal Court</span></div>
+                </div>
+                <div class="mobile-fields">
+                  <div class="field-tile"><span>Gate</span><b>04</b></div>
+                  <div class="field-tile"><span>Seat</span><b>12A</b></div>
+                  <div class="field-tile"><span>Time</span><b>14:35</b></div>
+                  <div class="field-tile"><span>Stub</span><b>6F9A</b></div>
+                </div>
+                <div class="stamp"><div><strong>VALID</strong><span>已验讫</span></div></div>
+              </div>
+              <div class="mobile-stub">
+                <div><div class="stub-label">SCAN STRIP</div><div class="stub-serial">6F9A</div></div>
+                <div class="barcode" style="width:132px; height:70px; margin:0;"><i class="w2"></i><i class="w1"></i><i class="w3"></i><i class="w2"></i><i class="w1"></i><i class="w2"></i><i class="w3"></i><i class="w1"></i></div>
+              </div>
+            </article>
+            <div class="mobile-actions">
+              <button class="btn btn-primary">Validate</button>
+              <button class="btn btn-secondary">Details</button>
+            </div>
+            <div class="panel" style="margin-top:var(--ds-space-4); padding:var(--ds-space-4);">
+              <div class="dispatch-row" style="grid-template-columns:1fr; padding:0; border:0; background:transparent;">
+                <div class="time">NEXT 16:10</div>
+                <div class="route"><b>P17 to R09</b><span>Postal transfer window 3</span></div>
+                <div><span class="badge info">Ready</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <strong>票据印章 · Ticketing / Pass & Postal</strong> uses fixed <code>--ds-*</code> tokens, local font stacks, inline SVG icons, no remote assets, light and dark themes, and ticketing-specific perforation, guilloche, barcode and stamp patterns.
+  </footer>
+</main>
+
+<script>
+  function toggleTheme() {
+    const root = document.documentElement;
+    const dark = root.dataset.theme === 'dark';
+    root.dataset.theme = dark ? 'light' : 'dark';
+    document.getElementById('themeText').textContent = dark ? '夜间终端' : '日间票纸';
+    document.getElementById('themeIcon').innerHTML = dark
+      ? '<path d="M12 3v2"/><path d="M12 19v2"/><path d="M3 12h2"/><path d="M19 12h2"/><path d="m5.6 5.6 1.4 1.4"/><path d="m17 17 1.4 1.4"/><path d="m18.4 5.6-1.4 1.4"/><path d="m7 17-1.4 1.4"/><circle cx="12" cy="12" r="4"/>'
+      : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+  }
+</script>
+</body>
+</html>

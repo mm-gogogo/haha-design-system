@@ -1,0 +1,142 @@
+/* ============================================================
+   票据印章 · Ticketing / Pass & Postal Design System Tokens
+   Contract: all variable names are fixed --ds-* tokens.
+   Light :root + dark [data-theme="dark"] and .dark compatibility.
+   Character: transit pass stock, postal stamp red, security guilloche,
+   mono serials, crisp perforations, official document chrome.
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces and text: light security ticket stock ---- */
+  --ds-bg: #f0efe9;
+  --ds-bg-subtle: #e7e5dd;
+  --ds-bg-elevated: #faf9f5;
+  --ds-bg-sunken: #dedcd3;
+  --ds-fg: #1f1d1a;
+  --ds-fg-muted: #55524b;
+  --ds-fg-subtle: #6f6c63;
+  --ds-fg-on-accent: #ffffff;
+  --ds-border: #cbc8bd;
+  --ds-border-strong: #a8a497;
+
+  /* ---- Brand and accent: navy authority ink + stamp red ---- */
+  --ds-primary: #22324f;
+  --ds-primary-hover: #1a2840;
+  --ds-primary-active: #141f33;
+  --ds-primary-fg: #ffffff;
+  --ds-accent: #b8362a;
+  --ds-accent-fg: #ffffff;
+
+  /* ---- Semantic status colors ---- */
+  --ds-success: #2f6b3f;
+  --ds-success-bg: #e2efe4;
+  --ds-success-fg: #1c4a28;
+  --ds-warning: #8a5a10;
+  --ds-warning-bg: #f6ecd6;
+  --ds-warning-fg: #5a3a08;
+  --ds-danger: #b8362a;
+  --ds-danger-bg: #f7e3e0;
+  --ds-danger-fg: #7e2019;
+  --ds-info: #1f6f86;
+  --ds-info-bg: #ddeef2;
+  --ds-info-fg: #124654;
+
+  /* ---- Focus ---- */
+  --ds-focus: #22324f;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- Radius: clipped-ticket geometry ---- */
+  --ds-radius-sm: 2px;
+  --ds-radius-md: 4px;
+  --ds-radius-lg: 8px;
+  --ds-radius-full: 999px;
+
+  /* ---- Spacing scale: 4px base ---- */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-7: 32px;
+  --ds-space-8: 40px;
+  --ds-space-9: 48px;
+  --ds-space-10: 64px;
+  --ds-space-11: 80px;
+  --ds-space-12: 96px;
+
+  /* ---- Typography: sans labels, mono serials, serif seals ---- */
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-text-xs: 12px;
+  --ds-text-sm: 13px;
+  --ds-text-base: 15px;
+  --ds-text-md: 17px;
+  --ds-text-lg: 20px;
+  --ds-text-xl: 24px;
+  --ds-text-2xl: 32px;
+  --ds-text-3xl: 44px;
+  --ds-leading-tight: 1.2;
+  --ds-leading-normal: 1.5;
+  --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-bold: 700;
+  --ds-tracking-tight: 0;
+  --ds-tracking-normal: 0;
+
+  /* ---- Shadows: pressed paper and document lift ---- */
+  --ds-shadow-sm: 0 1px 0 rgba(31, 29, 26, .05), 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 8px 18px -14px rgba(31, 29, 26, .28), 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 18px 40px -26px rgba(31, 29, 26, .38), 0 0 0 1px var(--ds-border-strong);
+
+  /* ---- Motion: ticket validation press ---- */
+  --ds-ease: cubic-bezier(.2, .8, .2, 1);
+  --ds-dur-fast: 120ms;
+  --ds-dur-base: 200ms;
+  --ds-dur-slow: 320ms;
+}
+
+/* ============================================================
+   Dark · terminal departures board: slate field, paper-white ink.
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  --ds-bg: #16181c;
+  --ds-bg-subtle: #1c1f24;
+  --ds-bg-elevated: #23262c;
+  --ds-bg-sunken: #101216;
+  --ds-fg: #ece9e2;
+  --ds-fg-muted: #b0ada4;
+  --ds-fg-subtle: #88857c;
+  --ds-fg-on-accent: #0c1420;
+  --ds-border: #2e323a;
+  --ds-border-strong: #434853;
+
+  --ds-primary: #6fa8d6;
+  --ds-primary-hover: #88b9e2;
+  --ds-primary-active: #5b97c8;
+  --ds-primary-fg: #0c1420;
+  --ds-accent: #e3675a;
+  --ds-accent-fg: #1a0e0c;
+
+  --ds-success: #6ccb87;
+  --ds-success-bg: #122b1b;
+  --ds-success-fg: #b6e6c6;
+  --ds-warning: #e0b25e;
+  --ds-warning-bg: #2a2010;
+  --ds-warning-fg: #f3d79a;
+  --ds-danger: #e3675a;
+  --ds-danger-bg: #2c1614;
+  --ds-danger-fg: #f4b0a8;
+  --ds-info: #6fc0d6;
+  --ds-info-bg: #0e2a30;
+  --ds-info-fg: #b6e4ef;
+
+  --ds-focus: #6fa8d6;
+
+  --ds-shadow-sm: 0 1px 0 rgba(0, 0, 0, .28), 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 12px 22px -16px rgba(0, 0, 0, .62), 0 0 0 1px var(--ds-border);
+  --ds-shadow-lg: 0 22px 48px -26px rgba(0, 0, 0, .72), 0 0 0 1px var(--ds-border-strong);
+}
