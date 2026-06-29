@@ -51,9 +51,22 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,32px)}
 
   /* —— Hero —— */
-  .hero{padding:clamp(36px,6vw,64px) 0 8px}
-  .hero h1{margin:0;font-size:clamp(28px,4.4vw,46px);line-height:1.08;letter-spacing:-.03em;font-weight:680;max-width:18ch;text-wrap:balance}
-  .hero p{margin:16px 0 0;color:var(--mut);max-width:60ch;font-size:clamp(15px,1.6vw,17px)}
+  .hero{padding:clamp(36px,6vw,64px) 0 8px;display:grid;grid-template-columns:1fr;gap:clamp(28px,4vw,52px);align-items:center}
+  @media(min-width:980px){ .hero{grid-template-columns:minmax(0,1fr) minmax(296px,400px)} }
+  .hero h1{margin:0;font-size:clamp(28px,4.4vw,46px);line-height:1.12;letter-spacing:-.03em;font-weight:680;max-width:20ch;text-wrap:balance}
+  .hero .nb{white-space:nowrap}
+  .hero p{margin:16px 0 0;color:var(--mut);max-width:54ch;font-size:clamp(15px,1.6vw,17px)}
+  /* —— Hero 右侧：49 格调色板（每格一套风格）—— */
+  .hero-art{display:none}
+  @media(min-width:980px){ .hero-art{display:block} }
+  .hero-art .sw-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+  .hero-art .sw{aspect-ratio:1;border-radius:7px;background:var(--c);display:block;
+    border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);
+    transition:transform .16s var(--ease,ease),box-shadow .16s}
+  .hero-art .sw:hover{transform:scale(1.14);box-shadow:0 6px 16px -6px rgba(0,0,0,.7),0 0 0 2px var(--acc);z-index:1}
+  .hero-art .sw:focus-visible{outline:none;transform:scale(1.14);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--acc);z-index:1}
+  .hero-art .sw-cap{margin-top:13px;font:11px/1.5 var(--mono);color:var(--faint);letter-spacing:.01em}
+  @media(prefers-reduced-motion:reduce){ .hero-art .sw{transition:none} }
   .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
   .stat{display:flex;align-items:baseline;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:9px 14px}
   .stat b{font:700 19px/1 var(--mono);letter-spacing:-.02em}
@@ -155,22 +168,25 @@
 
 <div class="wrap" id="top">
   <section class="hero">
-    <h1>四十九套设计风格，一份共享 Token 契约。</h1>
-    <p>每套都有亮、暗两版，带 hero 大图、图标用法，还有桌面和 iPhone 17 Pro Max 的真机布局。点缩略图能放大看，点「打开」进可交互的 preview。</p>
-    <div class="stats">
-      <span class="stat"><b>49</b><span>通用风格</span></span>
-      <span class="stat"><b>6</b><span>项目定制</span></span>
-      <span class="stat"><b>24</b><span>效果临摹</span></span>
-      <span class="stat"><b>AA</b><span>对比度</span></span>
+    <div class="hero-main">
+      <h1><span class="nb">四十九套设计风格，</span><span class="nb">一份共享 Token 契约。</span></h1>
+      <p>每套都有亮、暗两版，带 hero 大图、图标用法，还有桌面和 <span class="nb">iPhone 17 Pro Max</span> 的真机布局。点缩略图能放大看，点「打开」进可交互的 preview。</p>
+      <div class="stats">
+        <span class="stat"><b id="statStyles">49</b><span>通用风格</span></span>
+        <span class="stat"><b>6</b><span>项目定制</span></span>
+        <span class="stat"><b>24</b><span>效果临摹</span></span>
+        <span class="stat"><b>AA</b><span>对比度</span></span>
+      </div>
+      <div class="curl" id="curl" role="button" tabindex="0" title="点击复制">
+        <span><span class="pr">curl</span> design.hahaha.chat/design.md</span><span class="cp" id="cpHint">点击复制</span>
+      </div>
     </div>
-    <div class="curl" id="curl" role="button" tabindex="0" title="点击复制">
-      <span><span class="pr">curl</span> design.hahaha.chat/design.md</span><span class="cp" id="cpHint">点击复制</span>
-    </div>
+    <div class="hero-art" id="heroArt"></div>
   </section>
 
   <main>
     <section class="sec" id="sec-styles" data-sec>
-      <div class="sec-head"><h2>通用风格库</h2><span class="count">40</span><span class="rule"></span></div>
+      <div class="sec-head"><h2>通用风格库</h2><span class="count" id="cntStyles">49</span><span class="rule"></span></div>
       <p class="sub">都用同一套 <code>--ds-*</code> 变量，换一份 tokens.css 就能整体换肤。</p>
       <div class="grid" id="styles"></div>
     </section>
@@ -309,6 +325,14 @@ function render(list, dir, mount){
 }
 render(styles,"styles","styles");
 render(projects,"projects","projects");
+// 计数与 hero 调色板永远跟随 styles[]，不再手动维护
+document.getElementById("cntStyles").textContent = styles.length;
+document.getElementById("statStyles").textContent = styles.length;
+document.getElementById("heroArt").innerHTML =
+  '<div class="sw-grid">' + styles.map(([f,slug,name,color])=>
+    `<a class="sw" href="styles/${slug}/preview.html" target="_blank" rel="noopener" style="--c:${color}" title="${esc(name)}" aria-label="${esc(name)}"></a>`
+  ).join("") +
+  `</div><div class="sw-cap">${styles.length} 套风格 · 每格一套，点开看 preview</div>`;
 document.getElementById("studies").innerHTML = studies.map(([f,slug,name,cite,color],i)=>`
   <div class="card" style="--i:${Math.min(i,14)}" data-name="${esc((name+' '+slug+' '+cite).toLowerCase())}">
     <div class="ttl"><span class="dot" style="background:${color}"></span><b>${esc(name)}</b><a class="open" href="studies/${slug}/index.html" target="_blank" rel="noopener">打开</a></div>
