@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Murmurfield Sound Organism Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f5f7;
+      --surface: rgba(255, 255, 255, .72);
+      --surface-solid: #ffffff;
+      --ink: #1d1d1f;
+      --muted: #86868b;
+      --quiet: #a1a1a6;
+      --line: rgba(29, 29, 31, .08);
+      --line-strong: rgba(29, 29, 31, .13);
+      --coral: #e63946;
+      --purple: #7b2cbf;
+      --teal: #2a9d8f;
+      --pink: #ffb6c1;
+      --mint: #d8e2dc;
+      --shadow: 0 28px 80px rgba(29, 29, 31, .08);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --serif: "Noto Serif", "Songti SC", serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px 16px 118px;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(245, 245, 247, .98) 44%, #f5f5f7);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      min-height: calc(100dvh - 48px - 118px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(280px, 348px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+
+    .control-panel,
+    .organism-panel {
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .85);
+      -webkit-backdrop-filter: blur(28px) saturate(142%);
+      backdrop-filter: blur(28px) saturate(142%);
+    }
+
+    .control-panel {
+      border-radius: 28px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 34px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 26px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 34% 32%, rgba(255, 182, 193, .94), transparent 32%),
+        radial-gradient(circle at 66% 62%, rgba(42, 157, 143, .72), transparent 34%),
+        #fff;
+      box-shadow: 0 10px 28px rgba(123, 44, 191, .14), inset 0 0 0 1px rgba(29, 29, 31, .08);
+    }
+
+    .brand-mark::before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 1px solid rgba(29, 29, 31, .56);
+      box-shadow:
+        11px 0 0 -5px rgba(29, 29, 31, .56),
+        -11px 0 0 -5px rgba(29, 29, 31, .56);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(42px, 5.8vw, 72px);
+      line-height: .94;
+      letter-spacing: -0.045em;
+      font-weight: 400;
+    }
+
+    h1 span {
+      display: block;
+      font-family: var(--sans);
+      font-size: clamp(16px, 1.45vw, 20px);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 13px;
+    }
+
+    .tagline {
+      margin: 22px 0 0;
+      max-width: 27ch;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .transport {
+      display: grid;
+      gap: 18px;
+    }
+
+    .play-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .play-button {
+      min-height: 48px;
+      padding: 0 18px 0 15px;
+      border: 0;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      cursor: pointer;
+      color: #fff;
+      background: #1d1d1f;
+      box-shadow: 0 16px 36px rgba(29, 29, 31, .18);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      white-space: nowrap;
+    }
+
+    .play-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 44px rgba(29, 29, 31, .22);
+    }
+
+    .play-button:active {
+      transform: translateY(0) scale(.98);
+    }
+
+    .play-button:focus-visible,
+    .mode-button:focus-visible,
+    input[type="range"]:focus-visible {
+      outline: 3px solid rgba(42, 157, 143, .26);
+      outline-offset: 3px;
+    }
+
+    .play-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .14);
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .play-icon::before {
+      content: "";
+      width: 0;
+      height: 0;
+      margin-left: 2px;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid #fff;
+    }
+
+    .play-button.is-playing .play-icon::before,
+    .play-button.is-playing .play-icon::after {
+      content: "";
+      width: 3px;
+      height: 10px;
+      margin: 0;
+      border: 0;
+      background: #fff;
+      border-radius: 2px;
+      position: absolute;
+      left: 7px;
+      top: 6px;
+    }
+
+    .play-button.is-playing .play-icon::after {
+      left: 12px;
+    }
+
+    .status-pill {
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0 15px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .6);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .status-pill b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .readout {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(255, 255, 255, .56);
+    }
+
+    .readout-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .readout-title strong {
+      font-size: 15px;
+      letter-spacing: -.02em;
+      font-weight: 600;
+    }
+
+    .readout-title span {
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .meter {
+      height: 42px;
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      align-items: end;
+      gap: 3px;
+    }
+
+    .meter i {
+      display: block;
+      min-width: 0;
+      height: calc(6px + var(--level, .5) * 30px);
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--pink), var(--coral));
+      opacity: calc(.34 + var(--level, .5) * .54);
+      transform-origin: bottom;
+      transition: height .18s ease, opacity .18s ease;
+    }
+
+    .controls {
+      display: grid;
+      gap: 18px;
+    }
+
+    .slider-field {
+      display: grid;
+      gap: 9px;
+    }
+
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .slider-head b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .slider-head output {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--quiet);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      min-width: 0;
+      accent-color: var(--ink);
+      cursor: pointer;
+    }
+
+    .mode-group {
+      display: grid;
+      gap: 9px;
+    }
+
+    .mode-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(234, 234, 235, .74);
+    }
+
+    .mode-button {
+      min-width: 0;
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+    }
+
+    .mode-button[aria-pressed="true"] {
+      color: var(--ink);
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(29, 29, 31, .07);
+    }
+
+    .organism-panel {
+      position: relative;
+      min-height: 650px;
+      border-radius: 32px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .94), rgba(245, 245, 247, .74)),
+        #f5f5f7;
+    }
+
+    .stage-header,
+    .stage-footer {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .stage-header {
+      top: 22px;
+    }
+
+    .stage-footer {
+      bottom: 22px;
+      align-items: end;
+    }
+
+    .stage-kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.2;
+      color: var(--quiet);
+      letter-spacing: .04em;
+    }
+
+    .stage-title {
+      margin: 0;
+      font-size: clamp(22px, 2.2vw, 32px);
+      line-height: 1.1;
+      letter-spacing: -.04em;
+      font-weight: 600;
+    }
+
+    .stage-copy {
+      max-width: 28ch;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .frequency-chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, .64);
+      color: var(--muted);
+      box-shadow: 0 8px 26px rgba(29, 29, 31, .05);
+      font-family: var(--mono);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .frequency-chip b {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .palette-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .62);
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(29, 29, 31, .1);
+    }
+
+    .swatch.coral { background: var(--coral); }
+    .swatch.purple { background: var(--purple); }
+    .swatch.teal { background: var(--teal); }
+    .swatch.pink { background: var(--pink); }
+    .swatch.mint { background: var(--mint); }
+
+    .canvas-wrap {
+      position: absolute;
+      inset: 0;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mobile-note {
+      display: none;
+      color: var(--quiet);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 16px 12px 132px;
+      }
+
+      .page {
+        width: min(100%, calc(100vw - 24px));
+        min-height: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .organism-panel {
+        order: -1;
+        min-height: min(560px, 72dvh);
+      }
+
+      .control-panel {
+        padding: 24px;
+      }
+
+      .tagline {
+        max-width: 42ch;
+      }
+
+      .transport {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      body {
+        padding-inline: 10px;
+      }
+
+      .page {
+        width: min(100%, calc(100vw - 20px));
+        gap: 12px;
+      }
+
+      .control-panel,
+      .organism-panel {
+        border-radius: 24px;
+      }
+
+      .organism-panel {
+        min-height: 500px;
+      }
+
+      .stage-header,
+      .stage-footer {
+        left: 16px;
+        right: 16px;
+      }
+
+      .stage-header {
+        align-items: flex-start;
+      }
+
+      .stage-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stage-copy {
+        max-width: 24ch;
+      }
+
+      .frequency-chip {
+        font-size: 10px;
+        padding-inline: 10px;
+      }
+
+      .play-row {
+        align-items: stretch;
+      }
+
+      .play-button,
+      .status-pill {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .segmented {
+        border-radius: 18px;
+      }
+
+      .mode-button {
+        border-radius: 14px;
+      }
+
+      .mobile-note {
+        display: block;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .play-button:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Murmurfield generative sound organism">
+    <section class="control-panel" aria-label="Soundscape controls">
+      <div>
+        <div class="brand-mark" aria-hidden="true"></div>
+        <h1>Murmurfield<span>音场生物 · Sound organism</span></h1>
+        <p class="tagline">A quiet listening page where simulated frequency data gathers into a living cloud of color.</p>
+      </div>
+
+      <div class="transport">
+        <div class="play-row">
+          <button class="play-button is-playing" id="playToggle" type="button" aria-pressed="true">
+            <span class="play-icon" aria-hidden="true"></span>
+            <span id="playLabel">Pause field</span>
+          </button>
+          <span class="status-pill"><b id="playState">Playing</b>&nbsp;/ generative tone</span>
+        </div>
+
+        <div class="readout" aria-label="Now playing and simulated frequency">
+          <div class="readout-title">
+            <strong>Now playing</strong>
+            <span id="readoutCode">SIM 083 HZ</span>
+          </div>
+          <div class="meter" id="meter" aria-hidden="true"></div>
+        </div>
+
+        <div class="controls">
+          <label class="slider-field">
+            <span class="slider-head"><b>Frequency</b><output id="frequencyOut">0.92x</output></span>
+            <input id="frequency" type="range" min="0.45" max="1.70" value="0.92" step="0.01" aria-label="Frequency">
+          </label>
+
+          <label class="slider-field">
+            <span class="slider-head"><b>Density</b><output id="densityOut">300 grains</output></span>
+            <input id="density" type="range" min="200" max="380" value="300" step="10" aria-label="Particle density">
+          </label>
+
+          <label class="slider-field">
+            <span class="slider-head"><b>Hue drift</b><output id="hueOut">46</output></span>
+            <input id="hue" type="range" min="0" max="100" value="46" step="1" aria-label="Hue drift">
+          </label>
+
+          <div class="mode-group" aria-label="Flow mode">
+            <span class="mode-label">Flow mode</span>
+            <div class="segmented">
+              <button class="mode-button" type="button" data-mode="mist" aria-pressed="true">Mist</button>
+              <button class="mode-button" type="button" data-mode="thread" aria-pressed="false">Thread</button>
+              <button class="mode-button" type="button" data-mode="chorus" aria-pressed="false">Chorus</button>
+            </div>
+          </div>
+          <p class="mobile-note">Reduced motion preference renders a still organism frame instead of the animated field.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="organism-panel" aria-label="Generative particle organism">
+      <div class="stage-header">
+        <div>
+          <div class="stage-kicker">MURMURFIELD LIVE STUDY</div>
+          <p class="stage-title">Soft particles, slow breath.</p>
+          <p class="stage-copy">The organism responds to the controls with density, pulse and palette movement.</p>
+        </div>
+        <div class="frequency-chip"><b id="stageHz">83 Hz</b> / synthetic spectrum</div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="organismCanvas" role="img" aria-label="Animated soft particle sound organism"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <div class="palette-line" aria-label="Particle palette">
+          <span class="swatch coral"></span>
+          <span class="swatch purple"></span>
+          <span class="swatch teal"></span>
+          <span class="swatch pink"></span>
+          <span class="swatch mint"></span>
+        </div>
+        <div class="frequency-chip"><b id="stageMode">Mist</b> / <span id="stageDensity">300 grains</span></div>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Generative Music Organism》 by vanyatantsyura（社区 #56）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("organismCanvas");
+      const ctx = canvas.getContext("2d", { alpha: true });
+      const panel = document.querySelector(".organism-panel");
+      const playToggle = document.getElementById("playToggle");
+      const playLabel = document.getElementById("playLabel");
+      const playState = document.getElementById("playState");
+      const frequency = document.getElementById("frequency");
+      const density = document.getElementById("density");
+      const hue = document.getElementById("hue");
+      const frequencyOut = document.getElementById("frequencyOut");
+      const densityOut = document.getElementById("densityOut");
+      const hueOut = document.getElementById("hueOut");
+      const readoutCode = document.getElementById("readoutCode");
+      const stageHz = document.getElementById("stageHz");
+      const stageDensity = document.getElementById("stageDensity");
+      const stageMode = document.getElementById("stageMode");
+      const meter = document.getElementById("meter");
+      const modeButtons = Array.from(document.querySelectorAll(".mode-button"));
+      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const palette = ["#e63946", "#7b2cbf", "#2a9d8f", "#ffb6c1", "#d8e2dc"];
+      const modeSettings = {
+        mist: { label: "Mist", flow: .62, orbit: .44, pulse: .56, spread: .92 },
+        thread: { label: "Thread", flow: .88, orbit: .72, pulse: .42, spread: 1.04 },
+        chorus: { label: "Chorus", flow: .74, orbit: .54, pulse: .86, spread: 1.12 }
+      };
+
+      const state = {
+        width: 0,
+        height: 0,
+        dpr: 1,
+        particles: [],
+        sprites: [],
+        raf: 0,
+        running: true,
+        reduced: motionQuery.matches,
+        mode: "mist",
+        frequency: Number(frequency.value),
+        density: Number(density.value),
+        hue: Number(hue.value),
+        last: 0,
+        meterTick: 0
+      };
+
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+      const rand = (min, max) => min + Math.random() * (max - min);
+      const TAU = Math.PI * 2;
+
+      function makeMeter() {
+        const bars = [];
+        for (let i = 0; i < 24; i += 1) {
+          const bar = document.createElement("i");
+          bar.style.setProperty("--level", String(.2 + Math.random() * .6));
+          meter.appendChild(bar);
+          bars.push(bar);
+        }
+        return bars;
+      }
+
+      const meterBars = makeMeter();
+
+      function makeSprite(color) {
+        const size = 96;
+        const sprite = document.createElement("canvas");
+        sprite.width = size;
+        sprite.height = size;
+        const sctx = sprite.getContext("2d");
+        const gradient = sctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+        gradient.addColorStop(0, color + "f2");
+        gradient.addColorStop(.24, color + "82");
+        gradient.addColorStop(.58, color + "22");
+        gradient.addColorStop(1, color + "00");
+        sctx.fillStyle = gradient;
+        sctx.fillRect(0, 0, size, size);
+        return sprite;
+      }
+
+      function rebuildSprites() {
+        state.sprites = palette.map(makeSprite);
+      }
+
+      function createParticle(seedIndex) {
+        const angle = Math.random() * TAU;
+        const band = Math.pow(Math.random(), .72);
+        const side = Math.random() < .5 ? -1 : 1;
+        const cx = state.width * .53;
+        const cy = state.height * .52;
+        const rx = state.width * rand(.12, .31);
+        const ry = state.height * rand(.10, .27);
+
+        return {
+          x: cx + Math.cos(angle) * rx * band + rand(-12, 12),
+          y: cy + Math.sin(angle) * ry * band + rand(-12, 12),
+          vx: rand(-.18, .18),
+          vy: rand(-.18, .18),
+          baseAngle: angle,
+          band,
+          side,
+          seed: rand(0, 1000) + seedIndex * .131,
+          size: rand(.72, 1.55),
+          color: Math.floor(Math.random() * palette.length)
+        };
+      }
+
+      function setParticleCount(count) {
+        const target = clamp(Math.round(count), 200, 380);
+        while (state.particles.length < target) {
+          state.particles.push(createParticle(state.particles.length));
+        }
+        if (state.particles.length > target) {
+          state.particles.length = target;
+        }
+      }
+
+      function resizeCanvas() {
+        const rect = panel.getBoundingClientRect();
+        state.width = Math.max(320, Math.floor(rect.width));
+        state.height = Math.max(420, Math.floor(rect.height));
+        state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(state.width * state.dpr);
+        canvas.height = Math.floor(state.height * state.dpr);
+        ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+
+        if (!state.particles.length) {
+          setParticleCount(state.density);
+        } else {
+          state.particles.forEach((particle, index) => {
+            const fresh = createParticle(index);
+            particle.x = fresh.x;
+            particle.y = fresh.y;
+            particle.vx *= .25;
+            particle.vy *= .25;
+          });
+        }
+
+        renderFrame(state.reduced ? 8.5 : performance.now() * .001, true);
+      }
+
+      function background() {
+        ctx.globalCompositeOperation = "source-over";
+        const base = ctx.createLinearGradient(0, 0, 0, state.height);
+        base.addColorStop(0, "#ffffff");
+        base.addColorStop(.48, "#f7f7f8");
+        base.addColorStop(1, "#f5f5f7");
+        ctx.fillStyle = base;
+        ctx.fillRect(0, 0, state.width, state.height);
+
+        const haze = ctx.createRadialGradient(
+          state.width * .52,
+          state.height * .52,
+          0,
+          state.width * .52,
+          state.height * .52,
+          Math.max(state.width, state.height) * .54
+        );
+        haze.addColorStop(0, "rgba(255, 255, 255, .18)");
+        haze.addColorStop(.34, "rgba(216, 226, 220, .10)");
+        haze.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = haze;
+        ctx.fillRect(0, 0, state.width, state.height);
+      }
+
+      function fieldAngle(x, y, t, particle) {
+        const nx = (x - state.width * .5) / Math.max(1, state.width);
+        const ny = (y - state.height * .5) / Math.max(1, state.height);
+        const a = Math.sin(nx * 11.2 + t * .58 + particle.seed * .021);
+        const b = Math.cos(ny * 9.7 - t * .42 + particle.seed * .017);
+        const c = Math.sin((nx - ny) * 6.4 + t * .23 + particle.baseAngle);
+        return (a + b + c) * Math.PI;
+      }
+
+      function updateParticles(t, dt) {
+        const mode = modeSettings[state.mode];
+        const cx = state.width * .53 + Math.sin(t * .28) * state.width * .025;
+        const cy = state.height * .52 + Math.cos(t * .23) * state.height * .018;
+        const rx = state.width * .245 * mode.spread;
+        const ry = state.height * .225 * mode.spread;
+        const pulse = 1 + Math.sin(t * state.frequency * 1.9) * .045 * mode.pulse;
+        const dtScale = clamp(dt * 60, .35, 1.35);
+
+        state.particles.forEach((particle, index) => {
+          const harmonic = Math.sin(t * (.18 + particle.seed * .0004) + particle.seed) * .24;
+          const homeAngle = particle.baseAngle + harmonic + Math.sin(t * .11 + index) * .04;
+          const homeBand = (.16 + particle.band * .88) * pulse;
+          const homeX = cx + Math.cos(homeAngle) * rx * homeBand;
+          const homeY = cy + Math.sin(homeAngle) * ry * homeBand * (1 + particle.side * .035);
+          const dx = particle.x - cx;
+          const dy = particle.y - cy;
+          const dist = Math.hypot(dx / Math.max(1, rx), dy / Math.max(1, ry));
+          const angle = fieldAngle(particle.x, particle.y, t * state.frequency, particle);
+          const swirl = Math.atan2(dy, dx) + Math.PI / 2;
+          const flowMix = angle * .72 + swirl * .28;
+          const flowStrength = mode.flow * (.16 + state.frequency * .09);
+          const orbitStrength = mode.orbit * .024;
+          const pull = dist > 1.22 ? .026 : .009;
+
+          particle.vx += Math.cos(flowMix) * flowStrength * dtScale;
+          particle.vy += Math.sin(flowMix) * flowStrength * dtScale;
+          particle.vx += Math.cos(swirl) * orbitStrength * dtScale;
+          particle.vy += Math.sin(swirl) * orbitStrength * dtScale;
+          particle.vx += (homeX - particle.x) * pull * dtScale;
+          particle.vy += (homeY - particle.y) * pull * dtScale;
+
+          if (dist > 1.48) {
+            particle.vx += (cx - particle.x) * .018 * dtScale;
+            particle.vy += (cy - particle.y) * .018 * dtScale;
+          }
+
+          particle.vx *= .915;
+          particle.vy *= .915;
+          particle.x += particle.vx * dtScale;
+          particle.y += particle.vy * dtScale;
+        });
+      }
+
+      function drawThreads(t) {
+        const cx = state.width * .53;
+        const cy = state.height * .52;
+        const limit = Math.min(76, state.particles.length);
+        ctx.globalCompositeOperation = "lighter";
+        ctx.lineWidth = 1;
+
+        for (let i = 0; i < limit; i += 1) {
+          const p = state.particles[(i * 7) % state.particles.length];
+          const distance = Math.hypot(p.x - cx, p.y - cy);
+          const alpha = clamp(1 - distance / (Math.max(state.width, state.height) * .44), 0, .28);
+          if (alpha <= .03) continue;
+          const color = palette[(p.color + Math.floor(state.hue / 22)) % palette.length];
+          ctx.strokeStyle = color + Math.floor(alpha * 120).toString(16).padStart(2, "0");
+          ctx.beginPath();
+          ctx.moveTo(cx + Math.cos(p.baseAngle) * 22, cy + Math.sin(p.baseAngle) * 18);
+          const bend = Math.sin(t * .7 + p.seed) * 32;
+          ctx.quadraticCurveTo((cx + p.x) * .5 + bend, (cy + p.y) * .5 - bend * .45, p.x, p.y);
+          ctx.stroke();
+        }
+      }
+
+      function drawParticles(t, staticPass) {
+        const hueShift = Math.floor(state.hue / 20);
+        const pulse = .5 + .5 * Math.sin(t * state.frequency * 2.2);
+        ctx.globalCompositeOperation = "lighter";
+
+        state.particles.forEach((particle) => {
+          const localPulse = .58 + .42 * Math.sin(t * state.frequency * 2 + particle.seed);
+          const sprite = state.sprites[(particle.color + hueShift) % state.sprites.length];
+          const depth = .68 + particle.band * .86;
+          const size = (13 + particle.size * 24) * depth * (staticPass ? 1.08 : 1 + localPulse * .14);
+          ctx.globalAlpha = clamp(.13 + localPulse * .38 + pulse * .08, .12, .64);
+          ctx.drawImage(sprite, particle.x - size / 2, particle.y - size / 2, size, size);
+        });
+
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = "source-over";
+      }
+
+      function renderFrame(t, staticPass) {
+        background();
+        if (!staticPass) {
+          updateParticles(t, Math.min(.04, Math.max(.001, (t - state.last) || .016)));
+        }
+        drawThreads(t);
+        drawParticles(t, staticPass);
+      }
+
+      function animate(now) {
+        const t = now * .001;
+        if (!state.running || state.reduced) {
+          state.raf = 0;
+          renderFrame(t, true);
+          return;
+        }
+        if (!state.last) state.last = t;
+        renderFrame(t, false);
+        updateMeter(t);
+        state.last = t;
+        state.raf = requestAnimationFrame(animate);
+      }
+
+      function startLoop() {
+        cancelAnimationFrame(state.raf);
+        state.last = 0;
+        if (state.reduced || !state.running) {
+          renderFrame(8.5 + state.frequency, true);
+          updateMeter(8.5);
+          return;
+        }
+        state.raf = requestAnimationFrame(animate);
+      }
+
+      function updateMeter(t) {
+        if (t - state.meterTick < .08) return;
+        state.meterTick = t;
+        const mode = modeSettings[state.mode];
+        const hz = Math.round(44 + state.frequency * 42 + Math.sin(t * 1.6) * 5 + state.hue * .12);
+        readoutCode.textContent = "SIM " + String(hz).padStart(3, "0") + " HZ";
+        stageHz.textContent = hz + " Hz";
+        stageDensity.textContent = state.particles.length + " grains";
+
+        meterBars.forEach((bar, index) => {
+          const value = .18 + Math.abs(Math.sin(t * state.frequency * (1.1 + index * .027) + index * .72)) * .72 * mode.pulse;
+          bar.style.setProperty("--level", value.toFixed(3));
+          const color = palette[(index + Math.floor(state.hue / 20)) % palette.length];
+          bar.style.background = "linear-gradient(180deg, " + color + ", #e63946)";
+        });
+      }
+
+      function syncLabels() {
+        frequencyOut.textContent = state.frequency.toFixed(2) + "x";
+        densityOut.textContent = state.density + " grains";
+        hueOut.textContent = String(state.hue);
+        stageMode.textContent = modeSettings[state.mode].label;
+        playLabel.textContent = state.running ? "Pause field" : "Play field";
+        playState.textContent = state.reduced ? "Still" : (state.running ? "Playing" : "Paused");
+        playToggle.classList.toggle("is-playing", state.running && !state.reduced);
+        playToggle.setAttribute("aria-pressed", String(state.running && !state.reduced));
+        updateMeter(performance.now() * .001);
+      }
+
+      function handleSliderInput() {
+        state.frequency = Number(frequency.value);
+        state.density = Number(density.value);
+        state.hue = Number(hue.value);
+        setParticleCount(state.density);
+        syncLabels();
+        if (state.reduced || !state.running) renderFrame(8.5 + state.frequency + state.hue * .01, true);
+      }
+
+      playToggle.addEventListener("click", () => {
+        state.running = !state.running;
+        syncLabels();
+        startLoop();
+      });
+
+      [frequency, density, hue].forEach((input) => {
+        input.addEventListener("input", handleSliderInput);
+      });
+
+      modeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          state.mode = button.dataset.mode;
+          modeButtons.forEach((item) => {
+            item.setAttribute("aria-pressed", String(item === button));
+          });
+          syncLabels();
+          if (state.reduced || !state.running) renderFrame(9.1 + state.frequency, true);
+        });
+      });
+
+      motionQuery.addEventListener("change", (event) => {
+        state.reduced = event.matches;
+        syncLabels();
+        startLoop();
+      });
+
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(resizeCanvas).observe(panel);
+      } else {
+        window.addEventListener("resize", resizeCanvas, { passive: true });
+      }
+
+      rebuildSprites();
+      resizeCanvas();
+      syncLabels();
+      startLoop();
+    })();
+  </script>
+</body>
+</html>
