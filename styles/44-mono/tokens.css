@@ -1,0 +1,88 @@
+/* ============================================================
+   Stark Mono · 极简黑白 Design Tokens
+   Accentless grayscale discipline: gallery white, true black dark mode,
+   hairline rules, dramatic type, and status color only when semantic.
+   契约：变量名固定（--ds-*），仅取值随风格变。
+   亮色 :root ｜ 暗色 [data-theme="dark"] + .dark（true black）
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字 ---- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f4f4f5;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #e9e9eb;
+  --ds-fg: #0a0a0a;            --ds-fg-muted: #52525b;
+  --ds-fg-subtle: #71717a;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #e4e4e7;        --ds-border-strong: #0a0a0a;
+
+  /* ---- 品牌与强调 · 纯灰阶 ---- */
+  --ds-primary: #0a0a0a;       --ds-primary-hover: #27272a;
+  --ds-primary-active: #000000;--ds-primary-fg: #ffffff;
+  --ds-accent: #3f3f46;        --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态（唯一允许的 chroma）---- */
+  --ds-success: #2f7d46; --ds-success-bg: #eaf2ec; --ds-success-fg: #11371f;
+  --ds-warning: #8a6300; --ds-warning-bg: #f4ecd6; --ds-warning-fg: #3e2d00;
+  --ds-danger:  #c4302a; --ds-danger-bg:  #f7e3e1; --ds-danger-fg:  #551310;
+  --ds-info:    #2257cc; --ds-info-bg:    #e6ecfa; --ds-info-fg:    #0c2356;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #0a0a0a;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 · 小半径克制 ---- */
+  --ds-radius-sm: 2px; --ds-radius-md: 4px; --ds-radius-lg: 8px; --ds-radius-full: 9999px;
+
+  /* ---- 间距比例（继承 20-swiss 的 4px 基）---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体 · local fonts only ---- */
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", sans-serif;
+  --ds-font-serif: "Noto Serif", Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 22px; --ds-text-xl: 28px; --ds-text-2xl: 40px; --ds-text-3xl: 64px;
+  --ds-leading-tight: 1.12; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.72;
+  --ds-weight-normal: 400; --ds-weight-medium: 600; --ds-weight-bold: 800;
+  --ds-tracking-tight: -0.03em; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · hairline first, functional elevation only ---- */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 1px 2px rgba(10,10,10,.08);
+  --ds-shadow-lg: 0 8px 24px -10px rgba(10,10,10,.16);
+
+  /* ---- 动效 · 继承 20-swiss ---- */
+  --ds-ease: cubic-bezier(.22,.61,.36,1);
+  --ds-dur-fast: 150ms; --ds-dur-base: 200ms; --ds-dur-slow: 250ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 · true black ---- */
+  --ds-bg: #000000;            --ds-bg-subtle: #0c0c0e;
+  --ds-bg-elevated: #161618;   --ds-bg-sunken: #000000;
+  --ds-fg: #fafafa;            --ds-fg-muted: #a1a1aa;
+  --ds-fg-subtle: #71717a;     --ds-fg-on-accent: #0a0a0a;
+  --ds-border: #27272a;        --ds-border-strong: #fafafa;
+
+  /* ---- 品牌与强调 · 纯灰阶反相 ---- */
+  --ds-primary: #fafafa;       --ds-primary-hover: #e4e4e7;
+  --ds-primary-active: #ffffff;--ds-primary-fg: #0a0a0a;
+  --ds-accent: #a1a1aa;        --ds-accent-fg: #0a0a0a;
+
+  /* ---- 语义状态（唯一允许的 chroma）---- */
+  --ds-success: #4ec06a; --ds-success-bg: #0c2614; --ds-success-fg: #cdeccf;
+  --ds-warning: #e0b250; --ds-warning-bg: #241a06; --ds-warning-fg: #f6e6be;
+  --ds-danger:  #f0584e; --ds-danger-bg:  #2a0c0a; --ds-danger-fg:  #ffd6d2;
+  --ds-info:    #5b8cf0; --ds-info-bg:    #0a1630; --ds-info-fg:    #d6e2fb;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #fafafa;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影 ---- */
+  --ds-shadow-sm: 0 0 0 1px var(--ds-border);
+  --ds-shadow-md: 0 1px 2px rgba(0,0,0,.5);
+  --ds-shadow-lg: 0 8px 24px -10px rgba(0,0,0,.6);
+}
