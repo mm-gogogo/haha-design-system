@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>磁贴 · Metro / Modern Flat Tiles · 设计系统预览</title>
+<style>
+  /* ============================================================
+     磁贴 · Metro / Modern Flat Tiles Tokens（内联，与 tokens.css 同源）
+     ============================================================ */
+  :root {
+    --ds-bg: #ffffff;            --ds-bg-subtle: #f2f2f2;
+    --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #e6e6e6;
+    --ds-fg: #1b1b1b;            --ds-fg-muted: #565656;
+    --ds-fg-subtle: #676767;     --ds-fg-on-accent: #ffffff;
+    --ds-border: #d6d6d6;        --ds-border-strong: #b3b3b3;
+    --ds-primary: #0067c0;       --ds-primary-hover: #005ba1;
+    --ds-primary-active: #004e8c;--ds-primary-fg: #ffffff;
+    --ds-accent: #008272;        --ds-accent-fg: #ffffff;
+    --ds-success: #107c10; --ds-success-bg: #dff6dd; --ds-success-fg: #0b5a0b;
+    --ds-warning: #8a5300; --ds-warning-bg: #fdf3d6; --ds-warning-fg: #5c3700;
+    --ds-danger:  #c42b1c; --ds-danger-bg:  #fde7e9; --ds-danger-fg:  #8a1d12;
+    --ds-info:    #0067c0; --ds-info-bg:    #e1eefb; --ds-info-fg:    #004e8c;
+    --ds-focus: #0067c0;
+    --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-radius-sm: 0; --ds-radius-md: 0; --ds-radius-lg: 0; --ds-radius-full: 999px;
+    --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+    --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+    --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+    --ds-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+    --ds-font-serif: Georgia, "Songti SC", serif;
+    --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+    --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+    --ds-leading-tight: 1.12; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.72;
+    --ds-weight-normal: 300; --ds-weight-medium: 400; --ds-weight-bold: 700;
+    --ds-tracking-tight: 0; --ds-tracking-normal: 0;
+    --ds-shadow-sm: none;
+    --ds-shadow-md: none;
+    --ds-shadow-lg: none;
+    --ds-ease: cubic-bezier(.2,.8,.2,1);
+    --ds-dur-fast: 120ms; --ds-dur-base: 180ms; --ds-dur-slow: 320ms;
+  }
+  [data-theme="dark"], .dark {
+    --ds-bg: #000000;            --ds-bg-subtle: #0d0d0d;
+    --ds-bg-elevated: #1a1a1a;   --ds-bg-sunken: #000000;
+    --ds-fg: #ffffff;            --ds-fg-muted: #c8c8c8;
+    --ds-fg-subtle: #a0a0a0;     --ds-fg-on-accent: #06121f;
+    --ds-border: #2b2b2b;        --ds-border-strong: #3f3f3f;
+    --ds-primary: #4ca3ee;       --ds-primary-hover: #6cb6f2;
+    --ds-primary-active: #3a8fd6;--ds-primary-fg: #06121f;
+    --ds-accent: #57c7b8;        --ds-accent-fg: #04201c;
+    --ds-success: #6ccb5a; --ds-success-bg: #122b10; --ds-success-fg: #b6e6ab;
+    --ds-warning: #e0b25e; --ds-warning-bg: #2a2010; --ds-warning-fg: #f3d79a;
+    --ds-danger:  #ff99a4; --ds-danger-bg:  #2c1416; --ds-danger-fg:  #ffc9cf;
+    --ds-info:    #4ca3ee; --ds-info-bg:    #08283f; --ds-info-fg:    #bfe0fb;
+    --ds-focus: #4ca3ee;
+    --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+    --ds-shadow-sm: none;
+    --ds-shadow-md: none;
+    --ds-shadow-lg: none;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ds-bg);
+    color: var(--ds-fg);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-leading-normal);
+    -webkit-font-smoothing: antialiased;
+    transition: background var(--ds-dur-base) var(--ds-ease), color var(--ds-dur-base) var(--ds-ease);
+  }
+  h1,h2,h3,h4,h5 { margin: 0; letter-spacing: 0; line-height: var(--ds-leading-tight); }
+  p { margin: 0; }
+  a { color: var(--ds-primary); }
+  code { font-family: var(--ds-font-mono); font-size: .92em; }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--ds-space-6); }
+  .tnum { font-variant-numeric: tabular-nums; }
+  .ico { width: 1em; height: 1em; flex: none; display: inline-block; vertical-align: -0.14em; }
+
+  section { padding: var(--ds-space-11) 0; border-top: 1px solid var(--ds-border); }
+  section:first-of-type { border-top: 0; }
+  .sec-head { margin-bottom: var(--ds-space-7); }
+  .sec-eyebrow {
+    display: inline-flex; align-items: center; gap: var(--ds-space-2);
+    font: var(--ds-weight-bold) var(--ds-text-xs)/1 var(--ds-font-mono);
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ds-primary);
+    margin-bottom: var(--ds-space-3);
+  }
+  .sec-title { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-normal); }
+  .sec-desc { color: var(--ds-fg-muted); margin-top: var(--ds-space-3); max-width: 66ch; line-height: var(--ds-leading-relaxed); }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--ds-bg);
+    border-bottom: 1px solid var(--ds-border);
+  }
+  .topbar-inner {
+    max-width: 1180px; margin: 0 auto; padding: 0 var(--ds-space-6);
+    height: 64px; display: flex; align-items: center; gap: var(--ds-space-6);
+  }
+  .brand { display: flex; align-items: center; gap: var(--ds-space-3); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-md); }
+  .logo { width: 34px; height: 34px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; }
+  .logo i { display: block; background: var(--ds-primary); }
+  .logo i:nth-child(2) { background: var(--ds-accent); }
+  .logo i:nth-child(3) { background: var(--ds-danger); }
+  .logo i:nth-child(4) { background: var(--ds-warning); }
+  .nav { display: flex; gap: var(--ds-space-5); margin-left: var(--ds-space-4); }
+  .nav a {
+    color: var(--ds-fg-muted); text-decoration: none; font-size: var(--ds-text-sm);
+    font-weight: var(--ds-weight-bold); padding: var(--ds-space-2) 0;
+    text-transform: uppercase; letter-spacing: .08em; border-bottom: 2px solid transparent;
+  }
+  .nav a:hover, .nav a.active { color: var(--ds-fg); border-bottom-color: var(--ds-primary); }
+  .topbar-spacer { flex: 1; }
+  @media (max-width: 820px) { .nav { display: none; } }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--ds-space-2);
+    min-height: 40px; padding: 0 var(--ds-space-6);
+    border: 1px solid transparent; border-radius: var(--ds-radius-sm);
+    font: var(--ds-weight-bold) var(--ds-text-sm)/1 var(--ds-font-sans);
+    cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: background var(--ds-dur-fast) var(--ds-ease), color var(--ds-dur-fast) var(--ds-ease), border-color var(--ds-dur-fast) var(--ds-ease), transform var(--ds-dur-fast) var(--ds-ease);
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible, .icon-btn:focus-visible, .toggle:focus-visible, .input:focus, .textarea:focus, .select:focus, .tile:focus-visible {
+    outline: none; box-shadow: var(--ds-focus-ring);
+  }
+  .btn-primary { background: var(--ds-primary); color: var(--ds-primary-fg); }
+  .btn-primary:hover { background: var(--ds-primary-hover); }
+  .btn-secondary { background: var(--ds-bg); color: var(--ds-fg); border-color: var(--ds-border-strong); }
+  .btn-secondary:hover { background: var(--ds-bg-subtle); }
+  .btn-quiet { background: var(--ds-info-bg); color: var(--ds-info-fg); }
+  .btn-quiet:hover { background: var(--ds-bg-subtle); color: var(--ds-primary); }
+  .btn-danger { background: var(--ds-danger); color: #ffffff; }
+  [data-theme="dark"] .btn-danger, .dark .btn-danger { color: #06121f; }
+  .btn:disabled { background: var(--ds-bg-subtle); color: var(--ds-fg-subtle); border-color: var(--ds-border); cursor: not-allowed; transform: none; }
+  .btn-sm { min-height: 32px; padding: 0 var(--ds-space-4); font-size: var(--ds-text-xs); }
+  .btn-lg { min-height: 48px; padding: 0 var(--ds-space-7); font-size: var(--ds-text-md); }
+  .icon-btn {
+    width: 44px; height: 44px; display: inline-grid; place-items: center;
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm);
+    background: var(--ds-bg); color: var(--ds-fg); cursor: pointer;
+    transition: background var(--ds-dur-fast) var(--ds-ease), transform var(--ds-dur-fast) var(--ds-ease);
+  }
+  .icon-btn:hover { background: var(--ds-bg-subtle); transform: translateY(-1px); }
+  .toggle {
+    display: inline-flex; align-items: center; gap: var(--ds-space-2);
+    min-height: 40px; padding: 0 var(--ds-space-4);
+    background: var(--ds-bg); color: var(--ds-fg);
+    border: 1px solid var(--ds-border-strong); border-radius: var(--ds-radius-sm);
+    font: var(--ds-weight-bold) var(--ds-text-sm)/1 var(--ds-font-sans);
+    cursor: pointer;
+  }
+
+  .hero { padding: var(--ds-space-10) 0 var(--ds-space-11); overflow: hidden; }
+  .hero-layout { display: grid; grid-template-columns: .92fr 1.08fr; gap: var(--ds-space-10); align-items: end; }
+  .hero-kicker { margin-bottom: var(--ds-space-4); }
+  .panorama-title {
+    font-size: 112px;
+    font-weight: var(--ds-weight-normal);
+    line-height: .92;
+    max-width: 760px;
+    margin-left: -6px;
+  }
+  .hero-sub { color: var(--ds-fg-muted); font-size: var(--ds-text-md); line-height: var(--ds-leading-relaxed); max-width: 55ch; margin-top: var(--ds-space-6); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); margin-top: var(--ds-space-7); }
+  .live-grid { display: grid; grid-template-columns: repeat(4, minmax(92px, 1fr)); grid-auto-rows: 118px; gap: var(--ds-space-3); }
+  .tile {
+    position: relative; display: flex; flex-direction: column; justify-content: space-between;
+    border: 0; border-radius: var(--ds-radius-md); color: #ffffff; padding: var(--ds-space-5);
+    text-decoration: none; overflow: hidden; transform: translateY(0);
+    transition: transform var(--ds-dur-base) var(--ds-ease), background var(--ds-dur-base) var(--ds-ease);
+    animation: tileIn 420ms var(--ds-ease) both;
+    animation-delay: var(--delay, 0ms);
+  }
+  .tile:hover { transform: translateY(-3px); }
+  .tile:active { transform: translateY(1px); }
+  .tile.wide { grid-column: span 2; }
+  .tile.tall { grid-row: span 2; }
+  .tile .tile-icon { font-size: 30px; }
+  .tile .tile-label { font-size: 24px; line-height: 1.05; font-weight: var(--ds-weight-bold); }
+  .tile .tile-data { font-family: var(--ds-font-mono); font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); margin-top: var(--ds-space-2); }
+  @keyframes tileIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 980px) {
+    .hero-layout { grid-template-columns: 1fr; }
+    .panorama-title { font-size: 72px; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 var(--ds-space-4); }
+    .panorama-title { font-size: 52px; }
+    .live-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); grid-auto-rows: 112px; }
+  }
+
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: var(--ds-space-4); }
+  .swatch { border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .swatch .chip { height: 70px; border-bottom: 1px solid var(--ds-border); }
+  .swatch .meta { padding: var(--ds-space-3) var(--ds-space-4); }
+  .swatch .nm { font-weight: var(--ds-weight-bold); }
+  .swatch .hx { margin-top: 2px; color: var(--ds-fg-muted); font: var(--ds-weight-medium) var(--ds-text-xs)/1.4 var(--ds-font-mono); }
+
+  .panel { background: var(--ds-bg-elevated); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-md); }
+  .panel-pad { padding: var(--ds-space-6); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-5); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-space-5); }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-space-4); }
+  @media (max-width: 820px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  .type-row { display: flex; align-items: baseline; gap: var(--ds-space-5); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .tag { width: 72px; flex: none; color: var(--ds-fg-subtle); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); }
+  .type-row .ex { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .weights { display: flex; flex-wrap: wrap; gap: var(--ds-space-6); margin-top: var(--ds-space-6); }
+
+  .stat-tile {
+    min-height: 150px; padding: var(--ds-space-5); border: 1px solid var(--ds-border);
+    background: var(--ds-bg-elevated); display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .stat-tile .k { color: var(--ds-fg-muted); font: var(--ds-weight-bold) var(--ds-text-xs)/1 var(--ds-font-mono); letter-spacing: .12em; text-transform: uppercase; }
+  .stat-tile .v { font: var(--ds-weight-normal) 44px/1 var(--ds-font-sans); margin-top: var(--ds-space-4); }
+  .stat-tile .d { font-size: var(--ds-text-sm); color: var(--ds-fg-muted); margin-top: var(--ds-space-3); }
+  .stat-tile.color { border: 0; color: #ffffff; }
+  .stat-tile.color .k, .stat-tile.color .d { color: #ffffff; font-weight: var(--ds-weight-bold); }
+
+  .list-view { border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .list-head, .list-row { display: grid; grid-template-columns: 1.4fr .8fr .8fr auto; gap: var(--ds-space-4); align-items: center; padding: var(--ds-space-4) var(--ds-space-5); }
+  .list-head { background: var(--ds-bg-subtle); color: var(--ds-fg-muted); font: var(--ds-weight-bold) var(--ds-text-xs)/1 var(--ds-font-mono); letter-spacing: .12em; text-transform: uppercase; }
+  .list-row { min-height: 64px; border-top: 1px solid var(--ds-border); }
+  .list-row:hover { background: var(--ds-bg-subtle); }
+  .row-title { display: flex; align-items: center; gap: var(--ds-space-3); min-width: 0; }
+  .square-mark { width: 18px; height: 18px; flex: none; background: var(--ds-primary); }
+  @media (max-width: 700px) {
+    .list-head { display: none; }
+    .list-row { grid-template-columns: 1fr; gap: var(--ds-space-2); }
+  }
+
+  .field { margin-bottom: var(--ds-space-5); }
+  .field label { display: block; font-size: var(--ds-text-sm); font-weight: var(--ds-weight-bold); margin-bottom: var(--ds-space-2); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap .lead { position: absolute; left: var(--ds-space-3); color: var(--ds-fg-subtle); pointer-events: none; font-size: 18px; }
+  .input, .textarea, .select {
+    width: 100%; height: 44px; padding: 0 var(--ds-space-4);
+    background: var(--ds-bg-sunken); color: var(--ds-fg);
+    border: 1px solid var(--ds-border); border-radius: var(--ds-radius-sm);
+    font: var(--ds-weight-medium) var(--ds-text-base)/1.4 var(--ds-font-sans);
+    transition: border-color var(--ds-dur-fast) var(--ds-ease), background var(--ds-dur-fast) var(--ds-ease);
+  }
+  .input-wrap .input.has-lead { padding-left: 42px; }
+  .textarea { height: auto; min-height: 96px; padding: var(--ds-space-3) var(--ds-space-4); resize: vertical; }
+  .input::placeholder, .textarea::placeholder { color: var(--ds-fg-subtle); }
+  .input:focus, .textarea:focus, .select:focus { border-color: var(--ds-primary); background: var(--ds-bg); }
+  .select { appearance: none; cursor: pointer; }
+  .help { font-size: var(--ds-text-xs); color: var(--ds-fg-subtle); margin-top: var(--ds-space-2); }
+  .help.err { color: var(--ds-danger); font-weight: var(--ds-weight-bold); }
+  .check-row { display: flex; align-items: center; gap: var(--ds-space-3); margin-bottom: var(--ds-space-3); }
+  input[type=checkbox], input[type=radio] {
+    appearance: none; width: 18px; height: 18px; border: 1px solid var(--ds-border-strong);
+    border-radius: 0; background: var(--ds-bg); display: inline-grid; place-items: center;
+  }
+  input[type=checkbox]:checked, input[type=radio]:checked { background: var(--ds-primary); border-color: var(--ds-primary); }
+  input[type=checkbox]:checked::after, input[type=radio]:checked::after { content: ""; width: 8px; height: 8px; background: var(--ds-primary-fg); display: block; }
+  .switch { position: relative; width: 56px; height: 30px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track { position: absolute; inset: 0; background: var(--ds-bg-sunken); border: 1px solid var(--ds-border-strong); }
+  .switch .thumb { position: absolute; left: 4px; top: 4px; width: 22px; height: 20px; background: var(--ds-border-strong); transition: transform var(--ds-dur-base) var(--ds-ease), background var(--ds-dur-base) var(--ds-ease); }
+  .switch input:checked + .track { background: var(--ds-primary); border-color: var(--ds-primary); }
+  .switch input:checked + .track + .thumb { transform: translateX(26px); background: var(--ds-primary-fg); }
+  .switch input:focus-visible + .track { box-shadow: var(--ds-focus-ring); }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px; min-height: 24px; padding: 0 var(--ds-space-3);
+    border-radius: var(--ds-radius-sm); font: var(--ds-weight-bold) var(--ds-text-xs)/1 var(--ds-font-mono); letter-spacing: .06em; text-transform: uppercase;
+  }
+  .b-success { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+  .b-warning { background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+  .b-danger { background: var(--ds-danger-bg); color: var(--ds-danger-fg); }
+  .b-info { background: var(--ds-info-bg); color: var(--ds-info-fg); }
+  .alert { display: flex; gap: var(--ds-space-3); padding: var(--ds-space-4); border: 1px solid; margin-bottom: var(--ds-space-3); }
+  .alert .ico { font-size: 20px; flex: none; margin-top: 1px; }
+  .alert .at { font-weight: var(--ds-weight-bold); }
+  .alert .ad { font-size: var(--ds-text-sm); margin-top: 2px; }
+  .a-success { background: var(--ds-success-bg); border-color: var(--ds-success); color: var(--ds-success-fg); }
+  .a-warning { background: var(--ds-warning-bg); border-color: var(--ds-warning); color: var(--ds-warning-fg); }
+  .a-danger { background: var(--ds-danger-bg); border-color: var(--ds-danger); color: var(--ds-danger-fg); }
+  .a-info { background: var(--ds-info-bg); border-color: var(--ds-info); color: var(--ds-info-fg); }
+
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--ds-border); }
+  .tab { padding: var(--ds-space-4) var(--ds-space-5); border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--ds-fg-muted); cursor: pointer; font: var(--ds-weight-bold) var(--ds-text-sm)/1 var(--ds-font-sans); text-transform: uppercase; letter-spacing: .08em; }
+  .tab.active { color: var(--ds-primary); border-bottom-color: var(--ds-primary); }
+
+  .tbl-wrap { border: 1px solid var(--ds-border); overflow: hidden; background: var(--ds-bg-elevated); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--ds-text-sm); }
+  thead th { text-align: left; padding: var(--ds-space-3) var(--ds-space-4); background: var(--ds-bg-subtle); color: var(--ds-fg-muted); font-weight: var(--ds-weight-bold); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .1em; }
+  tbody td { padding: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
+  tbody tr:hover { background: var(--ds-bg-subtle); }
+  .u-cell { display: flex; align-items: center; gap: var(--ds-space-3); }
+  .avatar { border-radius: var(--ds-radius-full); object-fit: cover; }
+  .av-32 { width: 32px; height: 32px; }
+  .av-40 { width: 40px; height: 40px; }
+
+  .ratio-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--ds-space-4); }
+  .ratio { border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .ratio img { width: 100%; height: 100%; object-fit: cover; }
+  .ratio .cap { padding: var(--ds-space-3); border-top: 1px solid var(--ds-border); font: var(--ds-weight-bold) var(--ds-text-xs)/1 var(--ds-font-mono); color: var(--ds-fg-muted); text-transform: uppercase; letter-spacing: .1em; }
+  .r-169 .pic { aspect-ratio: 16/9; } .r-43 .pic { aspect-ratio: 4/3; } .r-11 .pic { aspect-ratio: 1/1; } .r-34 .pic { aspect-ratio: 3/4; }
+  .media-tile { border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .media-tile img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+  .media-tile .copy { padding: var(--ds-space-5); }
+  .media-tile h4 { font-size: var(--ds-text-lg); font-weight: var(--ds-weight-bold); }
+  .media-tile p { color: var(--ds-fg-muted); margin-top: var(--ds-space-2); }
+  @media (max-width: 760px) { .ratio-grid { grid-template-columns: 1fr 1fr; } }
+
+  .icon-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px,1fr)); gap: var(--ds-space-3); }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-2); padding: var(--ds-space-5) var(--ds-space-2); border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); }
+  .icon-cell .ico { font-size: 26px; color: var(--ds-fg); }
+  .icon-cell .nm { font: var(--ds-weight-medium) var(--ds-text-xs)/1 var(--ds-font-mono); color: var(--ds-fg-muted); }
+
+  .browser { border: 1px solid var(--ds-border); background: var(--ds-bg-elevated); overflow: hidden; }
+  .browser-bar { display: flex; align-items: center; gap: var(--ds-space-3); height: 44px; padding: 0 var(--ds-space-4); background: var(--ds-bg-subtle); border-bottom: 1px solid var(--ds-border); }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 10px; height: 10px; border-radius: var(--ds-radius-full); background: var(--ds-border-strong); display: block; }
+  .addr { flex: 1; height: 26px; background: var(--ds-bg); border: 1px solid var(--ds-border); display: flex; align-items: center; gap: var(--ds-space-2); padding: 0 var(--ds-space-3); font-size: var(--ds-text-xs); color: var(--ds-fg-muted); font-family: var(--ds-font-mono); }
+  .dash { display: grid; grid-template-columns: 220px 1fr; min-height: 460px; }
+  .dash-side { background: var(--ds-bg-subtle); border-right: 1px solid var(--ds-border); padding: var(--ds-space-4); }
+  .dash-brand { display: flex; align-items: center; gap: var(--ds-space-2); font-weight: var(--ds-weight-bold); margin-bottom: var(--ds-space-5); }
+  .dash-nav { display: grid; gap: var(--ds-space-1); }
+  .dash-nav a { display: flex; align-items: center; gap: var(--ds-space-3); min-height: 44px; padding: 0 var(--ds-space-3); color: var(--ds-fg-muted); text-decoration: none; font-weight: var(--ds-weight-bold); border-left: 4px solid transparent; }
+  .dash-nav a.active { background: var(--ds-primary); color: var(--ds-primary-fg); border-left-color: var(--ds-primary-active); }
+  [data-theme="dark"] .dash-nav a.active, .dark .dash-nav a.active { color: var(--ds-primary-fg); }
+  .dash-nav a:hover:not(.active) { background: var(--ds-bg); color: var(--ds-fg); }
+  .dash-main { padding: var(--ds-space-5); }
+  .dash-top { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-4); margin-bottom: var(--ds-space-5); }
+  .dash-top h4 { font-size: var(--ds-text-xl); font-weight: var(--ds-weight-normal); }
+  .tile-matrix { display: grid; grid-template-columns: repeat(4,1fr); grid-auto-rows: 92px; gap: var(--ds-space-3); margin-bottom: var(--ds-space-5); }
+  .mini-tile { padding: var(--ds-space-4); color: #ffffff; display: flex; flex-direction: column; justify-content: space-between; font-weight: var(--ds-weight-bold); }
+  .mini-tile .n { font: var(--ds-weight-normal) var(--ds-text-2xl)/1 var(--ds-font-sans); }
+  .mini-tile.wide { grid-column: span 2; }
+  .activity { border: 1px solid var(--ds-border); }
+  .activity .line { display: grid; grid-template-columns: 1fr auto; gap: var(--ds-space-3); padding: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
+  .activity .line:first-child { border-top: 0; }
+  .activity .time { color: var(--ds-fg-muted); font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); }
+  @media (max-width: 820px) { .dash { grid-template-columns: 1fr; } .dash-side { display: none; } .tile-matrix { grid-template-columns: repeat(2,1fr); } }
+
+  .phones { display: flex; justify-content: center; }
+  .phone-body { background: var(--ds-bg); height: 100%; display: flex; flex-direction: column; }
+  .phone-top { flex: none; padding: var(--ds-space-5) var(--ds-space-4) var(--ds-space-3); display: flex; align-items: center; gap: var(--ds-space-3); }
+  .phone-top h4 { font-size: var(--ds-text-2xl); font-weight: var(--ds-weight-normal); flex: 1; }
+  .phone-search { margin: 0 var(--ds-space-4) var(--ds-space-4); height: 44px; background: var(--ds-bg-sunken); border: 1px solid var(--ds-border); display: flex; align-items: center; gap: var(--ds-space-2); padding: 0 var(--ds-space-3); color: var(--ds-fg-subtle); }
+  .phone-grid { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--ds-space-4) var(--ds-space-5); display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 112px; gap: var(--ds-space-3); align-content: start; }
+  .phone-grid::-webkit-scrollbar { width: 0; }
+  .phone-tile { color: #ffffff; padding: var(--ds-space-4); display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; }
+  .phone-tile.wide { grid-column: span 2; }
+  .phone-tile.tall { grid-row: span 2; }
+  .phone-tile .big { font-size: 22px; line-height: 1.05; font-weight: var(--ds-weight-bold); }
+  .phone-tile .small { font-family: var(--ds-font-mono); font-size: var(--ds-text-xs); font-weight: var(--ds-weight-bold); }
+  .phone-nav { flex: none; display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--ds-border); background: var(--ds-bg-elevated); padding: var(--ds-space-2) 0 calc(var(--ds-space-3) + 12px); }
+  .phone-nav .navitem { min-height: 48px; display: grid; place-items: center; gap: 2px; color: var(--ds-fg-muted); font-size: 11px; text-decoration: none; }
+  .phone-nav .navitem.active { color: var(--ds-primary); font-weight: var(--ds-weight-bold); }
+
+  footer { padding: var(--ds-space-9) 0; color: var(--ds-fg-muted); font-size: var(--ds-text-sm); }
+  .foot-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--ds-space-4); }
+  .stack { display: grid; gap: var(--ds-space-5); }
+  .row-wrap { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    .tile { animation: none !important; transform: none !important; }
+    .tile:hover, .tile:active, .btn:hover, .btn:active, .icon-btn:hover { transform: none !important; }
+  }
+
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:700 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:#1b1b1b;border:1px solid #565656;padding:10px 15px;border-radius:0;box-shadow:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>格栅 · Grid Hub</span>
+    </div>
+    <nav class="nav" aria-label="预览导航">
+      <a href="#colors" class="active">Colors</a>
+      <a href="#type">Type</a>
+      <a href="#components">Components</a>
+      <a href="#images">Images</a>
+      <a href="#icons">Icons</a>
+      <a href="#layouts">Layouts</a>
+    </nav>
+    <span class="topbar-spacer"></span>
+    <button class="toggle" id="themeBtn" aria-label="切换亮暗主题">
+      <svg class="ico" id="themeIco" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.7"/></svg>
+      <span id="themeLabel">暗色</span>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="hero" id="top">
+  <div class="hero-layout">
+    <div>
+      <span class="sec-eyebrow hero-kicker">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" stroke="currentColor" stroke-width="1.5"/></svg>
+        Modern Flat Tiles
+      </span>
+      <h1 class="panorama-title">磁贴<br>Metro</h1>
+      <p class="hero-sub">格栅 · Grid Hub 是一个虚构的个人起始页与新闻生产力中心。界面用直角色块、轻量超大标题、细线图标和清晰分隔组织每天的入口。</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg">打开今日面板 <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter"/></svg></button>
+        <button class="btn btn-secondary btn-lg">查看组件</button>
+      </div>
+    </div>
+    <div class="live-grid" aria-label="Grid Hub live tile grid">
+      <a class="tile wide tall" href="#components" style="background:#0078d4;--delay:0ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4zM4 10h16M10 4v16" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span><span class="tile-label">今日中心</span><span class="tile-data tnum">08:40 · 12 items</span></span>
+      </a>
+      <a class="tile" href="#components" style="background:#107c10;--delay:60ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+        <span class="tile-label">任务</span>
+      </a>
+      <a class="tile" href="#images" style="background:#b4009e;--delay:120ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v14H4zM4 10h16M9 10v9" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tile-label">新闻</span>
+      </a>
+      <a class="tile wide" href="#colors" style="background:#d83b01;--delay:180ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+        <span><span class="tile-label">阅读队列</span><span class="tile-data tnum">27 unread</span></span>
+      </a>
+      <a class="tile" href="#layouts" style="background:#5c2d91;--delay:240ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v6H4zM4 14h7v6H4zM13 14h7v6h-7z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tile-label">项目</span>
+      </a>
+      <a class="tile" href="#icons" style="background:#008272;--delay:300ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg>
+        <span class="tile-label">添加</span>
+      </a>
+      <a class="tile" href="#components" style="background:#c42b1c;--delay:360ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6h12v12H6zM9 9h6v6H9z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tile-label">提醒</span>
+      </a>
+      <a class="tile" href="#type" style="background:#0050ef;--delay:420ms">
+        <svg class="ico tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7V5h14v2M12 5v14M9 19h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+        <span class="tile-label">笔记</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="colors">
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 12h16" stroke="currentColor" stroke-width="1.5"/></svg> Color</span>
+    <h2 class="sec-title">Stark white, true black, vivid tile color</h2>
+    <p class="sec-desc">默认亮色是纯白现代平面；暗色以纯黑为底。装饰磁贴保留同一组高饱和纯色，文字统一白色粗体。</p>
+  </div>
+  <div class="swatch-grid" style="margin-bottom:var(--ds-space-7)">
+    <div class="swatch"><div class="chip" style="background:var(--ds-bg)"></div><div class="meta"><div class="nm">bg</div><div class="hx">--ds-bg</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-bg-subtle)"></div><div class="meta"><div class="nm">bg-subtle</div><div class="hx">--ds-bg-subtle</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-bg-elevated)"></div><div class="meta"><div class="nm">bg-elevated</div><div class="hx">--ds-bg-elevated</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-bg-sunken)"></div><div class="meta"><div class="nm">bg-sunken</div><div class="hx">--ds-bg-sunken</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-fg)"></div><div class="meta"><div class="nm">fg</div><div class="hx">--ds-fg</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-fg-muted)"></div><div class="meta"><div class="nm">fg-muted</div><div class="hx">--ds-fg-muted</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-border)"></div><div class="meta"><div class="nm">border</div><div class="hx">--ds-border</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-border-strong)"></div><div class="meta"><div class="nm">border-strong</div><div class="hx">--ds-border-strong</div></div></div>
+  </div>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="chip" style="background:var(--ds-primary)"></div><div class="meta"><div class="nm">primary</div><div class="hx">--ds-primary</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-accent)"></div><div class="meta"><div class="nm">accent</div><div class="hx">--ds-accent</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-success)"></div><div class="meta"><div class="nm">success</div><div class="hx">--ds-success</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-warning)"></div><div class="meta"><div class="nm">warning</div><div class="hx">--ds-warning</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-danger)"></div><div class="meta"><div class="nm">danger</div><div class="hx">--ds-danger</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ds-info)"></div><div class="meta"><div class="nm">info</div><div class="hx">--ds-info</div></div></div>
+  </div>
+</section>
+
+<section id="type">
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7V5h16v2M12 5v14M9 19h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg> Type</span>
+    <h2 class="sec-title">Light panorama headers, compact mono labels</h2>
+    <p class="sec-desc">大标题用轻字重和充足留白建立气场；数据、时间与小节标签使用等宽字体，保持网格节奏。</p>
+  </div>
+  <div class="panel panel-pad">
+    <div class="type-row"><span class="tag">3xl/48</span><span class="ex" style="font-size:var(--ds-text-3xl);font-weight:var(--ds-weight-normal)">格栅从今天开始</span></div>
+    <div class="type-row"><span class="tag">2xl/32</span><span class="ex" style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-normal)">平面磁贴排布信息入口</span></div>
+    <div class="type-row"><span class="tag">xl/24</span><span class="ex" style="font-size:var(--ds-text-xl);font-weight:var(--ds-weight-bold)">Bold tile labels stay readable</span></div>
+    <div class="type-row"><span class="tag">lg/20</span><span class="ex" style="font-size:var(--ds-text-lg)">Section headings remain quiet and exact</span></div>
+    <div class="type-row"><span class="tag">md/16</span><span class="ex" style="font-size:var(--ds-text-md)">正文清晰，颜色克制，信息靠间距与直线归组。</span></div>
+    <div class="type-row"><span class="tag">base/14</span><span class="ex">默认正文用于说明、表单、列表和组件文案。</span></div>
+    <div class="type-row"><span class="tag">sm/13</span><span class="ex" style="font-size:var(--ds-text-sm)">辅助说明、helper text、二级元信息。</span></div>
+    <div class="type-row"><span class="tag">xs/12</span><span class="ex" style="font-size:var(--ds-text-xs);font-family:var(--ds-font-mono);text-transform:uppercase;letter-spacing:.12em">mono label / 12px</span></div>
+    <div class="weights">
+      <span style="font-weight:300;font-size:var(--ds-text-xl)">Light 300</span>
+      <span style="font-weight:400;font-size:var(--ds-text-xl)">Regular 400</span>
+      <span style="font-weight:700;font-size:var(--ds-text-xl)">Bold 700</span>
+    </div>
+  </div>
+</section>
+
+<section id="components">
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h16v7H4z" stroke="currentColor" stroke-width="1.5"/></svg> Components</span>
+    <h2 class="sec-title">Flat controls, square containers, thin dividers</h2>
+    <p class="sec-desc">按钮、表单、徽章、提示条和表格都保持直角。交互只改变纯色、边框或轻微位移。</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="stack">
+      <div>
+        <h4 style="margin-bottom:var(--ds-space-3);font-size:var(--ds-text-lg)">Buttons</h4>
+        <div class="row-wrap">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-quiet">Quiet</button>
+          <button class="btn btn-danger">Danger</button>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:var(--ds-space-3);font-size:var(--ds-text-lg)">States</h4>
+        <div class="row-wrap">
+          <button class="btn btn-primary">Default</button>
+          <button class="btn btn-primary" style="background:var(--ds-primary-hover)">Hover</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:var(--ds-space-3);font-size:var(--ds-text-lg)">Sizes</h4>
+        <div class="row-wrap">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Medium</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="icon-btn" aria-label="新建"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg></button>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:var(--ds-space-3);font-size:var(--ds-text-lg)">Badges and tabs</h4>
+        <div class="row-wrap" style="margin-bottom:var(--ds-space-5)">
+          <span class="badge b-success">Ready</span>
+          <span class="badge b-warning">Hold</span>
+          <span class="badge b-danger">Blocked</span>
+          <span class="badge b-info">Info</span>
+        </div>
+        <div class="tabs">
+          <button class="tab active">Overview</button>
+          <button class="tab">Queue</button>
+          <button class="tab">Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-pad">
+      <h4 style="margin-bottom:var(--ds-space-5);font-size:var(--ds-text-lg)">Form controls</h4>
+      <div class="field">
+        <label for="i1">Hub name</label>
+        <div class="input-wrap">
+          <svg class="ico lead" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v14H4zM4 10h16" stroke="currentColor" stroke-width="1.5"/></svg>
+          <input class="input has-lead" id="i1" placeholder="Grid Hub" value="Grid Hub" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="i2">Sync address</label>
+        <input class="input" id="i2" value="daily@gridhub.local" />
+        <div class="help">Used for digest routing and private reminders.</div>
+      </div>
+      <div class="field">
+        <label for="t1">Notes</label>
+        <textarea class="textarea" id="t1" placeholder="Add a short instruction for tomorrow."></textarea>
+      </div>
+      <div class="field">
+        <label for="s1">Default view</label>
+        <select class="select" id="s1"><option>Live tile start</option><option>Reading queue</option><option>Task lanes</option></select>
+      </div>
+      <div class="check-row"><input type="checkbox" id="c1" checked /><label for="c1" style="margin:0">Show live updates</label></div>
+      <div class="check-row"><input type="radio" name="density" id="r1" checked /><label for="r1" style="margin:0">Comfortable tiles</label></div>
+      <div class="check-row"><input type="radio" name="density" id="r2" /><label for="r2" style="margin:0">Compact list</label></div>
+      <div class="check-row" style="justify-content:space-between">
+        <label for="sw1" style="margin:0">Pin urgent tile</label>
+        <span class="switch"><input type="checkbox" id="sw1" checked /><span class="track"></span><span class="thumb"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <h4 style="margin:var(--ds-space-8) 0 var(--ds-space-4);font-size:var(--ds-text-lg)">Metric tiles</h4>
+  <div class="grid-4 tnum">
+    <article class="stat-tile color" style="background:#0078d4"><div><div class="k">Today</div><div class="v">18</div></div><div class="d">new briefings</div></article>
+    <article class="stat-tile color" style="background:#107c10"><div><div class="k">Done</div><div class="v">42%</div></div><div class="d">weekly focus</div></article>
+    <article class="stat-tile"><div><div class="k">Queue</div><div class="v">127</div></div><div class="d">articles saved</div></article>
+    <article class="stat-tile"><div><div class="k">Focus</div><div class="v">3.8h</div></div><div class="d">deep work today</div></article>
+  </div>
+
+  <h4 style="margin:var(--ds-space-8) 0 var(--ds-space-4);font-size:var(--ds-text-lg)">List view</h4>
+  <div class="list-view">
+    <div class="list-head"><span>Item</span><span>Channel</span><span>Status</span><span>Time</span></div>
+    <div class="list-row"><div class="row-title"><span class="square-mark" style="background:#b4009e"></span><span>Design digest: tile density review</span></div><span>Briefing</span><span><span class="badge b-info">Queued</span></span><span class="tnum">09:10</span></div>
+    <div class="list-row"><div class="row-title"><span class="square-mark" style="background:#008272"></span><span>Vendor invoice checklist</span></div><span>Task</span><span><span class="badge b-success">Ready</span></span><span class="tnum">10:30</span></div>
+    <div class="list-row"><div class="row-title"><span class="square-mark" style="background:#d83b01"></span><span>Morning reading lane cleanup</span></div><span>Queue</span><span><span class="badge b-warning">Hold</span></span><span class="tnum">12:05</span></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:var(--ds-space-8)">
+    <div>
+      <h4 style="margin-bottom:var(--ds-space-4);font-size:var(--ds-text-lg)">Alerts</h4>
+      <div class="alert a-success"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter"/></svg><div><div class="at">Saved</div><div class="ad">Your tile order is stored locally.</div></div></div>
+      <div class="alert a-warning"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4l9 16H3zM12 9v5m0 3h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/></svg><div><div class="at">Storage near limit</div><div class="ad">Archive old feeds before adding more sources.</div></div></div>
+      <div class="alert a-danger"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg><div><div class="at">Connection failed</div><div class="ad">The private sync endpoint did not respond.</div></div></div>
+      <div class="alert a-info"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 11v6M12 7h.01M4 4h16v16H4z" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/></svg><div><div class="at">Tip</div><div class="ad">Use larger tiles for time-sensitive entries.</div></div></div>
+    </div>
+    <div>
+      <h4 style="margin-bottom:var(--ds-space-4);font-size:var(--ds-text-lg)">Data table</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Member</th><th>Lane</th><th>Status</th><th class="tnum" style="text-align:right">Items</th></tr></thead>
+          <tbody>
+            <tr><td><span class="u-cell"><img class="avatar av-32" src="../../_assets/avatars/a1.jpg" alt="" />Lena Kova</span></td><td>News</td><td><span class="badge b-success">Active</span></td><td class="tnum" style="text-align:right">84</td></tr>
+            <tr><td><span class="u-cell"><img class="avatar av-32" src="../../_assets/avatars/a8.jpg" alt="" />Marco Tan</span></td><td>Tasks</td><td><span class="badge b-info">Queued</span></td><td class="tnum" style="text-align:right">31</td></tr>
+            <tr><td><span class="u-cell"><img class="avatar av-32" src="../../_assets/avatars/a15.jpg" alt="" />Aisha Rahman</span></td><td>Notes</td><td><span class="badge b-warning">Hold</span></td><td class="tnum" style="text-align:right">12</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="images">
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v14H4zM4 15l5-5 4 3 3-3 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/></svg> Image Usage</span>
+    <h2 class="sec-title">Photos sit inside the grid, never above it</h2>
+    <p class="sec-desc">图片保持直角裁切，作为内容磁贴的一部分。图上不压小字，不加模糊层；标题与元信息放在清晰白底或黑底区域。</p>
+  </div>
+  <div class="ratio-grid" style="margin-bottom:var(--ds-space-8)">
+    <div class="ratio r-169"><div class="pic"><img src="../../_assets/photos/city.jpg" alt="城市天际线" loading="lazy" /></div><div class="cap">16:9 city feed</div></div>
+    <div class="ratio r-43"><div class="pic"><img src="../../_assets/photos/forest.jpg" alt="森林步道" loading="lazy" /></div><div class="cap">4:3 reading card</div></div>
+    <div class="ratio r-11"><div class="pic"><img src="../../_assets/photos/coffee.jpg" alt="咖啡与桌面" loading="lazy" /></div><div class="cap">1:1 note image</div></div>
+    <div class="ratio r-34"><div class="pic"><img src="../../_assets/photos/street.jpg" alt="城市街景" loading="lazy" /></div><div class="cap">3:4 saved story</div></div>
+  </div>
+  <div class="grid-3">
+    <article class="media-tile"><img src="../../_assets/photos/workspace.jpg" alt="整洁工作空间" loading="lazy" /><div class="copy"><span class="badge b-info">Read</span><h4 style="margin-top:var(--ds-space-3)">Workspace lane</h4><p>Article tiles use a photo block followed by square white content.</p></div></article>
+    <article class="media-tile"><img src="../../_assets/photos/architecture.jpg" alt="几何建筑立面" loading="lazy" /><div class="copy"><span class="badge b-success">Pinned</span><h4 style="margin-top:var(--ds-space-3)">Geometry board</h4><p>Hard edges in imagery reinforce the flat interface language.</p></div></article>
+    <article class="media-tile"><img src="../../_assets/photos/desk.jpg" alt="显示器与桌面" loading="lazy" /><div class="copy"><span class="badge b-warning">Draft</span><h4 style="margin-top:var(--ds-space-3)">Daily briefing</h4><p>Images are content, not atmosphere. Keep captions outside the bitmap.</p></div></article>
+  </div>
+</section>
+
+<section id="icons">
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg> Icon Usage</span>
+    <h2 class="sec-title">Thin line glyphs, square geometry</h2>
+    <p class="sec-desc">图标全部为内联 SVG，24 viewBox，使用 currentColor。线端尽量方正，避免把图标做成装饰插画。</p>
+  </div>
+  <div class="icon-gallery">
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter"/></svg><span class="nm">home</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg><span class="nm">search</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg><span class="nm">add</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5h6v2M7 7l1 13h8l1-13" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/></svg><span class="nm">delete</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 16v4h4L19 9l-4-4L4 16z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter"/></svg><span class="nm">edit</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4zM4 9h16" stroke="currentColor" stroke-width="1.5"/></svg><span class="nm">calendar</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16M8 16v-5M12 16V8M16 16v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg><span class="nm">stats</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" stroke="currentColor" stroke-width="1.5"/></svg><span class="nm">tiles</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6h12v12H6zM9 9h6v6H9z" stroke="currentColor" stroke-width="1.5"/></svg><span class="nm">focus</span></div>
+    <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 6 3 7 3 7H3s3-1 3-7M14 20h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/></svg><span class="nm">alert</span></div>
+  </div>
+</section>
+
+<section id="layouts">
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M 3 4h18v14H3zM8 22h8M12 18v4" stroke="currentColor" stroke-width="1.5"/></svg> Desktop Layouts</span>
+    <h2 class="sec-title">Multi-pane hub shell</h2>
+    <p class="sec-desc">桌面端使用左侧入口列、顶部操作栏、主磁贴矩阵和活动列表。没有浮层感，只有平面分区和色块权重。</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="addr"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 11h14v9H5zM8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.5"/></svg>gridhub.local/start</span>
+    </div>
+    <div class="dash">
+      <aside class="dash-side">
+        <div class="dash-brand"><span class="logo" aria-hidden="true" style="width:24px;height:24px"><i></i><i></i><i></i><i></i></span>Grid Hub</div>
+        <nav class="dash-nav">
+          <a href="#layouts" class="active"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" stroke="currentColor" stroke-width="1.5"/></svg>Start</a>
+          <a href="#layouts"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>News</a>
+          <a href="#layouts"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/></svg>Tasks</a>
+          <a href="#layouts"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v14H4zM8 5v14" stroke="currentColor" stroke-width="1.5"/></svg>Notes</a>
+        </nav>
+      </aside>
+      <main class="dash-main">
+        <div class="dash-top">
+          <h4>Today</h4>
+          <div class="row-wrap">
+            <button class="btn btn-secondary btn-sm">Arrange</button>
+            <button class="btn btn-primary btn-sm"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg>Add tile</button>
+          </div>
+        </div>
+        <div class="tile-matrix tnum">
+          <div class="mini-tile wide" style="background:#0078d4"><span>Briefings</span><span class="n">18</span></div>
+          <div class="mini-tile" style="background:#107c10"><span>Done</span><span class="n">9</span></div>
+          <div class="mini-tile" style="background:#b4009e"><span>Sources</span><span class="n">42</span></div>
+          <div class="mini-tile" style="background:#d83b01"><span>Later</span><span class="n">27</span></div>
+          <div class="mini-tile wide" style="background:#5c2d91"><span>Deep work</span><span class="n">3.8h</span></div>
+          <div class="mini-tile" style="background:#008272"><span>Saved</span><span class="n">63</span></div>
+          <div class="mini-tile" style="background:#c42b1c"><span>Urgent</span><span class="n">2</span></div>
+        </div>
+        <div class="activity">
+          <div class="line"><span>Added reading tile for market notes</span><span class="time tnum">09:12</span></div>
+          <div class="line"><span>Completed vendor checklist</span><span class="time tnum">10:04</span></div>
+          <div class="line"><span>Moved weekly plan into focus lane</span><span class="time tnum">11:40</span></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <span class="sec-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3h8v18H8zM11 18h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg> Mobile Layout</span>
+    <h2 class="sec-title">iPhone 17 Pro Max start screen</h2>
+    <p class="sec-desc">移动端以磁贴首页为主屏：搜索、入口磁贴、底部导航全部直角化，饱和色在亮暗主题中保持一致。</p>
+  </div>
+  <div class="phones">
+    <div class="dvc17">
+      <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+      <span class="k k-cam"></span><span class="k k-pwr"></span>
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb">
+          <span>9:41</span>
+          <span class="ico">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5"/><rect x="5" y="4.5" width="3" height="7.5"/><rect x="10" y="2" width="3" height="10"/><rect x="15" y="0" width="3" height="12"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" fill="currentColor" fill-opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="dvc-body">
+          <div class="phone-body">
+            <div class="phone-top">
+              <h4>Start</h4>
+              <button class="icon-btn" aria-label="搜索"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></button>
+            </div>
+            <div class="phone-search"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>Search Grid Hub</div>
+            <div class="phone-grid">
+              <a class="phone-tile wide" href="#" style="background:#0078d4"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4zM4 10h16M10 4v16" stroke="currentColor" stroke-width="1.5"/></svg><span><span class="big">Today</span><span class="small tnum">18 updates</span></span></a>
+              <a class="phone-tile tall" href="#" style="background:#107c10"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter"/></svg><span><span class="big">Tasks</span><span class="small tnum">9 done</span></span></a>
+              <a class="phone-tile" href="#" style="background:#b4009e"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg><span class="big">News</span></a>
+              <a class="phone-tile" href="#" style="background:#d83b01"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v14H4zM8 5v14" stroke="currentColor" stroke-width="1.5"/></svg><span class="big">Notes</span></a>
+              <a class="phone-tile" href="#" style="background:#5c2d91"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6h12v12H6zM9 9h6v6H9z" stroke="currentColor" stroke-width="1.5"/></svg><span class="big">Focus</span></a>
+              <a class="phone-tile" href="#" style="background:#008272"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg><span class="big">Add</span></a>
+              <a class="phone-tile wide" href="#" style="background:#0050ef"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16M8 16v-5M12 16V8M16 16v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg><span><span class="big">Weekly scan</span><span class="small tnum">42 sources</span></span></a>
+            </div>
+            <nav class="phone-nav">
+              <a class="navitem active" href="#"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" stroke="currentColor" stroke-width="1.5"/></svg>Start</a>
+              <a class="navitem" href="#"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>Read</a>
+              <a class="navitem" href="#"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/></svg>Done</a>
+              <a class="navitem" href="#"><svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>Add</a>
+            </nav>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>格栅 · Grid Hub · 磁贴 Metro Kit</span>
+    </div>
+    <span>All components use --ds-* tokens · local assets · light and dark themes · WCAG AA checked</span>
+  </div>
+</footer>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var label = document.getElementById('themeLabel');
+    var ico = document.getElementById('themeIco');
+    var darkPath = 'M4 4h16v16H4z';
+    var lightPath = 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z';
+    function apply(dark) {
+      root.dataset.theme = dark ? 'dark' : '';
+      label.textContent = dark ? '亮色' : '暗色';
+      ico.innerHTML = '<path d="' + (dark ? lightPath : darkPath) + '" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter"/>';
+    }
+    btn.addEventListener('click', function () { apply(root.dataset.theme !== 'dark'); });
+    apply(false);
+  })();
+</script>
+</body>
+</html>

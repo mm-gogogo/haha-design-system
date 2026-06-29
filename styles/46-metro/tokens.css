@@ -1,0 +1,87 @@
+/* ============================================================
+   磁贴 · Metro / Modern Flat Tiles · Design Tokens
+   格栅 · Grid Hub：轻量文字、直角色块、纯平界面。
+   契约：变量名固定（--ds-*），仅取值随风格变。
+   亮色 :root ｜ 暗色 [data-theme="dark"] + .dark
+   ============================================================ */
+
+:root {
+  /* ---- 表面与文字 · stark white flat ---- */
+  --ds-bg: #ffffff;            --ds-bg-subtle: #f2f2f2;
+  --ds-bg-elevated: #ffffff;   --ds-bg-sunken: #e6e6e6;
+  --ds-fg: #1b1b1b;            --ds-fg-muted: #565656;
+  --ds-fg-subtle: #676767;     --ds-fg-on-accent: #ffffff;
+  --ds-border: #d6d6d6;        --ds-border-strong: #b3b3b3;
+
+  /* ---- 品牌与强调 · vivid flat blue + teal ---- */
+  --ds-primary: #0067c0;       --ds-primary-hover: #005ba1;
+  --ds-primary-active: #004e8c;--ds-primary-fg: #ffffff;
+  --ds-accent: #008272;        --ds-accent-fg: #ffffff;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #107c10; --ds-success-bg: #dff6dd; --ds-success-fg: #0b5a0b;
+  --ds-warning: #8a5300; --ds-warning-bg: #fdf3d6; --ds-warning-fg: #5c3700;
+  --ds-danger:  #c42b1c; --ds-danger-bg:  #fde7e9; --ds-danger-fg:  #8a1d12;
+  --ds-info:    #0067c0; --ds-info-bg:    #e1eefb; --ds-info-fg:    #004e8c;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #0067c0;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角 · tiles stay square ---- */
+  --ds-radius-sm: 0; --ds-radius-md: 0; --ds-radius-lg: 0; --ds-radius-full: 999px;
+
+  /* ---- 间距比例（4px 基）---- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体 ---- */
+  --ds-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+  --ds-font-serif: Georgia, "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 13px; --ds-text-base: 14px; --ds-text-md: 16px;
+  --ds-text-lg: 20px; --ds-text-xl: 24px; --ds-text-2xl: 32px; --ds-text-3xl: 48px;
+  --ds-leading-tight: 1.12; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.72;
+  --ds-weight-normal: 300; --ds-weight-medium: 400; --ds-weight-bold: 700;
+  --ds-tracking-tight: 0; --ds-tracking-normal: 0;
+
+  /* ---- 阴影 · flat means none ---- */
+  --ds-shadow-sm: none;
+  --ds-shadow-md: none;
+  --ds-shadow-lg: none;
+
+  /* ---- 动效 ---- */
+  --ds-ease: cubic-bezier(.2,.8,.2,1);
+  --ds-dur-fast: 120ms; --ds-dur-base: 180ms; --ds-dur-slow: 320ms;
+}
+
+[data-theme="dark"],
+.dark {
+  /* ---- 表面与文字 · true black flat ---- */
+  --ds-bg: #000000;            --ds-bg-subtle: #0d0d0d;
+  --ds-bg-elevated: #1a1a1a;   --ds-bg-sunken: #000000;
+  --ds-fg: #ffffff;            --ds-fg-muted: #c8c8c8;
+  --ds-fg-subtle: #a0a0a0;     --ds-fg-on-accent: #06121f;
+  --ds-border: #2b2b2b;        --ds-border-strong: #3f3f3f;
+
+  /* ---- 品牌与强调 ---- */
+  --ds-primary: #4ca3ee;       --ds-primary-hover: #6cb6f2;
+  --ds-primary-active: #3a8fd6;--ds-primary-fg: #06121f;
+  --ds-accent: #57c7b8;        --ds-accent-fg: #04201c;
+
+  /* ---- 语义状态 ---- */
+  --ds-success: #6ccb5a; --ds-success-bg: #122b10; --ds-success-fg: #b6e6ab;
+  --ds-warning: #e0b25e; --ds-warning-bg: #2a2010; --ds-warning-fg: #f3d79a;
+  --ds-danger:  #ff99a4; --ds-danger-bg:  #2c1416; --ds-danger-fg:  #ffc9cf;
+  --ds-info:    #4ca3ee; --ds-info-bg:    #08283f; --ds-info-fg:    #bfe0fb;
+
+  /* ---- 焦点 ---- */
+  --ds-focus: #4ca3ee;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 阴影 · flat means none ---- */
+  --ds-shadow-sm: none;
+  --ds-shadow-md: none;
+  --ds-shadow-lg: none;
+}
