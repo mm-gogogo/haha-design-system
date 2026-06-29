@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caelum Brief Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #0a0a0b;
+      --ink-2: #0c0c0e;
+      --panel: #111113;
+      --panel-2: #151518;
+      --line: rgba(232, 232, 236, .11);
+      --line-strong: rgba(232, 232, 236, .18);
+      --text: #e8e8ec;
+      --muted: #a3a8b4;
+      --soft: #c9ccd4;
+      --accent: #c2a36b;
+      --accent-ink: #17120a;
+      --accent-soft: rgba(194, 163, 107, .17);
+      --serif: "Noto Serif", serif;
+      --sans: "Inter", sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 0;
+      overflow-x: hidden;
+      background: var(--ink);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(194, 163, 107, .055), transparent 310px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018), transparent 32%, rgba(255, 255, 255, .012) 68%, transparent),
+        var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      content: "";
+      background:
+        linear-gradient(180deg, transparent, rgba(255, 255, 255, .025) 46%, transparent 47%),
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, .018) 74%, transparent 75%);
+      background-size: 100% 19rem, 31rem 100%;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 84%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .shell {
+      width: min(100% - 40px, 1180px);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(232, 232, 236, .08);
+      background: rgba(10, 10, 11, .78);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: inline-flex;
+      min-width: max-content;
+      align-items: center;
+      gap: 11px;
+      color: var(--text);
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .02));
+      color: var(--accent);
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .brand-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 34px);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .13em;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 8px 0;
+    }
+
+    .nav-links a::after {
+      position: absolute;
+      right: 0;
+      bottom: 1px;
+      left: 0;
+      height: 1px;
+      content: "";
+      background: var(--accent);
+      opacity: 0;
+      transform: scaleX(.4);
+      transform-origin: center;
+    }
+
+    .nav-cta,
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      border-radius: 999px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .nav-cta {
+      border: 1px solid rgba(194, 163, 107, .42);
+      padding: 10px 17px;
+      color: var(--accent);
+      background: rgba(194, 163, 107, .08);
+      font-size: 13px;
+    }
+
+    .hero {
+      padding: clamp(58px, 8vw, 92px) 0 clamp(58px, 7vw, 86px);
+      border-bottom: 1px solid rgba(232, 232, 236, .08);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(360px, 1.1fr);
+      gap: clamp(34px, 6vw, 76px);
+      align-items: center;
+    }
+
+    .kicker,
+    .mono-label,
+    .chip,
+    .case-id,
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+    }
+
+    .kicker {
+      display: inline-flex;
+      width: fit-content;
+      max-width: 100%;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: var(--soft);
+      background: rgba(255, 255, 255, .025);
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      margin: 22px 0 18px;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: clamp(3.25rem, 8vw, 7.35rem);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: .96;
+    }
+
+    .hero h1 .accent-word {
+      color: var(--accent);
+    }
+
+    .hero-copy {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.3vw, 1.13rem);
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .cta {
+      border: 1px solid transparent;
+      padding: 12px 18px;
+      font-size: 14px;
+    }
+
+    .cta.primary {
+      color: var(--accent-ink);
+      background: var(--accent);
+      box-shadow: 0 18px 50px rgba(194, 163, 107, .15);
+    }
+
+    .cta.secondary {
+      border-color: var(--line-strong);
+      color: var(--text);
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .product-frame {
+      min-width: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .012)),
+        #0c0c0e;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .08),
+        0 34px 90px rgba(0, 0, 0, .4);
+      overflow: hidden;
+    }
+
+    .frame-top {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding: 18px 20px;
+    }
+
+    .case-id {
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .frame-title {
+      display: grid;
+      min-width: 0;
+      gap: 3px;
+    }
+
+    .frame-title strong {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .frame-status {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      border: 1px solid rgba(194, 163, 107, .35);
+      border-radius: 999px;
+      padding: 6px 9px;
+      color: var(--accent);
+      background: rgba(194, 163, 107, .08);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(220px, .82fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .document,
+    .analysis-rail {
+      min-width: 0;
+      background: var(--panel);
+    }
+
+    .document {
+      padding: clamp(22px, 3vw, 34px);
+    }
+
+    .paper {
+      position: relative;
+      min-width: 0;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .045), transparent 26%),
+        #0c0c0e;
+      padding: clamp(24px, 3vw, 34px);
+      overflow: hidden;
+    }
+
+    .paper::after {
+      position: absolute;
+      inset: auto 0 0;
+      height: 92px;
+      content: "";
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, #0c0c0e);
+    }
+
+    .doc-head {
+      border-bottom: 1px solid rgba(232, 232, 236, .11);
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .doc-head .mono-label {
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .doc-head h2 {
+      margin: 8px 0 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      line-height: 1.15;
+    }
+
+    .doc-copy {
+      display: grid;
+      gap: 19px;
+      color: var(--soft);
+      font-family: var(--serif);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .doc-copy p,
+    .doc-copy div {
+      margin: 0;
+      min-width: 0;
+    }
+
+    .clause-title {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+
+    .clause-mark {
+      position: relative;
+      display: inline;
+      border: 1px solid rgba(194, 163, 107, .36);
+      border-radius: 5px;
+      padding: 1px 4px;
+      color: #efe2c7;
+      background: var(--accent-soft);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      overflow: hidden;
+    }
+
+    .analysis-rail {
+      padding: 22px;
+    }
+
+    .rail-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .rail-head h3 {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      line-height: 1.12;
+    }
+
+    .rail-head span {
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .risk-card {
+      border: 1px solid rgba(194, 163, 107, .28);
+      border-radius: 16px;
+      background: rgba(194, 163, 107, .075);
+      padding: 15px;
+      color: var(--soft);
+    }
+
+    .risk-card strong {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .risk-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0 20px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 8px;
+      color: var(--soft);
+      background: rgba(255, 255, 255, .028);
+      text-transform: uppercase;
+    }
+
+    .rail-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rail-list li {
+      display: grid;
+      gap: 3px;
+      border-top: 1px solid rgba(232, 232, 236, .09);
+      padding-top: 12px;
+    }
+
+    .rail-list b {
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .rail-list span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .section {
+      padding: clamp(68px, 8vw, 104px) 0;
+      border-bottom: 1px solid rgba(232, 232, 236, .08);
+    }
+
+    .section h2 {
+      max-width: 760px;
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: clamp(2.35rem, 5vw, 4.7rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .section-intro {
+      max-width: 620px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, .92fr) minmax(0, .82fr);
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .feature-card {
+      position: relative;
+      min-width: 0;
+      min-height: 286px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .018));
+      padding: clamp(21px, 2.5vw, 30px);
+      overflow: hidden;
+    }
+
+    .feature-card:nth-child(1) {
+      min-height: 330px;
+      background:
+        linear-gradient(135deg, rgba(194, 163, 107, .13), transparent 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .014));
+    }
+
+    .feature-card:nth-child(2) {
+      margin-top: 42px;
+    }
+
+    .feature-card:nth-child(3) {
+      margin-top: 84px;
+      background:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, .026) 0 1px, transparent 1px 10px),
+        linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .018));
+    }
+
+    .card-glyph {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid rgba(194, 163, 107, .4);
+      border-radius: 999px;
+      color: var(--accent);
+      font-family: var(--serif);
+      font-size: 19px;
+      background: rgba(194, 163, 107, .07);
+    }
+
+    .feature-card h3 {
+      margin: 74px 0 12px;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: clamp(1.45rem, 2.4vw, 2.25rem);
+      line-height: 1.08;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .card-rule {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      left: 24px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: .55;
+    }
+
+    .stats-panel {
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .credibility,
+    .stats-grid {
+      min-width: 0;
+      background: var(--ink-2);
+    }
+
+    .credibility {
+      padding: clamp(26px, 4vw, 42px);
+    }
+
+    .credibility h2 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+    }
+
+    .credibility p {
+      max-width: 470px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stat {
+      min-width: 0;
+      border-left: 1px solid rgba(232, 232, 236, .07);
+      border-bottom: 1px solid rgba(232, 232, 236, .07);
+      padding: clamp(22px, 3vw, 34px);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: .92;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .security-note {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 18px;
+      border: 1px solid rgba(194, 163, 107, .25);
+      border-radius: 18px;
+      padding: 15px 18px;
+      color: var(--soft);
+      background: rgba(194, 163, 107, .06);
+      font-size: 14px;
+    }
+
+    .security-note b {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 46px 0 92px;
+      color: var(--muted);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .footer .brand {
+      margin-bottom: 14px;
+    }
+
+    .footer p {
+      max-width: 650px;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .footer-links a {
+      color: var(--soft);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        animation: reveal-up .75s cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: var(--delay, 0ms);
+      }
+
+      .nav-links a,
+      .nav-links a::after,
+      .nav-cta,
+      .cta,
+      .feature-card,
+      .product-frame {
+        transition:
+          color .28s cubic-bezier(.16, 1, .3, 1),
+          border-color .28s cubic-bezier(.16, 1, .3, 1),
+          background-color .28s cubic-bezier(.16, 1, .3, 1),
+          opacity .28s cubic-bezier(.16, 1, .3, 1),
+          transform .28s cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-links a:hover::after {
+        opacity: .75;
+        transform: scaleX(1);
+      }
+
+      .nav-cta:hover,
+      .cta:hover,
+      .feature-card:hover,
+      .product-frame:hover {
+        transform: translateY(-3px);
+      }
+
+      .clause-mark::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .28), transparent);
+        transform: translateX(-115%);
+        animation: clause-sweep 5.6s cubic-bezier(.16, 1, .3, 1) infinite;
+        animation-delay: var(--sweep-delay, 900ms);
+      }
+
+      @keyframes reveal-up {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes clause-sweep {
+        0%, 52% {
+          transform: translateX(-115%);
+        }
+        76%, 100% {
+          transform: translateX(115%);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .stats-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .review-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .analysis-rail {
+        border-top: 1px solid var(--line);
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card,
+      .feature-card:nth-child(2),
+      .feature-card:nth-child(3) {
+        min-height: auto;
+        margin-top: 0;
+      }
+
+      .feature-card h3 {
+        margin-top: 46px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 32px, 1180px);
+      }
+
+      .nav {
+        min-height: 66px;
+        gap: 12px;
+      }
+
+      .brand-name {
+        font-size: 19px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        padding: 9px 13px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 46px 0 58px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 16vw, 4.45rem);
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cta {
+        width: 100%;
+      }
+
+      .frame-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .frame-status {
+        width: fit-content;
+      }
+
+      .document,
+      .analysis-rail {
+        padding: 18px;
+      }
+
+      .paper {
+        padding: 20px;
+      }
+
+      .doc-copy {
+        font-size: 13px;
+      }
+
+      .section {
+        padding: 58px 0;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        border-left: 0;
+      }
+
+      .security-note {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .shell {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .brand-mark {
+        width: 31px;
+        height: 31px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .hero-copy,
+      .section-intro,
+      .credibility p {
+        font-size: .96rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <nav class="nav shell" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="Caelum Brief home">
+          <span class="brand-mark">C</span>
+          <span class="brand-name">Caelum Brief</span>
+        </a>
+        <div class="nav-links" aria-label="Section links">
+          <a href="#practice">PRACTICE</a>
+          <a href="#cases">CASES</a>
+          <a href="#security">SECURITY</a>
+          <a href="#pricing">PRICING</a>
+        </div>
+        <a class="nav-cta" href="#review">Review Sample</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-grid shell">
+        <div class="hero-copy-block">
+          <span class="kicker reveal">Fictional product design study</span>
+          <h1 class="reveal" style="--delay: 90ms;">A legal copilot for careful <span class="accent-word">counsel.</span></h1>
+          <p class="hero-copy reveal" style="--delay: 180ms;">Review clauses, citations, and case timelines inside one private, counsel-supervised workspace.</p>
+          <div class="hero-actions reveal" style="--delay: 270ms;">
+            <a class="cta primary" href="#review">Open Review</a>
+            <a class="cta secondary" href="#security">Read Safeguards</a>
+          </div>
+        </div>
+
+        <article class="product-frame reveal" id="review" style="--delay: 360ms;" aria-label="Fictional legal review product mock">
+          <div class="frame-top">
+            <div class="frame-title">
+              <span class="case-id">CB-2714 / 条款审阅</span>
+              <strong>Lantern Pier Services Agreement</strong>
+            </div>
+            <span class="frame-status">Fictional sample</span>
+          </div>
+
+          <div class="review-grid">
+            <section class="document" aria-label="Fictional contract document">
+              <div class="paper">
+                <div class="doc-head">
+                  <span class="mono-label">Counsel memorandum draft</span>
+                  <h2>Lantern Pier Services Agreement</h2>
+                </div>
+                <div class="doc-copy">
+                  <p>
+                    This sample contract concerns a fictional harbor services pilot between Lantern Pier Works and Sable Harbor Analytics. The review focuses on payment triggers, data access, and termination notices.
+                  </p>
+                  <div>
+                    <span class="clause-title">4.2 Payment Trigger</span>
+                    Fees become payable only after acceptance of the transfer log and written confirmation from both project leads. <span class="clause-mark">The clause does not define acceptance evidence for late delivery disputes.</span>
+                  </div>
+                  <div>
+                    <span class="clause-title">7.1 Confidential Records</span>
+                    Operational reports, route models, and identity logs remain confidential for the review period. <span class="clause-mark" style="--sweep-delay: 1600ms;">Disclosure to outside reviewers requires prior written approval.</span>
+                  </div>
+                  <div>
+                    <span class="clause-title">12.3 Termination Notice</span>
+                    Either party may end the pilot with thirty days of notice after a documented service failure and a cure period.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="analysis-rail" aria-label="Fictional AI analysis">
+              <div class="rail-head">
+                <div>
+                  <span class="mono-label">AI analysis</span>
+                  <h3>Issues for counsel</h3>
+                </div>
+              </div>
+
+              <div class="risk-card">
+                <strong>风险 / Medium risk</strong>
+                <p>Payment evidence and governing-law language need attorney review before any draft is used.</p>
+              </div>
+
+              <div class="chips" aria-label="Detected clause chips">
+                <span class="chip">Indemnity</span>
+                <span class="chip">Notice</span>
+                <span class="chip">Data access</span>
+              </div>
+
+              <ul class="rail-list">
+                <li>
+                  <b>Clause gap</b>
+                  <span>Define what counts as acceptance evidence for disputed delivery logs.</span>
+                </li>
+                <li>
+                  <b>Citation check</b>
+                  <span>Sample authorities are placeholders and require lawyer verification.</span>
+                </li>
+                <li>
+                  <b>Next action</b>
+                  <span>Route the marked clauses to human counsel with notes attached.</span>
+                </li>
+              </ul>
+            </aside>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="practice">
+      <div class="shell">
+        <h2 class="reveal">A workspace built around legal judgment.</h2>
+        <p class="section-intro reveal" style="--delay: 90ms;">The interface keeps every AI suggestion visible, cited, and ready for review by a qualified attorney.</p>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal" style="--delay: 160ms;">
+            <span class="card-glyph">§</span>
+            <h3>Clause extraction</h3>
+            <p>Find obligations, dates, carve-outs, and undefined terms without flattening the contract's legal context.</p>
+            <span class="card-rule" aria-hidden="true"></span>
+          </article>
+
+          <article class="feature-card reveal" style="--delay: 240ms;">
+            <span class="card-glyph">¶</span>
+            <h3>Case timeline</h3>
+            <p>Build a dated matter thread from pleadings, exhibits, and counsel notes using fictional sample records.</p>
+            <span class="card-rule" aria-hidden="true"></span>
+          </article>
+
+          <article class="feature-card reveal" style="--delay: 320ms;">
+            <span class="card-glyph">†</span>
+            <h3>Citation check</h3>
+            <p>Flag unsupported citations and quoted authorities for attorney verification before any filing draft leaves review.</p>
+            <span class="card-rule" aria-hidden="true"></span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cases">
+      <div class="shell">
+        <div class="stats-panel reveal">
+          <div class="credibility">
+            <h2>Credibility, shown with restraint.</h2>
+            <p>This study uses mock matter data only. The design pattern emphasizes provenance, private review, and a clear human handoff.</p>
+            <div class="security-note" id="security">
+              <span><b>Security cue:</b> staged intake, audit notes, and sample-only documents.</span>
+              <span class="mono-label">审阅留痕</span>
+            </div>
+          </div>
+
+          <div class="stats-grid" aria-label="Fictional sample metrics">
+            <div class="stat">
+              <strong>0</strong>
+              <span class="stat-label">Real client files</span>
+            </div>
+            <div class="stat">
+              <strong>12</strong>
+              <span class="stat-label">Sample clauses</span>
+            </div>
+            <div class="stat">
+              <strong>3</strong>
+              <span class="stat-label">Review modes</span>
+            </div>
+            <div class="stat">
+              <strong>1</strong>
+              <span class="stat-label">Counsel handoff</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="pricing">
+      <div class="footer-grid shell">
+        <div>
+          <a class="brand" href="#top" aria-label="Caelum Brief home">
+            <span class="brand-mark">C</span>
+            <span class="brand-name">Caelum Brief</span>
+          </a>
+          <p>Fictional product-design mock for studying a premium legal-AI visual effect. It is not legal advice, not a law firm, and not a real legal service.</p>
+        </div>
+        <div class="footer-links" aria-label="Footer links">
+          <a href="#practice">Practice</a>
+          <a href="#cases">Cases</a>
+          <a href="#security">Security</a>
+          <a href="#pricing">Pilot terms</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Deedly - Premium Legal AI》 by denniskbamfo（社区 #42）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
