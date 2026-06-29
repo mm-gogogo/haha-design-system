@@ -1,0 +1,1448 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Kinetic Liquidity</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #030303;
+      --bg-deep: #050507;
+      --bg-soft: #0a0a0f;
+      --ink: #f5f1f8;
+      --ink-dim: rgba(245, 241, 248, .66);
+      --ink-faint: rgba(245, 241, 248, .42);
+      --line: rgba(255, 255, 255, .09);
+      --line-strong: rgba(228, 191, 255, .28);
+      --glass: rgba(18, 17, 24, .58);
+      --glass-strong: rgba(24, 21, 31, .72);
+      --lavender: #e4bfff;
+      --lavender-soft: rgba(228, 191, 255, .62);
+      --lavender-faint: rgba(228, 191, 255, .16);
+      --lavender-ghost: rgba(228, 191, 255, .055);
+      --serif: "Noto Serif", "Songti SC", serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      padding: 0 0 132px;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 54% 22%, rgba(228, 191, 255, .18), transparent 22rem),
+        radial-gradient(circle at 86% 7%, rgba(228, 191, 255, .09), transparent 24rem),
+        radial-gradient(circle at 14% 84%, rgba(228, 191, 255, .08), transparent 28rem),
+        linear-gradient(145deg, #030303 0%, #08080b 43%, #020202 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      z-index: 0;
+      opacity: .24;
+      background-image:
+        radial-gradient(rgba(255, 255, 255, .14) .7px, transparent .7px),
+        radial-gradient(rgba(228, 191, 255, .18) .8px, transparent .8px);
+      background-position: 0 0, 19px 17px;
+      background-size: 42px 42px, 67px 67px;
+      mask-image: radial-gradient(circle at 52% 34%, #000 0%, transparent 72%);
+    }
+
+    body::after {
+      z-index: 1;
+      opacity: .16;
+      background:
+        linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, .045) 50%),
+        linear-gradient(90deg, rgba(255, 255, 255, .018), transparent 34%, rgba(228, 191, 255, .025));
+      background-size: 100% 5px, 100% 100%;
+      mix-blend-mode: overlay;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      top: -16rem;
+      left: 50%;
+      z-index: -1;
+      width: min(1120px, 154vw);
+      height: 580px;
+      border-radius: 999px;
+      transform: translateX(-50%) rotate(-8deg);
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(228, 191, 255, .22), transparent 58%),
+        linear-gradient(90deg, transparent, rgba(228, 191, 255, .18), transparent);
+      filter: blur(38px);
+      opacity: .76;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 44px));
+      margin: 0 auto;
+    }
+
+    .site-nav {
+      min-height: 72px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 22px;
+      padding: 28px 0 18px;
+      font-family: var(--mono);
+      color: rgba(245, 241, 248, .78);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+      font-size: 12px;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      border: 1px solid rgba(228, 191, 255, .72);
+      background:
+        linear-gradient(135deg, rgba(228, 191, 255, .96), rgba(228, 191, 255, .2)),
+        #120d17;
+      box-shadow: 0 0 28px rgba(228, 191, 255, .58), inset 0 0 0 3px rgba(0, 0, 0, .42);
+      transform: rotate(45deg);
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 40px);
+      font-size: 10px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color: rgba(245, 241, 248, .43);
+      transition: color .28s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--ink);
+    }
+
+    .nav-note {
+      justify-self: end;
+      max-width: 22ch;
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: .12em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgba(245, 241, 248, .42);
+    }
+
+    .hero {
+      position: relative;
+      min-height: calc(100dvh - 116px);
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(360px, .72fr);
+      align-items: center;
+      gap: clamp(28px, 5vw, 76px);
+      padding: clamp(38px, 6vw, 76px) 0 64px;
+    }
+
+    .hero-copy {
+      position: relative;
+      max-width: 770px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 22px;
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.4;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--lavender-soft);
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(4.25rem, 8.2vw, 7.2rem);
+      font-weight: 400;
+      line-height: .9;
+      letter-spacing: -.045em;
+      color: #fffaff;
+      text-wrap: balance;
+    }
+
+    h1 em {
+      display: inline-block;
+      padding-bottom: .05em;
+      font-style: italic;
+      color: rgba(255, 250, 255, .73);
+      text-shadow: 0 0 36px rgba(228, 191, 255, .24);
+    }
+
+    .hero-text {
+      max-width: 555px;
+      margin: 30px 0 0;
+      color: var(--ink-dim);
+      font-size: clamp(15px, 1.45vw, 18px);
+      line-height: 1.72;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px 26px;
+      margin-top: 36px;
+    }
+
+    .primary-action,
+    .ghost-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition:
+        transform .28s cubic-bezier(.16, 1, .3, 1),
+        border-color .28s ease,
+        background .28s ease,
+        color .28s ease,
+        box-shadow .28s ease;
+    }
+
+    .primary-action {
+      padding: 0 26px;
+      color: #100815;
+      background: linear-gradient(135deg, #fff6ff, var(--lavender) 68%, #c99af1);
+      border: 1px solid rgba(255, 255, 255, .42);
+      box-shadow: 0 18px 44px -24px rgba(228, 191, 255, .8);
+    }
+
+    .ghost-action {
+      padding: 0 20px;
+      color: rgba(245, 241, 248, .74);
+      background: rgba(255, 255, 255, .025);
+      border: 1px solid rgba(255, 255, 255, .12);
+      backdrop-filter: blur(18px);
+    }
+
+    .primary-action:hover,
+    .primary-action:focus-visible,
+    .ghost-action:hover,
+    .ghost-action:focus-visible {
+      transform: translateY(-2px);
+    }
+
+    .ghost-action:hover,
+    .ghost-action:focus-visible {
+      color: var(--ink);
+      border-color: rgba(228, 191, 255, .36);
+      background: rgba(228, 191, 255, .055);
+    }
+
+    .terminal-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 34px;
+      margin-top: clamp(38px, 6vw, 72px);
+    }
+
+    .terminal-stat {
+      min-width: 120px;
+    }
+
+    .terminal-stat strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--lavender);
+    }
+
+    .terminal-stat span {
+      display: block;
+      margin-top: 7px;
+      font-size: 10px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-width: 0;
+    }
+
+    .orbit-panel {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .11);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(228, 191, 255, .16), transparent 42%),
+        linear-gradient(155deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .015) 44%, rgba(0, 0, 0, .18)),
+        rgba(7, 7, 10, .68);
+      box-shadow:
+        0 42px 90px -58px rgba(228, 191, 255, .7),
+        inset 0 1px 0 rgba(255, 255, 255, .14),
+        inset 0 -1px 0 rgba(255, 255, 255, .05);
+      backdrop-filter: blur(22px);
+    }
+
+    .orbit-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .22;
+      background:
+        linear-gradient(rgba(255, 255, 255, .065) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at 50% 48%, #000 0%, transparent 70%);
+    }
+
+    .flow-svg {
+      position: absolute;
+      inset: 3% -26% auto -26%;
+      width: 152%;
+      height: 70%;
+      overflow: visible;
+      filter: drop-shadow(0 0 22px rgba(228, 191, 255, .34));
+    }
+
+    .ribbon-core {
+      stroke-dasharray: 24 36;
+      stroke-linecap: round;
+    }
+
+    .ribbon-ghost {
+      stroke-dasharray: 3 20;
+      stroke-linecap: round;
+      opacity: .62;
+    }
+
+    .halo-ring {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: min(330px, 68%);
+      aspect-ratio: 1;
+      border: 1px solid rgba(228, 191, 255, .23);
+      border-radius: 50%;
+      transform: translate(-50%, -42%);
+      box-shadow:
+        inset 0 0 70px rgba(228, 191, 255, .08),
+        0 0 86px rgba(228, 191, 255, .09);
+    }
+
+    .halo-ring::before,
+    .halo-ring::after {
+      content: "";
+      position: absolute;
+      inset: 16%;
+      border-radius: 50%;
+      border: 1px solid rgba(228, 191, 255, .13);
+    }
+
+    .halo-ring::after {
+      inset: 34%;
+      background: radial-gradient(circle, rgba(228, 191, 255, .2), transparent 58%);
+      border-color: rgba(228, 191, 255, .2);
+    }
+
+    .floating-metric {
+      position: absolute;
+      z-index: 2;
+      width: min(230px, 52%);
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .02)),
+        rgba(10, 9, 13, .68);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .11);
+      backdrop-filter: blur(18px);
+    }
+
+    .floating-metric strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 500;
+      letter-spacing: -.04em;
+      color: #fff9ff;
+    }
+
+    .floating-metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .floating-metric.top {
+      top: 44px;
+      right: 34px;
+    }
+
+    .floating-metric.bottom {
+      left: 34px;
+      bottom: 42px;
+    }
+
+    .panel-caption {
+      position: absolute;
+      right: 34px;
+      bottom: 38px;
+      z-index: 2;
+      width: min(245px, 48%);
+      color: rgba(245, 241, 248, .56);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .panel-caption b {
+      display: block;
+      margin-bottom: 10px;
+      color: rgba(255, 250, 255, .9);
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -.02em;
+    }
+
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(228, 191, 255, .08), transparent 30%, rgba(228, 191, 255, .045)),
+        rgba(6, 6, 9, .74);
+      backdrop-filter: blur(16px);
+    }
+
+    .metric-cell {
+      min-width: 0;
+      padding: clamp(20px, 3vw, 30px);
+      border-right: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .metric-cell:last-child {
+      border-right: 0;
+    }
+
+    .metric-cell strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: clamp(24px, 3.4vw, 42px);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -.055em;
+      color: #fffaff;
+    }
+
+    .metric-cell span {
+      display: block;
+      margin-top: 12px;
+      color: var(--ink-faint);
+      font-size: 11px;
+      line-height: 1.55;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      padding: clamp(74px, 10vw, 132px) 0 0;
+    }
+
+    .section-title {
+      max-width: 790px;
+      margin: 0;
+      color: #fffaff;
+      font-family: var(--serif);
+      font-size: clamp(2.45rem, 5vw, 5.5rem);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: -.045em;
+      text-wrap: balance;
+    }
+
+    .section-copy {
+      max-width: 620px;
+      margin: 22px 0 0;
+      color: var(--ink-dim);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .flow-lab {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(300px, .72fr);
+      gap: 16px;
+      align-items: stretch;
+      margin-top: 42px;
+    }
+
+    .flow-card,
+    .pool-card,
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .072), rgba(255, 255, 255, .018) 42%, rgba(228, 191, 255, .025)),
+        rgba(10, 9, 13, .66);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .105),
+        0 26px 64px -52px rgba(228, 191, 255, .62);
+      backdrop-filter: blur(18px);
+      transition:
+        transform .28s cubic-bezier(.16, 1, .3, 1),
+        border-color .28s ease,
+        background .28s ease;
+    }
+
+    .flow-card:hover,
+    .pool-card:hover,
+    .feature-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(228, 191, 255, .28);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .088), rgba(255, 255, 255, .022) 42%, rgba(228, 191, 255, .04)),
+        rgba(10, 9, 13, .76);
+    }
+
+    .flow-card {
+      min-height: 430px;
+      padding: clamp(24px, 4vw, 40px);
+    }
+
+    .flow-card h3,
+    .pool-card h3,
+    .feature-card h3 {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      color: #fffaff;
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 400;
+      letter-spacing: -.035em;
+    }
+
+    .flow-card p,
+    .feature-card p {
+      position: relative;
+      z-index: 2;
+      max-width: 460px;
+      margin: 14px 0 0;
+      color: var(--ink-dim);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .lab-svg {
+      position: absolute;
+      left: 50%;
+      bottom: -52px;
+      width: min(840px, 130%);
+      height: 355px;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 0 20px rgba(228, 191, 255, .28));
+    }
+
+    .lab-path {
+      stroke-dasharray: 18 26;
+      stroke-linecap: round;
+    }
+
+    .pool-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pool-card {
+      min-height: 0;
+      padding: 24px;
+    }
+
+    .pool-card h3 {
+      font-size: 28px;
+      line-height: 1.05;
+    }
+
+    .pool-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 26px;
+      font-family: var(--mono);
+    }
+
+    .pool-meta strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -.05em;
+      color: var(--lavender);
+    }
+
+    .pool-meta span {
+      display: block;
+      margin-top: 7px;
+      color: var(--ink-faint);
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .allocation {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 4px;
+      margin-top: 24px;
+    }
+
+    .allocation i {
+      display: block;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .055);
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .allocation i.fill {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(228, 191, 255, .84)),
+        var(--lavender);
+      box-shadow: 0 0 24px rgba(228, 191, 255, .22);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .82fr);
+      grid-template-areas:
+        "large large compact"
+        "small wide compact";
+      gap: 16px;
+      margin-top: 42px;
+    }
+
+    .feature-card {
+      min-height: 260px;
+      padding: clamp(24px, 3vw, 34px);
+    }
+
+    .feature-card.large {
+      grid-area: large;
+      min-height: 310px;
+      background:
+        radial-gradient(circle at 86% 16%, rgba(228, 191, 255, .2), transparent 30%),
+        linear-gradient(145deg, rgba(255, 255, 255, .082), rgba(255, 255, 255, .016) 48%),
+        rgba(10, 9, 13, .72);
+    }
+
+    .feature-card.small {
+      grid-area: small;
+    }
+
+    .feature-card.wide {
+      grid-area: wide;
+    }
+
+    .feature-card.compact {
+      grid-area: compact;
+    }
+
+    .card-kicker {
+      display: block;
+      margin-bottom: 30px;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.45;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .feature-card.large .card-kicker {
+      color: rgba(228, 191, 255, .68);
+    }
+
+    .mini-routes {
+      position: absolute;
+      right: 26px;
+      bottom: 24px;
+      width: min(330px, 48%);
+      min-width: 190px;
+    }
+
+    .mini-routes svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      opacity: .88;
+      filter: drop-shadow(0 0 18px rgba(228, 191, 255, .2));
+    }
+
+    .ledger {
+      margin-top: 42px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(6, 6, 9, .7);
+      backdrop-filter: blur(14px);
+    }
+
+    .ledger-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.2fr) repeat(3, minmax(92px, .7fr));
+      gap: 18px;
+      align-items: center;
+      padding: 20px clamp(18px, 3vw, 30px);
+      border-top: 1px solid rgba(255, 255, 255, .075);
+    }
+
+    .ledger-row:first-child {
+      border-top: 0;
+    }
+
+    .ledger-head {
+      color: rgba(245, 241, 248, .44);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .ledger-name {
+      color: #fffaff;
+      font-family: var(--serif);
+      font-size: 24px;
+      letter-spacing: -.02em;
+    }
+
+    .ledger-value {
+      color: rgba(245, 241, 248, .72);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .ledger-value.accent {
+      color: var(--lavender);
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      padding: clamp(74px, 10vw, 132px) 0 42px;
+      color: rgba(245, 241, 248, .5);
+    }
+
+    .footer strong {
+      display: block;
+      color: #fffaff;
+      font-family: var(--serif);
+      font-size: clamp(34px, 5vw, 64px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .footer p {
+      max-width: 540px;
+      margin: 18px 0 0;
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .footer-code {
+      justify-self: end;
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.8;
+      letter-spacing: .12em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    @supports not ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+      .orbit-panel,
+      .floating-metric,
+      .metrics-strip,
+      .flow-card,
+      .pool-card,
+      .feature-card,
+      .ledger,
+      .ghost-action {
+        background: #111017;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .ribbon-core {
+        animation: stream 6.8s linear infinite;
+      }
+
+      .ribbon-ghost {
+        animation: stream 10s linear infinite reverse;
+      }
+
+      .flow-svg {
+        animation: breathe 7s ease-in-out infinite;
+      }
+
+      .halo-ring {
+        animation: slow-turn 18s linear infinite;
+      }
+
+      .lab-path {
+        animation: stream 7.5s linear infinite;
+      }
+
+      .metric-cell strong,
+      .terminal-stat strong,
+      .pool-meta strong {
+        background: linear-gradient(100deg, #fffaff 0%, var(--lavender) 36%, #fffaff 72%);
+        background-size: 220% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: value-shimmer 7.8s ease-in-out infinite;
+      }
+
+      .floating-metric.top {
+        animation: float-soft 6.2s ease-in-out infinite;
+      }
+
+      .floating-metric.bottom {
+        animation: float-soft 7.6s ease-in-out infinite reverse;
+      }
+    }
+
+    @keyframes stream {
+      to {
+        stroke-dashoffset: -120;
+      }
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(0, 10px, 0) scale(1.025);
+      }
+    }
+
+    @keyframes slow-turn {
+      to {
+        transform: translate(-50%, -42%) rotate(360deg);
+      }
+    }
+
+    @keyframes value-shimmer {
+      0%, 58%, 100% {
+        background-position: 0% 50%;
+      }
+
+      72% {
+        background-position: 100% 50%;
+      }
+    }
+
+    @keyframes float-soft {
+      0%, 100% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      50% {
+        transform: translate3d(0, -12px, 0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .primary-action:hover,
+      .primary-action:focus-visible,
+      .ghost-action:hover,
+      .ghost-action:focus-visible,
+      .flow-card:hover,
+      .pool-card:hover,
+      .feature-card:hover {
+        transform: none !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      .orbit-panel,
+      .floating-metric,
+      .metrics-strip,
+      .flow-card,
+      .pool-card,
+      .feature-card,
+      .ledger,
+      .ghost-action {
+        backdrop-filter: none;
+        background: #111017;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .site-nav {
+        grid-template-columns: 1fr;
+        justify-items: start;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .nav-note {
+        justify-self: start;
+        text-align: left;
+      }
+
+      .hero {
+        min-height: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .orbit-panel {
+        min-height: 520px;
+      }
+
+      .metrics-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric-cell:nth-child(2) {
+        border-right: 0;
+      }
+
+      .metric-cell:nth-child(n+3) {
+        border-top: 1px solid rgba(255, 255, 255, .08);
+      }
+
+      .flow-lab {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-areas:
+          "large large"
+          "small wide"
+          "compact compact";
+      }
+
+      .footer {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-code {
+        justify-self: start;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding-bottom: 180px;
+      }
+
+      .shell {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .site-nav {
+        padding-top: 20px;
+      }
+
+      .brand {
+        font-size: 11px;
+        letter-spacing: .13em;
+      }
+
+      .nav-links {
+        width: 100%;
+        gap: 12px 16px;
+        font-size: 9px;
+      }
+
+      .nav-note {
+        max-width: 30ch;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      .eyebrow {
+        margin-bottom: 17px;
+        font-size: 9px;
+        letter-spacing: .13em;
+      }
+
+      h1 {
+        font-size: clamp(3.2rem, 15vw, 4.4rem);
+        line-height: .93;
+      }
+
+      .hero-text {
+        margin-top: 23px;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+      }
+
+      .primary-action,
+      .ghost-action {
+        width: 100%;
+      }
+
+      .terminal-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .orbit-panel {
+        min-height: 480px;
+        border-radius: 24px;
+      }
+
+      .flow-svg {
+        inset: 8% -52% auto -52%;
+        width: 204%;
+      }
+
+      .floating-metric {
+        width: min(212px, 58%);
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .floating-metric.top {
+        top: 22px;
+        right: 18px;
+      }
+
+      .floating-metric.bottom {
+        left: 18px;
+        bottom: 30px;
+      }
+
+      .panel-caption {
+        right: 18px;
+        bottom: 150px;
+        width: min(238px, 64%);
+        font-size: 12px;
+      }
+
+      .metrics-strip {
+        grid-template-columns: 1fr;
+        border-radius: 22px;
+      }
+
+      .metric-cell,
+      .metric-cell:nth-child(2) {
+        border-right: 0;
+      }
+
+      .metric-cell:nth-child(n+2) {
+        border-top: 1px solid rgba(255, 255, 255, .08);
+      }
+
+      .flow-card {
+        min-height: 430px;
+      }
+
+      .pool-meta {
+        flex-direction: column;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "large"
+          "small"
+          "wide"
+          "compact";
+      }
+
+      .feature-card,
+      .feature-card.large {
+        min-height: 250px;
+      }
+
+      .mini-routes {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: 100%;
+        min-width: 0;
+        margin-top: 28px;
+      }
+
+      .ledger {
+        border-radius: 20px;
+      }
+
+      .ledger-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .ledger-head {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="site-nav shell" aria-label="主导航">
+      <a class="brand" href="#" aria-label="Nacre Relay 首页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Nacre Relay</span>
+      </a>
+      <div class="nav-links" aria-label="页面区段">
+        <a href="#flows">Flows</a>
+        <a href="#pools">Pools</a>
+        <a href="#method">Method</a>
+        <a href="#ledger">Ledger</a>
+      </div>
+      <div class="nav-note">Fictional protocol study<br>Visual system only</div>
+    </nav>
+
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">Kinetic liquidity study</span>
+        <h1 id="hero-title">Liquidity in <em>motion</em>, priced with calm.</h1>
+        <p class="hero-text">A fictional DeFi landing page for adaptive pools, soft signal, and measured capital flow.</p>
+        <div class="hero-actions" aria-label="Study actions">
+          <a class="primary-action" href="#pools">View mock pools</a>
+          <a class="ghost-action" href="#method">Read method</a>
+        </div>
+        <div class="terminal-row" aria-label="Mock execution details">
+          <div class="terminal-stat">
+            <strong>0.018s</strong>
+            <span>Route sample</span>
+          </div>
+          <div class="terminal-stat">
+            <strong>37.4%</strong>
+            <span>Idle drawdown</span>
+          </div>
+          <div class="terminal-stat">
+            <strong>6 pools</strong>
+            <span>Study matrix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit-panel">
+          <svg class="flow-svg" viewBox="0 0 900 520" fill="none" role="img">
+            <defs>
+              <linearGradient id="hero-ribbon" x1="150" y1="40" x2="760" y2="480" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fff8ff" stop-opacity=".04"/>
+                <stop offset=".38" stop-color="#e4bfff" stop-opacity=".82"/>
+                <stop offset=".68" stop-color="#f8e8ff" stop-opacity=".52"/>
+                <stop offset="1" stop-color="#e4bfff" stop-opacity=".04"/>
+              </linearGradient>
+              <linearGradient id="hero-ribbon-soft" x1="760" y1="78" x2="140" y2="438" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#e4bfff" stop-opacity=".02"/>
+                <stop offset=".5" stop-color="#e4bfff" stop-opacity=".38"/>
+                <stop offset="1" stop-color="#fff8ff" stop-opacity=".02"/>
+              </linearGradient>
+              <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="8" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <path d="M-10 334C91 212 188 219 283 273C390 334 466 427 580 358C681 296 712 120 912 164" stroke="url(#hero-ribbon-soft)" stroke-width="74" stroke-linecap="round" opacity=".34"/>
+            <path class="ribbon-core" d="M-12 326C96 207 191 218 286 271C394 331 466 422 578 354C680 292 711 118 912 158" stroke="url(#hero-ribbon)" stroke-width="3.2" filter="url(#soft-glow)"/>
+            <path class="ribbon-ghost" d="M-18 383C96 292 207 289 319 329C453 377 521 453 645 389C745 337 766 214 922 232" stroke="#e4bfff" stroke-width="1.4" opacity=".5"/>
+            <path class="ribbon-ghost" d="M-8 210C107 137 220 151 328 221C435 290 487 327 598 260C702 197 757 85 922 112" stroke="#fff8ff" stroke-width="1.2" opacity=".24"/>
+            <circle cx="286" cy="271" r="5" fill="#e4bfff"/>
+            <circle cx="578" cy="354" r="4" fill="#fff8ff" opacity=".82"/>
+            <circle cx="711" cy="118" r="3.5" fill="#e4bfff" opacity=".68"/>
+          </svg>
+          <div class="halo-ring"></div>
+          <div class="floating-metric top">
+            <strong>$284.6M</strong>
+            <span>Mock routed value</span>
+          </div>
+          <div class="floating-metric bottom">
+            <strong>11.8%</strong>
+            <span>Sample pool APR</span>
+          </div>
+          <p class="panel-caption"><b>Flow surface</b>Simulated capital lanes bend toward lower friction without claiming live financial performance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell" aria-label="Protocol metrics">
+      <div class="metrics-strip">
+        <div class="metric-cell">
+          <strong>$612.3M</strong>
+          <span>Fictional liquidity depth</span>
+        </div>
+        <div class="metric-cell">
+          <strong>4.72%</strong>
+          <span>Mock blended fee yield</span>
+        </div>
+        <div class="metric-cell">
+          <strong>18,240</strong>
+          <span>Study route samples</span>
+        </div>
+        <div class="metric-cell">
+          <strong>62 bps</strong>
+          <span>Median path friction</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="flows" class="section shell" aria-labelledby="flows-title">
+      <h2 id="flows-title" class="section-title">A dark pool room built around flow.</h2>
+      <p class="section-copy">Nacre Relay is an invented protocol concept. Every number is mock data, tuned only to study editorial DeFi interface effects.</p>
+
+      <div class="flow-lab">
+        <article class="flow-card">
+          <h3>Liquidity flow</h3>
+          <p>Gradient paths visualize how a route might split, settle, and recombine across fictional vault surfaces.</p>
+          <svg class="lab-svg" viewBox="0 0 820 360" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="lab-gradient" x1="80" y1="90" x2="760" y2="300" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#e4bfff" stop-opacity=".06"/>
+                <stop offset=".44" stop-color="#e4bfff" stop-opacity=".88"/>
+                <stop offset="1" stop-color="#fff8ff" stop-opacity=".1"/>
+              </linearGradient>
+              <radialGradient id="node-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(392 194) rotate(90) scale(105)">
+                <stop stop-color="#fff8ff" stop-opacity=".82"/>
+                <stop offset=".45" stop-color="#e4bfff" stop-opacity=".28"/>
+                <stop offset="1" stop-color="#e4bfff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path d="M40 248C160 108 240 104 360 188C477 269 559 320 780 142" stroke="url(#lab-gradient)" stroke-width="2.4" class="lab-path"/>
+            <path d="M42 298C166 208 271 211 366 244C507 294 597 263 780 225" stroke="#e4bfff" stroke-width="1.2" class="lab-path" opacity=".42"/>
+            <path d="M36 160C156 89 259 122 360 173C466 226 588 202 783 80" stroke="#fff8ff" stroke-width="1.1" class="lab-path" opacity=".22"/>
+            <circle cx="392" cy="194" r="108" fill="url(#node-gradient)"/>
+            <circle cx="392" cy="194" r="8" fill="#e4bfff"/>
+            <circle cx="168" cy="116" r="4" fill="#fff8ff" opacity=".72"/>
+            <circle cx="602" cy="263" r="4" fill="#e4bfff" opacity=".64"/>
+          </svg>
+        </article>
+
+        <div id="pools" class="pool-stack" aria-label="Mock liquidity pools">
+          <article class="pool-card">
+            <span class="card-kicker">Velvet ETH pool</span>
+            <h3>Deep curve, narrow drift.</h3>
+            <div class="pool-meta">
+              <div>
+                <strong>$148.2M</strong>
+                <span>Mock depth</span>
+              </div>
+              <div>
+                <strong>9.6%</strong>
+                <span>Sample APR</span>
+              </div>
+            </div>
+            <div class="allocation" aria-hidden="true">
+              <i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </article>
+
+          <article class="pool-card">
+            <span class="card-kicker">Lilac stable lane</span>
+            <h3>Low noise, high cadence.</h3>
+            <div class="pool-meta">
+              <div>
+                <strong>$92.7M</strong>
+                <span>Mock depth</span>
+              </div>
+              <div>
+                <strong>5.1%</strong>
+                <span>Sample APR</span>
+              </div>
+            </div>
+            <div class="allocation" aria-hidden="true">
+              <i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="section shell" aria-labelledby="method-title">
+      <h2 id="method-title" class="section-title">Glass, serif type, and a quiet data layer.</h2>
+      <p class="section-copy">The study pairs editorial hierarchy with mono numerals, restrained cards, and one lavender accent to keep the interface premium.</p>
+
+      <div class="feature-grid">
+        <article class="feature-card large">
+          <span class="card-kicker">Route composition</span>
+          <h3>Capital bends through soft lanes.</h3>
+          <p>Curves and glows give the page a kinetic center while the surrounding data remains calm and legible.</p>
+          <div class="mini-routes" aria-hidden="true">
+            <svg viewBox="0 0 360 180" fill="none">
+              <path d="M18 132C83 54 153 57 213 102C270 145 309 111 344 55" stroke="#e4bfff" stroke-width="1.5" opacity=".7"/>
+              <path d="M18 76C87 115 144 138 211 94C273 54 304 42 344 76" stroke="#fff8ff" stroke-width="1" opacity=".3"/>
+              <path d="M18 150C100 126 153 136 225 136C280 136 315 124 344 106" stroke="#e4bfff" stroke-width="1" stroke-dasharray="4 10" opacity=".44"/>
+              <circle cx="213" cy="102" r="28" fill="#e4bfff" opacity=".08"/>
+              <circle cx="213" cy="102" r="5" fill="#e4bfff"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="feature-card small">
+          <span class="card-kicker">Risk surface</span>
+          <h3>Plain language over spectacle.</h3>
+          <p>Short labels and visible mock disclaimers keep the page from pretending to be a live product.</p>
+        </article>
+
+        <article class="feature-card wide">
+          <span class="card-kicker">Motion rule</span>
+          <h3>Movement has one job.</h3>
+          <p>The flow line suggests capital movement. Values shimmer lightly to imply updates without becoming noisy.</p>
+        </article>
+
+        <article class="feature-card compact">
+          <span class="card-kicker">Protocol tone</span>
+          <h3>Editorial first, terminal second.</h3>
+          <p>Large Noto Serif headlines set the mood. JetBrains Mono handles all financial-looking numbers as fictional samples.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="ledger" class="section shell" aria-labelledby="ledger-title">
+      <h2 id="ledger-title" class="section-title">Mock pool ledger.</h2>
+      <p class="section-copy">A compact protocol strip gives the page useful DeFi texture without turning the study into a dashboard.</p>
+
+      <div class="ledger" role="table" aria-label="Fictional pool ledger">
+        <div class="ledger-row ledger-head" role="row">
+          <div role="columnheader">Pool</div>
+          <div role="columnheader">Depth</div>
+          <div role="columnheader">APR</div>
+          <div role="columnheader">Route style</div>
+        </div>
+        <div class="ledger-row" role="row">
+          <div class="ledger-name" role="cell">Cinder USD</div>
+          <div class="ledger-value" role="cell">$74.9M</div>
+          <div class="ledger-value accent" role="cell">4.8%</div>
+          <div class="ledger-value" role="cell">Stable braid</div>
+        </div>
+        <div class="ledger-row" role="row">
+          <div class="ledger-name" role="cell">Quiet BTC</div>
+          <div class="ledger-value" role="cell">$126.5M</div>
+          <div class="ledger-value accent" role="cell">7.3%</div>
+          <div class="ledger-value" role="cell">Wide curve</div>
+        </div>
+        <div class="ledger-row" role="row">
+          <div class="ledger-name" role="cell">Nacre Pair</div>
+          <div class="ledger-value" role="cell">$38.1M</div>
+          <div class="ledger-value accent" role="cell">12.2%</div>
+          <div class="ledger-value" role="cell">Volatility lane</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer shell">
+      <div>
+        <strong>Study only.</strong>
+        <p>Nacre Relay is a fictional visual system for an effect study. It is not a protocol, company, investment product, or financial recommendation.</p>
+      </div>
+      <div class="footer-code">Dark editorial landing<br>Lavender kinetic flow<br>Local fonts only</div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Butterfly.fi — Kinetic Liquidity》 by kodanse（社区 #20）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
