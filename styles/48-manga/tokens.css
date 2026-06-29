@@ -1,0 +1,103 @@
+/* ============================================================================
+   漫画 · Manga / Ink & Screentone Design System — tokens.css
+   ----------------------------------------------------------------------------
+   Token 契约 100% 遵守（--ds-* 全量）。亮色 :root + 暗色
+   [data-theme="dark"] 与 .dark 兼容。气质：淡米色单行本纸、浓黑墨线、
+   灰阶网点、分镜粗边、集中线，以及唯一高声量朱红点睛。
+   ============================================================================ */
+
+:root {
+  /* ---- 表面与文字（亮：单行本纸 + 墨黑） ---------------------------------- */
+  --ds-bg:           #f2f1eb;
+  --ds-bg-subtle:    #e8e6de;
+  --ds-bg-elevated:  #fbfaf6;
+  --ds-bg-sunken:    #dedcd2;
+  --ds-fg:           #141414;
+  --ds-fg-muted:     #4a4a48;
+  --ds-fg-subtle:    #6a6a66;
+  --ds-fg-on-accent: #f5f3ec;
+  --ds-border:       #cdcbc2;
+  --ds-border-strong:#141414;
+
+  /* ---- 品牌与强调（唯一高声量朱红 + 墨黑强调） ---------------------------- */
+  --ds-primary:        #cf2417;
+  --ds-primary-hover:  #b21f13;
+  --ds-primary-active: #971a10;
+  --ds-primary-fg:     #ffffff;
+  --ds-accent:         #141414;
+  --ds-accent-fg:      #f5f3ec;
+
+  /* ---- 语义状态（低饱和功能色；不参与品牌主视觉） ------------------------- */
+  --ds-success: #2f7d3f; --ds-success-bg: #e2efe2; --ds-success-fg: #1c4a26;
+  --ds-warning: #8a5a10; --ds-warning-bg: #f4ecd6; --ds-warning-fg: #563908;
+  --ds-danger:  #cf2417; --ds-danger-bg:  #f7e2df; --ds-danger-fg:  #7e160d;
+  --ds-info:    #2563a8; --ds-info-bg:    #dde7f3; --ds-info-fg:    #143e6e;
+
+  /* ---- 焦点（朱红墨圈） ---------------------------------------------------- */
+  --ds-focus: #cf2417;
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+
+  /* ---- 圆角（分镜与控件保持近方形） --------------------------------------- */
+  --ds-radius-sm: 0;
+  --ds-radius-md: 2px;
+  --ds-radius-lg: 4px;
+  --ds-radius-full: 999px;
+
+  /* ---- 间距比例（4px 基） -------------------------------------------------- */
+  --ds-space-1: 4px;  --ds-space-2: 8px;  --ds-space-3: 12px; --ds-space-4: 16px;
+  --ds-space-5: 20px; --ds-space-6: 24px; --ds-space-7: 32px; --ds-space-8: 40px;
+  --ds-space-9: 48px; --ds-space-10: 64px; --ds-space-11: 80px; --ds-space-12: 96px;
+
+  /* ---- 字体（本地 fonts.css：Noto Serif + Inter + JetBrains Mono） -------- */
+  --ds-font-sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif: "Noto Serif", "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-text-xs: 12px; --ds-text-sm: 14px; --ds-text-base: 16px; --ds-text-md: 19px;
+  --ds-text-lg: 24px; --ds-text-xl: 34px; --ds-text-2xl: 52px; --ds-text-3xl: 76px;
+  --ds-leading-tight: 1.02; --ds-leading-normal: 1.5; --ds-leading-relaxed: 1.7;
+  --ds-weight-normal: 400; --ds-weight-medium: 600; --ds-weight-bold: 800;
+  --ds-tracking-tight: 0; --ds-tracking-normal: 0;
+
+  /* ---- 阴影（硬墨线偏移，无模糊） ----------------------------------------- */
+  --ds-shadow-sm: 2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 7px 7px 0 var(--ds-border-strong);
+
+  /* ---- 动效（短促揭格与冲击反馈） ----------------------------------------- */
+  --ds-ease: cubic-bezier(.2,0,0,1);
+  --ds-dur-fast: 80ms; --ds-dur-base: 150ms; --ds-dur-slow: 280ms;
+}
+
+/* ============================================================================
+   暗色主题：ink-black spread，白墨前景，朱红提亮。
+   ============================================================================ */
+[data-theme="dark"], .dark {
+  --ds-bg:           #0d0d0d;
+  --ds-bg-subtle:    #151515;
+  --ds-bg-elevated:  #1c1c1c;
+  --ds-bg-sunken:    #060606;
+  --ds-fg:           #f2f0e8;
+  --ds-fg-muted:     #b2b0a8;
+  --ds-fg-subtle:    #88867e;
+  --ds-fg-on-accent: #1a0805;
+  --ds-border:       #2a2a2a;
+  --ds-border-strong:#f2f0e8;
+
+  --ds-primary:        #ff4436;
+  --ds-primary-hover:  #ff5e52;
+  --ds-primary-active: #e83a2d;
+  --ds-primary-fg:     #1a0805;
+  --ds-accent:         #f2f0e8;
+  --ds-accent-fg:      #0d0d0d;
+
+  --ds-success: #6ccb7a; --ds-success-bg: #122b16; --ds-success-fg: #b6e6bf;
+  --ds-warning: #e0b25e; --ds-warning-bg: #2a2010; --ds-warning-fg: #f3d79a;
+  --ds-danger:  #ff4436; --ds-danger-bg:  #2c1310; --ds-danger-fg:  #ffb3ab;
+  --ds-info:    #6fa8e0; --ds-info-bg:    #0e2236; --ds-info-fg:    #bcd6f2;
+
+  --ds-focus: #ff4436;
+
+  --ds-shadow-sm: 2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md: 4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg: 7px 7px 0 var(--ds-border-strong);
+}

@@ -1,0 +1,829 @@
+<!-- 漫画 · Manga / Ink & Screentone — Design System Preview -->
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>漫画 · Manga / Ink & Screentone — Design System Preview</title>
+<link rel="stylesheet" href="../../_fonts/fonts.css" />
+<link rel="stylesheet" href="../../_assets/device.css">
+<style>
+/* ====================================================================
+   TOKENS（内联，与 tokens.css 同步；preview 无远程依赖）
+   ==================================================================== */
+:root{
+  --ds-bg:#f2f1eb; --ds-bg-subtle:#e8e6de; --ds-bg-elevated:#fbfaf6; --ds-bg-sunken:#dedcd2;
+  --ds-fg:#141414; --ds-fg-muted:#4a4a48; --ds-fg-subtle:#6a6a66; --ds-fg-on-accent:#f5f3ec;
+  --ds-border:#cdcbc2; --ds-border-strong:#141414;
+  --ds-primary:#cf2417; --ds-primary-hover:#b21f13; --ds-primary-active:#971a10; --ds-primary-fg:#ffffff;
+  --ds-accent:#141414; --ds-accent-fg:#f5f3ec;
+  --ds-success:#2f7d3f; --ds-success-bg:#e2efe2; --ds-success-fg:#1c4a26;
+  --ds-warning:#8a5a10; --ds-warning-bg:#f4ecd6; --ds-warning-fg:#563908;
+  --ds-danger:#cf2417; --ds-danger-bg:#f7e2df; --ds-danger-fg:#7e160d;
+  --ds-info:#2563a8; --ds-info-bg:#dde7f3; --ds-info-fg:#143e6e;
+  --ds-focus:#cf2417;
+  --ds-focus-ring:0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-focus);
+  --ds-radius-sm:0; --ds-radius-md:2px; --ds-radius-lg:4px; --ds-radius-full:999px;
+  --ds-space-1:4px; --ds-space-2:8px; --ds-space-3:12px; --ds-space-4:16px;
+  --ds-space-5:20px; --ds-space-6:24px; --ds-space-7:32px; --ds-space-8:40px;
+  --ds-space-9:48px; --ds-space-10:64px; --ds-space-11:80px; --ds-space-12:96px;
+  --ds-font-sans:"Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ds-font-serif:"Noto Serif", "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", serif;
+  --ds-font-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-text-xs:12px; --ds-text-sm:14px; --ds-text-base:16px; --ds-text-md:19px;
+  --ds-text-lg:24px; --ds-text-xl:34px; --ds-text-2xl:52px; --ds-text-3xl:76px;
+  --ds-leading-tight:1.02; --ds-leading-normal:1.5; --ds-leading-relaxed:1.7;
+  --ds-weight-normal:400; --ds-weight-medium:600; --ds-weight-bold:800;
+  --ds-tracking-tight:0; --ds-tracking-normal:0;
+  --ds-shadow-sm:2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md:4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg:7px 7px 0 var(--ds-border-strong);
+  --ds-ease:cubic-bezier(.2,0,0,1);
+  --ds-dur-fast:80ms; --ds-dur-base:150ms; --ds-dur-slow:280ms;
+}
+[data-theme="dark"], .dark{
+  --ds-bg:#0d0d0d; --ds-bg-subtle:#151515; --ds-bg-elevated:#1c1c1c; --ds-bg-sunken:#060606;
+  --ds-fg:#f2f0e8; --ds-fg-muted:#b2b0a8; --ds-fg-subtle:#88867e; --ds-fg-on-accent:#1a0805;
+  --ds-border:#2a2a2a; --ds-border-strong:#f2f0e8;
+  --ds-primary:#ff4436; --ds-primary-hover:#ff5e52; --ds-primary-active:#e83a2d; --ds-primary-fg:#1a0805;
+  --ds-accent:#f2f0e8; --ds-accent-fg:#0d0d0d;
+  --ds-success:#6ccb7a; --ds-success-bg:#122b16; --ds-success-fg:#b6e6bf;
+  --ds-warning:#e0b25e; --ds-warning-bg:#2a2010; --ds-warning-fg:#f3d79a;
+  --ds-danger:#ff4436; --ds-danger-bg:#2c1310; --ds-danger-fg:#ffb3ab;
+  --ds-info:#6fa8e0; --ds-info-bg:#0e2236; --ds-info-fg:#bcd6f2;
+  --ds-focus:#ff4436;
+  --ds-shadow-sm:2px 2px 0 var(--ds-border-strong);
+  --ds-shadow-md:4px 4px 0 var(--ds-border-strong);
+  --ds-shadow-lg:7px 7px 0 var(--ds-border-strong);
+}
+
+:root{
+  --ds-z-dropdown:1000; --ds-z-sticky:1010; --ds-z-modal-backdrop:1030;
+  --ds-z-modal:1040; --ds-z-toast:1050; --ds-z-tooltip:1060;
+}
+
+/* ====================================================================
+   BASE
+   ==================================================================== */
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:
+    radial-gradient(circle, color-mix(in srgb,var(--ds-fg) 5%, transparent) 0 1px, transparent 1.2px) 0 0/18px 18px,
+    linear-gradient(90deg, color-mix(in srgb,var(--ds-fg) 3%, transparent) 0 1px, transparent 1px) 0 0/100% 28px,
+    var(--ds-bg);
+  color:var(--ds-fg);
+  font-family:var(--ds-font-sans);
+  font-size:var(--ds-text-base);
+  line-height:var(--ds-leading-normal);
+  font-weight:var(--ds-weight-normal);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+h1,h2,h3,h4{font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);letter-spacing:0;line-height:var(--ds-leading-tight);margin:0;overflow-wrap:anywhere}
+p{overflow-wrap:anywhere}
+a{color:var(--ds-fg);text-decoration-thickness:2px;text-decoration-color:var(--ds-primary);text-underline-offset:3px;font-weight:var(--ds-weight-medium)}
+code{font-family:var(--ds-font-mono);font-size:.86em;background:var(--ds-bg-sunken);border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-sm);padding:2px 6px;overflow-wrap:anywhere}
+button,input,textarea,select{font:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:var(--ds-space-7) var(--ds-space-5) var(--ds-space-12)}
+section{margin-top:var(--ds-space-11)}
+.sec-title{font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);letter-spacing:0;text-transform:uppercase;border-bottom:4px solid var(--ds-border-strong);padding-bottom:var(--ds-space-3);margin-bottom:var(--ds-space-6);display:flex;align-items:center;gap:var(--ds-space-3);overflow-wrap:anywhere}
+.sec-title .en{color:var(--ds-fg-subtle);font-weight:var(--ds-weight-normal)}
+.muted{color:var(--ds-fg-muted)} .subtle{color:var(--ds-fg-subtle)}
+.lead{max-width:72ch;line-height:var(--ds-leading-relaxed)}
+.row{display:flex;flex-wrap:wrap;gap:var(--ds-space-4);align-items:center}
+.grid{display:grid;gap:var(--ds-space-5)}
+.mono{font-family:var(--ds-font-mono)}
+.num{font-family:var(--ds-font-mono);font-variant-numeric:tabular-nums}
+.display{font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);line-height:var(--ds-leading-tight);letter-spacing:0;overflow-wrap:anywhere}
+.d-3xl{font-size:var(--ds-text-3xl)} .d-2xl{font-size:var(--ds-text-2xl)} .d-xl{font-size:var(--ds-text-xl)}
+.ico{width:1.25em;height:1.25em;display:inline-flex;vertical-align:-0.22em;flex:0 0 auto}
+.ico svg{display:block;width:100%;height:100%}
+
+/* Screentone utilities */
+.tone-10,.tone-20,.tone-35,.tone-55{background-color:var(--ds-bg-elevated);background-image:radial-gradient(circle,currentColor 0 var(--dot),transparent calc(var(--dot) + .35px));background-size:var(--tile) var(--tile);color:var(--ds-fg)}
+.tone-10{--dot:.7px;--tile:12px;opacity:1}
+.tone-20{--dot:1px;--tile:10px;opacity:1}
+.tone-35{--dot:1.35px;--tile:8px;opacity:1}
+.tone-55{--dot:1.65px;--tile:6px;opacity:1}
+.tone-soft{position:relative;overflow:hidden;isolation:isolate}
+.tone-soft::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,var(--ds-fg) 0 1px,transparent 1.2px);background-size:9px 9px;opacity:.13;pointer-events:none;z-index:0}
+.tone-soft>*{position:relative;z-index:1}
+.speed-field{position:absolute;inset:-18%;background:repeating-conic-gradient(from -18deg at 72% 38%,color-mix(in srgb,var(--ds-fg) 55%,transparent) 0deg 1deg,transparent 1deg 8deg);opacity:.28;pointer-events:none;z-index:0}
+.hanko{width:92px;height:92px;border:4px solid var(--ds-primary);border-radius:50%;color:var(--ds-primary);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);line-height:1;transform:rotate(-10deg);background:color-mix(in srgb,var(--ds-bg-elevated) 72%,transparent);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ds-primary) 45%,transparent)}
+.hanko span:first-child{font-size:22px}.hanko span:last-child{font-family:var(--ds-font-mono);font-size:10px;margin-top:4px}
+.sfx-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-3)}
+.sfx-chip{font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-lg);line-height:1;border:4px solid var(--ds-border-strong);background:var(--ds-bg-elevated);color:var(--ds-fg);box-shadow:var(--ds-shadow-md);padding:10px 14px;transform:skew(-8deg) rotate(-1deg);text-transform:uppercase;display:inline-flex;align-items:center;min-height:48px}
+.sfx-chip.red{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.sfx-chip.dark{background:var(--ds-accent);color:var(--ds-accent-fg)}
+
+/* ---- TOPBAR ---- */
+.topbar{
+  position:sticky;top:0;z-index:var(--ds-z-sticky);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-4);
+  background:var(--ds-bg-elevated);
+  border-bottom:4px solid var(--ds-border-strong);
+  padding:var(--ds-space-3) var(--ds-space-5);
+  color:var(--ds-fg);
+  box-shadow:0 4px 0 var(--ds-border-strong);
+}
+.brand{display:flex;align-items:center;gap:var(--ds-space-3);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md)}
+.brand .tagline{font-weight:var(--ds-weight-normal);font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+.brand-mark{width:40px;height:40px;flex:0 0 40px;display:inline-flex;align-items:center;justify-content:center;border:4px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-primary)}
+.brand-mark svg{width:26px;height:26px}
+
+/* ---- BUTTONS ---- */
+.btn{
+  font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);
+  font-size:var(--ds-text-sm);line-height:1;letter-spacing:0;
+  white-space:nowrap;border:3px solid var(--ds-border-strong);border-radius:var(--ds-radius-sm);
+  background:var(--ds-bg-elevated);color:var(--ds-fg);
+  height:44px;padding:0 18px;cursor:pointer;box-shadow:var(--ds-shadow-sm);
+  transition:transform var(--ds-dur-fast) var(--ds-ease),box-shadow var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--ds-space-2);
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:var(--ds-shadow-md)}
+.btn:active{transform:translate(2px,2px);box-shadow:none}
+.btn:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+.btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none;transform:none}
+.btn .ico{width:18px;height:18px}
+.btn-primary{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.btn-primary:hover{background:var(--ds-primary-hover)}
+.btn-primary:active{background:var(--ds-primary-active)}
+.btn-secondary{background:var(--ds-bg-elevated);color:var(--ds-fg)}
+.btn-tertiary{background:transparent;color:var(--ds-fg);border-color:transparent;box-shadow:none}
+.btn-tertiary:hover{border-color:var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.btn-danger{background:var(--ds-danger);color:var(--ds-primary-fg)}
+.btn-accent{background:var(--ds-accent);color:var(--ds-accent-fg)}
+.btn-sm{height:36px;padding:0 12px;font-size:var(--ds-text-xs)}
+.btn-lg{height:52px;padding:0 26px;font-size:var(--ds-text-base)}
+.btn-icon{width:44px;height:44px;padding:0}
+
+/* ---- SWATCHES ---- */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--ds-space-4)}
+.sw{border:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);border-radius:var(--ds-radius-sm);overflow:hidden}
+.sw .chip{height:64px;border-bottom:3px solid var(--ds-border-strong)}
+.sw .meta{padding:var(--ds-space-2) var(--ds-space-3);font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);line-height:1.6}
+.sw .nm{display:block;overflow-wrap:anywhere;font-weight:var(--ds-weight-bold)}
+.sw .hx{color:var(--ds-fg-muted)}
+
+/* ---- TYPE SCALE ---- */
+.type-row{display:flex;align-items:baseline;gap:var(--ds-space-5);padding:var(--ds-space-3) 0;border-bottom:2px solid var(--ds-border-strong)}
+.type-row .tag{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted);width:100px;flex:0 0 100px}
+
+/* ---- PANELS ---- */
+.comic-grid{display:grid;grid-template-columns:1.1fr .75fr .95fr;grid-auto-rows:minmax(150px,1fr);gap:5px;background:var(--ds-border-strong);border:5px solid var(--ds-border-strong);overflow:hidden;box-shadow:var(--ds-shadow-lg)}
+.panel{position:relative;min-height:150px;background:var(--ds-bg-elevated);color:var(--ds-fg);overflow:hidden;padding:var(--ds-space-5);display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+.panel>*{position:relative;z-index:2}
+.panel.big{grid-row:span 2;min-height:320px}
+.panel.wide{grid-column:span 2}
+.panel.diag-a{clip-path:polygon(0 0,100% 0,86% 100%,0 100%)}
+.panel.diag-b{clip-path:polygon(13% 0,100% 0,100% 100%,0 100%)}
+.panel h3{font-size:var(--ds-text-lg)}
+.panel p{margin:6px 0 0;color:var(--ds-fg-muted);max-width:32ch}
+.panel-number{position:absolute;top:10px;left:10px;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);padding:3px 7px;z-index:3}
+.impact-svg{position:absolute;right:8%;top:10%;width:128px;height:128px;color:var(--ds-primary);z-index:1}
+
+/* ---- CARDS / FORM ---- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--ds-space-6)}
+.card{position:relative;overflow:hidden;background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);border-radius:var(--ds-radius-lg);box-shadow:var(--ds-shadow-md);padding:var(--ds-space-6);display:flex;flex-direction:column;gap:var(--ds-space-3);color:var(--ds-fg)}
+.card h3{font-size:var(--ds-text-lg)}
+.card p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+.card .actions{display:flex;gap:var(--ds-space-3);margin-top:var(--ds-space-2);flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:var(--ds-space-2);margin-bottom:var(--ds-space-4)}
+.field label{font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);text-transform:uppercase}
+.input,.textarea,.select{
+  font-family:var(--ds-font-sans);font-size:var(--ds-text-base);color:var(--ds-fg);
+  background:var(--ds-bg-sunken);border:3px solid var(--ds-border-strong);border-radius:var(--ds-radius-sm);
+  height:44px;padding:0 14px;width:100%;
+}
+.textarea{height:auto;padding:12px 14px;min-height:104px;resize:vertical}
+.input::placeholder,.textarea::placeholder{color:var(--ds-fg-subtle)}
+.input:focus,.textarea:focus,.select:focus{outline:none;box-shadow:var(--ds-focus-ring)}
+.select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ds-fg) 50%),linear-gradient(135deg,var(--ds-fg) 50%,transparent 50%);background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.input-grp{display:flex;align-items:stretch;border:3px solid var(--ds-border-strong);background:var(--ds-bg-sunken);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.input-grp .pre{display:inline-flex;align-items:center;padding:0 12px;border-right:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated)}
+.input-grp .pre .ico{width:18px;height:18px;color:var(--ds-fg-muted)}
+.input-grp input{flex:1;border:none;background:transparent;height:42px;padding:0 12px;color:var(--ds-fg);min-width:0}
+.input-grp input:focus{outline:none}
+.input-grp:focus-within{box-shadow:var(--ds-focus-ring)}
+.opt{display:flex;align-items:center;gap:var(--ds-space-3);margin-bottom:var(--ds-space-3);cursor:pointer;font-size:var(--ds-text-base)}
+.opt input{position:absolute;opacity:0;width:0;height:0}
+.box{width:24px;height:24px;flex:0 0 24px;border:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--ds-shadow-sm);color:var(--ds-fg)}
+.box.rd{border-radius:var(--ds-radius-full)}
+.opt input:focus-visible + .box{box-shadow:var(--ds-focus-ring)}
+.opt input:checked + .box.cb{background:var(--ds-primary)}
+.opt input:checked + .box.cb::after{content:"";width:10px;height:10px;background:var(--ds-primary-fg)}
+.opt input:checked + .box.rd::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--ds-primary)}
+.switch{width:52px;height:28px;flex:0 0 52px;border:3px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);background:var(--ds-bg-sunken);position:relative;box-shadow:var(--ds-shadow-sm)}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:var(--ds-radius-full);background:var(--ds-fg-subtle);transition:transform var(--ds-dur-fast) var(--ds-ease),background var(--ds-dur-fast) var(--ds-ease)}
+.opt input:checked + .switch{background:var(--ds-primary)}
+.opt input:checked + .switch::after{transform:translateX(24px);background:var(--ds-primary-fg)}
+.opt input:focus-visible + .switch{box-shadow:var(--ds-focus-ring)}
+
+/* ---- BADGES / ALERTS / TABS / TABLE ---- */
+.badges{display:flex;flex-wrap:wrap;gap:var(--ds-space-3)}
+.badge{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;padding:5px 10px;border:3px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);white-space:nowrap;color:var(--ds-fg);box-shadow:var(--ds-shadow-sm);background:var(--ds-bg-elevated)}
+.badge.b-success{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success)}
+.badge.b-warning{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning)}
+.badge.b-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger)}
+.badge.b-info{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info)}
+.badge.b-accent{background:var(--ds-accent);color:var(--ds-accent-fg)}
+.alerts{display:grid;gap:var(--ds-space-4)}
+.alert{display:flex;gap:var(--ds-space-3);align-items:flex-start;padding:var(--ds-space-4);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm)}
+.alert .ico{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.alert h4{font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);text-transform:uppercase;margin-bottom:4px}
+.alert p{margin:0;font-size:var(--ds-text-base);line-height:var(--ds-leading-normal)}
+.a-success{background:var(--ds-success-bg);color:var(--ds-success-fg);border-color:var(--ds-success)}
+.a-warning{background:var(--ds-warning-bg);color:var(--ds-warning-fg);border-color:var(--ds-warning)}
+.a-danger{background:var(--ds-danger-bg);color:var(--ds-danger-fg);border-color:var(--ds-danger)}
+.a-info{background:var(--ds-info-bg);color:var(--ds-info-fg);border-color:var(--ds-info)}
+.a-success .ico{color:var(--ds-success)} .a-warning .ico{color:var(--ds-warning)}
+.a-danger .ico{color:var(--ds-danger)} .a-info .ico{color:var(--ds-info)}
+.tabs{display:flex;gap:0;border-bottom:4px solid var(--ds-border-strong);flex-wrap:wrap}
+.tab{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);text-transform:uppercase;background:transparent;border:3px solid transparent;border-bottom:none;color:var(--ds-fg-muted);padding:12px 18px;cursor:pointer;min-height:44px;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ds-fg);background:var(--ds-bg-elevated);border-color:var(--ds-border-strong);border-bottom:4px solid var(--ds-primary);margin-bottom:-4px}
+.tab:focus-visible{outline:none;box-shadow:var(--ds-focus-ring)}
+.table-wrap{border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);background:var(--ds-bg-elevated);overflow-x:auto;color:var(--ds-fg)}
+table{border-collapse:collapse;width:100%;font-size:var(--ds-text-base)}
+thead th{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);letter-spacing:0;text-transform:uppercase;text-align:left;background:var(--ds-bg-subtle);color:var(--ds-fg);padding:12px 16px;border-bottom:3px solid var(--ds-border-strong);white-space:nowrap}
+tbody td{padding:11px 16px;border-bottom:2px solid var(--ds-border)}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right}
+.dot{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:middle;border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-full)}
+
+/* ====================================================================
+   HERO
+   ==================================================================== */
+.hero{position:relative;overflow:hidden;margin-top:var(--ds-space-7);border:5px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);background:var(--ds-bg-elevated);color:var(--ds-fg);display:grid;grid-template-columns:1.08fr .92fr;isolation:isolate}
+.hero .h-left{position:relative;z-index:2;padding:var(--ds-space-9) var(--ds-space-8);display:flex;flex-direction:column;justify-content:center;gap:var(--ds-space-5);border-right:5px solid var(--ds-border-strong);background:linear-gradient(180deg,color-mix(in srgb,var(--ds-bg-elevated) 96%,transparent),color-mix(in srgb,var(--ds-bg-subtle) 82%,transparent))}
+.hero .kicker{font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);text-transform:uppercase;display:inline-flex;align-items:center;gap:var(--ds-space-2);align-self:flex-start;background:var(--ds-accent);color:var(--ds-accent-fg);border:3px solid var(--ds-border-strong);padding:5px 12px;box-shadow:var(--ds-shadow-sm)}
+.hero h1{font-size:var(--ds-text-3xl);max-width:9ch;text-transform:uppercase}
+.hero h1 mark{background:var(--ds-primary);color:var(--ds-primary-fg);padding:0 7px}
+.hero .h-sub{color:var(--ds-fg-muted);font-size:var(--ds-text-md);max-width:48ch;line-height:var(--ds-leading-normal)}
+.hero .h-cta{display:flex;gap:var(--ds-space-3);flex-wrap:wrap}
+.hero .h-stats{display:flex;gap:var(--ds-space-7);flex-wrap:wrap;border-top:2px solid var(--ds-border);padding-top:var(--ds-space-4);margin-top:var(--ds-space-2)}
+.hero .h-stats .v{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-xl);display:block}
+.hero .h-stats .l{font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+.hero .h-right{position:relative;overflow:hidden;min-height:430px;background:var(--ds-bg-subtle);display:grid;place-items:center;padding:var(--ds-space-7)}
+.hero-spread{position:relative;width:min(380px,100%);aspect-ratio:3/4;border:5px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-lg);overflow:hidden;isolation:isolate}
+.hero-spread::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,var(--ds-fg) 0 1.2px,transparent 1.55px);background-size:8px 8px;opacity:.18;z-index:0}
+.hero-spread .speed-field{opacity:.34}
+.hero-title{position:absolute;left:22px;right:18px;bottom:24px;z-index:3;font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-2xl);line-height:.95;text-transform:uppercase;color:var(--ds-fg);text-shadow:3px 3px 0 var(--ds-bg-elevated)}
+.hero-title small{display:block;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);line-height:1.4;margin-top:10px;color:var(--ds-fg-muted);text-transform:none}
+.hero-spread .hanko{position:absolute;right:20px;top:18px;z-index:4}
+.hero-spread .sfx-chip{position:absolute;left:20px;top:56px;z-index:4}
+.hero-spread .slash{position:absolute;left:-12%;top:36%;width:124%;height:18%;background:var(--ds-primary);border-top:5px solid var(--ds-border-strong);border-bottom:5px solid var(--ds-border-strong);transform:rotate(-11deg);z-index:2}
+
+/* ---- IMAGE / ICON / LAYOUT MOCKS ---- */
+.image-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--ds-space-5)}
+.figure{margin:0;display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.ink-frame{position:relative;border:4px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);background:var(--ds-bg-elevated);overflow:hidden;color:var(--ds-fg);isolation:isolate}
+.ink-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 0 48%,var(--ds-border-strong) 48% 51%,transparent 51%),radial-gradient(circle,var(--ds-fg) 0 1.1px,transparent 1.35px);background-size:100% 100%,9px 9px;opacity:.18}
+.ink-frame::after{content:"";position:absolute;inset:auto -10% -8% 24%;height:42%;background:var(--ds-primary);border:4px solid var(--ds-border-strong);transform:rotate(-5deg)}
+.ink-frame .caption-mark{position:absolute;left:12px;top:12px;z-index:2;background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-xs);padding:4px 7px}
+.r-16-9{aspect-ratio:16/9}.r-4-3{aspect-ratio:4/3}.r-1-1{aspect-ratio:1/1}.r-3-4{aspect-ratio:3/4}
+.figure figcaption{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.media-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--ds-space-6)}
+.mcard{background:var(--ds-bg-elevated);border:4px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);display:flex;flex-direction:column;overflow:hidden}
+.mcard .ink-frame{border:0;border-bottom:4px solid var(--ds-border-strong);box-shadow:none}
+.mcard .m-body{padding:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.mcard h4{font-size:var(--ds-text-md)}
+.mcard p{margin:0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm)}
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--ds-space-3)}
+.icon-cell{border:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);padding:var(--ds-space-4);display:flex;flex-direction:column;align-items:center;gap:var(--ds-space-2);text-align:center}
+.icon-cell .ico{width:28px;height:28px}
+.icon-cell .nm{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-fg-muted)}
+.desktop-frame{border:4px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);background:var(--ds-bg-elevated);overflow:hidden;margin-bottom:var(--ds-space-8)}
+.desktop-frame .chrome{display:flex;align-items:center;gap:var(--ds-space-3);background:var(--ds-bg-subtle);border-bottom:4px solid var(--ds-border-strong);padding:10px 14px}
+.desktop-frame .dots{display:flex;gap:6px}
+.desktop-frame .dots i{width:13px;height:13px;border:2px solid var(--ds-border-strong);border-radius:var(--ds-radius-full);display:block;background:var(--ds-bg-elevated)}
+.desktop-frame .dots i:first-child{background:var(--ds-primary)}
+.desktop-frame .addr{flex:1;font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);background:var(--ds-bg-elevated);border:2px solid var(--ds-border-strong);padding:5px 10px;color:var(--ds-fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desktop-frame .flabel{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);font-weight:var(--ds-weight-bold);text-transform:uppercase;background:var(--ds-accent);color:var(--ds-accent-fg);border:2px solid var(--ds-border-strong);padding:3px 8px}
+.dash{display:grid;grid-template-columns:210px 1fr;min-height:380px}
+.dash .side{background:var(--ds-bg-subtle);border-right:4px solid var(--ds-border-strong);padding:var(--ds-space-5);display:flex;flex-direction:column;gap:var(--ds-space-2)}
+.dash .s-brand{font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md);margin-bottom:var(--ds-space-3)}
+.nav-i{display:flex;align-items:center;gap:var(--ds-space-3);padding:10px 12px;border:3px solid transparent;font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);color:var(--ds-fg-muted)}
+.nav-i .ico{width:18px;height:18px}
+.nav-i.on{background:var(--ds-bg-elevated);border-color:var(--ds-border-strong);color:var(--ds-fg);box-shadow:var(--ds-shadow-sm)}
+.dash .main{padding:var(--ds-space-6);display:flex;flex-direction:column;gap:var(--ds-space-5)}
+.d-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-4);flex-wrap:wrap}
+.d-top h3{font-size:var(--ds-text-xl)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--ds-space-4)}
+.kpi{border:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);padding:var(--ds-space-4)}
+.kpi .k-l{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);text-transform:uppercase;color:var(--ds-fg-muted)}
+.kpi .k-v{font-family:var(--ds-font-mono);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-xl);margin-top:4px}
+.kpi .k-d{font-size:var(--ds-text-sm);color:var(--ds-success);margin-top:2px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px;border:3px solid var(--ds-border-strong);background:var(--ds-bg-sunken);padding:var(--ds-space-4)}
+.bars i{flex:1;background:var(--ds-fg);border:2px solid var(--ds-border-strong);display:block}
+.bars i:nth-child(3n){background:var(--ds-primary)}
+.reader-layout{padding:var(--ds-space-7);display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-6);align-items:stretch}
+.reader-layout .poster{position:relative;min-height:320px;border:5px solid var(--ds-border-strong);overflow:hidden;background:var(--ds-bg-subtle)}
+.reader-layout .poster .speed-field{opacity:.3}
+.reader-layout .poster h2{position:absolute;left:var(--ds-space-6);bottom:var(--ds-space-6);right:var(--ds-space-6);font-size:var(--ds-text-2xl);z-index:2}
+.reader-layout .copy{display:flex;flex-direction:column;justify-content:center;gap:var(--ds-space-4)}
+.phone-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-9);align-items:flex-start}
+.dvc-body .ph-screen{display:flex;flex-direction:column;min-height:100%;background:var(--ds-bg)}
+.dvc-body .ph-top{display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border-bottom:4px solid var(--ds-border-strong);padding:10px 14px;min-height:54px}
+.dvc-body .ph-title{font-family:var(--ds-font-serif);font-weight:var(--ds-weight-bold);font-size:var(--ds-text-md)}
+.dvc-body .ph-btn{width:44px;height:44px;border:3px solid var(--ds-border-strong);background:var(--ds-bg-elevated);box-shadow:var(--ds-shadow-sm);display:inline-flex;align-items:center;justify-content:center;color:var(--ds-fg)}
+.dvc-body .ph-btn .ico{width:20px;height:20px}
+.dvc-body .ph-strip{flex:1 1 auto;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:5px;background:var(--ds-border-strong);overflow:hidden}
+.dvc-body .strip-panel{position:relative;min-height:164px;background:var(--ds-bg-elevated);padding:var(--ds-space-4);overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.dvc-body .strip-panel.tall{min-height:238px}
+.dvc-body .strip-panel.diag{clip-path:polygon(0 0,100% 0,92% 100%,0 100%)}
+.dvc-body .strip-panel h4{font-size:var(--ds-text-lg);z-index:2}
+.dvc-body .strip-panel p{margin:4px 0 0;color:var(--ds-fg-muted);font-size:var(--ds-text-sm);z-index:2}
+.dvc-body .strip-panel .speed-field{opacity:.24}
+.dvc-body .ph-tabbar{display:flex;border-top:4px solid var(--ds-border-strong);background:var(--ds-bg-elevated);margin-top:auto;padding-bottom:20px}
+.dvc-body .ph-tabbar button{flex:1;font-family:var(--ds-font-mono);font-size:11px;font-weight:var(--ds-weight-bold);text-transform:uppercase;border:none;border-right:2px solid var(--ds-border);background:transparent;color:var(--ds-fg-muted);padding:10px 4px;cursor:pointer;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;letter-spacing:0}
+.dvc-body .ph-tabbar button .ico{width:18px;height:18px}
+.dvc-body .ph-tabbar button:last-child{border-right:none}
+.dvc-body .ph-tabbar button[aria-current="page"]{background:var(--ds-primary);color:var(--ds-primary-fg)}
+.dvc-body .ph-tabbar button:focus-visible{outline:none;box-shadow:var(--ds-focus-ring);position:relative;z-index:1}
+
+/* ====================================================================
+   RESPONSIVE
+   ==================================================================== */
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .hero .h-left{border-right:none;border-bottom:5px solid var(--ds-border-strong)}
+  .hero h1{font-size:var(--ds-text-2xl)}
+  .comic-grid{grid-template-columns:1fr 1fr}
+  .panel.big,.panel.wide{grid-column:span 2;grid-row:auto}
+  .dash{grid-template-columns:1fr}
+  .dash .side{flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:4px solid var(--ds-border-strong)}
+  .reader-layout{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .wrap{padding:var(--ds-space-5) var(--ds-space-4) var(--ds-space-10)}
+  .cards,.media-cards{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr}
+  .topbar{flex-wrap:wrap;gap:var(--ds-space-3)}
+  .brand .tagline{display:none}
+  .hero h1{font-size:var(--ds-text-xl)}
+  .hero .h-left{padding:var(--ds-space-7) var(--ds-space-5)}
+  .hero .h-right{min-height:360px;padding:var(--ds-space-5)}
+  .hero-spread{width:min(300px,100%)}
+  .display.d-3xl{font-size:var(--ds-text-2xl)}
+  .comic-grid{grid-template-columns:1fr}
+  .panel.big,.panel.wide{grid-column:auto}
+}
+@media (max-width:460px){
+  .phone-row{justify-content:center}
+  .phone-row .dvc17{--dvc-w:320px}
+  .phone-row .dvc17 .scr{height:666px}
+}
+@media (prefers-reduced-motion: no-preference){
+  .panel{animation:panelReveal var(--ds-dur-slow) var(--ds-ease) both}
+  .panel:nth-child(2){animation-delay:60ms}.panel:nth-child(3){animation-delay:110ms}.panel:nth-child(4){animation-delay:160ms}.panel:nth-child(5){animation-delay:210ms}
+  .sfx-chip:hover{animation:impactPulse var(--ds-dur-base) var(--ds-ease)}
+  .btn:hover .ico{transform:translateX(1px)}
+}
+@keyframes panelReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes impactPulse{0%,100%{transform:skew(-8deg) rotate(-1deg) scale(1)}45%{transform:skew(-8deg) rotate(-1deg) scale(1.06)}}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+}
+/* 移动端适配：防止整页横向滚动 + 宽表格改横滑（clip 不破坏 sticky / 内部横滑；表格列仍可滑动查看） */
+@media (max-width:680px){
+  html{overflow-x:hidden!important;}   /* 根元素 hidden 才会传播到视口、真正消除横向滚动 */
+  body{overflow-x:clip!important;}     /* clip 不破坏 sticky / 内部横滑 */
+  table{display:block;width:max-content;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c5-1 9-5 11-14"/><path d="M6 7h12"/><path d="M8 13h9"/><path d="M4 20h16"/></svg>
+    </span>
+    <span>墨线漫画 · Inkline Comics</span>
+    <span class="tagline">Manga / Ink &amp; Screentone</span>
+  </div>
+  <button class="btn btn-secondary" id="themeToggle" aria-label="切换亮暗主题">
+    <span class="ico" id="themeIco" aria-hidden="true"></span><span id="themeTxt">LIGHT</span>
+  </button>
+</div>
+
+<div class="wrap">
+  <!-- HERO -->
+  <header class="hero">
+    <div class="h-left">
+      <span class="kicker"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 5h16v14H4z"/><path d="M4 10h16M10 5v14"/><path d="M15 15l4 4"/></svg></span>ISSUE 48 · INK SPREAD</span>
+      <h1>漫画<br><mark>MANGA</mark></h1>
+      <p class="h-sub">墨线漫画 · Inkline Comics 的轻色优先设计系统：单行本纸面、浓黑分镜、灰阶网点、集中线与唯一朱红点睛。正文始终落在可读纸面，所有组件取值走 <code>var(--ds-*)</code>。</p>
+      <div class="h-cta">
+        <button class="btn btn-primary btn-lg">打开读稿 <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></button>
+        <button class="btn btn-secondary btn-lg">查看规范</button>
+      </div>
+      <div class="h-stats">
+        <div><span class="v num">0-4px</span><span class="l">方形半径</span></div>
+        <div><span class="v num">3-5px</span><span class="l">墨线分镜</span></div>
+        <div><span class="v num">1</span><span class="l">朱红点色</span></div>
+        <div><span class="v num">AA</span><span class="l">双主题对比</span></div>
+      </div>
+    </div>
+    <div class="h-right">
+      <div class="hero-spread" aria-label="漫画风格分镜视觉">
+        <div class="speed-field" aria-hidden="true"></div>
+        <div class="slash" aria-hidden="true"></div>
+        <span class="sfx-chip red">ドン</span>
+        <div class="hanko" aria-label="墨线朱红印章"><span>墨线</span><span>INKLINE</span></div>
+        <div class="hero-title">Ink<br>Frame<small>Concentrated lines, screentone fields, square panels, vermilion impact.</small></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PALETTE -->
+  <section style="margin-top:var(--ds-space-10)">
+    <h2 class="sec-title">色板 <span class="en">/ Palette</span></h2>
+    <p class="lead muted" style="margin-bottom:var(--ds-space-6)">默认亮色像微暖的单行本纸；暗色像白墨落在黑色墨池。品牌只允许一个高声量点色：朱红。其余功能色只在状态组件中低调出现。</p>
+    <div class="swatches" id="swatches"></div>
+  </section>
+
+  <!-- TYPE -->
+  <section>
+    <h2 class="sec-title">字体 <span class="en">/ Type Scale</span></h2>
+    <div class="type-row"><span class="tag">3xl 76</span><span class="display d-3xl">墨線</span></div>
+    <div class="type-row"><span class="tag">2xl 52</span><span class="display d-2xl">INKLINE</span></div>
+    <div class="type-row"><span class="tag">xl 34</span><span class="display d-xl">集中線 Screentone Spread</span></div>
+    <div class="type-row"><span class="tag">lg 24</span><span style="font-size:var(--ds-text-lg);font-weight:var(--ds-weight-bold)">重墨标题 Heavy ink heading</span></div>
+    <div class="type-row"><span class="tag">md 19</span><span style="font-size:var(--ds-text-md)">章节说明 Chapter intro</span></div>
+    <div class="type-row"><span class="tag">base 16</span><span style="font-size:var(--ds-text-base)">正文 Copy stays on calm paper panels 0123456789</span></div>
+    <div class="type-row"><span class="tag">sm 14</span><span style="font-size:var(--ds-text-sm)" class="muted">辅助说明 Secondary caption</span></div>
+    <div class="type-row"><span class="tag">xs 12</span><span style="font-size:var(--ds-text-xs)" class="subtle">分镜编号 / Panel number</span></div>
+    <p class="muted" style="margin-top:var(--ds-space-4)">展示标题与拟声词使用 <b class="display">Noto Serif</b> 的重字重；正文使用 <b>Inter</b>；编号、按钮、标签与数据使用 <b class="mono">JetBrains Mono</b>。</p>
+  </section>
+
+  <!-- COMIC PANELS -->
+  <section>
+    <h2 class="sec-title">分镜与网点 <span class="en">/ Panels &amp; Screentone</span></h2>
+    <div class="comic-grid" aria-label="漫画分镜示例">
+      <article class="panel big tone-soft"><span class="panel-number">01</span><div class="speed-field" aria-hidden="true"></div><svg class="impact-svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M50 5l8 28 28-12-12 28 26 10-29 8 10 28-27-14-18 24-2-30-31 2 24-18-22-19 31 1z"/></svg><h3>集中線</h3><p>径向线把视线压向叙事焦点。</p></article>
+      <article class="panel tone-10"><span class="panel-number">02</span><h3>10%</h3><p>浅网点做纸面层次。</p></article>
+      <article class="panel diag-a tone-20"><span class="panel-number">03</span><h3>20%</h3><p>斜切分镜用于动作转换。</p></article>
+      <article class="panel diag-b tone-35"><span class="panel-number">04</span><h3>35%</h3><p>中密度阴影承接插图。</p></article>
+      <article class="panel wide tone-55"><span class="panel-number">05</span><div class="sfx-row"><span class="sfx-chip">ザッ</span><span class="sfx-chip dark">INK</span><span class="sfx-chip red">GASH</span></div><p style="margin-top:var(--ds-space-5)">拟声词芯片是视觉重音，不替代按钮、状态或正文。</p></article>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section>
+    <h2 class="sec-title">按钮 <span class="en">/ Buttons</span></h2>
+    <div class="row" style="margin-bottom:var(--ds-space-5)">
+      <button class="btn btn-primary">PRIMARY</button>
+      <button class="btn btn-secondary">SECONDARY</button>
+      <button class="btn btn-tertiary">TERTIARY</button>
+      <button class="btn btn-accent">ACCENT</button>
+      <button class="btn btn-danger">DANGER</button>
+      <button class="btn btn-primary" disabled>DISABLED</button>
+    </div>
+    <div class="row" style="margin-bottom:var(--ds-space-5)">
+      <button class="btn btn-primary btn-sm">SMALL</button>
+      <button class="btn btn-primary">MEDIUM</button>
+      <button class="btn btn-primary btn-lg">LARGE</button>
+      <button class="btn btn-secondary btn-icon" aria-label="搜索"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></button>
+      <button class="btn btn-secondary"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>新建分镜</button>
+    </div>
+    <p class="muted" style="font-size:var(--ds-text-sm)">hover 像纸片被挑起，active 回落到纸面。朱红只用于主动作、危险动作和少量冲击标记。</p>
+  </section>
+
+  <!-- FORM -->
+  <section>
+    <h2 class="sec-title">表单 <span class="en">/ Form</span></h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div>
+        <div class="field"><label for="i1">章节名 Chapter</label><input class="input" id="i1" placeholder="Inkline Issue 04"></div>
+        <div class="field"><label for="i2">类型 Type</label>
+          <select class="select" id="i2"><option>连载阅读 Reader</option><option>工作室 Studio</option><option>分镜归档 Archive</option><option>作者页 Profile</option></select>
+        </div>
+        <div class="field"><label for="i3">站点地址 URL</label>
+          <div class="input-grp"><span class="pre" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg></span></span><input id="i3" placeholder="inkline.reader"></div>
+        </div>
+        <div class="field"><label for="i4">简介 Brief</label><textarea class="textarea" id="i4" placeholder="写清这一格要表达的动作、情绪和焦点。"></textarea></div>
+      </div>
+      <div>
+        <label class="opt"><input type="checkbox" checked><span class="box cb"></span><span>启用网点阴影</span></label>
+        <label class="opt"><input type="checkbox" checked><span class="box cb"></span><span>显示朱红印章</span></label>
+        <div style="height:8px"></div>
+        <label class="opt"><input type="radio" name="th" checked><span class="box rd"></span><span>叙事：读者视图</span></label>
+        <label class="opt"><input type="radio" name="th"><span class="box rd"></span><span>制作：工作室视图</span></label>
+        <div style="height:8px"></div>
+        <label class="opt"><input type="checkbox" checked><span class="switch"></span><span>集中线动效</span></label>
+        <label class="opt"><input type="checkbox"><span class="switch"></span><span>黑墨夜读</span></label>
+        <p class="subtle" style="font-size:var(--ds-text-sm);margin-top:var(--ds-space-3)">聚焦任意控件可见双层朱红焦点环。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section>
+    <h2 class="sec-title">卡片 <span class="en">/ Cards</span></h2>
+    <div class="cards">
+      <div class="card tone-soft">
+        <h3>原稿收件箱</h3>
+        <p>卡片使用厚墨线、近方形半径和硬偏移阴影。网点只在背景层出现，正文保持纯净。</p>
+        <div class="badges"><span class="badge b-info">DRAFT</span><span class="badge b-accent">INK</span></div>
+        <div class="actions"><button class="btn btn-primary btn-sm">审稿</button><button class="btn btn-secondary btn-sm">详情</button></div>
+      </div>
+      <div class="card">
+        <h3>阅读数据</h3>
+        <p>等宽数字用于章节、页数和阅读进度；朱红只标记关键变化。</p>
+        <div class="num" style="font-size:var(--ds-text-2xl);font-weight:var(--ds-weight-bold)">128,400</div>
+        <div class="actions"><button class="btn btn-accent btn-sm">导出</button></div>
+      </div>
+      <div class="card tone-soft">
+        <h3>单格重音</h3>
+        <p>每屏只放一个强拟声词或印章，其余内容用分镜节奏承接。</p>
+        <div class="actions"><button class="btn btn-secondary btn-sm">预览</button><button class="btn btn-tertiary btn-sm">分享</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section>
+    <h2 class="sec-title">徽章 <span class="en">/ Badges</span></h2>
+    <div class="badges">
+      <span class="badge">NEUTRAL</span>
+      <span class="badge b-accent">ACCENT</span>
+      <span class="badge b-success">SUCCESS</span>
+      <span class="badge b-warning">WARNING</span>
+      <span class="badge b-danger">DANGER</span>
+      <span class="badge b-info">INFO</span>
+    </div>
+  </section>
+
+  <!-- ALERTS -->
+  <section>
+    <h2 class="sec-title">提示条 <span class="en">/ Alerts</span></h2>
+    <div class="alerts">
+      <div class="alert a-success"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l6 6L21 6"/></svg></span><div><h4>SUCCESS</h4><p>新章节已进入读者队列，封面网点已压缩。</p></div></div>
+      <div class="alert a-warning"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3L1 21h22L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg></span><div><h4>WARNING</h4><p>当前视图已有拟声词芯片，新增重音会削弱叙事焦点。</p></div></div>
+      <div class="alert a-danger"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span><div><h4>DANGER</h4><p>正文落在高密度网点上，阅读对比不稳定，已阻止发布。</p></div></div>
+      <div class="alert a-info"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span><div><h4>INFO</h4><p>黑墨夜读主题已同步，按钮前景按暗色对比重新计算。</p></div></div>
+    </div>
+  </section>
+
+  <!-- TABS -->
+  <section>
+    <h2 class="sec-title">导航 <span class="en">/ Tabs</span></h2>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true">读稿</button>
+      <button class="tab" role="tab" aria-selected="false">分镜</button>
+      <button class="tab" role="tab" aria-selected="false">Token</button>
+      <button class="tab" role="tab" aria-selected="false">设置</button>
+    </div>
+    <p class="muted" style="margin-top:var(--ds-space-4)">选中页签：纸面底 + 粗黑边 + 底部朱红实线。</p>
+  </section>
+
+  <!-- TABLE -->
+  <section>
+    <h2 class="sec-title">表格 <span class="en">/ Table</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>章节 Chapter</th><th>作者 Artist</th><th>状态 Status</th><th class="num">阅读 Reads</th><th class="num">页数 Pages</th></tr></thead>
+        <tbody>
+          <tr><td>inkline-04</td><td>A. Kuro</td><td><span class="dot" style="background:var(--ds-success)"></span>已上线</td><td class="num">18,240</td><td class="num">32</td></tr>
+          <tr><td>rain-panel</td><td>M. Sato</td><td><span class="dot" style="background:var(--ds-warning)"></span>校样中</td><td class="num">09,720</td><td class="num">24</td></tr>
+          <tr><td>red-hanko</td><td>R. Chen</td><td><span class="dot" style="background:var(--ds-danger)"></span>退回</td><td class="num">00,610</td><td class="num">18</td></tr>
+          <tr><td>tone-field</td><td>L. Mori</td><td><span class="dot" style="background:var(--ds-info)"></span>排队</td><td class="num">03,450</td><td class="num">40</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- IMAGE USAGE -->
+  <section>
+    <h2 class="sec-title">图片用法 <span class="en">/ Image Usage</span></h2>
+    <p class="lead muted" style="margin-bottom:var(--ds-space-6)">示例图像以 CSS 分镜占位表达：粗墨线外框、灰阶网点和少量朱红冲击层。实际接入照片或插图时，正文不要直接压在高密度纹理上。</p>
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">宽高比 Aspect ratios</h3>
+    <div class="image-grid" style="margin-bottom:var(--ds-space-9)">
+      <figure class="figure"><div class="ink-frame r-16-9"><span class="caption-mark">16:9</span></div><figcaption>横向章节封面</figcaption></figure>
+      <figure class="figure"><div class="ink-frame r-4-3"><span class="caption-mark">4:3</span></div><figcaption>编辑台预览</figcaption></figure>
+      <figure class="figure"><div class="ink-frame r-1-1"><span class="caption-mark">1:1</span></div><figcaption>头像与方形封面</figcaption></figure>
+      <figure class="figure"><div class="ink-frame r-3-4"><span class="caption-mark">3:4</span></div><figcaption>移动端书封</figcaption></figure>
+    </div>
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">媒体卡 Media cards</h3>
+    <div class="media-cards">
+      <article class="mcard"><div class="ink-frame r-16-9"><span class="caption-mark">COVER</span></div><div class="m-body"><h4>读者封面</h4><p>封面可保留网点与斜切，但标题必须有纯色托底。</p><div class="row"><span class="badge b-info">GUIDE</span><button class="btn btn-tertiary btn-sm">阅读</button></div></div></article>
+      <article class="mcard"><div class="ink-frame r-16-9 tone-20"><span class="caption-mark">FRAME</span></div><div class="m-body"><h4>分镜预览</h4><p>同一视图最多一个朱红冲击块，避免破坏轻色主导。</p><div class="row"><span class="badge b-accent">PANEL</span><button class="btn btn-tertiary btn-sm">浏览</button></div></div></article>
+      <article class="mcard"><div class="ink-frame r-16-9 tone-35"><span class="caption-mark">TONE</span></div><div class="m-body"><h4>网点层级</h4><p>10/20/35/55 四档网点足够表达阴影，不需要额外装饰色。</p><div class="row"><span class="badge b-success">READY</span><button class="btn btn-tertiary btn-sm">查看</button></div></div></article>
+    </div>
+  </section>
+
+  <!-- ICON USAGE -->
+  <section>
+    <h2 class="sec-title">图标用法 <span class="en">/ Icon Usage</span></h2>
+    <p class="lead muted" style="margin-bottom:var(--ds-space-6)">统一内联 SVG、<code>viewBox="0 0 24 24"</code>、粗线条、<code>currentColor</code>。图标像分镜中的墨线，必要时用朱红或语义色强调。</p>
+    <div class="icon-grid" id="iconGrid" style="margin-bottom:var(--ds-space-8)"></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">图标按钮 / 带数字徽标</p>
+        <div class="row">
+          <button class="btn btn-secondary btn-icon" aria-label="设置"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span></button>
+          <button class="btn btn-primary btn-icon" aria-label="添加"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <span class="badge" role="img" aria-label="通知 5 条"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9a6 6 0 0112 0c0 6 2 8 2 8H4s2-2 2-8z"/><path d="M10 21a2 2 0 004 0"/></svg></span><span class="num">5</span></span>
+        </div>
+      </div>
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">输入框前置图标</p>
+        <div class="input-grp"><span class="pre" aria-hidden="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></span><input placeholder="搜索章节..." aria-label="搜索章节"></div>
+      </div>
+      <div>
+        <p class="subtle mono" style="font-size:var(--ds-text-xs);margin:0 0 var(--ds-space-3)">语义图标</p>
+        <div class="badges"><span class="badge b-success">PASS</span><span class="badge b-warning">CHECK</span><span class="badge b-danger">BLOCK</span><span class="badge b-info">QUEUE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESKTOP LAYOUTS -->
+  <section>
+    <h2 class="sec-title">桌面布局 <span class="en">/ Desktop Layouts</span></h2>
+    <div class="desktop-frame">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">app.inkline.reader/studio</span><span class="flabel">Studio Dashboard</span></div>
+      <div class="dash">
+        <aside class="side">
+          <div class="s-brand">墨线 Studio</div>
+          <div class="nav-i on"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>概览</div>
+          <div class="nav-i"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19V5M4 19h16M8 16V9M13 16V6M18 16v-4"/></svg></span>数据</div>
+          <div class="nav-i"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18"/></svg></span>章节</div>
+          <div class="nav-i"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span>设置</div>
+        </aside>
+        <div class="main">
+          <div class="d-top"><h3>阅读概览</h3><button class="btn btn-primary btn-sm">新建章节 <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></button></div>
+          <div class="kpis">
+            <div class="kpi"><div class="k-l">总阅读</div><div class="k-v num">128.4k</div><div class="k-d">+12.4%</div></div>
+            <div class="kpi"><div class="k-l">上线章节</div><div class="k-v num">48</div><div class="k-d">+3 本周</div></div>
+            <div class="kpi"><div class="k-l">平均页数</div><div class="k-v num">32</div><div class="k-d">+4.8%</div></div>
+          </div>
+          <div><div class="d-top" style="margin-bottom:var(--ds-space-3)"><span class="mono" style="font-size:var(--ds-text-sm);font-weight:var(--ds-weight-bold);text-transform:uppercase">每周阅读</span><span class="badge b-info">8 weeks</span></div><div class="bars" aria-hidden="true"><i style="height:40%"></i><i style="height:62%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:68%"></i><i style="height:90%"></i><i style="height:74%"></i><i style="height:100%"></i></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="desktop-frame">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">inkline.reader</span><span class="flabel">Reader Landing</span></div>
+      <div class="reader-layout">
+        <div class="poster tone-soft"><div class="speed-field" aria-hidden="true"></div><div class="hanko" style="position:absolute;right:24px;top:24px;z-index:2"><span>墨线</span><span>ISSUE</span></div><h2>Light paper. Heavy ink. One red strike.</h2></div>
+        <div class="copy">
+          <span class="badge b-accent" style="align-self:flex-start">NEW ISSUE</span>
+          <h2 style="font-size:var(--ds-text-2xl)">一屏像一页展开的漫画。</h2>
+          <p class="muted">落地页可以更戏剧化，但正文仍放在纯色纸面。网点与集中线只做叙事氛围，不抢可读性。</p>
+          <div class="row"><button class="btn btn-primary">开始阅读</button><button class="btn btn-secondary">查看目录</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOBILE LAYOUT -->
+  <section>
+    <h2 class="sec-title">移动布局 <span class="en">/ iPhone 17 Pro Max</span></h2>
+    <div class="phone-row">
+      <div class="dvc17" aria-label="iPhone 17 Pro Max 竖向漫画阅读器">
+        <span class="k k-act"></span><span class="k k-vu"></span><span class="k k-vd"></span>
+        <span class="k k-cam"></span><span class="k k-pwr"></span>
+        <div class="scr">
+          <div class="island"></div>
+          <div class="sb">
+            <span>9:41</span>
+            <span class="ico">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 2.5c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 0 0 8 6.7 7.4 7.4 0 0 0 2.7 6.8L1.2 5.2A9.6 9.6 0 0 1 8 2.5Zm0 3.8c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8 8.7c-.8 0-1.6.3-2.3.8L4.1 7.9A5.5 5.5 0 0 1 8 6.3Zm0 3.6 1.6 1.6L8 12 6.4 11.5 8 9.9Z"/></svg>
+              <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="21" height="11" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="15" height="7" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.6" height="5" rx=".8" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="dvc-body">
+            <div class="ph-screen">
+              <div class="ph-top">
+                <span class="ph-title">Inkline</span>
+                <button class="ph-btn" aria-label="目录"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span></button>
+              </div>
+              <div class="ph-strip">
+                <article class="strip-panel tall tone-soft"><div class="speed-field" aria-hidden="true"></div><span class="sfx-chip red" style="align-self:flex-start">ドン</span><h4>第 04 话</h4><p>竖向阅读像 webtoon 条漫，但仍保留粗分镜边。</p></article>
+                <article class="strip-panel diag tone-20"><h4>斜切转场</h4><p>动作面板必须被父容器裁切，390px 视口不横溢。</p></article>
+                <article class="strip-panel tone-35"><div class="hanko" style="width:72px;height:72px;position:absolute;right:14px;top:14px"><span style="font-size:17px">墨线</span><span>READ</span></div><h4>网点阴影</h4><p>正文仍在低密度区域或纯色底上。</p></article>
+                <article class="strip-panel"><div class="sfx-row"><span class="sfx-chip">ザッ</span><span class="sfx-chip dark">INK</span></div><p>拟声词用于节奏，不当作导航。</p></article>
+              </div>
+              <nav class="ph-tabbar" aria-label="底部导航">
+                <button aria-current="page"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg></span>首页</button>
+                <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>搜索</button>
+                <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9a6 6 0 0112 0c0 6 2 8 2 8H4s2-2 2-8z"/><path d="M10 21a2 2 0 004 0"/></svg></span>通知</button>
+                <button><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>我的</button>
+              </nav>
+            </div>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+      <p class="muted" style="max-width:34ch">iPhone 17 Pro Max 共享套壳保留灵动岛、状态栏与 home 条。屏内是竖向漫画阅读条，触控目标不低于 44px，斜切面板被屏幕容器裁切。</p>
+    </div>
+  </section>
+
+  <!-- MORE COMPONENTS -->
+  <section>
+    <h2 class="sec-title">更多组件 <span class="en">/ More Components</span></h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:var(--ds-space-8)">
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">面包屑 Breadcrumb</h3>
+        <nav aria-label="面包屑" style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-2);font-family:var(--ds-font-mono);font-size:var(--ds-text-sm)">
+          <a href="#">首页</a><span class="subtle" aria-hidden="true">/</span><a href="#">章节</a><span class="subtle" aria-hidden="true">/</span><span aria-current="page" style="background:var(--ds-bg-sunken);border:2px solid var(--ds-border-strong);padding:4px 8px;color:var(--ds-fg);font-weight:var(--ds-weight-bold)">inkline-04</span>
+        </nav>
+      </div>
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">步进器 Stepper</h3>
+        <div role="group" aria-label="页数" style="display:inline-flex;align-items:stretch;border:2px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);background:var(--ds-bg-elevated);color:var(--ds-fg)">
+          <button type="button" aria-label="减少" class="btn btn-secondary btn-icon" style="border:none;box-shadow:none;border-right:2px solid var(--ds-border-strong)"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg></span></button>
+          <span class="val num" aria-live="polite" style="min-width:64px;display:inline-flex;align-items:center;justify-content:center;background:var(--ds-bg-sunken);font-weight:var(--ds-weight-bold)">03</span>
+          <button type="button" aria-label="增加" class="btn btn-secondary btn-icon" style="border:none;box-shadow:none;border-left:2px solid var(--ds-border-strong)"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></button>
+        </div>
+      </div>
+      <div>
+        <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">通知 Toast</h3>
+        <div role="status" style="display:flex;align-items:flex-start;gap:var(--ds-space-3);background:var(--ds-bg-elevated);border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-md);color:var(--ds-fg);padding:var(--ds-space-3) var(--ds-space-4)">
+          <span class="ico" aria-hidden="true" style="width:20px;height:20px;margin-top:2px;color:var(--ds-success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l6 6L21 6"/></svg></span>
+          <div style="flex:1"><div class="mono" style="font-weight:var(--ds-weight-bold);font-size:var(--ds-text-sm);text-transform:uppercase">已发布</div><div class="muted" style="font-size:var(--ds-text-sm)">inkline-04 已上线，32 页。</div></div>
+          <button class="btn btn-tertiary btn-icon" aria-label="关闭" style="width:32px;height:32px"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 5l14 14M19 5L5 19"/></svg></span></button>
+        </div>
+      </div>
+    </div>
+    <h3 class="display d-xl" style="font-size:var(--ds-text-lg);margin-bottom:var(--ds-space-4)">模态框 Modal</h3>
+    <div style="border:3px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-sm);color:var(--ds-fg);background:var(--ds-bg-subtle);background-image:repeating-linear-gradient(45deg,transparent 0 8px,color-mix(in srgb,var(--ds-fg) 6%,transparent) 8px 10px);padding:var(--ds-space-8);display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <div role="dialog" aria-modal="true" aria-labelledby="mdl-t" style="width:min(440px,100%);background:var(--ds-bg-elevated);border:4px solid var(--ds-border-strong);box-shadow:var(--ds-shadow-lg);color:var(--ds-fg);position:relative;z-index:var(--ds-z-modal)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-3);background:var(--ds-primary);color:var(--ds-primary-fg);border-bottom:4px solid var(--ds-border-strong);padding:12px 16px"><span id="mdl-t" class="mono" style="font-weight:var(--ds-weight-bold);text-transform:uppercase">下架章节？</span><button aria-label="关闭" class="btn btn-icon" style="width:32px;height:32px;background:var(--ds-bg-elevated);color:var(--ds-fg);box-shadow:none"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 5l14 14M19 5L5 19"/></svg></span></button></div>
+        <div style="padding:var(--ds-space-6)">
+          <p class="muted" style="margin:0 0 var(--ds-space-5);line-height:var(--ds-leading-normal)">此操作会从读者队列移除 <code>rain-panel</code>。保留原稿与评论记录。</p>
+          <div style="display:flex;gap:var(--ds-space-3);justify-content:flex-end;flex-wrap:wrap"><button class="btn btn-secondary btn-sm">取消</button><button class="btn btn-danger btn-sm">确认下架</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:var(--ds-space-12);border-top:4px solid var(--ds-border-strong);padding-top:var(--ds-space-6);color:var(--ds-fg-muted);font-family:var(--ds-font-mono);font-size:var(--ds-text-sm);line-height:1.7;overflow-wrap:anywhere">
+    <span style="font-weight:var(--ds-weight-bold);color:var(--ds-fg)">墨线漫画 · Inkline Comics</span> — 漫画 · Manga / Ink &amp; Screentone · 墨线分镜 / 灰阶网点 / 集中线 / 朱红印章 · 全量 <code>--ds-*</code> token · WCAG AA
+  </footer>
+</div>
+
+<script>
+/* ---- 亮暗切换 ---- */
+var root=document.documentElement, tIco=document.getElementById('themeIco'), tTxt=document.getElementById('themeTxt');
+var SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>';
+var MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 13a8.5 8.5 0 11-10-10 6.5 6.5 0 0010 10z"/></svg>';
+tIco.innerHTML=SUN;
+document.getElementById('themeToggle').addEventListener('click',function(){
+  var dark=root.dataset.theme==='dark';
+  root.dataset.theme=dark?'light':'dark';
+  tIco.innerHTML=dark?SUN:MOON;
+  tTxt.textContent=dark?'LIGHT':'DARK';
+});
+
+/* ---- 动态色板（变量名 + 当前计算 hex） ---- */
+var tokens=['bg','bg-subtle','bg-elevated','bg-sunken','fg','fg-muted','fg-subtle','fg-on-accent','border','border-strong',
+  'primary','primary-hover','primary-active','primary-fg','accent','accent-fg',
+  'success','success-bg','success-fg','warning','warning-bg','warning-fg','danger','danger-bg','danger-fg','info','info-bg','info-fg','focus'];
+var cont=document.getElementById('swatches');
+function rgb2hex(c){var m=c.match(/\d+/g);if(!m)return c;return '#'+m.slice(0,3).map(function(n){return ('0'+(+n).toString(16)).slice(-2)}).join('')}
+function render(){
+  cont.innerHTML='';var cs=getComputedStyle(root);
+  tokens.forEach(function(t){
+    var val=cs.getPropertyValue('--ds-'+t).trim();
+    var el=document.createElement('div');el.className='sw';
+    el.innerHTML='<div class="chip" style="background:var(--ds-'+t+')"></div>'+
+      '<div class="meta"><span class="nm">--ds-'+t+'</span><span class="hx">'+rgb2hex(val)+'</span></div>';
+    cont.appendChild(el);
+  });
+}
+render();
+new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---- 图标集（内联 SVG，粗墨线） ---- */
+var ICONS=[
+  ['home','<path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/>'],
+  ['search','<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>'],
+  ['settings','<circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>'],
+  ['bell','<path d="M6 9a6 6 0 0112 0c0 6 2 8 2 8H4s2-2 2-8z"/><path d="M10 21a2 2 0 004 0"/>'],
+  ['user','<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'],
+  ['grid','<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>'],
+  ['plus','<path d="M12 5v14M5 12h14"/>'],
+  ['check','<path d="M3 12l6 6L21 6"/>'],
+  ['close','<path d="M5 5l14 14M19 5L5 19"/>'],
+  ['arrow','<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>'],
+  ['chart','<path d="M4 19V5M4 19h16M8 16V9M13 16V6M18 16v-4"/>'],
+  ['folder','<path d="M3 7l0 12h18V9H11L9 7z"/>'],
+  ['code','<path d="M9 8l-5 4 5 4M15 8l5 4-5 4"/>'],
+  ['book','<path d="M4 5h7a4 4 0 014 4v10H8a4 4 0 00-4 4z"/><path d="M20 5h-7a4 4 0 00-4 4v10h7a4 4 0 014 4z"/>'],
+  ['download','<path d="M12 3v12M7 11l5 4 5-4M4 20h16"/>'],
+  ['lock','<rect x="5" y="11" width="14" height="9"/><path d="M8 11V8a4 4 0 018 0v3"/>']
+];
+var ig=document.getElementById('iconGrid');
+ICONS.forEach(function(ic){
+  var el=document.createElement('div');el.className='icon-cell';
+  el.innerHTML='<span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">'+ic[1]+'</svg></span><span class="nm">'+ic[0]+'</span>';
+  ig.appendChild(el);
+});
+</script>
+</body>
+</html>
