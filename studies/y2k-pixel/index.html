@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Y2K Pixel Desktop Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --sky: #5EA6E5;
+      --sky-2: #8bc7f2;
+      --sky-3: #dff4ff;
+      --blue-ink: #246ba4;
+      --deep-blue: #174e80;
+      --white: #ffffff;
+      --chrome: #d7dee5;
+      --chrome-2: #b7c1cb;
+      --chrome-3: #eef3f7;
+      --edge-hi: #ffffff;
+      --edge-mid: #8b99a7;
+      --edge-dark: #526170;
+      --panel: #f8fcff;
+      --yellow: #fff4a5;
+      --pink: #ffb7da;
+      --green: #b9f7cf;
+      --taskbar-height: 46px;
+      --pixel-head: "Press Start 2P", "VT323", ui-monospace, monospace;
+      --pixel: "VT323", "JetBrains Mono", ui-monospace, monospace;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", "PingFang SC", sans-serif;
+      --cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath fill='%23246ba4' d='M2 1h2v2H2zM4 3h2v2H4zM6 5h2v2H6zM8 7h2v2H8zM10 9h2v2h-2zM12 11h2v2h-2zM14 13h2v2h-2zM4 5h2v2H4zM4 7h2v2H4zM4 9h2v2H4zM4 11h2v2H4zM4 13h2v2H4zM4 15h2v2H4zM6 15h2v2H6zM8 15h2v2H8zM10 15h2v2h-2zM12 15h2v2h-2zM10 17h2v2h-2zM12 19h2v2h-2z'/%3E%3Cpath fill='%23ffffff' d='M4 3h2v2H4zM6 5h2v2H6zM6 7h2v2H6zM6 9h2v2H6zM6 11h2v2H6zM6 13h2v2H6zM8 9h2v2H8zM8 11h2v2H8zM8 13h2v2H8zM10 11h2v2h-2zM10 13h2v2h-2zM12 13h2v2h-2z'/%3E%3C/svg%3E") 2 1, auto;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--sky);
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100dvh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--deep-blue);
+      font-family: var(--pixel);
+      font-size: 20px;
+      line-height: 1.25;
+      cursor: var(--cursor);
+      image-rendering: pixelated;
+      -webkit-font-smoothing: none;
+      background:
+        linear-gradient(180deg, #93cef6 0%, var(--sky) 46%, #bde8fb 78%, #effcff 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      z-index: 0;
+      opacity: .82;
+      background:
+        radial-gradient(circle at 13% 18%, var(--white) 0 15px, transparent 16px),
+        radial-gradient(circle at 16% 18%, var(--white) 0 20px, transparent 21px),
+        radial-gradient(circle at 20% 20%, var(--white) 0 13px, transparent 14px),
+        radial-gradient(circle at 72% 14%, rgba(255, 255, 255, .9) 0 18px, transparent 19px),
+        radial-gradient(circle at 76% 15%, rgba(255, 255, 255, .92) 0 26px, transparent 27px),
+        radial-gradient(circle at 81% 17%, rgba(255, 255, 255, .88) 0 15px, transparent 16px),
+        radial-gradient(circle at 52% 68%, rgba(255, 255, 255, .76) 0 18px, transparent 19px),
+        radial-gradient(circle at 56% 69%, rgba(255, 255, 255, .76) 0 28px, transparent 29px),
+        radial-gradient(circle at 61% 71%, rgba(255, 255, 255, .72) 0 16px, transparent 17px),
+        linear-gradient(90deg, rgba(255, 255, 255, .15) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, .17) 1px, transparent 1px);
+      background-size:
+        auto, auto, auto, auto, auto, auto, auto, auto, auto,
+        16px 16px, 16px 16px;
+    }
+
+    body::after {
+      z-index: 2147483500;
+      opacity: .18;
+      background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .42) 0 1px, transparent 1px 4px),
+        radial-gradient(circle, rgba(36, 107, 164, .34) 1px, transparent 1px);
+      background-size: auto, 5px 5px;
+      mix-blend-mode: soft-light;
+    }
+
+    button,
+    a {
+      cursor: var(--cursor);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    svg {
+      display: block;
+      shape-rendering: crispEdges;
+    }
+
+    .desktop {
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      padding: 18px 18px calc(var(--taskbar-height) + 26px);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .desktop::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .55;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, transparent 0 72%, rgba(255, 255, 255, .38) 72% 74%, transparent 74%),
+        linear-gradient(45deg, transparent 0 67%, rgba(36, 107, 164, .12) 67% 69%, transparent 69%),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, .18) 0 2px, transparent 2px 8px);
+    }
+
+    .wall-title {
+      position: absolute;
+      left: clamp(110px, 14vw, 188px);
+      top: clamp(56px, 9vw, 100px);
+      z-index: 1;
+      color: rgba(255, 255, 255, .9);
+      font-family: "Noto Serif", Georgia, serif;
+      font-size: clamp(72px, 14vw, 188px);
+      font-style: italic;
+      line-height: .8;
+      letter-spacing: 0;
+      text-shadow:
+        2px 0 0 var(--sky),
+        -2px 0 0 var(--sky),
+        0 2px 0 var(--sky),
+        0 -2px 0 var(--sky),
+        5px 5px 0 rgba(36, 107, 164, .16);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .wall-title span {
+      display: block;
+      padding-bottom: .06em;
+    }
+
+    .desktop-icons {
+      position: absolute;
+      top: 22px;
+      left: 20px;
+      z-index: 8;
+      display: grid;
+      gap: 18px;
+      width: 78px;
+    }
+
+    .desktop-icon {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      width: 78px;
+      color: var(--deep-blue);
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+    }
+
+    .desktop-icon svg {
+      width: 44px;
+      height: 44px;
+      filter: drop-shadow(3px 3px 0 rgba(23, 78, 128, .16));
+    }
+
+    .icon-label {
+      max-width: 78px;
+      padding: 2px 4px;
+      border: 1px dotted transparent;
+      background: rgba(255, 255, 255, .82);
+      color: var(--deep-blue);
+      font: 400 17px/.9 var(--pixel);
+      word-break: break-word;
+    }
+
+    .desktop-icon:hover .icon-label,
+    .desktop-icon:focus-visible .icon-label {
+      border-color: var(--deep-blue);
+      background: var(--sky);
+      color: var(--white);
+    }
+
+    .window {
+      position: absolute;
+      z-index: 12;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      border: 2px solid var(--edge-dark);
+      background: var(--chrome);
+      color: var(--deep-blue);
+      box-shadow:
+        inset 2px 2px 0 var(--edge-hi),
+        inset -2px -2px 0 var(--edge-mid),
+        8px 8px 0 rgba(36, 107, 164, .2);
+    }
+
+    .window.is-active {
+      z-index: 18;
+      box-shadow:
+        inset 2px 2px 0 var(--edge-hi),
+        inset -2px -2px 0 var(--edge-mid),
+        8px 8px 0 rgba(36, 107, 164, .26),
+        0 0 0 4px rgba(255, 255, 255, .24);
+    }
+
+    .win-main {
+      top: 54px;
+      left: 50%;
+      width: min(620px, calc(100vw - 270px));
+      transform: translateX(-44%);
+    }
+
+    .win-palette {
+      top: 112px;
+      right: 32px;
+      width: min(330px, 29vw);
+    }
+
+    .win-note {
+      bottom: calc(var(--taskbar-height) + 34px);
+      left: 118px;
+      width: min(370px, 32vw);
+    }
+
+    .dialog {
+      top: 52%;
+      left: 58%;
+      z-index: 22;
+      width: min(390px, 32vw);
+      transform: translate(-16%, -12%);
+    }
+
+    .titlebar {
+      display: flex;
+      min-height: 30px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 5px 4px 9px;
+      border-bottom: 2px solid var(--edge-dark);
+      color: var(--white);
+      background:
+        linear-gradient(90deg, var(--sky) 0 8px, transparent 8px 12px) 0 0 / 12px 100%,
+        var(--blue-ink);
+      font-family: var(--pixel-head);
+      font-size: 9px;
+      line-height: 1.35;
+      letter-spacing: 0;
+      cursor: grab;
+    }
+
+    .titlebar:active {
+      cursor: grabbing;
+    }
+
+    .window:not(.is-active) .titlebar {
+      background:
+        linear-gradient(90deg, #aeb9c4 0 8px, transparent 8px 12px) 0 0 / 12px 100%,
+        #7f8b96;
+    }
+
+    .title-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .controls {
+      display: inline-flex;
+      flex: 0 0 auto;
+      gap: 4px;
+    }
+
+    .control {
+      position: relative;
+      width: 17px;
+      height: 17px;
+      padding: 0;
+      border: 2px solid var(--edge-dark);
+      background: var(--chrome-3);
+      box-shadow:
+        inset 1px 1px 0 var(--edge-hi),
+        inset -1px -1px 0 var(--edge-mid);
+    }
+
+    .control::before,
+    .control::after {
+      content: "";
+      position: absolute;
+      background: var(--deep-blue);
+    }
+
+    .control.min::before {
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      height: 2px;
+    }
+
+    .control.max::before {
+      left: 4px;
+      top: 4px;
+      width: 7px;
+      height: 7px;
+      background: transparent;
+      border: 2px solid var(--deep-blue);
+    }
+
+    .control.close::before {
+      left: 4px;
+      top: 7px;
+      width: 9px;
+      height: 2px;
+      transform: rotate(45deg);
+    }
+
+    .control.close::after {
+      left: 4px;
+      top: 7px;
+      width: 9px;
+      height: 2px;
+      transform: rotate(-45deg);
+    }
+
+    .menubar {
+      display: flex;
+      gap: 14px;
+      padding: 3px 8px 2px;
+      border-bottom: 2px solid var(--edge-mid);
+      background: var(--chrome-3);
+      font: 400 17px/1 var(--pixel);
+    }
+
+    .menubar span::first-letter {
+      text-decoration: underline;
+    }
+
+    .window-content {
+      min-width: 0;
+      flex: 1;
+      padding: 14px;
+      border: 2px solid var(--edge-mid);
+      border-top: 0;
+      background: var(--panel);
+      box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, .95),
+        inset -2px -2px 0 rgba(139, 153, 167, .48);
+    }
+
+    .window-status {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 3px 8px;
+      border-top: 2px solid var(--edge-mid);
+      background: var(--chrome-3);
+      color: var(--blue-ink);
+      font: 400 15px/1 var(--pixel);
+    }
+
+    .brand-lockup {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .badge-pixel {
+      display: grid;
+      width: 86px;
+      height: 86px;
+      place-items: center;
+      border: 2px solid var(--deep-blue);
+      background:
+        linear-gradient(45deg, rgba(94, 166, 229, .2) 25%, transparent 25% 50%, rgba(94, 166, 229, .2) 50% 75%, transparent 75%) 0 0 / 8px 8px,
+        var(--white);
+      box-shadow:
+        inset 2px 2px 0 var(--edge-hi),
+        inset -2px -2px 0 var(--edge-mid);
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      color: var(--deep-blue);
+      font-family: var(--pixel-head);
+      font-size: clamp(16px, 2.4vw, 25px);
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+
+    .subcopy {
+      margin-top: 8px;
+      color: var(--blue-ink);
+      font: 500 13px/1.55 var(--mono);
+    }
+
+    .pixel-screen {
+      margin: 12px 0;
+      border: 2px solid var(--deep-blue);
+      background:
+        radial-gradient(circle at 24% 38%, var(--yellow) 0 14px, transparent 15px),
+        radial-gradient(circle at 74% 34%, var(--white) 0 18px, transparent 19px),
+        radial-gradient(circle at 79% 35%, var(--white) 0 24px, transparent 25px),
+        linear-gradient(180deg, #83c5ee 0%, #b9e5fb 52%, #ffffff 52% 100%);
+      min-height: 142px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pixel-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, rgba(36, 107, 164, .24) 0 2px, transparent 2px 8px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .34) 0 2px, transparent 2px 8px);
+      mix-blend-mode: soft-light;
+    }
+
+    .pixel-screen::after {
+      content: "";
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 22px;
+      height: 34px;
+      border: 2px solid var(--deep-blue);
+      background:
+        linear-gradient(90deg, var(--sky) 0 18%, transparent 18% 21%, var(--pink) 21% 38%, transparent 38% 42%, var(--green) 42% 64%, transparent 64% 67%, var(--yellow) 67% 100%);
+      box-shadow: 0 8px 0 rgba(36, 107, 164, .18);
+    }
+
+    .command-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      font: 400 20px/1.1 var(--pixel);
+    }
+
+    .command-line code {
+      padding: 1px 5px 2px;
+      border: 1px solid var(--sky);
+      background: var(--white);
+      color: var(--deep-blue);
+      font: inherit;
+    }
+
+    .caret {
+      display: inline-block;
+      width: 10px;
+      height: 18px;
+      margin-left: 2px;
+      transform: translateY(3px);
+      background: var(--sky);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .swatch {
+      min-height: 58px;
+      border: 2px solid var(--deep-blue);
+      box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, .78),
+        inset -2px -2px 0 rgba(36, 107, 164, .22);
+    }
+
+    .swatch.sky { background: var(--sky); }
+    .swatch.white { background: var(--white); }
+    .swatch.chrome { background: var(--chrome); }
+    .swatch.pink { background: var(--pink); }
+    .swatch.green { background: var(--green); }
+    .swatch.dither {
+      background:
+        radial-gradient(circle, var(--sky) 1px, transparent 1px) 0 0 / 6px 6px,
+        var(--white);
+    }
+
+    .meter-list {
+      display: grid;
+      gap: 8px;
+      font: 400 18px/1 var(--pixel);
+    }
+
+    .meter {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .meter span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .meter i {
+      display: block;
+      height: 16px;
+      border: 2px solid var(--deep-blue);
+      background:
+        linear-gradient(90deg, var(--sky) 0 var(--fill), transparent var(--fill)),
+        radial-gradient(circle, rgba(36, 107, 164, .24) 1px, transparent 1px) 0 0 / 4px 4px,
+        var(--white);
+    }
+
+    .note-paper {
+      padding: 10px;
+      border: 2px solid var(--deep-blue);
+      background:
+        linear-gradient(rgba(94, 166, 229, .16) 1px, transparent 1px) 0 8px / 100% 22px,
+        var(--white);
+      font: 400 22px/1.1 var(--pixel);
+    }
+
+    .note-paper strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--deep-blue);
+      font-family: var(--pixel-head);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .note-paper p + p {
+      margin-top: 8px;
+    }
+
+    .dialog .window-content {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+    }
+
+    .dialog-copy {
+      min-width: 0;
+    }
+
+    .dialog-copy h2 {
+      margin-bottom: 6px;
+      color: var(--deep-blue);
+      font-family: var(--pixel-head);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .dialog-copy p {
+      font: 400 20px/1.18 var(--pixel);
+    }
+
+    .dialog-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .pixel-button {
+      min-width: 78px;
+      padding: 4px 11px 5px;
+      border: 2px solid var(--edge-dark);
+      background: var(--chrome-3);
+      color: var(--deep-blue);
+      box-shadow:
+        inset 2px 2px 0 var(--edge-hi),
+        inset -2px -2px 0 var(--edge-mid),
+        2px 2px 0 rgba(36, 107, 164, .24);
+      text-align: center;
+      font: 400 19px/1 var(--pixel);
+    }
+
+    .pixel-button:active {
+      transform: translate(2px, 2px);
+      box-shadow:
+        inset -1px -1px 0 var(--edge-hi),
+        inset 1px 1px 0 var(--edge-mid);
+    }
+
+    .ticker {
+      position: absolute;
+      right: 28px;
+      bottom: calc(var(--taskbar-height) + 24px);
+      z-index: 6;
+      width: min(420px, 34vw);
+      overflow: hidden;
+      border: 2px solid var(--deep-blue);
+      background: rgba(255, 255, 255, .78);
+      box-shadow: 4px 4px 0 rgba(36, 107, 164, .18);
+      color: var(--deep-blue);
+      font: 400 18px/1.3 var(--pixel);
+      white-space: nowrap;
+    }
+
+    .ticker span {
+      display: inline-block;
+      padding: 4px 12px;
+    }
+
+    .taskbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 80;
+      display: flex;
+      height: var(--taskbar-height);
+      min-width: 0;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px calc(5px + env(safe-area-inset-bottom));
+      border-top: 2px solid var(--edge-hi);
+      background: var(--chrome);
+      box-shadow:
+        inset 0 2px 0 var(--edge-hi),
+        inset 0 -2px 0 var(--edge-mid);
+    }
+
+    .start-button {
+      display: inline-flex;
+      flex: 0 0 auto;
+      height: 32px;
+      align-items: center;
+      gap: 7px;
+      padding: 0 13px 1px 9px;
+      border: 2px solid var(--edge-dark);
+      background: var(--chrome-3);
+      color: var(--deep-blue);
+      box-shadow:
+        inset 2px 2px 0 var(--edge-hi),
+        inset -2px -2px 0 var(--edge-mid),
+        2px 2px 0 rgba(36, 107, 164, .18);
+      font: 400 22px/1 var(--pixel);
+    }
+
+    .start-mark {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--deep-blue);
+      background:
+        linear-gradient(90deg, var(--sky) 0 50%, var(--white) 50% 100%);
+      box-shadow:
+        0 0 0 2px var(--white) inset,
+        2px 2px 0 rgba(36, 107, 164, .18);
+    }
+
+    .task-items {
+      display: flex;
+      min-width: 0;
+      flex: 1 1 auto;
+      gap: 5px;
+    }
+
+    .task-item {
+      display: flex;
+      min-width: 0;
+      max-width: 220px;
+      height: 30px;
+      align-items: center;
+      gap: 7px;
+      padding: 0 9px;
+      border: 2px solid var(--edge-dark);
+      background: var(--chrome-3);
+      box-shadow:
+        inset 2px 2px 0 var(--edge-hi),
+        inset -2px -2px 0 var(--edge-mid);
+      color: var(--deep-blue);
+      font: 400 18px/1 var(--pixel);
+      white-space: nowrap;
+    }
+
+    .task-item.active {
+      background:
+        radial-gradient(circle, rgba(94, 166, 229, .26) 1px, transparent 1px) 0 0 / 5px 5px,
+        var(--white);
+      box-shadow:
+        inset -2px -2px 0 var(--edge-hi),
+        inset 2px 2px 0 var(--edge-mid);
+    }
+
+    .task-item span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tray {
+      display: inline-flex;
+      flex: 0 0 auto;
+      height: 30px;
+      align-items: center;
+      gap: 8px;
+      padding: 0 9px;
+      border: 2px solid var(--edge-mid);
+      background: var(--chrome-3);
+      box-shadow:
+        inset -2px -2px 0 var(--edge-hi),
+        inset 2px 2px 0 var(--edge-mid);
+      font: 400 18px/1 var(--pixel);
+    }
+
+    .tray-icons {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .tray-chip {
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--deep-blue);
+      background: var(--white);
+    }
+
+    .tray-chip:nth-child(2) {
+      background: var(--green);
+    }
+
+    .tray-chip:nth-child(3) {
+      background: var(--pink);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .window.is-active {
+        animation: focusPulse 2.8s steps(2, end) infinite;
+      }
+
+      .caret {
+        animation: blink 1s steps(1, end) infinite;
+      }
+
+      .ticker span {
+        animation: crawl 15s linear infinite;
+      }
+
+      .desktop-icon {
+        transition: transform .16s steps(2, end);
+      }
+
+      .desktop-icon:hover,
+      .desktop-icon:focus-visible {
+        transform: translateY(-3px);
+      }
+    }
+
+    @keyframes focusPulse {
+      0%, 100% { filter: none; }
+      50% { filter: saturate(1.08) brightness(1.02); }
+    }
+
+    @keyframes blink {
+      0%, 48% { opacity: 1; }
+      49%, 100% { opacity: 0; }
+    }
+
+    @keyframes crawl {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 900px) {
+      :root {
+        --taskbar-height: 50px;
+      }
+
+      body {
+        font-size: 19px;
+      }
+
+      .desktop {
+        display: block;
+        min-height: 100dvh;
+        padding: 12px 12px 168px;
+        overflow: visible;
+      }
+
+      .desktop-icons {
+        position: relative;
+        top: auto;
+        left: auto;
+        z-index: 9;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        width: 100%;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .desktop-icon {
+        width: auto;
+        min-width: 0;
+      }
+
+      .icon-label {
+        max-width: 78px;
+        font-size: 16px;
+      }
+
+      .wall-title {
+        top: 88px;
+        left: 11px;
+        max-width: calc(100vw - 22px);
+        overflow: hidden;
+        font-size: clamp(54px, 19vw, 92px);
+        white-space: nowrap;
+      }
+
+      .window,
+      .win-main,
+      .win-palette,
+      .win-note,
+      .dialog {
+        position: relative;
+        inset: auto;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        z-index: 12;
+        width: 100%;
+        max-width: 100%;
+        margin: 12px 0 0;
+        transform: none;
+      }
+
+      .win-main {
+        margin-top: 84px;
+      }
+
+      .dialog {
+        z-index: 18;
+      }
+
+      .brand-lockup {
+        grid-template-columns: 74px minmax(0, 1fr);
+      }
+
+      .badge-pixel {
+        width: 74px;
+        height: 74px;
+      }
+
+      .pixel-screen {
+        min-height: 118px;
+      }
+
+      .ticker {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: 100%;
+        margin-top: 12px;
+      }
+
+      .taskbar {
+        gap: 4px;
+        padding-inline: 6px;
+      }
+
+      .start-button {
+        width: 88px;
+        padding-inline: 7px;
+        gap: 5px;
+        font-size: 19px;
+      }
+
+      .task-items {
+        gap: 4px;
+      }
+
+      .task-item {
+        max-width: none;
+        padding-inline: 6px;
+        font-size: 16px;
+      }
+
+      .task-item:nth-child(2) {
+        display: none;
+      }
+
+      .tray {
+        gap: 5px;
+        padding-inline: 6px;
+        font-size: 16px;
+      }
+
+      .tray-icons {
+        display: none;
+      }
+
+      #ds-home-back {
+        bottom: 84px !important;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .desktop {
+        padding-inline: 10px;
+        padding-bottom: 184px;
+      }
+
+      .desktop-icons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .titlebar {
+        font-size: 8px;
+      }
+
+      .menubar {
+        gap: 10px;
+        font-size: 16px;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      .subcopy {
+        font-size: 12px;
+      }
+
+      .brand-lockup,
+      .dialog .window-content {
+        grid-template-columns: 1fr;
+      }
+
+      .badge-pixel {
+        width: 70px;
+        height: 70px;
+      }
+
+      .dialog-actions {
+        justify-content: stretch;
+      }
+
+      .pixel-button {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .task-item:not(.active) {
+        display: none;
+      }
+
+      .task-item.active {
+        font-size: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .desktop-icon:hover,
+      .desktop-icon:focus-visible {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="desktop" aria-label="Mellowbyte Desk faux desktop">
+    <div class="wall-title" aria-hidden="true"><span>Mellow</span><span>byte</span></div>
+
+    <nav class="desktop-icons" aria-label="Desktop icons">
+      <a class="desktop-icon" href="#window-welcome">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="8" width="8" height="4" fill="#246ba4"/>
+          <rect x="3" y="12" width="26" height="16" fill="#246ba4"/>
+          <rect x="5" y="14" width="22" height="12" fill="#ffffff"/>
+          <rect x="7" y="16" width="18" height="2" fill="#b9f7cf"/>
+          <rect x="7" y="20" width="14" height="2" fill="#5EA6E5"/>
+          <rect x="7" y="24" width="10" height="2" fill="#ffb7da"/>
+        </svg>
+        <span class="icon-label">WISH.DIR</span>
+      </a>
+      <a class="desktop-icon" href="#window-palette">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="7" y="4" width="18" height="24" fill="#246ba4"/>
+          <rect x="9" y="6" width="14" height="20" fill="#ffffff"/>
+          <rect x="11" y="8" width="4" height="4" fill="#5EA6E5"/>
+          <rect x="17" y="8" width="4" height="4" fill="#ffb7da"/>
+          <rect x="11" y="14" width="10" height="2" fill="#246ba4"/>
+          <rect x="11" y="18" width="8" height="2" fill="#246ba4"/>
+          <rect x="11" y="22" width="12" height="2" fill="#b9f7cf"/>
+        </svg>
+        <span class="icon-label">TINT.APP</span>
+      </a>
+      <a class="desktop-icon" href="#window-note">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="8" y="3" width="16" height="26" fill="#246ba4"/>
+          <rect x="10" y="5" width="12" height="22" fill="#fff4a5"/>
+          <rect x="12" y="9" width="8" height="2" fill="#246ba4"/>
+          <rect x="12" y="13" width="7" height="2" fill="#246ba4"/>
+          <rect x="12" y="17" width="8" height="2" fill="#246ba4"/>
+          <rect x="12" y="21" width="5" height="2" fill="#246ba4"/>
+        </svg>
+        <span class="icon-label">MOON.TXT</span>
+      </a>
+      <a class="desktop-icon" href="#window-dialog">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="5" y="9" width="22" height="16" fill="#246ba4"/>
+          <rect x="7" y="11" width="18" height="12" fill="#ffffff"/>
+          <rect x="9" y="13" width="4" height="4" fill="#5EA6E5"/>
+          <rect x="15" y="13" width="8" height="2" fill="#246ba4"/>
+          <rect x="15" y="17" width="6" height="2" fill="#246ba4"/>
+          <rect x="11" y="5" width="10" height="4" fill="#246ba4"/>
+        </svg>
+        <span class="icon-label">PING.DLG</span>
+      </a>
+    </nav>
+
+    <section class="window win-main is-active" id="window-welcome" aria-label="Welcome window" tabindex="0">
+      <header class="titlebar">
+        <span class="title-text">C:\MELLOWBYTE\HELLO.BMP</span>
+        <span class="controls">
+          <button class="control min" type="button" aria-label="Minimize"></button>
+          <button class="control max" type="button" aria-label="Maximize"></button>
+          <button class="control close" type="button" aria-label="Close"></button>
+        </span>
+      </header>
+      <div class="menubar" aria-hidden="true"><span>File</span><span>Edit</span><span>Glow</span><span>Help</span></div>
+      <div class="window-content">
+        <div class="brand-lockup">
+          <div class="badge-pixel" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="56" height="56">
+              <rect x="12" y="14" width="40" height="34" fill="#246ba4"/>
+              <rect x="16" y="18" width="32" height="26" fill="#ffffff"/>
+              <rect x="20" y="22" width="8" height="8" fill="#5EA6E5"/>
+              <rect x="34" y="22" width="8" height="8" fill="#ffb7da"/>
+              <rect x="24" y="34" width="16" height="4" fill="#246ba4"/>
+              <rect x="30" y="8" width="4" height="6" fill="#246ba4"/>
+              <rect x="22" y="48" width="8" height="4" fill="#246ba4"/>
+              <rect x="36" y="48" width="8" height="4" fill="#246ba4"/>
+            </svg>
+          </div>
+          <div>
+            <h1>MELLOWBYTE DESK</h1>
+            <p class="subcopy">A tiny sky desktop for stickers, notes, and unfinished daydreams. 星糖桌面已开机。</p>
+          </div>
+        </div>
+        <div class="pixel-screen" role="img" aria-label="Pixelated sky wallpaper preview"></div>
+        <p>Today's folder is soft, blue, and slightly noisy. Put the small ideas here before they float away.</p>
+        <div class="command-line" aria-label="System commands">
+          <code>paint cloud</code>
+          <code>sort sparkle</code>
+          <code>sleep later</code><span class="caret" aria-hidden="true"></span>
+        </div>
+      </div>
+      <footer class="window-status">
+        <span>4 icons</span>
+        <span>dream cache ok</span>
+        <span>local sky</span>
+      </footer>
+    </section>
+
+    <section class="window win-palette" id="window-palette" aria-label="Palette utility window" tabindex="0">
+      <header class="titlebar">
+        <span class="title-text">TINT_MIXER.EXE</span>
+        <span class="controls">
+          <button class="control min" type="button" aria-label="Minimize"></button>
+          <button class="control max" type="button" aria-label="Maximize"></button>
+          <button class="control close" type="button" aria-label="Close"></button>
+        </span>
+      </header>
+      <div class="window-content">
+        <div class="palette-grid" aria-label="Color chips">
+          <span class="swatch sky"></span>
+          <span class="swatch white"></span>
+          <span class="swatch chrome"></span>
+          <span class="swatch pink"></span>
+          <span class="swatch green"></span>
+          <span class="swatch dither"></span>
+        </div>
+        <div class="meter-list">
+          <div class="meter"><span>sky</span><i style="--fill: 88%;"></i></div>
+          <div class="meter"><span>chrome</span><i style="--fill: 64%;"></i></div>
+          <div class="meter"><span>sugar</span><i style="--fill: 72%;"></i></div>
+          <div class="meter"><span>noise</span><i style="--fill: 46%;"></i></div>
+        </div>
+      </div>
+      <footer class="window-status"><span>RGB safe</span><span>8px grid</span></footer>
+    </section>
+
+    <section class="window win-note" id="window-note" aria-label="Note window" tabindex="0">
+      <header class="titlebar">
+        <span class="title-text">NOTEPAD - MOONMILK.TXT</span>
+        <span class="controls">
+          <button class="control min" type="button" aria-label="Minimize"></button>
+          <button class="control max" type="button" aria-label="Maximize"></button>
+          <button class="control close" type="button" aria-label="Close"></button>
+        </span>
+      </header>
+      <div class="window-content">
+        <div class="note-paper">
+          <strong>MEMO FROM THE SKY CABINET</strong>
+          <p>Drag-looking only. The windows prefer to stay tidy.</p>
+          <p>今晚把蓝色调亮一点，明天再保存。</p>
+        </div>
+      </div>
+      <footer class="window-status"><span>plain text</span><span>saved-ish</span></footer>
+    </section>
+
+    <aside class="window dialog" id="window-dialog" aria-label="Retro dialog" tabindex="0">
+      <header class="titlebar">
+        <span class="title-text">SYSTEM WHISPER</span>
+        <span class="controls">
+          <button class="control close" type="button" aria-label="Close"></button>
+        </span>
+      </header>
+      <div class="window-content">
+        <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true">
+          <rect x="8" y="6" width="32" height="34" fill="#246ba4"/>
+          <rect x="12" y="10" width="24" height="26" fill="#ffffff"/>
+          <rect x="16" y="14" width="16" height="4" fill="#5EA6E5"/>
+          <rect x="16" y="22" width="4" height="4" fill="#ffb7da"/>
+          <rect x="24" y="22" width="8" height="4" fill="#246ba4"/>
+          <rect x="18" y="30" width="12" height="2" fill="#246ba4"/>
+        </svg>
+        <div class="dialog-copy">
+          <h2>Save the shimmer?</h2>
+          <p>The desktop found a bright little thought. Keep it in the sticker drawer?</p>
+        </div>
+        <div class="dialog-actions">
+          <button class="pixel-button" type="button">OK</button>
+          <button class="pixel-button" type="button">LATER</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="ticker" aria-label="Desktop ticker"><span>cloud mail ready / sticker drive warm / tiny radio tuned / cloud mail ready / sticker drive warm / tiny radio tuned / </span></div>
+  </main>
+
+  <footer class="taskbar" aria-label="Faux taskbar">
+    <button class="start-button" type="button"><span class="start-mark" aria-hidden="true"></span><span>START</span></button>
+    <div class="task-items" aria-label="Open windows">
+      <div class="task-item active"><span>HELLO.BMP</span></div>
+      <div class="task-item"><span>TINT_MIXER.EXE</span></div>
+      <div class="task-item"><span>MOONMILK.TXT</span></div>
+    </div>
+    <div class="tray" aria-label="System tray">
+      <span class="tray-icons" aria-hidden="true"><i class="tray-chip"></i><i class="tray-chip"></i><i class="tray-chip"></i></span>
+      <time id="clock" datetime="">00:00</time>
+    </div>
+  </footer>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div id="study-credit" style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Y2K Pixel Website》 by xinyiyu1221（社区 #13）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    const windows = Array.from(document.querySelectorAll(".window"));
+
+    windows.forEach((windowEl) => {
+      windowEl.addEventListener("pointerdown", () => {
+        windows.forEach((item) => item.classList.remove("is-active"));
+        windowEl.classList.add("is-active");
+      });
+    });
+
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const clock = document.getElementById("clock");
+      clock.textContent = `${hours}:${minutes}`;
+      clock.dateTime = now.toISOString();
+    }
+
+    updateClock();
+    window.setInterval(updateClock, 30000);
+  </script>
+</body>
+</html>
