@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Still Atrium Archive</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --wall: #efeeeb;
+      --surface: #e5e4e1;
+      --paper: #f8f7f3;
+      --ink: #121212;
+      --muted: #555555;
+      --quiet: #686868;
+      --line: #d1d1d1;
+      --line-dark: #b8b7b3;
+      --accent: #6e665c;
+      --shadow: rgba(42, 38, 31, .12);
+      --serif: "Noto Serif", "Songti SC", "SimSun", serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--wall);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(18, 18, 18, .018) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(18, 18, 18, .012) 1px, transparent 1px),
+        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, .54), transparent 30%),
+        var(--wall);
+      background-size: 88px 100%, 100% 92px, auto, auto;
+      font-family: var(--sans);
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .42;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(18, 18, 18, .035) 0 1px, transparent 1px),
+        radial-gradient(circle at 74% 68%, rgba(18, 18, 18, .025) 0 1px, transparent 1px);
+      background-size: 19px 19px, 31px 31px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      border-bottom: .5px solid var(--line);
+      background: rgba(239, 238, 235, .94);
+      -webkit-backdrop-filter: blur(14px) saturate(130%);
+      backdrop-filter: blur(14px) saturate(130%);
+    }
+
+    .nav-inner {
+      width: min(100%, 1540px);
+      height: 76px;
+      margin: 0 auto;
+      padding: 0 clamp(18px, 4vw, 64px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-side {
+      display: flex;
+      align-items: center;
+      gap: clamp(18px, 2.6vw, 38px);
+      min-width: 0;
+    }
+
+    .nav-side-right {
+      justify-content: flex-end;
+    }
+
+    .nav-side a {
+      font: 600 10px/1 var(--sans);
+      color: var(--ink);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .nav-side span {
+      display: block;
+      margin-top: 5px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      color: var(--muted);
+    }
+
+    .wordmark {
+      display: grid;
+      justify-items: center;
+      gap: 3px;
+      min-width: 0;
+      font-family: var(--serif);
+      font-size: clamp(21px, 2vw, 31px);
+      line-height: .95;
+      letter-spacing: .035em;
+    }
+
+    .wordmark span {
+      font: 500 10px/1 var(--sans);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .archive-shell {
+      width: min(100%, 1540px);
+      margin: 0 auto;
+      padding: 124px clamp(18px, 4vw, 64px) 138px;
+    }
+
+    .hero {
+      min-height: calc(100dvh - 128px);
+      display: grid;
+      align-content: center;
+      padding: clamp(54px, 8vw, 112px) 0 clamp(56px, 8vw, 110px);
+    }
+
+    .eyebrow {
+      margin: 0 0 22px;
+      font: 600 11px/1.4 var(--sans);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero h1 {
+      max-width: 11ch;
+      margin: 0;
+      padding-bottom: 8px;
+      font-family: var(--serif);
+      font-size: clamp(4.2rem, 12.5vw, 11.8rem);
+      font-weight: 400;
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    .hero-subtitle {
+      max-width: 760px;
+      margin: 32px 0 0;
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 2.2vw, 2.3rem);
+      font-style: italic;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .hero-rule {
+      width: min(100%, 1180px);
+      height: 1px;
+      margin-top: clamp(44px, 6vw, 84px);
+      background: linear-gradient(90deg, var(--ink), var(--line) 46%, transparent);
+      opacity: .58;
+    }
+
+    .hero-note {
+      width: min(100%, 1180px);
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      color: var(--quiet);
+      font: 500 11px/1.6 var(--sans);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      border-top: .5px solid var(--line-dark);
+      padding: clamp(58px, 8vw, 106px) 0;
+    }
+
+    .featured {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(320px, 1.12fr);
+      gap: clamp(32px, 7vw, 112px);
+      align-items: start;
+    }
+
+    .featured-copy {
+      max-width: 560px;
+      position: sticky;
+      top: 116px;
+    }
+
+    .featured h2,
+    .collection h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.45rem, 6vw, 6.2rem);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .featured p,
+    .collection-intro {
+      max-width: 620px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font: 400 15px/1.8 var(--sans);
+    }
+
+    .exhibition-meta {
+      margin-top: 42px;
+      border-top: .5px solid var(--line);
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: minmax(100px, .34fr) minmax(0, 1fr);
+      gap: 16px;
+      padding: 15px 0;
+      border-bottom: .5px solid var(--line);
+      color: var(--ink);
+      font: 500 12px/1.5 var(--sans);
+    }
+
+    .meta-row span:first-child {
+      color: var(--muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .featured-frame,
+    .art-frame {
+      background: var(--surface);
+      border: .5px solid var(--line-dark);
+      box-shadow:
+        0 28px 70px -46px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .62);
+    }
+
+    .featured-frame {
+      padding: clamp(16px, 2.5vw, 28px);
+    }
+
+    .featured-mat,
+    .art-mat {
+      background: var(--paper);
+      border: .5px solid var(--line);
+      padding: clamp(12px, 1.6vw, 20px);
+    }
+
+    .featured-art,
+    .art-window {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      background: #d8d6d0;
+    }
+
+    .featured-art {
+      aspect-ratio: 1.3;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .collection {
+      padding-bottom: clamp(64px, 8vw, 118px);
+    }
+
+    .collection-head {
+      max-width: 760px;
+      margin-bottom: clamp(38px, 5vw, 70px);
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: clamp(18px, 2.4vw, 36px);
+      row-gap: clamp(54px, 6vw, 94px);
+      align-items: start;
+    }
+
+    .collection-card {
+      min-width: 0;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .collection-card:nth-child(4n+2) {
+      margin-top: clamp(28px, 5vw, 72px);
+    }
+
+    .collection-card:nth-child(4n+3) {
+      margin-top: clamp(8px, 2vw, 34px);
+    }
+
+    .collection-card:nth-child(4n+4) {
+      margin-top: clamp(52px, 7vw, 104px);
+    }
+
+    .art-frame {
+      padding: clamp(10px, 1.5vw, 18px);
+    }
+
+    .art-window {
+      aspect-ratio: 4 / 5;
+      border: .5px solid rgba(18, 18, 18, .16);
+    }
+
+    .collection-card.wide .art-window {
+      aspect-ratio: 1 / 1;
+    }
+
+    .collection-card.tall .art-window {
+      aspect-ratio: 3 / 4.25;
+    }
+
+    .card-meta {
+      position: relative;
+      min-height: 176px;
+      padding: 18px 0 42px;
+      border-bottom: .5px solid var(--line);
+    }
+
+    .catalog {
+      margin: 0 0 12px;
+      font: 500 10px/1 var(--mono);
+      color: var(--muted);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .card-meta h3 {
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.18;
+    }
+
+    .artist {
+      margin: 0;
+      color: var(--ink);
+      font: 500 12px/1.65 var(--sans);
+    }
+
+    .medium {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font: 600 9px/1.5 var(--sans);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .caption-note {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 15px;
+      margin: 0;
+      color: var(--quiet);
+      font: 400 12px/1.55 var(--sans);
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    .site-footer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      border-top: .5px solid var(--line-dark);
+      padding-top: 28px;
+      color: var(--muted);
+      font: 500 11px/1.7 var(--sans);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer strong {
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: .02em;
+      text-transform: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .collection-card {
+        opacity: 0;
+        transform: translateY(22px);
+        animation: reveal-card 960ms cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: calc(150ms + var(--i, 0) * 95ms);
+      }
+
+      .collection-card,
+      .art-window svg,
+      .caption-note {
+        transition:
+          opacity 520ms cubic-bezier(.16, 1, .3, 1),
+          transform 620ms cubic-bezier(.16, 1, .3, 1),
+          box-shadow 620ms cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .collection-card:hover,
+      .collection-card:focus-within {
+        transform: translateY(-8px);
+      }
+
+      .collection-card:hover .art-window svg,
+      .collection-card:focus-within .art-window svg {
+        transform: scale(1.035);
+      }
+
+      .collection-card:hover .caption-note,
+      .collection-card:focus-within .caption-note {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @keyframes reveal-card {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .collection-card,
+      .collection-card:hover,
+      .collection-card:focus-within,
+      .collection-card:hover .art-window svg,
+      .collection-card:focus-within .art-window svg {
+        opacity: 1;
+        transform: none;
+      }
+
+      .caption-note {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (hover: none) {
+      .caption-note {
+        position: static;
+        margin-top: 14px;
+        opacity: 1;
+        transform: none;
+      }
+
+      .card-meta {
+        padding-bottom: 18px;
+      }
+    }
+
+    @media (max-width: 1120px) {
+      .collection-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .collection-card:nth-child(n) {
+        margin-top: 0;
+      }
+
+      .collection-card:nth-child(even) {
+        margin-top: 44px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .site-nav {
+        position: absolute;
+      }
+
+      .nav-inner {
+        height: auto;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        grid-template-columns: 1fr;
+        gap: 13px;
+      }
+
+      .wordmark {
+        order: 1;
+      }
+
+      .nav-side {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+      }
+
+      .nav-side-left {
+        order: 2;
+      }
+
+      .nav-side-right {
+        order: 3;
+      }
+
+      .nav-side a {
+        display: grid;
+        place-items: center;
+        min-width: 0;
+        min-height: 40px;
+        border: .5px solid var(--line);
+        background: rgba(229, 228, 225, .42);
+        text-align: center;
+        white-space: normal;
+      }
+
+      .archive-shell {
+        padding-top: 178px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 42px;
+      }
+
+      .hero h1 {
+        max-width: 9ch;
+        font-size: clamp(4.15rem, 17vw, 6.4rem);
+      }
+
+      .hero-note,
+      .featured,
+      .site-footer {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-copy {
+        position: static;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .archive-shell {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3.55rem, 15.5vw, 4.3rem);
+        line-height: .93;
+      }
+
+      .hero-subtitle {
+        margin-top: 24px;
+      }
+
+      .hero-note {
+        gap: 10px;
+        font-size: 10px;
+      }
+
+      .section {
+        padding-top: 54px;
+        padding-bottom: 58px;
+      }
+
+      .featured {
+        gap: 28px;
+      }
+
+      .collection-grid {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 48px;
+      }
+
+      .collection-card:nth-child(even) {
+        margin-top: 0;
+      }
+
+      .card-meta {
+        min-height: auto;
+      }
+
+      .featured h2,
+      .collection h2 {
+        font-size: clamp(2.35rem, 12vw, 4rem);
+      }
+
+      .meta-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <nav class="nav-inner" aria-label="Primary navigation">
+      <div class="nav-side nav-side-left">
+        <a href="#collection">Collection<span>馆藏</span></a>
+        <a href="#featured">Exhibitions<span>展览</span></a>
+      </div>
+      <a class="wordmark" href="#" aria-label="Still Atrium Archive home">
+        Still Atrium
+        <span>静庭档案</span>
+      </a>
+      <div class="nav-side nav-side-right">
+        <a href="#archive">Archive<span>档案</span></a>
+        <a href="#visit">Visit<span>参观</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="archive-shell" id="archive">
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Collection register / 馆藏索引</p>
+      <h1 id="hero-title">Still Atrium<br>Archive</h1>
+      <p class="hero-subtitle">A fictional index of quiet pigment, measured light, and rooms held in memory.</p>
+      <div class="hero-rule" aria-hidden="true"></div>
+      <div class="hero-note" aria-label="Archive summary">
+        <span>Open study catalogue</span>
+        <span>Works on paper and linen</span>
+        <span>Edited in warm light</span>
+      </div>
+    </section>
+
+    <section class="section featured" id="featured" aria-labelledby="featured-title">
+      <div class="featured-copy">
+        <p class="eyebrow">Featured exhibition / 当前展览</p>
+        <h2 id="featured-title">The Room Before Color</h2>
+        <p>
+          A restrained assembly of fictional acquisitions, each arranged around the threshold between shadow, paper, and softened mineral tone.
+        </p>
+        <div class="exhibition-meta" aria-label="Exhibition details">
+          <div class="meta-row">
+            <span>Gallery</span>
+            <span>North Reading Room</span>
+          </div>
+          <div class="meta-row">
+            <span>Dates</span>
+            <span>May 18 to September 06, 2026</span>
+          </div>
+          <div class="meta-row">
+            <span>Editor</span>
+            <span>Rhea Lan, Curatorial Studies</span>
+          </div>
+        </div>
+      </div>
+
+      <figure class="featured-frame">
+        <div class="featured-mat">
+          <div class="featured-art">
+            <svg viewBox="0 0 720 520" role="img" aria-label="Abstract featured exhibition artwork in muted stone, blue, and ink">
+              <rect width="720" height="520" fill="#d7d4cd"/>
+              <rect x="56" y="46" width="608" height="428" fill="#ebe9e2"/>
+              <rect x="116" y="86" width="310" height="340" fill="#c9c7c0"/>
+              <rect x="426" y="86" width="178" height="340" fill="#f4f1e8"/>
+              <rect x="466" y="126" width="78" height="240" fill="#8a9292"/>
+              <rect x="154" y="124" width="222" height="58" fill="#1a1a18"/>
+              <rect x="154" y="204" width="222" height="144" fill="#b5a06f"/>
+              <rect x="232" y="236" width="66" height="66" fill="#ede9dd"/>
+              <path d="M116 426H604" stroke="#121212" stroke-width="2"/>
+              <path d="M426 86V426" stroke="#121212" stroke-width="1"/>
+              <circle cx="543" cy="406" r="12" fill="#121212"/>
+              <rect x="96" y="66" width="528" height="388" fill="none" stroke="#121212" stroke-width="1.2" opacity=".48"/>
+            </svg>
+          </div>
+        </div>
+      </figure>
+    </section>
+
+    <section class="section collection" id="collection" aria-labelledby="collection-title">
+      <div class="collection-head">
+        <p class="eyebrow">Selected holdings / 馆藏选件</p>
+        <h2 id="collection-title">A quiet field of recent entries</h2>
+        <p class="collection-intro">
+          Eight imagined works are registered here as studies in proportion, restraint, and the museum grammar of caption, frame, and pause.
+        </p>
+      </div>
+
+      <div class="collection-grid">
+        <article class="collection-card tall" tabindex="0" style="--i:0">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 420 600" role="img" aria-label="Abstract work with ochre margin and quiet black square">
+                  <rect width="420" height="600" fill="#e7e2d8"/>
+                  <rect x="54" y="48" width="312" height="504" fill="#d4d0c8"/>
+                  <rect x="94" y="92" width="232" height="332" fill="#f1eee7"/>
+                  <rect x="126" y="126" width="168" height="168" fill="#161615"/>
+                  <rect x="126" y="318" width="168" height="72" fill="#b69a5f"/>
+                  <path d="M94 452H326" stroke="#121212" stroke-width="1.4"/>
+                  <path d="M70 72H350V528H70Z" fill="none" stroke="#121212" stroke-width="1" opacity=".35"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.014</p>
+            <h3>Quiet Square with Ochre Margin</h3>
+            <p class="artist">Elian Vora, 2018</p>
+            <p class="medium">Mineral pigment on linen</p>
+            <p class="caption-note">A centered field study with one warm registration mark.</p>
+          </div>
+        </article>
+
+        <article class="collection-card" tabindex="0" style="--i:1">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 420 525" role="img" aria-label="Abstract low window composition in slate and cream">
+                  <rect width="420" height="525" fill="#d9d8d2"/>
+                  <rect x="42" y="42" width="336" height="441" fill="#f2efe7"/>
+                  <rect x="80" y="96" width="260" height="220" fill="#b9bec0"/>
+                  <rect x="80" y="340" width="260" height="58" fill="#748083"/>
+                  <rect x="80" y="398" width="260" height="22" fill="#191917"/>
+                  <path d="M126 96V316M210 96V316M294 96V316" stroke="#f2efe7" stroke-width="2" opacity=".72"/>
+                  <path d="M42 430H378" stroke="#121212" stroke-width="1" opacity=".42"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.027</p>
+            <h3>Study for a Low Window</h3>
+            <p class="artist">Maelle Kint, 2022</p>
+            <p class="medium">Gouache and graphite on paper</p>
+            <p class="caption-note">The lower band holds the room in a single breath.</p>
+          </div>
+        </article>
+
+        <article class="collection-card wide" tabindex="0" style="--i:2">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 520 520" role="img" aria-label="Abstract blue field with a narrow pale interval">
+                  <rect width="520" height="520" fill="#c8ced0"/>
+                  <rect x="56" y="56" width="408" height="408" fill="#aab6b8"/>
+                  <rect x="108" y="56" width="74" height="408" fill="#eeece5"/>
+                  <rect x="220" y="112" width="190" height="250" fill="#758689"/>
+                  <path d="M182 56V464" stroke="#121212" stroke-width="1.4" opacity=".64"/>
+                  <circle cx="222" cy="405" r="10" fill="#121212"/>
+                  <path d="M106 405H410" stroke="#ece8dd" stroke-width="3" opacity=".86"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.041</p>
+            <h3>Blue Field, Small Interval</h3>
+            <p class="artist">Sorin Hale, 2016</p>
+            <p class="medium">Casein and powdered stone</p>
+            <p class="caption-note">A blue plane divided by one spare vertical pause.</p>
+          </div>
+        </article>
+
+        <article class="collection-card tall" tabindex="0" style="--i:3">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 420 600" role="img" aria-label="Abstract corridor composition in dark ink and warm gray">
+                  <rect width="420" height="600" fill="#cfcac1"/>
+                  <rect x="50" y="46" width="320" height="508" fill="#e8e2d7"/>
+                  <path d="M86 86H334L290 514H130Z" fill="#2a2926"/>
+                  <path d="M128 126H292L262 472H158Z" fill="#74706a"/>
+                  <path d="M168 168H252L236 428H184Z" fill="#ebe6da"/>
+                  <path d="M210 168V428" stroke="#121212" stroke-width="1"/>
+                  <path d="M86 86L168 168M334 86L252 168M130 514L184 428M290 514L236 428" stroke="#121212" stroke-width="1" opacity=".42"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.063</p>
+            <h3>The Unlit Corridor</h3>
+            <p class="artist">Nira Tesh, 2020</p>
+            <p class="medium">Ink wash on prepared cotton</p>
+            <p class="caption-note">Perspective is narrowed until the dark becomes architectural.</p>
+          </div>
+        </article>
+
+        <article class="collection-card" tabindex="0" style="--i:4">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 420 525" role="img" aria-label="Abstract folded garden in muted slate and olive">
+                  <rect width="420" height="525" fill="#d8d4ca"/>
+                  <rect x="54" y="54" width="312" height="417" fill="#eeeadf"/>
+                  <polygon points="82,92 334,54 292,300 82,330" fill="#788070"/>
+                  <polygon points="126,210 338,164 340,420 126,470" fill="#a7aaa0"/>
+                  <rect x="108" y="108" width="92" height="92" fill="#2b2c29"/>
+                  <rect x="232" y="344" width="68" height="68" fill="#e8dfc4"/>
+                  <path d="M82 330L340 420" stroke="#121212" stroke-width="1.2" opacity=".5"/>
+                  <path d="M54 471H366" stroke="#121212" stroke-width="1" opacity=".36"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.088</p>
+            <h3>Folded Garden in Slate</h3>
+            <p class="artist">Oren Vale, 2014</p>
+            <p class="medium">Tempera on rag board</p>
+            <p class="caption-note">A garden reduced to folded planes and one dense shade.</p>
+          </div>
+        </article>
+
+        <article class="collection-card tall" tabindex="0" style="--i:5">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 420 600" role="img" aria-label="Abstract stone and water composition with quiet circles">
+                  <rect width="420" height="600" fill="#dfddd6"/>
+                  <rect x="58" y="52" width="304" height="496" fill="#f3f0e8"/>
+                  <rect x="88" y="382" width="244" height="94" fill="#7a8b90"/>
+                  <circle cx="210" cy="245" r="112" fill="#c4c0b7"/>
+                  <circle cx="210" cy="245" r="62" fill="#efebe1"/>
+                  <circle cx="210" cy="245" r="19" fill="#121212"/>
+                  <path d="M88 382C136 354 180 354 222 382C260 407 298 407 332 382" fill="none" stroke="#eff0ed" stroke-width="5" opacity=".78"/>
+                  <path d="M58 548H362" stroke="#121212" stroke-width="1" opacity=".35"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.096</p>
+            <h3>A Stone Remembers Water</h3>
+            <p class="artist">Celine Arno, 2023</p>
+            <p class="medium">Pigment, lime, and sealed paper</p>
+            <p class="caption-note">The circular center is held just above a low tide mark.</p>
+          </div>
+        </article>
+
+        <article class="collection-card wide" tabindex="0" style="--i:6">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 520 520" role="img" aria-label="Abstract sleeping form with black line and muted red margin">
+                  <rect width="520" height="520" fill="#e2ded4"/>
+                  <rect x="50" y="50" width="420" height="420" fill="#f5f1e7"/>
+                  <rect x="92" y="104" width="48" height="312" fill="#a55e4d"/>
+                  <rect x="164" y="162" width="232" height="142" rx="71" fill="#bcb8ad"/>
+                  <rect x="210" y="210" width="186" height="94" rx="47" fill="#ded9cd"/>
+                  <path d="M92 416H428" stroke="#121212" stroke-width="2"/>
+                  <path d="M140 104H428" stroke="#121212" stroke-width="1" opacity=".42"/>
+                  <circle cx="428" cy="416" r="8" fill="#121212"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.112</p>
+            <h3>Margin for a Sleeping Form</h3>
+            <p class="artist">Lio Carven, 2019</p>
+            <p class="medium">Dry pigment and wax on panel</p>
+            <p class="caption-note">A softened shape rests against a measured red edge.</p>
+          </div>
+        </article>
+
+        <article class="collection-card" tabindex="0" style="--i:7">
+          <div class="art-frame">
+            <div class="art-mat">
+              <div class="art-window">
+                <svg viewBox="0 0 420 525" role="img" aria-label="Abstract paper gate at dusk in taupe and pale violet gray">
+                  <rect width="420" height="525" fill="#d4d1cb"/>
+                  <rect x="48" y="48" width="324" height="429" fill="#eeeae1"/>
+                  <rect x="96" y="94" width="104" height="320" fill="#aaa1a5"/>
+                  <rect x="220" y="94" width="104" height="320" fill="#c7c3bd"/>
+                  <rect x="96" y="260" width="228" height="42" fill="#24231f"/>
+                  <rect x="182" y="132" width="56" height="92" fill="#f4f0e8"/>
+                  <path d="M200 94V414M220 94V414" stroke="#121212" stroke-width="1" opacity=".5"/>
+                  <path d="M48 438H372" stroke="#121212" stroke-width="1" opacity=".38"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <p class="catalog">SA.26.137</p>
+            <h3>Paper Gate at Dusk</h3>
+            <p class="artist">Yara Mott, 2017</p>
+            <p class="medium">Layered paper and casein</p>
+            <p class="caption-note">Two hinged panels make a doorway without a room.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-footer" id="visit">
+      <div>
+        <strong>Still Atrium Archive</strong><br>
+        Fictional museum register for an interface effect study.
+      </div>
+      <div>By appointment study room / 静庭阅读室</div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Art Museum Website》 by almontegio3（社区 #57）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
