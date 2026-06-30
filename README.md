@@ -176,18 +176,37 @@ module.exports = { presets: [require('./styles/03-enterprise/tailwind.preset.js'
 **切换主题**：`document.documentElement.dataset.theme = 'dark'`（或加 `.dark` 类）。
 **换风格**：所有 Kit 共享 `--ds-*` 契约，换一份 `tokens.css` 即整体换肤。
 
+## 项目 CLI（`ds`）
+
+维护画廊（尤其是 `studies/` 效果临摹栏）的零依赖小工具，把每轮手动跑的校验收进一处：
+
+```bash
+node _base/ds.mjs check          # 完整性：数组↔目录 · 孤儿 · 重复 slug · 计数 · 分类覆盖
+node _base/ds.mjs qc <slug|all>  # 单页静态 QC：外链 · 返回按钮 · credit · emoji/字形
+node _base/ds.mjs cats           # 按类别列出临摹，标出未归类
+node _base/ds.mjs dup            # 按来源《作品名》找同源重复
+node _base/ds.mjs count --fix    # 把 meta / 区块 / 页脚 计数同步到真实数量
+node _base/ds.mjs shoot <slug>   # 截一张临摹图（封装 shoot_study.mjs）
+```
+
+新增一例临摹的典型流程：建 `studies/<slug>/index.html` → `ds shoot <slug>` → `ds qc <slug>` →
+加进 `index.html` 的 `studies[]` 数组与 `STUDY_CAT` 分类 → `ds count --fix` → `ds check` → 部署。
+`check` / `qc` 出问题会以非零退出码结束，可直接接进 CI 或提交前钩子。
+
 ## 目录结构
 
 ```
 .
-├── index.html                 # 截图总览画廊（= 在线站点首页）
-├── _base/                     # geist-base · KIT-TEMPLATE · SHOWCASE-SPEC · POLISH-SPEC · DEVICE-FRAME · shoot.js
+├── index.html                 # 截图总览画廊（= 在线站点首页；含分类筛选）
+├── _base/                     # ds.mjs(项目CLI) · KIT-TEMPLATE · SHOWCASE-SPEC · POLISH-SPEC · DEVICE-FRAME · shoot_study.mjs
 ├── _fonts/                    # 本地 OFL 开源字体 (woff2) + fonts.css
 ├── _assets/                   # 共享素材：gpt-image-2 风格美术图 + 无版权照片/头像 + device.css(iPhone 套壳)
 ├── styles/                    # 49 套可复用风格
 │   └── <kit>/  README.md · tokens.css · tokens.json · tailwind.preset.js · preview.html
 ├── projects/                  # 6 个开源项目定制
 │   └── <kit>/  README.md · tokens.css · tailwind.preset.js · preview.html
+├── studies/                   # 67 例效果临摹（单文件 · 非原创 · 顶部 credit）
+│   └── <slug>/  index.html
 └── screenshots/               # 每套整页截图（亮 / 暗）+ thumbs/ 视网膜缩略图
 ```
 
