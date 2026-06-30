@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aster Loom Scent Palette Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f0ea;
+      --paper-deep: #e9dfd4;
+      --paper-soft: #fbf7f1;
+      --rose: #eaaeac;
+      --sand: #e0cdbd;
+      --slate: #8a9db0;
+      --mocha: #655552;
+      --warm-gray: #8c847e;
+      --ink: #3a3532;
+      --muted: #6b635e;
+      --hairline: rgba(101, 85, 82, .18);
+      --hairline-strong: rgba(58, 53, 50, .28);
+      --shadow: rgba(101, 85, 82, .22);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --serif: "Noto Serif", Georgia, serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #ddd0c4;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 28px 12px 122px;
+      display: flex;
+      justify-content: center;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        linear-gradient(135deg, rgba(138, 157, 176, .18), transparent 34%),
+        linear-gradient(180deg, #eee5dc 0%, #d8cabe 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .34;
+      background:
+        repeating-linear-gradient(0deg, rgba(58, 53, 50, .045) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, rgba(244, 240, 234, .38) 0 1px, transparent 1px 7px);
+      mix-blend-mode: soft-light;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .phone {
+      position: relative;
+      width: min(420px, calc(100vw - 24px));
+      max-width: 100%;
+      min-height: 812px;
+      overflow: hidden;
+      border: 1px solid rgba(101, 85, 82, .24);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .54), rgba(255, 255, 255, 0) 22%),
+        var(--paper);
+      box-shadow:
+        0 38px 80px -42px rgba(58, 53, 50, .72),
+        0 10px 26px -18px rgba(101, 85, 82, .52),
+        inset 0 1px 0 rgba(255, 255, 255, .72);
+      isolation: isolate;
+    }
+
+    .phone::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(224, 205, 189, .22), transparent 48%, rgba(234, 174, 172, .12)),
+        repeating-linear-gradient(90deg, transparent 0 23px, rgba(58, 53, 50, .018) 23px 24px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 22px 18px;
+      background:
+        linear-gradient(180deg, rgba(244, 240, 234, .97) 0%, rgba(244, 240, 234, .88) 74%, rgba(244, 240, 234, 0) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .brand strong {
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .brand span,
+    .top-meta,
+    .mono {
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.2;
+      color: var(--muted);
+    }
+
+    .top-meta {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    main {
+      display: grid;
+      gap: 22px;
+      padding: 10px 18px 28px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 18px 4px 6px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      justify-self: center;
+      padding: 7px 11px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: rgba(251, 247, 241, .62);
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1;
+      color: var(--muted);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 10ch;
+      justify-self: center;
+      font-family: var(--serif);
+      font-size: 38px;
+      line-height: 1.04;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .hero-copy {
+      max-width: 28ch;
+      justify-self: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .featured-swatch {
+      position: relative;
+      min-height: 168px;
+      overflow: hidden;
+      border: 1px solid rgba(101, 85, 82, .16);
+      border-radius: 8px;
+      background:
+        linear-gradient(112deg, #eaaeac 0%, #e0cdbd 35%, #8a9db0 68%, #655552 100%);
+      box-shadow:
+        0 24px 42px -34px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .54);
+    }
+
+    .featured-swatch::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .42), rgba(255, 255, 255, 0) 36%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .16) 0 1px, transparent 1px 18px);
+      mix-blend-mode: soft-light;
+    }
+
+    .swatch-card {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid rgba(244, 240, 234, .58);
+      border-radius: 8px;
+      background: rgba(244, 240, 234, .76);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 14px 28px -22px rgba(58, 53, 50, .6);
+      text-align: left;
+    }
+
+    .swatch-card small {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .swatch-card strong {
+      font-family: var(--serif);
+      font-size: 21px;
+      line-height: 1.05;
+      color: var(--ink);
+    }
+
+    .stacked-tones {
+      position: relative;
+      height: 156px;
+      margin: 2px 0 0;
+    }
+
+    .tone-pill {
+      position: absolute;
+      left: 50%;
+      width: min(340px, 94%);
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 20px;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 999px;
+      box-shadow:
+        0 16px 30px -24px rgba(58, 53, 50, .72),
+        inset 0 1px 0 rgba(255, 255, 255, .35);
+      color: var(--ink);
+      transform: translateX(-50%) rotate(var(--r));
+    }
+
+    .tone-pill:nth-child(1) {
+      top: 0;
+      z-index: 4;
+      background: var(--rose);
+      --r: -2.8deg;
+    }
+
+    .tone-pill:nth-child(2) {
+      top: 43px;
+      z-index: 3;
+      background: var(--mocha);
+      color: var(--paper-soft);
+      --r: 1.6deg;
+    }
+
+    .tone-pill:nth-child(3) {
+      top: 86px;
+      z-index: 2;
+      background: var(--slate);
+      color: #2f2a27;
+      --r: -1deg;
+    }
+
+    .tone-pill span:first-child {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tone-pill span:last-child {
+      flex: none;
+      font-family: var(--mono);
+      font-size: 10px;
+      opacity: .88;
+    }
+
+    .panel {
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .38), rgba(255, 255, 255, .05)),
+        rgba(251, 247, 241, .58);
+      box-shadow: 0 18px 34px -30px var(--shadow);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--hairline-strong);
+    }
+
+    .panel-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.2;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .panel-header .mono {
+      flex: none;
+    }
+
+    .pyramid {
+      display: grid;
+      gap: 14px;
+      padding: 15px;
+    }
+
+    .tier {
+      display: grid;
+      gap: 9px;
+      padding: 13px;
+      border: 1px solid rgba(101, 85, 82, .14);
+      border-radius: 8px;
+      background: rgba(244, 240, 234, .56);
+    }
+
+    .tier-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 4px;
+    }
+
+    .tier-heading h3 {
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .tier-heading span {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .note-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .note {
+      width: 100%;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 9px 10px;
+      border: 1px solid rgba(101, 85, 82, .14);
+      border-radius: 999px;
+      background: rgba(251, 247, 241, .48);
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .note:focus-visible {
+      outline: 2px solid var(--mocha);
+      outline-offset: 3px;
+    }
+
+    .note.is-selected {
+      border-color: rgba(58, 53, 50, .36);
+      background: rgba(251, 247, 241, .82);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .46);
+    }
+
+    .note-swatch {
+      width: 22px;
+      height: 22px;
+      border: 1px solid rgba(58, 53, 50, .22);
+      border-radius: 999px;
+      background: var(--note);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42);
+    }
+
+    .note-text {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .note-text strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .note-text small {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.1;
+    }
+
+    .note-code {
+      display: inline-flex;
+      min-width: 52px;
+      justify-content: center;
+      padding: 5px 8px;
+      border: 1px solid rgba(101, 85, 82, .16);
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      background: rgba(244, 240, 234, .6);
+    }
+
+    .blend {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .blend-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .blend-top h2 {
+      font-family: var(--serif);
+      font-size: 24px;
+      line-height: 1.05;
+    }
+
+    .blend-top p {
+      max-width: 24ch;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .blend-count {
+      flex: none;
+      padding: 6px 8px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: rgba(244, 240, 234, .7);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .blend-strip {
+      position: relative;
+      height: 34px;
+      overflow: hidden;
+      border: 1px solid rgba(58, 53, 50, .2);
+      border-radius: 999px;
+      background: linear-gradient(90deg, #eaaeac 0%, #d8c7b6 14%, #8a9db0 28%, #e0cdbd 42%, #d9b6ad 56%, #c9b8af 70%, #655552 84%, #b8aca5 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .5),
+        0 14px 26px -24px var(--shadow);
+    }
+
+    .blend-strip::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .2) 0 1px, transparent 1px 16px);
+      mix-blend-mode: soft-light;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 26px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .legend li {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      padding: 5px 8px 5px 6px;
+      border: 1px solid rgba(101, 85, 82, .14);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(251, 247, 241, .56);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .legend i {
+      width: 10px;
+      height: 10px;
+      flex: none;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid rgba(58, 53, 50, .18);
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .product {
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+      align-content: space-between;
+      min-height: 192px;
+      padding: 14px;
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .48), rgba(255, 255, 255, .1)),
+        rgba(251, 247, 241, .58);
+      box-shadow: 0 18px 32px -30px var(--shadow);
+    }
+
+    .bottle {
+      position: relative;
+      justify-self: center;
+      width: 54px;
+      height: 102px;
+      border: 1px solid rgba(58, 53, 50, .22);
+      border-radius: 999px 999px 12px 12px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .5), transparent 26%),
+        linear-gradient(180deg, var(--bottle-top), var(--bottle-bottom));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .55),
+        0 18px 28px -24px rgba(58, 53, 50, .62);
+    }
+
+    .bottle::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -10px;
+      width: 26px;
+      height: 18px;
+      border: 1px solid rgba(58, 53, 50, .22);
+      border-radius: 999px 999px 8px 8px;
+      background: var(--paper-soft);
+      transform: translateX(-50%);
+    }
+
+    .bottle::after {
+      content: "";
+      position: absolute;
+      left: 11px;
+      right: 11px;
+      bottom: 14px;
+      height: 34px;
+      border: 1px solid rgba(244, 240, 234, .45);
+      border-radius: 999px;
+      background: rgba(244, 240, 234, .34);
+    }
+
+    .product h3 {
+      overflow-wrap: anywhere;
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.08;
+    }
+
+    .product p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .add {
+      border: 1px solid rgba(58, 53, 50, .28);
+      border-radius: 999px;
+      padding: 6px 9px;
+      background: var(--ink);
+      color: var(--paper-soft);
+      font-family: var(--mono);
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .add:focus-visible {
+      outline: 2px solid var(--mocha);
+      outline-offset: 3px;
+    }
+
+    .footnote {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 4px 2px 0;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    @media (max-width: 430px) {
+      body {
+        padding-inline: 8px;
+      }
+
+      .phone {
+        width: min(420px, calc(100vw - 16px));
+        border-radius: 22px;
+      }
+
+      .topbar {
+        padding-inline: 18px;
+      }
+
+      main {
+        padding-inline: 14px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .products {
+        gap: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero,
+      .panel,
+      .blend,
+      .products,
+      .footnote {
+        animation: enter-soft .72s cubic-bezier(.16, 1, .3, 1) both;
+      }
+
+      .panel {
+        animation-delay: .08s;
+      }
+
+      .blend {
+        animation-delay: .14s;
+      }
+
+      .products {
+        animation-delay: .2s;
+      }
+
+      .footnote {
+        animation-delay: .26s;
+      }
+
+      .featured-swatch,
+      .tone-pill,
+      .note,
+      .note-swatch,
+      .blend-strip,
+      .product,
+      .add {
+        transition:
+          transform .32s cubic-bezier(.16, 1, .3, 1),
+          box-shadow .32s cubic-bezier(.16, 1, .3, 1),
+          border-color .32s cubic-bezier(.16, 1, .3, 1),
+          background .42s cubic-bezier(.16, 1, .3, 1),
+          opacity .32s cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .featured-swatch:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 28px 46px -32px rgba(101, 85, 82, .5),
+          inset 0 1px 0 rgba(255, 255, 255, .54);
+      }
+
+      .note:hover {
+        transform: translateY(-1px);
+        border-color: rgba(58, 53, 50, .34);
+      }
+
+      .note:hover .note-swatch,
+      .note.is-selected .note-swatch {
+        transform: scale(1.12);
+      }
+
+      .note:active,
+      .add:active {
+        transform: translateY(1px) scale(.99);
+      }
+
+      .product:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 22px 38px -30px rgba(101, 85, 82, .48);
+      }
+
+      @keyframes enter-soft {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone" role="application" aria-label="Aster Loom scent palette builder">
+    <header class="topbar">
+      <div class="brand" aria-label="Aster Loom">
+        <strong>ASTER LOOM</strong>
+        <span>香序工坊</span>
+      </div>
+      <div class="top-meta">scent palette<br>调香</div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="scent-title">
+        <span class="eyebrow">private blend / 私藏配方</span>
+        <h1 id="scent-title">Pale Orchard</h1>
+        <p class="hero-copy">A soft skin scent with pale fruit, tea steam, and dry paper woods.</p>
+
+        <div class="featured-swatch" data-featured-swatch aria-label="Color blend for Pale Orchard">
+          <div class="swatch-card">
+            <small>featured scent</small>
+            <strong>Pale Orchard No. 7</strong>
+          </div>
+        </div>
+
+        <div class="stacked-tones" aria-label="Selected scent families">
+          <div class="tone-pill"><span>Yuzu peel and pear leaf</span><span>TOP</span></div>
+          <div class="tone-pill"><span>Fig milk and tea blossom</span><span>HEART</span></div>
+          <div class="tone-pill"><span>Cedar paper and linen musk</span><span>BASE</span></div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="pyramid-title">
+        <div class="panel-header">
+          <h2 class="panel-title" id="pyramid-title">FRAGRANCE PYRAMID / 香气金字塔</h2>
+          <span class="mono">PAL-07</span>
+        </div>
+
+        <div class="pyramid">
+          <article class="tier">
+            <div class="tier-heading">
+              <h3>Top Notes</h3>
+              <span>前调</span>
+            </div>
+            <div class="note-list">
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Yuzu peel" data-color="#eaaeac" style="--note:#eaaeac">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Yuzu peel</strong><small>柚皮清光</small></span>
+                <span class="note-code">TP-11</span>
+              </button>
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Pear leaf" data-color="#d8c7b6" style="--note:#d8c7b6">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Pear leaf</strong><small>梨叶微青</small></span>
+                <span class="note-code">TP-18</span>
+              </button>
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Green tea steam" data-color="#8a9db0" style="--note:#8a9db0">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Green tea steam</strong><small>茶雾</small></span>
+                <span class="note-code">TP-26</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="tier">
+            <div class="tier-heading">
+              <h3>Heart Notes</h3>
+              <span>中调</span>
+            </div>
+            <div class="note-list">
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Fig milk" data-color="#e0cdbd" style="--note:#e0cdbd">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Fig milk</strong><small>无花果乳</small></span>
+                <span class="note-code">HT-04</span>
+              </button>
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Tea blossom" data-color="#d9b6ad" style="--note:#d9b6ad">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Tea blossom</strong><small>茶花绒感</small></span>
+                <span class="note-code">HT-12</span>
+              </button>
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Suede peach" data-color="#c9b8af" style="--note:#c9b8af">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Suede peach</strong><small>绒面桃</small></span>
+                <span class="note-code">HT-21</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="tier">
+            <div class="tier-heading">
+              <h3>Base Notes</h3>
+              <span>后调</span>
+            </div>
+            <div class="note-list">
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Cedar paper" data-color="#655552" style="--note:#655552">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Cedar paper</strong><small>雪松纸页</small></span>
+                <span class="note-code">BS-03</span>
+              </button>
+              <button class="note is-selected" type="button" aria-pressed="true" data-name="Linen musk" data-color="#b8aca5" style="--note:#b8aca5">
+                <span class="note-swatch" aria-hidden="true"></span>
+                <span class="note-text"><strong>Linen musk</strong><small>亚麻麝香</small></span>
+                <span class="note-code">BS-16</span>
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel blend" aria-labelledby="blend-title">
+        <div class="blend-top">
+          <div>
+            <h2 id="blend-title">Your Blend</h2>
+            <p>Selected notes are folded into one muted scent palette.</p>
+          </div>
+          <output class="blend-count" data-blend-count aria-live="polite">8 notes</output>
+        </div>
+        <div class="blend-strip" data-blend-strip aria-label="Composed color strip"></div>
+        <ul class="legend" data-blend-legend aria-label="Selected notes in blend"></ul>
+      </section>
+
+      <section class="products" aria-label="Roller bottle options">
+        <article class="product" style="--bottle-top:#eaaeac;--bottle-bottom:#e0cdbd">
+          <div class="bottle" aria-hidden="true"></div>
+          <div>
+            <h3>Morning Roller</h3>
+            <p>Pale fruit, tea steam, linen musk.</p>
+          </div>
+          <div class="price-row"><span>pocket vial</span><button class="add" type="button">add</button></div>
+        </article>
+
+        <article class="product" style="--bottle-top:#8a9db0;--bottle-bottom:#655552">
+          <div class="bottle" aria-hidden="true"></div>
+          <div>
+            <h3>Archive Oil</h3>
+            <p>Dry paper woods with a quiet slate finish.</p>
+          </div>
+          <div class="price-row"><span>desk vial</span><button class="add" type="button">add</button></div>
+        </article>
+      </section>
+
+      <footer class="footnote">
+        <span>small batch study</span>
+        <span>ASTER LOOM</span>
+      </footer>
+    </main>
+  </div>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Roller Bottle Bar》 by foremandian（社区 #146）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const notes = Array.from(document.querySelectorAll(".note"));
+      const strip = document.querySelector("[data-blend-strip]");
+      const featured = document.querySelector("[data-featured-swatch]");
+      const count = document.querySelector("[data-blend-count]");
+      const legend = document.querySelector("[data-blend-legend]");
+
+      function gradientFor(items) {
+        if (!items.length) {
+          return "linear-gradient(90deg, #e0cdbd 0%, #f4f0ea 100%)";
+        }
+
+        if (items.length === 1) {
+          const color = items[0].dataset.color;
+          return `linear-gradient(90deg, ${color} 0%, ${color} 68%, #f4f0ea 100%)`;
+        }
+
+        const last = items.length - 1;
+        const stops = items.map((item, index) => {
+          const start = Math.round((index / last) * 100);
+          return `${item.dataset.color} ${start}%`;
+        });
+        return `linear-gradient(90deg, ${stops.join(", ")})`;
+      }
+
+      function syncBlend() {
+        const selected = notes.filter((note) => note.classList.contains("is-selected"));
+        const blend = gradientFor(selected);
+        strip.style.background = blend;
+        featured.style.background = blend;
+        count.textContent = selected.length === 1 ? "1 note" : `${selected.length} notes`;
+
+        legend.replaceChildren();
+        selected.forEach((note) => {
+          const item = document.createElement("li");
+          const chip = document.createElement("i");
+          const label = document.createElement("span");
+          chip.style.setProperty("--chip", note.dataset.color);
+          label.textContent = note.dataset.name;
+          item.append(chip, label);
+          legend.append(item);
+        });
+      }
+
+      notes.forEach((note) => {
+        note.addEventListener("click", () => {
+          note.classList.toggle("is-selected");
+          note.setAttribute("aria-pressed", String(note.classList.contains("is-selected")));
+          syncBlend();
+        });
+      });
+
+      syncBlend();
+    })();
+  </script>
+</body>
+</html>
