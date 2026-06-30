@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nadir Lantern Abyss Telemetry</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --abyss: #1c121e;
+      --abyss-deep: #09060b;
+      --panel: rgba(30, 18, 34, .82);
+      --panel-strong: rgba(11, 8, 14, .88);
+      --rim: rgba(255, 234, 68, .22);
+      --rim-red: rgba(255, 34, 68, .28);
+      --ink: #ece8ee;
+      --muted: #aca2b3;
+      --dim: #9a8fa0;
+      --yellow: #ffea44;
+      --orange: #ff6622;
+      --red: #ff2244;
+      --lime: #a3cc46;
+      --cyan: #72e6ff;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--abyss);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 50% -14%, rgba(255, 34, 68, .22), transparent 36%),
+        radial-gradient(circle at 12% 84%, rgba(163, 204, 70, .11), transparent 33%),
+        radial-gradient(circle at 88% 72%, rgba(255, 102, 34, .12), transparent 31%),
+        linear-gradient(180deg, #241628 0%, #1c121e 42%, #070509 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      opacity: .26;
+      background:
+        linear-gradient(rgba(255, 234, 68, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(163, 204, 70, .03) 1px, transparent 1px);
+      background-size: 34px 34px, 34px 34px;
+      mask-image: radial-gradient(ellipse at center, #000 0%, transparent 74%);
+    }
+
+    body::after {
+      opacity: .42;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .035), transparent 9%, transparent 88%, rgba(0, 0, 0, .38)),
+        linear-gradient(180deg, transparent 0 52%, rgba(255, 255, 255, .03) 52% 53%, transparent 53%);
+      background-size: 100% 100%, 100% 6px;
+      mix-blend-mode: screen;
+    }
+
+    .dashboard {
+      width: min(1410px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 24px 0 96px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .console-shell {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid rgba(255, 234, 68, .18);
+      background:
+        linear-gradient(135deg, rgba(255, 234, 68, .07), transparent 22%),
+        linear-gradient(315deg, rgba(255, 34, 68, .09), transparent 28%),
+        rgba(8, 5, 10, .76);
+      box-shadow:
+        0 0 0 1px rgba(255, 34, 68, .08),
+        inset 0 0 60px rgba(255, 102, 34, .045),
+        0 28px 72px rgba(0, 0, 0, .46);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .console-shell::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      pointer-events: none;
+      border: 1px solid rgba(163, 204, 70, .13);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, .025),
+        inset 0 0 34px rgba(0, 0, 0, .62);
+    }
+
+    .station-header {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(440px, .92fr);
+      gap: 12px;
+      margin-bottom: 14px;
+      min-width: 0;
+    }
+
+    .brand-panel,
+    .strip-panel,
+    .module {
+      border: 1px solid rgba(255, 234, 68, .16);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012)),
+        rgba(13, 8, 16, .82);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .06),
+        inset 0 0 0 1px rgba(0, 0, 0, .52);
+    }
+
+    .brand-panel {
+      min-width: 0;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      overflow: hidden;
+    }
+
+    .station-mark {
+      min-width: 0;
+    }
+
+    .station-kicker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--lime);
+      font: 500 11px/1.2 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(163, 204, 70, .34);
+    }
+
+    .station-kicker i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 16px rgba(163, 204, 70, .9);
+      animation: lampPulse 2.8s ease-in-out infinite;
+    }
+
+    h1 {
+      margin: 10px 0 0;
+      color: #fff9a8;
+      font: 500 clamp(1.45rem, 3vw, 2.55rem)/1.02 var(--mono);
+      letter-spacing: 0;
+      text-wrap: balance;
+      text-shadow:
+        0 0 18px rgba(255, 234, 68, .38),
+        0 0 42px rgba(255, 102, 34, .12);
+    }
+
+    .header-code {
+      flex: 0 0 auto;
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      color: var(--muted);
+      font: 500 11px/1 var(--mono);
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    .header-code b {
+      color: var(--orange);
+      font-weight: 500;
+      text-shadow: 0 0 14px rgba(255, 102, 34, .44);
+    }
+
+    .strip-panel {
+      min-width: 0;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .strip-cell {
+      min-width: 0;
+      padding: 11px 10px;
+      border: 1px solid rgba(255, 255, 255, .075);
+      background: rgba(0, 0, 0, .22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .strip-cell::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 2px;
+      background: var(--cell-color, var(--yellow));
+      box-shadow: 0 0 13px var(--cell-glow, rgba(255, 234, 68, .54));
+    }
+
+    .strip-cell span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--dim);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .strip-cell strong {
+      display: block;
+      color: var(--ink);
+      font: 500 clamp(1rem, 2vw, 1.35rem)/1 var(--mono);
+      white-space: nowrap;
+      text-shadow: 0 0 12px rgba(236, 232, 238, .13);
+    }
+
+    .strip-cell small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font: 500 10px/1.2 var(--mono);
+      white-space: nowrap;
+    }
+
+    .console-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(245px, .72fr) minmax(420px, 1.34fr) minmax(280px, .86fr);
+      grid-template-areas: "left center right";
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .column {
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .left-column {
+      grid-area: left;
+    }
+
+    .center-column {
+      grid-area: center;
+      min-width: 0;
+    }
+
+    .right-column {
+      grid-area: right;
+    }
+
+    .module {
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, .025), transparent),
+        linear-gradient(180deg, rgba(255, 255, 255, .045), transparent 28%);
+      opacity: .72;
+    }
+
+    .module-head {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(255, 234, 68, .13);
+      background: rgba(0, 0, 0, .18);
+      color: var(--muted);
+      font: 600 10px/1.2 var(--mono);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .module-head strong {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .module-head span {
+      flex: 0 0 auto;
+      color: var(--head-color, var(--yellow));
+      text-shadow: 0 0 12px var(--head-glow, rgba(255, 234, 68, .34));
+    }
+
+    .module-body {
+      position: relative;
+      z-index: 1;
+      padding: 13px;
+    }
+
+    .pressure-readout {
+      display: grid;
+      gap: 12px;
+    }
+
+    .big-value {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      color: #fff49b;
+      font-family: var(--mono);
+      text-shadow: 0 0 18px rgba(255, 234, 68, .26);
+    }
+
+    .big-value b {
+      font-size: clamp(2.05rem, 5.2vw, 3.5rem);
+      line-height: .92;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .big-value small {
+      color: var(--muted);
+      font-size: .72rem;
+      letter-spacing: .08em;
+    }
+
+    .wave {
+      height: 86px;
+      border: 1px solid rgba(255, 102, 34, .18);
+      background:
+        linear-gradient(rgba(255, 102, 34, .075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 102, 34, .06) 1px, transparent 1px),
+        rgba(3, 2, 5, .36);
+      background-size: 100% 17px, 22px 100%;
+      overflow: hidden;
+    }
+
+    .wave svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(255, 102, 34, .45));
+    }
+
+    .wave path {
+      animation: lineDrift 3.8s linear infinite;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .mini-stats div {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, .07);
+      background: rgba(0, 0, 0, .22);
+    }
+
+    .mini-stats span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--dim);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .mini-stats b {
+      display: block;
+      color: var(--ink);
+      font: 500 .8rem/1 var(--mono);
+      white-space: nowrap;
+    }
+
+    .depth-grid {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 13px;
+      align-items: stretch;
+    }
+
+    .depth-gauge {
+      min-height: 250px;
+      border: 1px solid rgba(114, 230, 255, .18);
+      background:
+        linear-gradient(180deg, rgba(114, 230, 255, .1), rgba(255, 34, 68, .08)),
+        rgba(0, 0, 0, .24);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .depth-gauge::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .13) 1px, transparent 1px);
+      background-size: 100% 22px;
+      opacity: .32;
+    }
+
+    .depth-fill {
+      position: absolute;
+      inset: auto 10px 10px;
+      height: 68%;
+      background:
+        linear-gradient(180deg, rgba(255, 234, 68, .82), rgba(163, 204, 70, .68) 42%, rgba(255, 34, 68, .72));
+      box-shadow:
+        0 0 18px rgba(163, 204, 70, .4),
+        0 0 22px rgba(255, 34, 68, .22);
+      transform-origin: bottom;
+      animation: gaugeDrift 4.7s ease-in-out infinite;
+    }
+
+    .depth-needle {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 68%;
+      height: 2px;
+      background: var(--yellow);
+      box-shadow: 0 0 12px rgba(255, 234, 68, .75);
+      animation: needleDrift 4.7s ease-in-out infinite;
+    }
+
+    .depth-copy {
+      min-width: 0;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+    }
+
+    .depth-number {
+      color: #dfffa2;
+      font: 500 clamp(2.2rem, 6vw, 4.5rem)/.9 var(--mono);
+      letter-spacing: 0;
+      text-shadow: 0 0 19px rgba(163, 204, 70, .34);
+    }
+
+    .depth-number small {
+      color: var(--muted);
+      font-size: .3em;
+    }
+
+    .depth-lines {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font: 500 12px/1.45 var(--mono);
+    }
+
+    .depth-lines span {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+      padding-bottom: 6px;
+    }
+
+    .depth-lines b {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .sonar-module {
+      border-color: rgba(163, 204, 70, .2);
+      background:
+        radial-gradient(circle at 50% 46%, rgba(163, 204, 70, .12), transparent 52%),
+        linear-gradient(180deg, rgba(255, 255, 255, .038), rgba(255, 255, 255, .008)),
+        rgba(6, 4, 9, .92);
+    }
+
+    .sonar-body {
+      padding: 12px;
+    }
+
+    .sonar-stage {
+      position: relative;
+      min-width: 0;
+      aspect-ratio: 1 / .82;
+      min-height: 420px;
+      border: 1px solid rgba(163, 204, 70, .18);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(163, 204, 70, .09), transparent 57%),
+        linear-gradient(rgba(163, 204, 70, .04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(163, 204, 70, .035) 1px, transparent 1px),
+        #050309;
+      background-size: auto, 38px 38px, 38px 38px, auto;
+      overflow: hidden;
+    }
+
+    .sonar-stage::before,
+    .sonar-stage::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .sonar-stage::before {
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, transparent 46%, rgba(0, 0, 0, .56) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, .055), transparent 13%);
+    }
+
+    .sonar-stage::after {
+      left: 0;
+      right: 0;
+      top: 49.8%;
+      height: 1px;
+      background: rgba(255, 234, 68, .32);
+      box-shadow: 0 0 11px rgba(255, 234, 68, .24);
+    }
+
+    #sonarCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    .sonar-overlay {
+      position: absolute;
+      inset: 14px;
+      z-index: 3;
+      pointer-events: none;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .sonar-topline,
+    .sonar-bottomline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(236, 232, 238, .7);
+      font: 500 10px/1.2 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .sonar-topline b,
+    .sonar-bottomline b {
+      color: var(--yellow);
+      font-weight: 500;
+      text-shadow: 0 0 12px rgba(255, 234, 68, .35);
+    }
+
+    .range-tag {
+      align-self: center;
+      justify-self: center;
+      padding: 5px 8px;
+      border: 1px solid rgba(255, 234, 68, .24);
+      background: rgba(6, 3, 8, .62);
+      color: #fff49b;
+      font: 500 10px/1 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      box-shadow: 0 0 18px rgba(255, 234, 68, .12);
+    }
+
+    .sonar-footer {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .sonar-footer div {
+      min-width: 0;
+      padding: 9px;
+      border: 1px solid rgba(163, 204, 70, .15);
+      background: rgba(0, 0, 0, .2);
+    }
+
+    .sonar-footer span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--dim);
+      font: 600 9px/1 var(--sans);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .sonar-footer b {
+      color: var(--ink);
+      font: 500 12px/1 var(--mono);
+      white-space: nowrap;
+    }
+
+    .contacts-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .contact-row {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 9px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(0, 0, 0, .2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-row::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 2px;
+      background: var(--contact-color);
+      box-shadow: 0 0 12px var(--contact-color);
+    }
+
+    .contact-name {
+      min-width: 0;
+    }
+
+    .contact-name b {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ink);
+      font: 500 12px/1.2 var(--mono);
+    }
+
+    .contact-name span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font: 500 10px/1.2 var(--mono);
+      white-space: nowrap;
+    }
+
+    .class-tag {
+      align-self: start;
+      padding: 5px 7px;
+      border: 1px solid color-mix(in srgb, var(--contact-color) 54%, transparent);
+      color: var(--contact-color);
+      background: color-mix(in srgb, var(--contact-color) 14%, transparent);
+      font: 600 9px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px color-mix(in srgb, var(--contact-color) 40%, transparent);
+      white-space: nowrap;
+    }
+
+    .zone-map {
+      display: grid;
+      gap: 12px;
+    }
+
+    .trench-card {
+      min-height: 190px;
+      border: 1px solid rgba(255, 102, 34, .18);
+      background:
+        linear-gradient(rgba(255, 102, 34, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 102, 34, .045) 1px, transparent 1px),
+        rgba(0, 0, 0, .22);
+      background-size: 100% 24px, 28px 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trench-card svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .trench-line {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 2.2;
+      filter: drop-shadow(0 0 8px rgba(255, 102, 34, .42));
+    }
+
+    .trench-fill {
+      fill: rgba(255, 102, 34, .08);
+    }
+
+    .bio-dot {
+      animation: dotPulse 2.6s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .zone-data {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .zone-data div {
+      min-width: 0;
+      padding: 9px;
+      border: 1px solid rgba(255, 255, 255, .075);
+      background: rgba(0, 0, 0, .22);
+    }
+
+    .zone-data span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--dim);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .zone-data b {
+      display: block;
+      color: var(--ink);
+      font: 500 12px/1 var(--mono);
+      white-space: nowrap;
+    }
+
+    .temp-panel {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(88px, .42fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .temp-value {
+      color: #fff49b;
+      font: 500 clamp(2rem, 5vw, 3.4rem)/.95 var(--mono);
+      text-shadow: 0 0 15px rgba(255, 234, 68, .26);
+      white-space: nowrap;
+    }
+
+    .temp-value small {
+      color: var(--muted);
+      font-size: .34em;
+    }
+
+    .thermal-bars {
+      display: grid;
+      gap: 6px;
+      align-self: stretch;
+      align-content: center;
+    }
+
+    .thermal-bars i {
+      display: block;
+      height: 9px;
+      width: var(--w);
+      margin-left: auto;
+      background: var(--c);
+      box-shadow: 0 0 12px var(--c);
+      opacity: .88;
+      animation: barFlicker 3.2s ease-in-out infinite;
+    }
+
+    .thermal-bars i:nth-child(2) {
+      animation-delay: -.8s;
+    }
+
+    .thermal-bars i:nth-child(3) {
+      animation-delay: -1.4s;
+    }
+
+    .thermal-bars i:nth-child(4) {
+      animation-delay: -2s;
+    }
+
+    .log-lines {
+      display: grid;
+      gap: 8px;
+      font: 500 11px/1.45 var(--mono);
+      color: var(--muted);
+    }
+
+    .log-lines p {
+      margin: 0;
+      padding-left: 12px;
+      border-left: 1px solid rgba(163, 204, 70, .25);
+    }
+
+    .log-lines b {
+      color: var(--lime);
+      font-weight: 500;
+    }
+
+    .status-note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 34, 68, .2);
+      background: rgba(255, 34, 68, .055);
+      color: #ffc6cf;
+      font: 500 11px/1.45 var(--mono);
+    }
+
+    @keyframes lampPulse {
+      0%, 100% { opacity: .76; transform: scale(.9); }
+      48% { opacity: 1; transform: scale(1.18); }
+    }
+
+    @keyframes lineDrift {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -150; }
+    }
+
+    @keyframes gaugeDrift {
+      0%, 100% { transform: scaleY(.985); filter: saturate(1); }
+      50% { transform: scaleY(1.025); filter: saturate(1.26); }
+    }
+
+    @keyframes needleDrift {
+      0%, 100% { bottom: 67%; }
+      50% { bottom: 70%; }
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: .72; transform: scale(.9); }
+      50% { opacity: 1; transform: scale(1.45); }
+    }
+
+    @keyframes barFlicker {
+      0%, 100% { opacity: .72; transform: scaleX(.94); }
+      34% { opacity: 1; transform: scaleX(1); }
+      68% { opacity: .84; transform: scaleX(.98); }
+    }
+
+    @media (max-width: 1120px) {
+      .station-header {
+        grid-template-columns: 1fr;
+      }
+
+      .console-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, .72fr);
+        grid-template-areas:
+          "center center"
+          "left right";
+      }
+    }
+
+    @media (max-width: 760px) {
+      .dashboard {
+        width: min(100%, calc(100vw - 18px));
+        padding-top: 9px;
+      }
+
+      .console-shell {
+        padding: 9px;
+      }
+
+      .station-header,
+      .console-grid {
+        gap: 9px;
+      }
+
+      .brand-panel {
+        display: grid;
+        justify-items: start;
+        padding: 14px;
+      }
+
+      .header-code {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .strip-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .console-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "center"
+          "left"
+          "right";
+      }
+
+      .sonar-stage {
+        min-height: 330px;
+        aspect-ratio: 1 / 1;
+      }
+
+      .sonar-footer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .depth-grid,
+      .temp-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .depth-gauge {
+        min-height: 148px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .dashboard {
+        width: min(100%, calc(100vw - 12px));
+      }
+
+      .console-shell {
+        padding: 6px;
+      }
+
+      .station-kicker,
+      .module-head,
+      .sonar-topline,
+      .sonar-bottomline {
+        letter-spacing: .04em;
+      }
+
+      .strip-panel,
+      .sonar-footer,
+      .mini-stats,
+      .zone-data {
+        grid-template-columns: 1fr;
+      }
+
+      .module-body {
+        padding: 10px;
+      }
+
+      .sonar-body {
+        padding: 8px;
+      }
+
+      .sonar-stage {
+        min-height: 300px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .depth-fill {
+        transform: scaleY(1);
+      }
+
+      .depth-needle {
+        bottom: 68%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="dashboard" aria-label="Nadir Lantern abyssal telemetry dashboard">
+    <section class="console-shell">
+      <header class="station-header">
+        <div class="brand-panel">
+          <div class="station-mark">
+            <div class="station-kicker"><i aria-hidden="true"></i>Nadir Lantern Array · 深渊灯阵</div>
+            <h1>深层遥测中枢 / Abyss Telemetry Console</h1>
+          </div>
+          <div class="header-code" aria-label="Station identity">
+            <span>STATION <b>NL-09</b></span>
+            <span>WATCH <b>RIFT-SOUTH / 41B</b></span>
+            <span>LINK <b>ACOUSTIC LOCK</b></span>
+          </div>
+        </div>
+
+        <div class="strip-panel" aria-label="Depth and pressure status strip">
+          <div class="strip-cell" style="--cell-color:#a3cc46;--cell-glow:rgba(163,204,70,.58)">
+            <span>Depth 深度</span>
+            <strong id="stripDepth">7,428 m</strong>
+            <small>descent hold</small>
+          </div>
+          <div class="strip-cell" style="--cell-color:#ffea44;--cell-glow:rgba(255,234,68,.55)">
+            <span>Pressure 压强</span>
+            <strong id="stripPressure">1,079 bar</strong>
+            <small>shell flex nominal</small>
+          </div>
+          <div class="strip-cell" style="--cell-color:#ff6622;--cell-glow:rgba(255,102,34,.54)">
+            <span>Trench 海沟</span>
+            <strong>Obsidian V</strong>
+            <small>rift shelf edge</small>
+          </div>
+          <div class="strip-cell" style="--cell-color:#ff2244;--cell-glow:rgba(255,34,68,.52)">
+            <span>Bio-Alarm 生物</span>
+            <strong>Class 3</strong>
+            <small>2 contacts closing</small>
+          </div>
+        </div>
+      </header>
+
+      <section class="console-grid">
+        <div class="column left-column">
+          <article class="module" style="--head-color:#ffea44;--head-glow:rgba(255,234,68,.38)">
+            <div class="module-head">
+              <strong>External Pressure / 外部压强</strong>
+              <span>LIVE</span>
+            </div>
+            <div class="module-body pressure-readout">
+              <div class="big-value"><b id="pressureValue">1079.3</b><small>BAR</small></div>
+              <div class="wave" aria-label="Pressure oscillation graph">
+                <svg viewBox="0 0 280 86" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M-20 46 C 8 14, 24 76, 48 46 S 88 13, 112 45 S 151 76, 176 43 S 216 14, 238 45 S 280 73, 306 42" fill="none" stroke="#ff6622" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="7 6"/>
+                  <path d="M-8 48 C 30 62, 50 28, 80 48 S 128 65, 158 42 S 206 21, 236 47 S 282 65, 308 40" fill="none" stroke="#ffea44" stroke-width="1.2" opacity=".74"/>
+                </svg>
+              </div>
+              <div class="mini-stats">
+                <div><span>Hull</span><b>+0.18 mm</b></div>
+                <div><span>Seal</span><b>92.4%</b></div>
+                <div><span>Surge</span><b id="surgeValue">06.7</b></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module" style="--head-color:#a3cc46;--head-glow:rgba(163,204,70,.38)">
+            <div class="module-head">
+              <strong>Depth Column / 垂直深度</strong>
+              <span>7428M</span>
+            </div>
+            <div class="module-body depth-grid">
+              <div class="depth-gauge" aria-hidden="true">
+                <i class="depth-fill"></i>
+                <i class="depth-needle"></i>
+              </div>
+              <div class="depth-copy">
+                <div class="depth-number"><span id="depthValue">7428</span><small> m</small></div>
+                <div class="depth-lines">
+                  <span>Bathymetry <b>-13° slope</b></span>
+                  <span>Descent rate <b id="driftValue">0.6 m/s</b></span>
+                  <span>Anchor range <b>412 m</b></span>
+                  <span>Current shear <b>NE 0.9 kt</b></span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="column center-column">
+          <article class="module sonar-module" style="--head-color:#a3cc46;--head-glow:rgba(163,204,70,.44)">
+            <div class="module-head">
+              <strong>Bio Sonar Sweep / 生物声呐</strong>
+              <span id="sweepReadout">BRG 218°</span>
+            </div>
+            <div class="module-body sonar-body">
+              <div class="sonar-stage">
+                <canvas id="sonarCanvas" aria-label="Animated circular sonar with bioluminescent deep-sea contacts"></canvas>
+                <div class="sonar-overlay" aria-hidden="true">
+                  <div class="sonar-topline"><span>SCAN RADIUS <b>8.4 KM</b></span><span>HYDROPHONE <b>GREEN</b></span></div>
+                  <div class="range-tag">RIFT BIOFIELD / 6 SEC SWEEP</div>
+                  <div class="sonar-bottomline"><span>NOCTILUCA RETURN</span><span>CONTACTS <b>07</b></span></div>
+                </div>
+              </div>
+              <div class="sonar-footer" aria-label="Sonar telemetry">
+                <div><span>Range Gate</span><b>03 / narrow</b></div>
+                <div><span>Acoustic Salt</span><b>34.9 PSU</b></div>
+                <div><span>Pulse Train</span><b id="pulseValue">18.2 Hz</b></div>
+                <div><span>Noise Floor</span><b>-71 dB</b></div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="column right-column">
+          <article class="module" style="--head-color:#ff2244;--head-glow:rgba(255,34,68,.38)">
+            <div class="module-head">
+              <strong>Bio Contacts / 生物接触</strong>
+              <span>7 LOCKS</span>
+            </div>
+            <div class="module-body contacts-list">
+              <div class="contact-row" style="--contact-color:#ffea44">
+                <div class="contact-name"><b>GLASS-MAW LARVA K-17</b><span>6,980 m · BRG 041° · 1.7 km</span></div>
+                <i class="class-tag">lumen</i>
+              </div>
+              <div class="contact-row" style="--contact-color:#ff2244">
+                <div class="contact-name"><b>RIFT CROWN MEDUSA</b><span>7,390 m · BRG 218° · 0.9 km</span></div>
+                <i class="class-tag">threat</i>
+              </div>
+              <div class="contact-row" style="--contact-color:#a3cc46">
+                <div class="contact-name"><b>GREEN SPOOL COLONY</b><span>7,612 m · BRG 303° · 3.4 km</span></div>
+                <i class="class-tag">bio</i>
+              </div>
+              <div class="contact-row" style="--contact-color:#ff6622">
+                <div class="contact-name"><b>IRON SIPHON DRIFTER</b><span>7,104 m · BRG 156° · 2.2 km</span></div>
+                <i class="class-tag">warm</i>
+              </div>
+              <div class="contact-row" style="--contact-color:#ffea44">
+                <div class="contact-name"><b>VEIL EEL TRACE N-04</b><span>7,821 m · BRG 086° · 5.8 km</span></div>
+                <i class="class-tag">trace</i>
+              </div>
+            </div>
+          </article>
+
+          <article class="module" style="--head-color:#ff6622;--head-glow:rgba(255,102,34,.4)">
+            <div class="module-head">
+              <strong>Trench Zone / 海沟区段</strong>
+              <span>OB-V</span>
+            </div>
+            <div class="module-body zone-map">
+              <div class="trench-card" aria-label="Trench cross-section with plotted contacts">
+                <svg viewBox="0 0 360 190" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="trench-fill" d="M0 72 C 44 58, 67 92, 103 84 C 141 75, 157 126, 190 134 C 238 147, 250 88, 293 98 C 330 107, 343 80, 360 76 L360 190 L0 190 Z"/>
+                  <path class="trench-line" d="M0 72 C 44 58, 67 92, 103 84 C 141 75, 157 126, 190 134 C 238 147, 250 88, 293 98 C 330 107, 343 80, 360 76"/>
+                  <circle class="bio-dot" cx="118" cy="92" r="4" fill="#ffea44"/>
+                  <circle class="bio-dot" cx="190" cy="134" r="5" fill="#ff2244" style="animation-delay:-.7s"/>
+                  <circle class="bio-dot" cx="276" cy="99" r="4" fill="#a3cc46" style="animation-delay:-1.3s"/>
+                  <path d="M190 0 V190 M0 134 H360" stroke="rgba(255,234,68,.18)" stroke-width="1"/>
+                </svg>
+              </div>
+              <div class="zone-data">
+                <div><span>Zone Floor</span><b>-8,060 m</b></div>
+                <div><span>Ridge Offset</span><b>2.8 km S</b></div>
+                <div><span>Sediment</span><b>black silt</b></div>
+                <div><span>Vent Trace</span><b>orange low</b></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module" style="--head-color:#ffea44;--head-glow:rgba(255,234,68,.36)">
+            <div class="module-head">
+              <strong>Thermal Layer / 温度</strong>
+              <span>COLD LOCK</span>
+            </div>
+            <div class="module-body">
+              <div class="temp-panel">
+                <div>
+                  <div class="temp-value"><span id="tempValue">1.84</span><small> °C</small></div>
+                  <div class="log-lines">
+                    <p><b>VENT SHADOW</b> intermittent orange return below shelf lip.</p>
+                    <p><b>BIO BLOOM</b> lime scatter rising through the trench mouth.</p>
+                  </div>
+                </div>
+                <div class="thermal-bars" aria-hidden="true">
+                  <i style="--w:92%;--c:#ff2244"></i>
+                  <i style="--w:72%;--c:#ff6622"></i>
+                  <i style="--w:48%;--c:#ffea44"></i>
+                  <i style="--w:64%;--c:#a3cc46"></i>
+                </div>
+              </div>
+              <div class="status-note">CAUTION: two red-class returns are pacing the station shadow. Maintain low-lumen profile.</div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Abyss Research Station》（社区 Featured · #155）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("sonarCanvas");
+      const ctx = canvas.getContext("2d");
+      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const reducedMotion = () => motionQuery.matches;
+      const colors = {
+        yellow: "#ffea44",
+        orange: "#ff6622",
+        red: "#ff2244",
+        lime: "#a3cc46",
+        cyan: "#72e6ff",
+        ink: "#ece8ee"
+      };
+
+      const contacts = [
+        { label: "K-17", bearing: 41, range: .31, color: colors.yellow, pulse: .2, size: 4.2 },
+        { label: "MEDUSA", bearing: 218, range: .18, color: colors.red, pulse: 1.4, size: 5.8 },
+        { label: "SPOOL", bearing: 303, range: .55, color: colors.lime, pulse: 2.1, size: 4.8 },
+        { label: "SIPHON", bearing: 156, range: .42, color: colors.orange, pulse: .8, size: 4.6 },
+        { label: "N-04", bearing: 86, range: .74, color: colors.yellow, pulse: 2.8, size: 3.8 },
+        { label: "MOTE", bearing: 262, range: .63, color: colors.lime, pulse: 1.9, size: 3.2 },
+        { label: "RED ARC", bearing: 335, range: .29, color: colors.red, pulse: 3.4, size: 4.4 }
+      ];
+
+      const stripDepth = document.getElementById("stripDepth");
+      const stripPressure = document.getElementById("stripPressure");
+      const pressureValue = document.getElementById("pressureValue");
+      const depthValue = document.getElementById("depthValue");
+      const driftValue = document.getElementById("driftValue");
+      const surgeValue = document.getElementById("surgeValue");
+      const pulseValue = document.getElementById("pulseValue");
+      const tempValue = document.getElementById("tempValue");
+      const sweepReadout = document.getElementById("sweepReadout");
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let animationId = 0;
+
+      function hexToRgb(hex) {
+        const raw = hex.replace("#", "");
+        const value = parseInt(raw, 16);
+        return {
+          r: (value >> 16) & 255,
+          g: (value >> 8) & 255,
+          b: value & 255
+        };
+      }
+
+      function rgba(hex, alpha) {
+        const rgb = hexToRgb(hex);
+        return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+      }
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.max(320, Math.floor(rect.width));
+        height = Math.max(300, Math.floor(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawFrame(performance.now() * .001, reducedMotion());
+      }
+
+      function drawLabel(text, x, y, color) {
+        ctx.save();
+        ctx.font = "500 10px JetBrains Mono, monospace";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = rgba("#070509", .78);
+        const metrics = ctx.measureText(text);
+        ctx.fillRect(x + 8, y - 9, metrics.width + 9, 17);
+        ctx.strokeStyle = rgba(color, .42);
+        ctx.strokeRect(x + 8.5, y - 8.5, metrics.width + 8, 16);
+        ctx.fillStyle = color;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 9;
+        ctx.fillText(text, x + 13, y);
+        ctx.restore();
+      }
+
+      function drawFrame(time, staticFrame = false) {
+        const cx = width * .5;
+        const cy = height * .505;
+        const radius = Math.min(width, height) * .39;
+        const angle = staticFrame ? Math.PI * 1.18 : (time * .72) % (Math.PI * 2);
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.save();
+        ctx.fillStyle = "#050309";
+        ctx.fillRect(0, 0, width, height);
+
+        const glow = ctx.createRadialGradient(cx, cy, radius * .05, cx, cy, radius * 1.25);
+        glow.addColorStop(0, "rgba(163, 204, 70, .11)");
+        glow.addColorStop(.58, "rgba(28, 18, 30, .18)");
+        glow.addColorStop(1, "rgba(0, 0, 0, .36)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.translate(cx, cy);
+
+        for (let i = 1; i <= 5; i += 1) {
+          ctx.beginPath();
+          ctx.arc(0, 0, radius * i / 5, 0, Math.PI * 2);
+          ctx.strokeStyle = i === 5 ? "rgba(255, 234, 68, .36)" : "rgba(163, 204, 70, .2)";
+          ctx.lineWidth = i === 5 ? 1.4 : 1;
+          ctx.shadowColor = colors.lime;
+          ctx.shadowBlur = i === 5 ? 8 : 0;
+          ctx.stroke();
+        }
+
+        ctx.shadowBlur = 0;
+        for (let i = 0; i < 24; i += 1) {
+          const a = (i / 24) * Math.PI * 2;
+          const inner = i % 3 === 0 ? radius * .06 : radius * .78;
+          const outer = radius;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner);
+          ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer);
+          ctx.strokeStyle = i % 3 === 0 ? "rgba(255, 234, 68, .18)" : "rgba(163, 204, 70, .11)";
+          ctx.lineWidth = i % 3 === 0 ? 1 : .7;
+          ctx.stroke();
+        }
+
+        ctx.save();
+        ctx.rotate(angle);
+        const sweep = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+        sweep.addColorStop(0, "rgba(163, 204, 70, .26)");
+        sweep.addColorStop(.54, "rgba(163, 204, 70, .13)");
+        sweep.addColorStop(1, "rgba(163, 204, 70, 0)");
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, radius, -.18, .34);
+        ctx.closePath();
+        ctx.fillStyle = sweep;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(radius, 0);
+        ctx.strokeStyle = "rgba(255, 234, 68, .88)";
+        ctx.lineWidth = 1.8;
+        ctx.shadowColor = colors.yellow;
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = "rgba(255, 34, 68, .32)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(0, radius * .18, radius * .62, radius * .25, -.28, 0, Math.PI * 2);
+        ctx.stroke();
+
+        contacts.forEach((contact, index) => {
+          const base = (contact.bearing - 90) * Math.PI / 180;
+          const wobble = staticFrame ? 0 : Math.sin(time * .42 + index) * .012;
+          const r = radius * contact.range;
+          const x = Math.cos(base + wobble) * r;
+          const y = Math.sin(base + wobble) * r;
+          const pulse = staticFrame ? .64 : (Math.sin(time * 3.1 + contact.pulse) + 1) / 2;
+          const halo = contact.size + pulse * 12;
+
+          ctx.beginPath();
+          ctx.arc(x, y, halo, 0, Math.PI * 2);
+          ctx.fillStyle = rgba(contact.color, .08 + pulse * .08);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(x, y, contact.size + pulse * 1.6, 0, Math.PI * 2);
+          ctx.fillStyle = contact.color;
+          ctx.shadowColor = contact.color;
+          ctx.shadowBlur = 16 + pulse * 16;
+          ctx.fill();
+
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(x, y, contact.size + 7, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(contact.color, .28 + pulse * .42);
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          if (width > 520 || index < 4) {
+            drawLabel(contact.label, x, y, contact.color);
+          }
+        });
+
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = rgba(colors.ink, .72);
+        ctx.font = "500 10px JetBrains Mono, monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("N", 0, -radius - 12);
+        ctx.fillText("S", 0, radius + 18);
+        ctx.textAlign = "left";
+        ctx.fillText("W", -radius - 20, 3);
+        ctx.textAlign = "right";
+        ctx.fillText("E", radius + 20, 3);
+
+        ctx.restore();
+      }
+
+      function updateReadouts(time) {
+        if (reducedMotion()) {
+          stripDepth.textContent = "7,428 m";
+          stripPressure.textContent = "1,079 bar";
+          pressureValue.textContent = "1079.3";
+          depthValue.textContent = "7428";
+          driftValue.textContent = "0.6 m/s";
+          surgeValue.textContent = "06.7";
+          pulseValue.textContent = "18.2 Hz";
+          tempValue.textContent = "1.84";
+          sweepReadout.textContent = "BRG 218°";
+          return;
+        }
+
+        const depth = 7428 + Math.sin(time * .64) * 7 + Math.sin(time * 1.7) * 1.2;
+        const pressure = 1079.3 + Math.sin(time * 1.1) * 2.6 + Math.cos(time * .38) * .8;
+        const temp = 1.84 + Math.sin(time * .8) * .04;
+        const sweep = Math.round(((time * .72) % (Math.PI * 2)) / (Math.PI * 2) * 360);
+
+        stripDepth.textContent = `${Math.round(depth).toLocaleString("en-US")} m`;
+        stripPressure.textContent = `${Math.round(pressure).toLocaleString("en-US")} bar`;
+        pressureValue.textContent = pressure.toFixed(1);
+        depthValue.textContent = Math.round(depth).toString();
+        driftValue.textContent = `${(0.55 + Math.sin(time * 1.2) * .09).toFixed(1)} m/s`;
+        surgeValue.textContent = (6.7 + Math.sin(time * 2.2) * .8).toFixed(1).padStart(4, "0");
+        pulseValue.textContent = `${(18.2 + Math.sin(time * 1.5) * .7).toFixed(1)} Hz`;
+        tempValue.textContent = temp.toFixed(2);
+        sweepReadout.textContent = `BRG ${sweep.toString().padStart(3, "0")}°`;
+      }
+
+      function tick(now) {
+        const time = now * .001;
+        drawFrame(time, false);
+        updateReadouts(time);
+        animationId = window.requestAnimationFrame(tick);
+      }
+
+      function start() {
+        window.cancelAnimationFrame(animationId);
+        if (reducedMotion()) {
+          drawFrame(0, true);
+          updateReadouts(0);
+          return;
+        }
+        animationId = window.requestAnimationFrame(tick);
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+      if (typeof motionQuery.addEventListener === "function") {
+        motionQuery.addEventListener("change", () => {
+          resizeCanvas();
+          start();
+        });
+      }
+
+      resizeCanvas();
+      start();
+    })();
+  </script>
+</body>
+</html>
