@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>沈照苔 · Personal Essays</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #fafafa;
+      --paper: #ffffff;
+      --paper-low: #f8f8f8;
+      --paper-pressed: #f3f2f0;
+      --ink: #111111;
+      --body: #242424;
+      --muted: #5f5f5f;
+      --rule: #e4e1dc;
+      --rule-strong: #d5d0c8;
+      --red: #a93636;
+      --red-soft: #f4e8e8;
+      --teal: #2f7567;
+      --teal-soft: #e8f1ee;
+      --serif: "Noto Serif", Georgia, "Times New Roman", "Songti SC", serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+      color: var(--ink);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--body);
+      font-family: var(--serif);
+      line-height: 1.72;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(248, 248, 248, .98) 46%, rgba(255, 255, 255, .96)),
+        var(--page);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(169, 54, 54, .035), transparent 28%),
+        radial-gradient(circle at 88% 32%, rgba(47, 117, 103, .035), transparent 26%),
+        linear-gradient(rgba(17, 17, 17, .018) 1px, transparent 1px);
+      background-size: auto, auto, 100% 31px;
+      opacity: .72;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--red);
+      outline-offset: 4px;
+    }
+
+    ::selection {
+      color: var(--ink);
+      background: #ead1d1;
+    }
+
+    .page {
+      position: relative;
+      width: min(1120px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 34px 0 128px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(170px, .58fr) minmax(240px, 1fr) auto;
+      align-items: center;
+      gap: 28px;
+      padding: 20px 0 18px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .wordmark {
+      display: inline-block;
+      width: fit-content;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.2vw, 3.2rem);
+      font-weight: 700;
+      line-height: .94;
+      letter-spacing: -.055em;
+      color: var(--ink);
+    }
+
+    .identity {
+      max-width: 46ch;
+      margin: 0;
+      color: var(--muted);
+      font: 400 .92rem/1.65 var(--sans);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px;
+      min-width: 0;
+      font: 600 .68rem/1 var(--sans);
+      letter-spacing: .13em;
+      color: #303030;
+    }
+
+    .nav a,
+    .nav time {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      position: relative;
+      padding: 8px 0;
+      color: #303030;
+      transition: color .24s var(--ease);
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 3px;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .28s var(--ease);
+    }
+
+    .nav a:hover {
+      color: var(--red);
+    }
+
+    .nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav time {
+      padding-left: 15px;
+      border-left: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: .04em;
+    }
+
+    .featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
+      gap: clamp(32px, 5.8vw, 78px);
+      padding: clamp(54px, 7.2vw, 96px) 0 clamp(48px, 6vw, 82px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+      color: var(--red);
+      font: 600 .72rem/1.2 var(--mono);
+      letter-spacing: .08em;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .featured-title {
+      max-width: 820px;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7.2vw, 6.85rem);
+      font-weight: 700;
+      line-height: .96;
+      letter-spacing: -.06em;
+      text-wrap: balance;
+    }
+
+    .featured-dek {
+      max-width: 66ch;
+      margin: 28px 0 0;
+      color: #303030;
+      font-size: clamp(1.12rem, 1.8vw, 1.55rem);
+      line-height: 1.55;
+    }
+
+    .featured-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 30px;
+      color: var(--muted);
+      font: 500 .73rem/1.6 var(--mono);
+      letter-spacing: .03em;
+    }
+
+    .featured-body {
+      max-width: 68ch;
+      margin-top: 34px;
+      padding-top: 30px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .featured-body p {
+      margin: 0;
+      color: #252525;
+      font-size: 1.04rem;
+      line-height: 1.85;
+    }
+
+    .featured-body p::first-letter {
+      float: left;
+      padding: .09em .16em 0 0;
+      color: var(--red);
+      font-size: 4.85rem;
+      font-weight: 700;
+      line-height: .78;
+      letter-spacing: -.08em;
+    }
+
+    .side-note {
+      align-self: end;
+      min-width: 0;
+      padding: 24px 0 2px 24px;
+      border-left: 1px solid var(--rule);
+    }
+
+    .side-note svg {
+      display: block;
+      width: 100%;
+      max-width: 190px;
+      height: auto;
+      margin-bottom: 28px;
+      color: var(--teal);
+    }
+
+    .side-note h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.55rem;
+      line-height: 1.18;
+      letter-spacing: -.03em;
+    }
+
+    .side-note p {
+      margin: 0;
+      color: var(--muted);
+      font: 400 .9rem/1.72 var(--sans);
+    }
+
+    .note-list {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 28px;
+      padding: 34px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .note-list h2,
+    .section-title,
+    .about h2 {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: -.055em;
+    }
+
+    .notes {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .note {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 22px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .note time {
+      color: var(--muted);
+      font: 500 .72rem/1.5 var(--mono);
+    }
+
+    .note p {
+      max-width: 70ch;
+      margin: 0;
+      color: #303030;
+      font: 400 .96rem/1.72 var(--sans);
+    }
+
+    .section {
+      padding: clamp(48px, 6.6vw, 86px) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-intro {
+      max-width: 62ch;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font: 400 1rem/1.75 var(--sans);
+    }
+
+    .essay-list {
+      margin-top: 32px;
+      border-top: 1px solid var(--ink);
+    }
+
+    .essay {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(165px, 220px);
+      gap: 32px;
+      padding: 28px 0 30px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .essay-main {
+      min-width: 0;
+    }
+
+    .essay h3 {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(1.55rem, 2.7vw, 2.3rem);
+      font-weight: 700;
+      line-height: 1.13;
+      letter-spacing: -.04em;
+      text-wrap: balance;
+    }
+
+    .essay-title {
+      background-image: linear-gradient(currentColor, currentColor);
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0 1px;
+      transition: color .24s var(--ease), background-size .34s var(--ease);
+    }
+
+    .essay-title:hover {
+      color: var(--red);
+      background-size: 100% 1px;
+    }
+
+    .excerpt {
+      display: -webkit-box;
+      max-width: 68ch;
+      margin: 12px 0 0;
+      overflow: hidden;
+      color: var(--muted);
+      font: 400 1rem/1.75 var(--sans);
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .essay-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+      padding-top: 5px;
+      color: var(--muted);
+      font: 500 .72rem/1.6 var(--mono);
+      letter-spacing: .02em;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 8px 5px;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      color: #4a4a4a;
+      background: var(--paper);
+      font: 600 .67rem/1 var(--sans);
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .tag.red {
+      border-color: rgba(169, 54, 54, .34);
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .tag.teal {
+      border-color: rgba(47, 117, 103, .34);
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 1.18fr) minmax(220px, .91fr) minmax(220px, .91fr);
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .artifact {
+      min-width: 0;
+      padding: 24px;
+      border: 1px solid var(--rule);
+      border-radius: 7px;
+      background: var(--paper);
+    }
+
+    .artifact.quote {
+      border-top-color: rgba(169, 54, 54, .55);
+      border-top-width: 3px;
+    }
+
+    .artifact.object {
+      background: linear-gradient(180deg, var(--teal-soft), var(--paper) 58%);
+    }
+
+    .artifact.linked {
+      background: linear-gradient(180deg, var(--paper-low), var(--paper));
+    }
+
+    .artifact-label {
+      display: block;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font: 600 .69rem/1.4 var(--mono);
+      letter-spacing: .06em;
+    }
+
+    .artifact blockquote,
+    .artifact p {
+      margin: 0;
+    }
+
+    .artifact blockquote p {
+      color: var(--ink);
+      font-size: clamp(1.3rem, 2vw, 1.75rem);
+      line-height: 1.4;
+      letter-spacing: -.03em;
+    }
+
+    .artifact cite,
+    .artifact small {
+      display: block;
+      margin-top: 22px;
+      color: var(--muted);
+      font: 500 .72rem/1.6 var(--mono);
+      font-style: normal;
+    }
+
+    .artifact h3 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.55rem;
+      line-height: 1.18;
+      letter-spacing: -.035em;
+    }
+
+    .artifact p {
+      color: var(--muted);
+      font: 400 .94rem/1.75 var(--sans);
+    }
+
+    .artifact a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+      transition: color .24s var(--ease), text-decoration-color .24s var(--ease);
+    }
+
+    .artifact a:hover {
+      color: var(--red);
+      text-decoration-color: var(--red);
+    }
+
+    .artifact-sketch {
+      display: block;
+      width: 100%;
+      max-width: 176px;
+      height: auto;
+      margin: 0 0 24px;
+      color: var(--teal);
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: minmax(160px, .42fr) minmax(0, 1fr);
+      gap: clamp(28px, 5vw, 72px);
+      padding: clamp(48px, 6.2vw, 82px) 0 32px;
+    }
+
+    .about-copy {
+      max-width: 68ch;
+    }
+
+    .about-copy p {
+      margin: 0 0 18px;
+      color: #303030;
+      font-size: 1.03rem;
+      line-height: 1.84;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 22px;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font: 500 .72rem/1.6 var(--mono);
+    }
+
+    .footer a {
+      color: var(--red);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color .24s var(--ease);
+    }
+
+    .footer a:hover {
+      color: var(--teal);
+    }
+
+    .reveal {
+      --delay: calc(var(--i, 0) * 85ms);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        animation: rise-in .78s var(--ease) forwards;
+        animation-delay: var(--delay);
+      }
+
+      .essay,
+      .artifact,
+      .note {
+        transition: background-color .28s var(--ease), border-color .28s var(--ease), transform .28s var(--ease);
+      }
+
+      .essay:hover {
+        background: linear-gradient(90deg, rgba(169, 54, 54, .035), transparent 62%);
+      }
+
+      .artifact:hover {
+        transform: translateY(-2px);
+        border-color: var(--rule-strong);
+      }
+    }
+
+    @keyframes rise-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .masthead,
+      .featured,
+      .note-list,
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .masthead {
+        align-items: start;
+        gap: 14px;
+      }
+
+      .nav {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px 14px;
+      }
+
+      .featured {
+        gap: 36px;
+      }
+
+      .side-note {
+        padding: 24px 0 0;
+        border-left: 0;
+        border-top: 1px solid var(--rule);
+      }
+
+      .artifact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page {
+        width: min(100% - 32px, 1120px);
+        padding-top: 22px;
+        padding-bottom: 184px;
+      }
+
+      .masthead {
+        padding-top: 16px;
+      }
+
+      .identity {
+        max-width: none;
+      }
+
+      .nav {
+        font-size: .64rem;
+        letter-spacing: .08em;
+      }
+
+      .nav time {
+        padding-left: 12px;
+      }
+
+      .featured-title {
+        font-size: clamp(2.6rem, 14vw, 4.2rem);
+        letter-spacing: -.055em;
+      }
+
+      .featured-body p::first-letter {
+        font-size: 3.85rem;
+      }
+
+      .note {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .essay {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .essay-meta {
+        gap: 10px;
+        padding-top: 0;
+      }
+
+      .artifact {
+        padding: 21px;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <header class="masthead reveal" style="--i: 0">
+      <a class="wordmark" href="#" aria-label="沈照苔首页">沈照苔</a>
+      <p class="identity">Shen Zhaotai writes personal essays about rooms, hand-kept objects, and the sentences that stay after a day has gone quiet.</p>
+      <nav class="nav" aria-label="主要栏目">
+        <a href="#essays">ESSAYS</a>
+        <a href="#artifacts">ARTIFACTS</a>
+        <a href="#notes">NOTES</a>
+        <a href="#about">ABOUT</a>
+        <time datetime="2026">2026</time>
+      </nav>
+    </header>
+
+    <section class="featured reveal" aria-labelledby="featured-title" style="--i: 1">
+      <article>
+        <span class="kicker">精选随笔 / FEATURED ESSAY</span>
+        <h1 class="featured-title" id="featured-title">雨停之后，房间仍然潮湿</h1>
+        <p class="featured-dek">A late-spring essay on bowls left by the window, the hush after thunder, and why a room sometimes remembers weather better than we do.</p>
+        <div class="featured-meta" aria-label="文章信息">
+          <span>SHEN ZHAOTAI</span>
+          <span>2026.05.19 · 阅读 8 分钟</span>
+        </div>
+        <div class="featured-body">
+          <p>下午四点，雨水从屋檐往下退，像一封已经读完却没有折好的信。桌上的白瓷碗盛着半寸清水，窗帘吸进一点潮气，木地板在脚下轻轻回声。那一刻我相信，房间并不替人保存大事。它保存的是气味、迟疑、离开前没有关紧的抽屉。</p>
+        </div>
+      </article>
+
+      <aside class="side-note" aria-label="站点说明">
+        <svg viewBox="0 0 260 150" aria-hidden="true">
+          <rect x="26" y="18" width="164" height="104" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M50 46h112M50 66h78M50 86h98M50 106h46" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M190 36c22 13 34 31 34 54 0 18-10 31-27 39" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M203 42c7 14 9 27 6 40-4 16-14 26-31 32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <h2>Letters from a careful desk.</h2>
+        <p>五篇随笔，三件物件，一些短手记。更新不急，只把值得再读的句子留下。</p>
+      </aside>
+    </section>
+
+    <section class="note-list reveal" id="notes" aria-labelledby="notes-title" style="--i: 2">
+      <h2 id="notes-title">Notes<br>手记</h2>
+      <div class="notes">
+        <article class="note">
+          <time datetime="2026-06-12">06.12</time>
+          <p>把铅笔削短以后，字句反而变慢。可能是手知道余量不多，便替脑子省下一点虚张声势。</p>
+        </article>
+        <article class="note">
+          <time datetime="2026-05-28">05.28</time>
+          <p>The kitchen clock gained eleven minutes this month. I have decided to let the room be early.</p>
+        </article>
+        <article class="note">
+          <time datetime="2026-05-07">05.07</time>
+          <p>今天没有写完，只把标题换小了一号。页面终于像一页纸，而不是一扇门。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="essays" aria-labelledby="essays-title" style="--i: 3">
+      <h2 class="section-title" id="essays-title">Essays 随笔</h2>
+      <p class="section-intro">Recent pieces from a fictional personal archive: domestic weather, city edges, small habits, and the patient life of things kept close.</p>
+
+      <div class="essay-list">
+        <article class="essay">
+          <div class="essay-main">
+            <h3><a class="essay-title" href="#">Borrowed Light on the North Wall</a></h3>
+            <p class="excerpt">The apartment receives the day indirectly: over a bakery sign, through a stairwell, then finally onto a chipped porcelain sink.</p>
+          </div>
+          <div class="essay-meta">
+            <span>2026.05.02 · 阅读 6 分钟</span>
+            <div class="tags" aria-label="标签">
+              <span class="tag teal">rooms</span>
+              <span class="tag">光线</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="essay">
+          <div class="essay-main">
+            <h3><a class="essay-title" href="#">把票根夹进书里的人</a></h3>
+            <p class="excerpt">一张过期车票没有纪念价值，却能在第七章和第八章之间，替一次沉默的旅程留下确切厚度。</p>
+          </div>
+          <div class="essay-meta">
+            <span>2026.04.17 · 阅读 5 分钟</span>
+            <div class="tags" aria-label="标签">
+              <span class="tag red">memory</span>
+              <span class="tag">paper</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="essay">
+          <div class="essay-main">
+            <h3><a class="essay-title" href="#">A Small Theory of Unsent Letters</a></h3>
+            <p class="excerpt">Every unsent letter performs two labors: it protects the recipient from our weather, and it teaches the writer where the weather began.</p>
+          </div>
+          <div class="essay-meta">
+            <span>2026.03.30 · 阅读 7 分钟</span>
+            <div class="tags" aria-label="标签">
+              <span class="tag">letters</span>
+              <span class="tag teal">private</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="essay">
+          <div class="essay-main">
+            <h3><a class="essay-title" href="#">窗台上的柚子皮</a></h3>
+            <p class="excerpt">冬天把柚子皮晒硬，香气从明亮变成安静。后来每次开窗，都像把旧日子重新剥开一小块。</p>
+          </div>
+          <div class="essay-meta">
+            <span>2026.02.21 · 阅读 4 分钟</span>
+            <div class="tags" aria-label="标签">
+              <span class="tag red">scent</span>
+              <span class="tag">冬日</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="essay">
+          <div class="essay-main">
+            <h3><a class="essay-title" href="#">The Museum Bench at Closing Time</a></h3>
+            <p class="excerpt">When the guards begin folding the day shut, the bench becomes less furniture than permission to look once more without improving the looking.</p>
+          </div>
+          <div class="essay-meta">
+            <span>2026.01.14 · 阅读 9 分钟</span>
+            <div class="tags" aria-label="标签">
+              <span class="tag">looking</span>
+              <span class="tag teal">artifacts</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="artifacts" aria-labelledby="artifacts-title" style="--i: 4">
+      <h2 class="section-title" id="artifacts-title">Artifacts 物件</h2>
+      <p class="section-intro">Collected fragments from the same desk: a sentence, a found object, and a link annotated for later return.</p>
+
+      <div class="artifact-grid">
+        <article class="artifact quote">
+          <span class="artifact-label">QUOTE CARD</span>
+          <blockquote>
+            <p>“A drawer is not storage. It is a private weather system with corners.”</p>
+          </blockquote>
+          <cite>Notebook fragment, winter 2025</cite>
+        </article>
+
+        <article class="artifact object">
+          <span class="artifact-label">FOUND OBJECT</span>
+          <svg class="artifact-sketch" viewBox="0 0 190 108" aria-hidden="true">
+            <path d="M32 21h91c16 0 27 11 27 27v39H58c-15 0-26-12-26-27Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M54 42h64M54 58h83M54 74h48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M150 49h17M150 65h17" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <h3>Soft ticket, blue edge</h3>
+          <p>A train ticket found inside a borrowed cookbook, softened at the fold and stamped with rain-dark ink.</p>
+          <small>Logged 2026.04.03</small>
+        </article>
+
+        <article class="artifact linked">
+          <span class="artifact-label">ANNOTATED LINK</span>
+          <svg class="artifact-sketch" viewBox="0 0 190 108" aria-hidden="true">
+            <rect x="30" y="24" width="118" height="70" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M48 45h82M48 61h52M48 77h70" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M148 36h16v46h-16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3><a href="#">Window Index</a></h3>
+          <p>A fictional catalogue of remembered windows, filed by hour of day rather than address. Best read slowly, one pane at a time.</p>
+          <small>Annotated 2026.03.11</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="about reveal" id="about" aria-labelledby="about-title" style="--i: 5">
+      <h2 id="about-title">About<br>关于</h2>
+      <div class="about-copy">
+        <p>沈照苔是虚构的散文作者，住在一间总有纸张摊开的房间里。她写作的对象很小：未寄出的信、窗台上的果皮、旧票据、展厅里快要熄灯的长椅。</p>
+        <p>This page is an original front-end study of an editorial personal essay site. The copy, writer, titles, artifacts, and archive are fictional.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Shen Zhaotai, fictional archive, 2026.</span>
+      <a href="#top">Back to masthead</a>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《personal blog website》 by bermondish（社区 #131）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
