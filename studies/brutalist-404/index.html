@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Brutalist 404</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1710;
+      --bg-2: #111e16;
+      --panel: #101c14;
+      --panel-2: #132218;
+      --ink: #d5e8d4;
+      --muted: #a8c9ad;
+      --dim: #8fb89a;
+      --line: rgba(213, 232, 212, .58);
+      --line-soft: rgba(213, 232, 212, .23);
+      --void: #07110a;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --pixel: "Press Start 2P", var(--mono);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 0 0 92px;
+      overflow-x: clip;
+      background:
+        radial-gradient(circle at 76% 12%, rgba(213, 232, 212, .055), transparent 28%),
+        radial-gradient(circle at 14% 88%, rgba(143, 184, 154, .06), transparent 30%),
+        linear-gradient(135deg, #0a130d 0%, var(--bg-2) 46%, #081009 100%);
+      color: var(--ink);
+      font-family: var(--mono);
+      letter-spacing: .035em;
+      text-transform: uppercase;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      z-index: 0;
+      opacity: .46;
+      background:
+        linear-gradient(rgba(213, 232, 212, .1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(213, 232, 212, .08) 1px, transparent 1px),
+        linear-gradient(rgba(213, 232, 212, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(213, 232, 212, .03) 1px, transparent 1px);
+      background-size: 96px 96px, 96px 96px, 16px 16px, 16px 16px;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    }
+
+    body::after {
+      z-index: 2;
+      opacity: .3;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(213, 232, 212, .09) 0,
+          rgba(213, 232, 212, .09) 1px,
+          transparent 1px,
+          transparent 6px
+        );
+      mix-blend-mode: screen;
+    }
+
+    ::selection {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    a,
+    button {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .fault-page {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 1440px);
+      min-height: calc(100dvh - 92px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      border-left: 2px solid var(--line-soft);
+      border-right: 2px solid var(--line-soft);
+      background:
+        linear-gradient(90deg, rgba(213, 232, 212, .035), transparent 16%, transparent 84%, rgba(213, 232, 212, .035)),
+        rgba(13, 23, 16, .82);
+      isolation: isolate;
+    }
+
+    .topbar,
+    .bottombar {
+      min-width: 0;
+      display: grid;
+      align-items: center;
+      gap: 0;
+      border-color: var(--line-soft);
+      color: var(--muted);
+      font-size: clamp(10px, 1.1vw, 12px);
+      line-height: 1.25;
+    }
+
+    .topbar {
+      grid-template-columns: minmax(180px, .85fr) minmax(0, 1.35fr) minmax(168px, .65fr);
+      border-bottom: 2px solid var(--line-soft);
+    }
+
+    .bottombar {
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1fr) minmax(0, .9fr);
+      border-top: 2px solid var(--line-soft);
+    }
+
+    .topbar > *,
+    .bottombar > * {
+      min-width: 0;
+      padding: 16px 22px;
+      border-right: 2px solid var(--line-soft);
+      overflow-wrap: anywhere;
+    }
+
+    .topbar > *:last-child,
+    .bottombar > *:last-child {
+      border-right: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      font-weight: 500;
+      letter-spacing: .08em;
+    }
+
+    .brand-mark {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      font-size: 0;
+      line-height: 0;
+      border: 2px solid var(--ink);
+      background:
+        linear-gradient(90deg, transparent 0 42%, var(--ink) 42% 58%, transparent 58%),
+        linear-gradient(transparent 0 42%, var(--ink) 42% 58%, transparent 58%);
+      box-shadow: inset 0 0 0 4px var(--bg);
+    }
+
+    .top-status {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding: 0;
+      color: var(--dim);
+    }
+
+    .top-status span {
+      min-width: 0;
+      padding: 16px 18px;
+      border-right: 2px solid var(--line-soft);
+      overflow-wrap: anywhere;
+    }
+
+    .top-status span:last-child {
+      border-right: 0;
+    }
+
+    .mode {
+      justify-self: stretch;
+      text-align: center;
+      color: var(--bg);
+      background: var(--ink);
+      font-weight: 500;
+    }
+
+    .fault-grid {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(326px, .96fr);
+    }
+
+    .hero-panel,
+    .telemetry-panel {
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel {
+      min-height: 520px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: clamp(22px, 4vw, 52px);
+      border-right: 2px solid var(--line-soft);
+      background:
+        linear-gradient(180deg, transparent 0, rgba(213, 232, 212, .035) 100%),
+        var(--bg);
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: clamp(18px, 3vw, 34px);
+      border: 2px solid rgba(213, 232, 212, .14);
+      pointer-events: none;
+    }
+
+    .hero-main {
+      min-width: 0;
+      align-self: center;
+      position: relative;
+      z-index: 1;
+      padding-block: 22px;
+    }
+
+    .label-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 100%;
+      margin: 0 0 20px;
+      color: var(--dim);
+      font-size: clamp(11px, 1.2vw, 13px);
+      line-height: 1.4;
+      letter-spacing: .11em;
+    }
+
+    .label-line::before {
+      content: "";
+      flex: 0 0 clamp(34px, 7vw, 76px);
+      height: 2px;
+      background: var(--line);
+    }
+
+    .error-code {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: clamp(5.35rem, 21vw, 17.5rem);
+      font-weight: 500;
+      line-height: .78;
+      letter-spacing: -.13em;
+      text-shadow:
+        3px 0 0 rgba(143, 184, 154, .28),
+        -3px 0 0 rgba(213, 232, 212, .12);
+      white-space: nowrap;
+      isolation: isolate;
+    }
+
+    .error-code::before,
+    .error-code::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .58;
+    }
+
+    .error-code::before {
+      color: #b9d7bd;
+      transform: translate(5px, -2px);
+      clip-path: inset(0 0 58% 0);
+    }
+
+    .error-code::after {
+      color: #eef8ec;
+      transform: translate(-4px, 2px);
+      clip-path: inset(48% 0 0 0);
+      opacity: .34;
+    }
+
+    .error-title {
+      max-width: 11ch;
+      margin: 22px 0 0;
+      color: var(--ink);
+      font-family: var(--pixel);
+      font-size: clamp(1.42rem, 3.5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: .02em;
+      overflow-wrap: anywhere;
+    }
+
+    .error-title small {
+      display: block;
+      margin-top: 14px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: clamp(12px, 1.4vw, 16px);
+      font-weight: 500;
+      letter-spacing: .08em;
+    }
+
+    .error-detail {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      gap: 12px 22px;
+      margin-top: 28px;
+      padding: 18px;
+      border: 2px solid var(--line);
+      background: rgba(7, 17, 10, .78);
+      color: var(--muted);
+      font-size: clamp(10px, 1vw, 12px);
+      line-height: 1.55;
+    }
+
+    .error-detail dt {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .error-detail dd {
+      min-width: 0;
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .terminal-row {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 2px solid var(--line-soft);
+      color: var(--ink);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: .65em;
+      height: 1em;
+      margin-left: .2em;
+      font-size: 0;
+      line-height: 0;
+      translate: 0 .16em;
+      background: var(--ink);
+    }
+
+    .telemetry-panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      background:
+        linear-gradient(180deg, rgba(213, 232, 212, .045), transparent 42%),
+        #0d1710;
+    }
+
+    .panel-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) max-content;
+      border-bottom: 2px solid var(--line-soft);
+      color: var(--dim);
+      font-size: clamp(10px, 1vw, 12px);
+    }
+
+    .panel-strip > * {
+      min-width: 0;
+      padding: 16px 18px;
+      border-right: 2px solid var(--line-soft);
+      overflow-wrap: anywhere;
+    }
+
+    .panel-strip > *:last-child {
+      border-right: 0;
+    }
+
+    .state {
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, var(--ink) 0 9px, transparent 9px),
+        transparent;
+      padding-left: 32px;
+    }
+
+    .scope {
+      min-width: 0;
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 328px;
+      padding: clamp(24px, 4vw, 44px);
+      border-bottom: 2px solid var(--line-soft);
+      background:
+        linear-gradient(rgba(213, 232, 212, .075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(213, 232, 212, .065) 1px, transparent 1px),
+        radial-gradient(circle at center, rgba(213, 232, 212, .07), transparent 44%),
+        var(--void);
+      background-size: 22px 22px, 22px 22px, auto, auto;
+    }
+
+    .scope::before,
+    .scope::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      background: rgba(213, 232, 212, .36);
+    }
+
+    .scope::before {
+      width: 100%;
+      height: 2px;
+      top: 50%;
+      left: 0;
+    }
+
+    .scope::after {
+      width: 2px;
+      height: 100%;
+      left: 50%;
+      top: 0;
+    }
+
+    .scope-readout {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 420px);
+      display: grid;
+      gap: 14px;
+      padding: clamp(18px, 3vw, 28px);
+      border: 2px solid var(--line);
+      background: rgba(13, 23, 16, .9);
+      box-shadow:
+        12px 12px 0 rgba(213, 232, 212, .08),
+        inset 0 0 0 8px rgba(213, 232, 212, .025);
+    }
+
+    .readout-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--ink);
+      font-size: clamp(11px, 1.1vw, 13px);
+      font-weight: 500;
+    }
+
+    .mini-map {
+      display: grid;
+      grid-template-columns: repeat(13, minmax(0, 1fr));
+      gap: 4px;
+      min-width: 0;
+      padding: 8px 0;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      font-size: 0;
+      line-height: 0;
+      border: 1px solid rgba(213, 232, 212, .2);
+      background: rgba(213, 232, 212, .045);
+    }
+
+    .cell.hot {
+      background: var(--ink);
+      box-shadow: 0 0 0 1px var(--ink);
+    }
+
+    .cell.mid {
+      background: rgba(213, 232, 212, .26);
+    }
+
+    .stack-log {
+      margin: 0;
+      padding: 14px 0 0;
+      border-top: 2px solid var(--line-soft);
+      color: var(--muted);
+      font-size: clamp(10px, 1vw, 12px);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .status-grid {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-bottom: 2px solid var(--line-soft);
+    }
+
+    .status-card {
+      min-width: 0;
+      padding: 18px;
+      border-right: 2px solid var(--line-soft);
+      border-bottom: 2px solid var(--line-soft);
+      background: rgba(16, 28, 20, .7);
+    }
+
+    .status-card:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .status-card:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+
+    .status-card b {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--dim);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .12em;
+    }
+
+    .status-card span {
+      display: block;
+      min-width: 0;
+      color: var(--ink);
+      font-size: clamp(18px, 2.3vw, 30px);
+      line-height: 1;
+      letter-spacing: -.03em;
+      overflow-wrap: anywhere;
+    }
+
+    .actions {
+      min-width: 0;
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      background: var(--bg-2);
+    }
+
+    .return-button {
+      display: inline-flex;
+      width: 100%;
+      min-height: 58px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: .08em;
+      transition: transform .16s ease, background-color .16s ease, color .16s ease;
+    }
+
+    .return-button::after {
+      content: "↵";
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .return-button:hover,
+    .return-button:focus-visible {
+      background: transparent;
+      color: var(--ink);
+      outline: 0;
+    }
+
+    .return-button:active {
+      transform: translateY(2px);
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .suggestions a {
+      min-width: 0;
+      padding: 13px 12px;
+      border: 2px solid var(--line-soft);
+      color: var(--muted);
+      background: rgba(7, 17, 10, .42);
+      text-align: center;
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+      transition: border-color .16s ease, color .16s ease, background-color .16s ease;
+    }
+
+    .suggestions a:hover,
+    .suggestions a:focus-visible {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: rgba(213, 232, 212, .055);
+      outline: 0;
+    }
+
+    .bottombar {
+      color: var(--dim);
+      font-size: clamp(10px, 1vw, 12px);
+    }
+
+    .bottombar b {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      body::after {
+        animation: scanline-drift 7s linear infinite;
+      }
+
+      .error-code::before {
+        animation: glitch-top 2.8s steps(2, end) infinite;
+      }
+
+      .error-code::after {
+        animation: glitch-bottom 3.4s steps(2, end) infinite;
+      }
+
+      .cursor {
+        animation: cursor-blink 1s steps(1, end) infinite;
+      }
+
+      .cell.hot {
+        animation: cell-flicker 1.7s steps(2, end) infinite;
+      }
+    }
+
+    @keyframes scanline-drift {
+      to {
+        transform: translateY(36px);
+      }
+    }
+
+    @keyframes glitch-top {
+      0%, 8%, 100% {
+        transform: translate(5px, -2px);
+        clip-path: inset(0 0 58% 0);
+      }
+      9%, 10% {
+        transform: translate(-7px, -1px);
+        clip-path: inset(11% 0 69% 0);
+      }
+      47%, 49% {
+        transform: translate(9px, 1px);
+        clip-path: inset(0 0 78% 0);
+      }
+      74%, 75% {
+        transform: translate(-3px, -3px);
+        clip-path: inset(23% 0 44% 0);
+      }
+    }
+
+    @keyframes glitch-bottom {
+      0%, 11%, 100% {
+        transform: translate(-4px, 2px);
+        clip-path: inset(48% 0 0 0);
+      }
+      12%, 13% {
+        transform: translate(6px, 3px);
+        clip-path: inset(62% 0 14% 0);
+      }
+      52%, 54% {
+        transform: translate(-10px, 0);
+        clip-path: inset(72% 0 0 0);
+      }
+      81%, 82% {
+        transform: translate(3px, 5px);
+        clip-path: inset(38% 0 28% 0);
+      }
+    }
+
+    @keyframes cursor-blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes cell-flicker {
+      50% {
+        opacity: .52;
+      }
+    }
+
+    @media (max-width: 980px) {
+      body {
+        padding-bottom: 128px;
+      }
+
+      .fault-page {
+        min-height: calc(100dvh - 128px);
+      }
+
+      .topbar,
+      .bottombar,
+      .fault-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar > *,
+      .bottombar > *,
+      .top-status span,
+      .hero-panel {
+        border-right: 0;
+      }
+
+      .top-status {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-top: 2px solid var(--line-soft);
+        border-bottom: 2px solid var(--line-soft);
+      }
+
+      .mode {
+        text-align: left;
+      }
+
+      .hero-panel {
+        min-height: 0;
+        border-bottom: 2px solid var(--line-soft);
+      }
+
+      .bottombar > * {
+        border-bottom: 2px solid var(--line-soft);
+      }
+
+      .bottombar > *:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding-bottom: 156px;
+      }
+
+      .fault-page {
+        width: 100%;
+        min-height: calc(100dvh - 156px);
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .topbar > *,
+      .bottombar > *,
+      .top-status span {
+        padding: 13px 14px;
+      }
+
+      .top-status,
+      .panel-strip,
+      .status-grid,
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+
+      .top-status span,
+      .panel-strip > *,
+      .status-card {
+        border-right: 0;
+        border-bottom: 2px solid var(--line-soft);
+      }
+
+      .top-status span:last-child,
+      .panel-strip > *:last-child,
+      .status-card:last-child {
+        border-bottom: 0;
+      }
+
+      .hero-panel {
+        padding: 24px 14px;
+      }
+
+      .hero-panel::before {
+        inset: 12px;
+      }
+
+      .label-line {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .label-line::before {
+        width: 52px;
+        flex-basis: 2px;
+      }
+
+      .error-code {
+        font-size: clamp(4.65rem, 22vw, 6.8rem);
+        letter-spacing: -.15em;
+      }
+
+      .error-title {
+        max-width: 100%;
+        font-size: clamp(1.05rem, 5.5vw, 1.65rem);
+      }
+
+      .error-detail {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 14px;
+      }
+
+      .terminal-row {
+        margin-top: 8px;
+      }
+
+      .scope {
+        min-height: 280px;
+        padding: 18px 14px;
+      }
+
+      .scope-readout {
+        padding: 16px;
+        box-shadow: 7px 7px 0 rgba(213, 232, 212, .08);
+      }
+
+      .mini-map {
+        gap: 3px;
+      }
+
+      .actions {
+        padding: 14px;
+      }
+
+      .return-button {
+        min-height: 54px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .error-code {
+        font-size: clamp(4.25rem, 21vw, 5.3rem);
+      }
+
+      .scope-readout {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .error-code::before,
+      .error-code::after {
+        transform: none;
+      }
+
+      body::after {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="fault-page" aria-label="Brutalist dark green 404 effect study">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">&nbsp;</span>
+        <span>Mosslock Relay</span>
+      </div>
+      <nav class="top-status" aria-label="System sections">
+        <span>Route table</span>
+        <span>Cold cache</span>
+        <span>Signal well</span>
+      </nav>
+      <div class="mode">Fault shell active</div>
+    </header>
+
+    <section class="fault-grid">
+      <div class="hero-panel">
+        <div class="hero-main">
+          <p class="label-line">序列错误 / Sequence err</p>
+          <h1 class="error-code" data-text="404">404</h1>
+          <h2 class="error-title">Path Not Indexed<small>请求路径未登记</small></h2>
+        </div>
+
+        <dl class="error-detail" aria-label="Error diagnostics">
+          <dt>Error code</dt>
+          <dd>MSL-404-7F / ROUTE_NULL / INDEX_MISS</dd>
+          <dt>Timestamp</dt>
+          <dd>2026-06-30T21:18:42+08:00</dd>
+          <dt>Host</dt>
+          <dd>bracken-gate-09.mosslock.local</dd>
+          <dt>Node</dt>
+          <dd>节点 R-17 / channel folded / no page object returned</dd>
+          <dd class="terminal-row">shell&gt; locate requested_path <span class="cursor" aria-hidden="true">&nbsp;</span></dd>
+        </dl>
+      </div>
+
+      <aside class="telemetry-panel" aria-label="System status and recovery panel">
+        <div class="panel-strip">
+          <span>Diagnostic pane / 回传面板</span>
+          <span class="state">Offline branch</span>
+        </div>
+
+        <div class="scope" id="trace">
+          <div class="scope-readout">
+            <div class="readout-head">
+              <span>Index scan</span>
+              <span>tick <b data-tick>0187</b></span>
+            </div>
+            <div class="mini-map" aria-label="Static routing grid">
+              <i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i>
+              <i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i>
+              <i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i>
+              <i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i>
+              <i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i>
+              <i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell hot" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell mid" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i><i class="cell" aria-hidden="true">&nbsp;</i>
+            </div>
+            <pre class="stack-log" data-log>route.lookup("/missing/branch")
+  at relay.index: no entry
+  at cache.edge: stale pointer
+  at shell.return: base route ready</pre>
+          </div>
+        </div>
+
+        <div class="status-grid" id="status">
+          <div class="status-card"><b>Resolver</b><span>Null</span></div>
+          <div class="status-card"><b>Cache age</b><span>38s</span></div>
+          <div class="status-card"><b>Signal</b><span>Weak</span></div>
+          <div class="status-card"><b>Fallback</b><span>Ready</span></div>
+        </div>
+
+        <div class="actions">
+          <a class="return-button" href="../../index.html">Return to base / 返回首页</a>
+          <div class="suggestions" aria-label="Suggested links">
+            <a href="../linux-tui/index.html">Open TUI study</a>
+            <a href="../system-init/index.html">System init page</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="bottombar">
+      <div><b>Recovery:</b> safe base route mounted</div>
+      <div><b>Operator note:</b> no document exists at this address</div>
+      <div><b>Trace:</b> mosslock / shard-4 / lane-02</div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Tech Brutalist 404》 by shaughv（社区 #135）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const tick = document.querySelector("[data-tick]");
+      const log = document.querySelector("[data-log]");
+
+      if (!tick || !log || reducedMotion.matches) return;
+
+      const entries = [
+        'route.lookup("/missing/branch")\n  at relay.index: no entry\n  at cache.edge: stale pointer\n  at shell.return: base route ready',
+        'probe.link("R-17")\n  at gate.scan: unresolved\n  at path.map: blank segment\n  at shell.return: base route ready',
+        'index.read("cold-cache")\n  at slot.find: vacant\n  at relay.bind: withheld\n  at shell.return: base route ready'
+      ];
+
+      let count = 187;
+      let line = 0;
+
+      window.setInterval(() => {
+        count = (count + 7) % 10000;
+        line = (line + 1) % entries.length;
+        tick.textContent = String(count).padStart(4, "0");
+        log.textContent = entries[line];
+      }, 2200);
+    })();
+  </script>
+</body>
+</html>
