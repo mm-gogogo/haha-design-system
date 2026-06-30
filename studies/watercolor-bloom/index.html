@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>露水缓慢打开 · Watercolor Bloom Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #fef5f5;
+      --paper-warm: #fff9f2;
+      --ink: #3a2b2b;
+      --ink-soft: #654747;
+      --rose: #d63447;
+      --coral: #c93f32;
+      --rose-deep: #8d2632;
+      --sage: #556b57;
+      --sage-dark: #344c38;
+      --gold: #8b6835;
+      --serif: "Noto Serif", serif;
+      --sans: "Inter", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 16% 14%, rgba(214, 52, 71, .055), transparent 34%),
+        radial-gradient(circle at 82% 20%, rgba(85, 107, 87, .07), transparent 28%),
+        radial-gradient(circle at 58% 90%, rgba(201, 63, 50, .055), transparent 36%),
+        linear-gradient(135deg, #fef5f5 0%, #fff8f0 48%, #fdf1ef 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      opacity: .48;
+      background:
+        linear-gradient(90deg, rgba(95, 62, 52, .035) 1px, transparent 1px),
+        linear-gradient(rgba(95, 62, 52, .03) 1px, transparent 1px),
+        radial-gradient(circle at 35% 22%, rgba(255, 255, 255, .72), transparent 23%),
+        radial-gradient(circle at 72% 70%, rgba(245, 221, 214, .52), transparent 26%);
+      background-size: 38px 38px, 42px 42px, auto, auto;
+      mix-blend-mode: multiply;
+    }
+
+    body::after {
+      opacity: .35;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(74, 50, 46, .13) 0 1px, transparent 1px),
+        radial-gradient(circle at 66% 24%, rgba(255, 255, 255, .78) 0 1px, transparent 1px),
+        radial-gradient(circle at 42% 78%, rgba(74, 50, 46, .1) 0 1px, transparent 1px);
+      background-size: 7px 9px, 11px 13px, 17px 19px;
+      filter: blur(.18px);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 1240px);
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: clamp(24px, 4vw, 54px) clamp(16px, 4vw, 56px) 128px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: clamp(10px, 2vw, 22px);
+    }
+
+    .topline {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .title-block {
+      min-width: 0;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      font: 650 clamp(11px, 1.5vw, 13px)/1.3 var(--sans);
+      letter-spacing: .13em;
+      color: var(--ink-soft);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(34px, 6vw, 76px);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: 0;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .poem {
+      max-width: 510px;
+      margin: 12px 0 0;
+      font-family: var(--serif);
+      font-size: clamp(15px, 2.3vw, 19px);
+      line-height: 1.72;
+      color: #4d3636;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-width: min(100%, 238px);
+    }
+
+    .regenerate {
+      appearance: none;
+      border: 1px solid rgba(74, 43, 43, .3);
+      border-radius: 999px;
+      padding: 11px 17px;
+      color: #352424;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .62), rgba(255, 244, 238, .64)),
+        rgba(254, 245, 245, .82);
+      box-shadow:
+        0 10px 28px -20px rgba(103, 54, 48, .62),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+      font: 700 13px/1 var(--sans);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+
+    .regenerate:hover {
+      border-color: rgba(74, 43, 43, .5);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(255, 238, 232, .7)),
+        rgba(254, 245, 245, .94);
+    }
+
+    .regenerate:active {
+      transform: translateY(1px) scale(.99);
+    }
+
+    .regenerate:focus-visible {
+      outline: 3px solid rgba(141, 38, 50, .38);
+      outline-offset: 3px;
+    }
+
+    .seed-note {
+      min-width: 0;
+      color: #5f4444;
+      font: 600 12px/1.35 var(--sans);
+    }
+
+    .stage {
+      position: relative;
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      align-self: center;
+      isolation: isolate;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% 4% 2%;
+      z-index: -1;
+      border-radius: 50%;
+      background:
+        radial-gradient(ellipse at 52% 58%, rgba(108, 74, 68, .11), transparent 57%),
+        radial-gradient(ellipse at 47% 78%, rgba(85, 107, 87, .08), transparent 45%);
+      filter: blur(32px);
+      transform: scaleX(.9);
+    }
+
+    .garden {
+      width: 100%;
+      height: auto;
+      max-height: min(74dvh, 780px);
+      overflow: hidden;
+      color: var(--ink);
+    }
+
+    .paper-fiber {
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .stems path,
+    .stem-glow {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pathLength: 1;
+    }
+
+    .stem-main {
+      stroke: rgba(61, 86, 60, .74);
+      stroke-width: var(--stem-width, 3);
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      filter: url(#stemBleed);
+      animation: stemDraw var(--stem-dur, 2600ms) cubic-bezier(.22, .76, .23, 1) forwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .stem-shadow {
+      stroke: rgba(85, 107, 87, .16);
+      stroke-width: calc(var(--stem-width, 3) * 2.4);
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      filter: url(#softBleed);
+      animation: stemDraw var(--stem-dur, 2600ms) cubic-bezier(.22, .76, .23, 1) forwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .leaf-form,
+    .petal-form,
+    .center-form,
+    .wash-form,
+    .grain-form,
+    .vein-form {
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    .leaf-form path {
+      fill: rgba(85, 107, 87, .28);
+      stroke: rgba(52, 76, 56, .22);
+      stroke-width: .7;
+      filter: url(#leafBleed);
+      mix-blend-mode: multiply;
+    }
+
+    .vein-form {
+      fill: none;
+      stroke: rgba(52, 76, 56, .28);
+      stroke-linecap: round;
+      stroke-width: .9;
+      filter: url(#softBleed);
+    }
+
+    .petal-form {
+      mix-blend-mode: multiply;
+    }
+
+    .petal-wash {
+      filter: url(#watercolorPetal);
+    }
+
+    .petal-bloom {
+      filter: url(#watercolorSoft);
+    }
+
+    .petal-edge {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: url(#softBleed);
+    }
+
+    .wash-form {
+      mix-blend-mode: multiply;
+      filter: url(#washBloom);
+    }
+
+    .center-dot {
+      filter: url(#pigmentBleed);
+      mix-blend-mode: multiply;
+    }
+
+    .grain-form {
+      filter: url(#pigmentBleed);
+      mix-blend-mode: multiply;
+    }
+
+    .settled {
+      transform-origin: 600px 760px;
+    }
+
+    .caption {
+      position: absolute;
+      right: clamp(8px, 2vw, 24px);
+      bottom: clamp(18px, 5vw, 54px);
+      max-width: min(260px, 52vw);
+      color: #5d4343;
+      font: 600 12px/1.5 var(--sans);
+      text-align: right;
+    }
+
+    @keyframes stemDraw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes slowSway {
+      0%, 100% {
+        transform: rotate(-.45deg) translateX(-1px);
+      }
+      50% {
+        transform: rotate(.55deg) translateX(2px);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .settled {
+        animation: slowSway 8.5s ease-in-out infinite;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .stem-main,
+      .stem-shadow {
+        stroke-dashoffset: 0 !important;
+      }
+
+      .leaf-form,
+      .petal-form,
+      .center-form,
+      .wash-form,
+      .grain-form,
+      .vein-form {
+        opacity: 1 !important;
+      }
+    }
+
+    html.reduced-motion .stem-main,
+    html.reduced-motion .stem-shadow {
+      stroke-dashoffset: 0 !important;
+    }
+
+    html.reduced-motion .leaf-form,
+    html.reduced-motion .petal-form,
+    html.reduced-motion .center-form,
+    html.reduced-motion .wash-form,
+    html.reduced-motion .grain-form,
+    html.reduced-motion .vein-form {
+      opacity: 1 !important;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 22px 14px 178px;
+        gap: 18px;
+      }
+
+      .topline {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .controls {
+        justify-content: flex-start;
+      }
+
+      .poem {
+        max-width: 100%;
+      }
+
+      .garden {
+        max-height: none;
+      }
+
+      .caption {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        max-width: 100%;
+        margin-top: -12px;
+        padding: 0 8px;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: clamp(32px, 10vw, 42px);
+      }
+
+      .kicker {
+        letter-spacing: .09em;
+      }
+
+      .regenerate {
+        width: 100%;
+        white-space: normal;
+        line-height: 1.25;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="水彩花朵生成习作">
+    <header class="topline">
+      <div class="title-block">
+        <p class="kicker">水彩生成练习 / Generative watercolor bloom</p>
+        <h1>露水缓慢打开</h1>
+        <p class="poem">A rose wash gathers at the edge of the paper, then opens like morning held in a quiet hand.</p>
+      </div>
+      <div class="controls" aria-label="作品控制">
+        <button class="regenerate" id="regenerate" type="button">重新生长 / Regenerate</button>
+        <span class="seed-note" id="seedNote" aria-live="polite">seed 1842</span>
+      </div>
+    </header>
+
+    <section class="stage" aria-label="生成水彩花束">
+      <svg class="garden" id="garden" viewBox="0 0 1200 820" role="img" aria-labelledby="artTitle artDesc" xmlns="http://www.w3.org/2000/svg">
+        <title id="artTitle">露水缓慢打开</title>
+        <desc id="artDesc">A generative watercolor bouquet with rose and coral translucent blossoms, sage stems, and soft paper texture.</desc>
+        <defs>
+          <filter id="paperNoise" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="4" seed="11" result="noise"/>
+            <feColorMatrix in="noise" type="matrix" values="0.45 0 0 0 0.55  0 0.37 0 0 0.38  0 0 0.32 0 0.34  0 0 0 .46 0" result="tint"/>
+            <feBlend in="SourceGraphic" in2="tint" mode="multiply"/>
+          </filter>
+
+          <filter id="watercolorPetal" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".032 .076" numOctaves="5" seed="17" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="wobble"/>
+            <feGaussianBlur in="wobble" stdDeviation=".58" result="soft"/>
+            <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="23" result="grain"/>
+            <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0.67  0 0 0 0 0.26  0 0 0 0 0.22  0 0 0 .13 0" result="pigment"/>
+            <feComposite in="pigment" in2="soft" operator="in" result="granulated"/>
+            <feBlend in="soft" in2="granulated" mode="multiply"/>
+          </filter>
+
+          <filter id="watercolorSoft" x="-45%" y="-45%" width="190%" height="190%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".021 .061" numOctaves="4" seed="31" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" result="spread"/>
+            <feGaussianBlur in="spread" stdDeviation="1.15"/>
+          </filter>
+
+          <filter id="washBloom" x="-55%" y="-55%" width="210%" height="210%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".019 .044" numOctaves="5" seed="41" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" result="moved"/>
+            <feGaussianBlur in="moved" stdDeviation="3.2"/>
+          </filter>
+
+          <filter id="leafBleed" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".055 .12" numOctaves="4" seed="53" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5"/>
+            <feGaussianBlur stdDeviation=".42"/>
+          </filter>
+
+          <filter id="stemBleed" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".09 .18" numOctaves="3" seed="67" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"/>
+            <feGaussianBlur stdDeviation=".24"/>
+          </filter>
+
+          <filter id="softBleed" x="-45%" y="-45%" width="190%" height="190%" color-interpolation-filters="sRGB">
+            <feGaussianBlur stdDeviation="1.15"/>
+          </filter>
+
+          <filter id="pigmentBleed" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".76" numOctaves="2" seed="79" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2"/>
+            <feGaussianBlur stdDeviation=".35"/>
+          </filter>
+
+          <radialGradient id="paperWarmth" cx="50%" cy="52%" r="68%">
+            <stop offset="0%" stop-color="#fffdf8" stop-opacity=".72"/>
+            <stop offset="58%" stop-color="#fef5f5" stop-opacity=".88"/>
+            <stop offset="100%" stop-color="#f7e7e3" stop-opacity=".42"/>
+          </radialGradient>
+        </defs>
+
+        <rect width="1200" height="820" fill="url(#paperWarmth)"/>
+        <rect class="paper-fiber" width="1200" height="820" fill="#fef5f5" opacity=".34" filter="url(#paperNoise)"/>
+        <g id="washLayer"></g>
+        <g id="bouquet">
+          <g id="stemLayer" class="stems"></g>
+          <g id="leafLayer"></g>
+          <g id="flowerLayer"></g>
+          <g id="grainLayer"></g>
+        </g>
+      </svg>
+      <p class="caption">Every bloom is rebuilt from a seed: translucent washes, uneven pigment, and soft leaf strokes.</p>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Watercolor Flower Animation》 by bensouth（社区 #84）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const NS = "http://www.w3.org/2000/svg";
+      const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const root = document.documentElement;
+      const garden = document.getElementById("garden");
+      const bouquet = document.getElementById("bouquet");
+      const washLayer = document.getElementById("washLayer");
+      const stemLayer = document.getElementById("stemLayer");
+      const leafLayer = document.getElementById("leafLayer");
+      const flowerLayer = document.getElementById("flowerLayer");
+      const grainLayer = document.getElementById("grainLayer");
+      const seedNote = document.getElementById("seedNote");
+      const button = document.getElementById("regenerate");
+
+      const palette = {
+        petals: ["#d63447", "#c93f32", "#dc5960", "#b9353e", "#e17468"],
+        petalDeep: "#8d2632",
+        coral: "#c93f32",
+        sage: ["#556b57", "#6e846b", "#425f47", "#718061"],
+        sageDeep: "#344c38",
+        gold: "#8b6835"
+      };
+
+      let seed = 1842;
+      let frame = 0;
+      let motions = [];
+
+      function setMotionClass() {
+        root.classList.toggle("reduced-motion", reduceQuery.matches);
+      }
+
+      setMotionClass();
+
+      if (typeof reduceQuery.addEventListener === "function") {
+        reduceQuery.addEventListener("change", () => {
+          setMotionClass();
+          render(seed);
+        });
+      }
+
+      function mulberry32(value) {
+        return function random() {
+          let t = value += 0x6D2B79F5;
+          t = Math.imul(t ^ t >>> 15, t | 1);
+          t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+
+      function between(rng, min, max) {
+        return min + (max - min) * rng();
+      }
+
+      function pick(rng, list) {
+        return list[Math.floor(rng() * list.length)];
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function easeInOut(t) {
+        return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function svgEl(name, attrs = {}) {
+        const el = document.createElementNS(NS, name);
+        for (const [key, value] of Object.entries(attrs)) {
+          if (value !== null && value !== undefined) {
+            el.setAttribute(key, String(value));
+          }
+        }
+        return el;
+      }
+
+      function rgba(hex, alpha) {
+        const raw = hex.replace("#", "");
+        const r = parseInt(raw.slice(0, 2), 16);
+        const g = parseInt(raw.slice(2, 4), 16);
+        const b = parseInt(raw.slice(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+
+      function clearArt() {
+        cancelAnimationFrame(frame);
+        motions = [];
+        bouquet.classList.remove("settled");
+        for (const layer of [washLayer, stemLayer, leafLayer, flowerLayer, grainLayer]) {
+          layer.replaceChildren();
+        }
+      }
+
+      function cubicPoint(p0, p1, p2, p3, t) {
+        const mt = 1 - t;
+        const mt2 = mt * mt;
+        const t2 = t * t;
+        return {
+          x: mt2 * mt * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t2 * t * p3.x,
+          y: mt2 * mt * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t2 * t * p3.y
+        };
+      }
+
+      function cubicTangent(p0, p1, p2, p3, t) {
+        const mt = 1 - t;
+        return {
+          x: 3 * mt * mt * (p1.x - p0.x) + 6 * mt * t * (p2.x - p1.x) + 3 * t * t * (p3.x - p2.x),
+          y: 3 * mt * mt * (p1.y - p0.y) + 6 * mt * t * (p2.y - p1.y) + 3 * t * t * (p3.y - p2.y)
+        };
+      }
+
+      function stemPath(points) {
+        return `M ${points.p0.x.toFixed(1)} ${points.p0.y.toFixed(1)} C ${points.p1.x.toFixed(1)} ${points.p1.y.toFixed(1)}, ${points.p2.x.toFixed(1)} ${points.p2.y.toFixed(1)}, ${points.p3.x.toFixed(1)} ${points.p3.y.toFixed(1)}`;
+      }
+
+      function petalPath(rng, width, height) {
+        const left = width * between(rng, .46, .72);
+        const right = width * between(rng, .42, .68);
+        const waist = width * between(rng, .13, .26);
+        const tipLean = between(rng, -width * .18, width * .18);
+        const tipRound = between(rng, -height * .08, height * .06);
+        return [
+          `M 0 0`,
+          `C ${(-left * .78).toFixed(1)} ${(-height * .17).toFixed(1)}, ${(-left).toFixed(1)} ${(-height * .63).toFixed(1)}, ${(tipLean - waist).toFixed(1)} ${(-height + tipRound).toFixed(1)}`,
+          `C ${(tipLean - waist * .2).toFixed(1)} ${(-height * 1.08).toFixed(1)}, ${(tipLean + waist * 1.15).toFixed(1)} ${(-height * 1.05).toFixed(1)}, ${(tipLean + waist).toFixed(1)} ${(-height + tipRound).toFixed(1)}`,
+          `C ${(right).toFixed(1)} ${(-height * .64).toFixed(1)}, ${(right * .72).toFixed(1)} ${(-height * .17).toFixed(1)}, 0 0`,
+          "Z"
+        ].join(" ");
+      }
+
+      function leafPath(rng, width, height) {
+        const lean = between(rng, -width * .12, width * .12);
+        return [
+          "M 0 0",
+          `C ${(-width * .65).toFixed(1)} ${(-height * .24).toFixed(1)}, ${(-width * .56 + lean).toFixed(1)} ${(-height * .82).toFixed(1)}, ${lean.toFixed(1)} ${(-height).toFixed(1)}`,
+          `C ${(width * .58 + lean).toFixed(1)} ${(-height * .82).toFixed(1)}, ${(width * .68).toFixed(1)} ${(-height * .25).toFixed(1)}, 0 0`,
+          "Z"
+        ].join(" ");
+      }
+
+      function makeMotion(el, options) {
+        const motion = {
+          el,
+          x: options.x || 0,
+          y: options.y || 0,
+          rotate: options.rotate || 0,
+          finalScale: options.scale || 1,
+          initialScale: options.initialScale || .12,
+          rotateFrom: options.rotateFrom || 0,
+          opacity: options.opacity ?? 1,
+          start: options.start || 0,
+          duration: options.duration || 1200,
+          easing: options.easing || easeOutCubic
+        };
+        motions.push(motion);
+        setMotion(motion, reduceQuery.matches ? 1 : 0);
+      }
+
+      function setMotion(motion, progress) {
+        const eased = motion.easing(clamp(progress, 0, 1));
+        const scale = motion.initialScale + (motion.finalScale - motion.initialScale) * eased;
+        const rotate = motion.rotate + motion.rotateFrom * (1 - eased);
+        motion.el.setAttribute("transform", `translate(${motion.x.toFixed(2)} ${motion.y.toFixed(2)}) rotate(${rotate.toFixed(2)}) scale(${scale.toFixed(4)})`);
+        motion.el.style.opacity = (motion.opacity * eased).toFixed(3);
+      }
+
+      function addStem(rng, index, flower) {
+        const base = {
+          x: 600 + flower.baseOffset + between(rng, -16, 16),
+          y: 760 + between(rng, -10, 8)
+        };
+        const tip = {
+          x: flower.x + between(rng, -8, 8),
+          y: flower.y + flower.scale * between(rng, 18, 34)
+        };
+        const curve = (flower.x - 600) * .28;
+        const p1 = {
+          x: base.x + curve + between(rng, -34, 34),
+          y: base.y - between(rng, 150, 230)
+        };
+        const p2 = {
+          x: tip.x - curve * .35 + between(rng, -52, 52),
+          y: tip.y + between(rng, 110, 190)
+        };
+        const points = { p0: base, p1, p2, p3: tip };
+        const d = stemPath(points);
+        const width = flower.scale * between(rng, 2.2, 3.8);
+        const delay = index * 145 + between(rng, 0, 120);
+        const dur = between(rng, 2300, 3350);
+
+        const shadow = svgEl("path", {
+          class: "stem-shadow",
+          d,
+          "pathLength": "1",
+          style: `--delay:${delay}ms;--stem-dur:${dur}ms;--stem-width:${width.toFixed(2)}`
+        });
+        const main = svgEl("path", {
+          class: "stem-main",
+          d,
+          "pathLength": "1",
+          style: `--delay:${delay}ms;--stem-dur:${dur}ms;--stem-width:${width.toFixed(2)}`
+        });
+
+        stemLayer.append(shadow, main);
+        addLeaves(rng, points, index, delay, flower.scale);
+        return { points, delay, dur };
+      }
+
+      function addLeaves(rng, points, index, stemDelay, scale) {
+        const count = 2 + Math.floor(between(rng, 0, 3));
+        for (let i = 0; i < count; i++) {
+          const t = between(rng, .24, .76);
+          const p = cubicPoint(points.p0, points.p1, points.p2, points.p3, t);
+          const tangent = cubicTangent(points.p0, points.p1, points.p2, points.p3, t);
+          const angle = Math.atan2(tangent.y, tangent.x) * 180 / Math.PI;
+          const side = rng() > .5 ? 1 : -1;
+          const leafAngle = angle + side * between(rng, 50, 82);
+          const leafScale = scale * between(rng, .72, 1.16);
+          const w = between(rng, 15, 24) * leafScale;
+          const h = between(rng, 42, 68) * leafScale;
+          const leaf = svgEl("g", { class: "leaf-form" });
+          const path = svgEl("path", { d: leafPath(rng, w, h) });
+          const vein = svgEl("path", {
+            class: "vein-form",
+            d: `M 0 -2 C ${between(rng, -2, 2).toFixed(1)} ${(-h * .32).toFixed(1)}, ${between(rng, -3, 3).toFixed(1)} ${(-h * .68).toFixed(1)}, ${between(rng, -2, 2).toFixed(1)} ${(-h * .94).toFixed(1)}`
+          });
+          leaf.append(path, vein);
+          leafLayer.append(leaf);
+          makeMotion(leaf, {
+            x: p.x,
+            y: p.y,
+            rotate: leafAngle,
+            rotateFrom: side * -12,
+            scale: 1,
+            initialScale: .16,
+            opacity: .98,
+            start: stemDelay + 520 + t * 1200 + index * 35,
+            duration: 980 + rng() * 700
+          });
+        }
+      }
+
+      function addWashHalo(rng, flower, stemDelay, index) {
+        const wash = svgEl("g", { class: "wash-form" });
+        const e1 = svgEl("ellipse", {
+          cx: "0",
+          cy: "0",
+          rx: (flower.scale * between(rng, 58, 88)).toFixed(1),
+          ry: (flower.scale * between(rng, 38, 68)).toFixed(1),
+          fill: rgba(pick(rng, palette.petals), between(rng, .052, .095))
+        });
+        const e2 = svgEl("ellipse", {
+          cx: between(rng, -8, 8).toFixed(1),
+          cy: between(rng, -7, 7).toFixed(1),
+          rx: (flower.scale * between(rng, 38, 62)).toFixed(1),
+          ry: (flower.scale * between(rng, 28, 48)).toFixed(1),
+          fill: rgba(palette.coral || "#c93f32", between(rng, .035, .06))
+        });
+        wash.append(e1, e2);
+        washLayer.append(wash);
+        makeMotion(wash, {
+          x: flower.x,
+          y: flower.y - flower.scale * 6,
+          rotate: flower.tilt,
+          rotateFrom: 0,
+          scale: 1,
+          initialScale: .18,
+          opacity: .95,
+          start: stemDelay + 1300 + index * 120,
+          duration: 2700 + rng() * 900,
+          easing: easeInOut
+        });
+      }
+
+      function addSepals(rng, flower, start) {
+        for (let i = 0; i < 6; i++) {
+          const angle = -48 + i * 19 + between(rng, -5, 5) + flower.tilt * .2;
+          const sepal = svgEl("g", { class: "leaf-form" });
+          const shape = svgEl("path", {
+            d: leafPath(rng, 8 * flower.scale, 26 * flower.scale),
+            fill: rgba(pick(rng, palette.sage), .42)
+          });
+          sepal.append(shape);
+          flowerLayer.append(sepal);
+          makeMotion(sepal, {
+            x: flower.x + between(rng, -4, 4),
+            y: flower.y + flower.scale * 12,
+            rotate: angle + 180,
+            rotateFrom: between(rng, -10, 10),
+            scale: 1,
+            initialScale: .18,
+            opacity: .9,
+            start: start - 160 + i * 26,
+            duration: 820
+          });
+        }
+      }
+
+      function addPetals(rng, flower, start) {
+        const layers = [
+          { count: flower.type === "cup" ? 7 : 8, radius: 14, width: 25, height: 53, alpha: .24, offset: 0, scale: .92 },
+          { count: flower.type === "wild" ? 10 : 9, radius: 20, width: 32, height: 66, alpha: .18, offset: 16, scale: 1 },
+          { count: flower.type === "round" ? 13 : 11, radius: 27, width: 39, height: 76, alpha: .14, offset: 5, scale: 1.08 }
+        ];
+
+        layers.forEach((layer, layerIndex) => {
+          for (let i = 0; i < layer.count; i++) {
+            const baseAngle = i * 360 / layer.count + layer.offset + between(rng, -8, 8);
+            const spread = flower.type === "cup" ? .78 : 1;
+            const distance = layer.radius * flower.scale * spread + between(rng, -2.5, 3.5) * flower.scale;
+            const rad = (baseAngle - 90) * Math.PI / 180;
+            const x = flower.x + Math.cos(rad) * distance * .35;
+            const y = flower.y + Math.sin(rad) * distance * .25;
+            const petal = svgEl("g", { class: "petal-form" });
+            const w = layer.width * flower.scale * between(rng, .84, 1.18);
+            const h = layer.height * flower.scale * between(rng, .82, 1.16);
+            const color = pick(rng, palette.petals);
+            const d = petalPath(rng, w, h);
+            const baseWash = svgEl("path", {
+              class: "petal-wash",
+              d,
+              fill: rgba(color, layer.alpha)
+            });
+            const inner = svgEl("path", {
+              class: "petal-bloom",
+              d: petalPath(rng, w * .72, h * .75),
+              fill: rgba(layerIndex === 0 ? palette.petalDeep : color, layer.alpha * .55)
+            });
+            const edge = svgEl("path", {
+              class: "petal-edge",
+              d,
+              stroke: rgba(layerIndex === 0 ? palette.petalDeep : "#c93f32", .085),
+              "stroke-width": (1.2 * flower.scale).toFixed(2)
+            });
+            petal.append(baseWash, inner, edge);
+            flowerLayer.append(petal);
+            makeMotion(petal, {
+              x,
+              y,
+              rotate: baseAngle + flower.tilt,
+              rotateFrom: between(rng, -24, 24),
+              scale: layer.scale,
+              initialScale: .07,
+              opacity: .96,
+              start: start + layerIndex * 360 + i * between(rng, 18, 42),
+              duration: 1350 + rng() * 1050
+            });
+          }
+        });
+      }
+
+      function addCenter(rng, flower, start) {
+        const core = svgEl("g", { class: "center-form" });
+        const base = svgEl("circle", {
+          cx: "0",
+          cy: "0",
+          r: (flower.scale * between(rng, 7, 11)).toFixed(1),
+          fill: rgba(palette.petalDeep, .42),
+          class: "center-dot"
+        });
+        const warm = svgEl("circle", {
+          cx: (flower.scale * between(rng, -2, 2)).toFixed(1),
+          cy: (flower.scale * between(rng, -1, 3)).toFixed(1),
+          r: (flower.scale * between(rng, 4, 7)).toFixed(1),
+          fill: rgba(palette.gold, .28),
+          class: "center-dot"
+        });
+        core.append(base, warm);
+
+        const dots = 7 + Math.floor(rng() * 6);
+        for (let i = 0; i < dots; i++) {
+          const a = rng() * Math.PI * 2;
+          const r = between(rng, 3, 13) * flower.scale;
+          core.append(svgEl("circle", {
+            cx: (Math.cos(a) * r).toFixed(1),
+            cy: (Math.sin(a) * r * .8).toFixed(1),
+            r: between(rng, .9, 2.1).toFixed(1),
+            fill: rgba(rng() > .48 ? palette.gold : palette.petalDeep, between(rng, .24, .5)),
+            class: "center-dot"
+          }));
+        }
+
+        flowerLayer.append(core);
+        makeMotion(core, {
+          x: flower.x,
+          y: flower.y + flower.scale * 1.5,
+          rotate: flower.tilt,
+          rotateFrom: 0,
+          scale: 1,
+          initialScale: .2,
+          opacity: .98,
+          start: start + 1180,
+          duration: 850
+        });
+      }
+
+      function addPigment(rng, flower, start) {
+        const flecks = 26 + Math.floor(rng() * 16);
+        for (let i = 0; i < flecks; i++) {
+          const a = rng() * Math.PI * 2;
+          const r = between(rng, 10, 62) * flower.scale;
+          const g = svgEl("g", { class: "grain-form" });
+          const isEllipse = rng() > .75;
+          const fleckAttrs = {
+            cx: "0",
+            cy: "0",
+            fill: rgba(rng() > .56 ? palette.petalDeep : pick(rng, palette.petals), between(rng, .08, .22))
+          };
+          if (isEllipse) {
+            fleckAttrs.rx = between(rng, .5, 1.9).toFixed(2);
+            fleckAttrs.ry = between(rng, .35, 1.2).toFixed(2);
+          } else {
+            fleckAttrs.r = between(rng, .45, 1.55).toFixed(2);
+          }
+          const fleck = svgEl(isEllipse ? "ellipse" : "circle", fleckAttrs);
+          g.append(fleck);
+          grainLayer.append(g);
+          makeMotion(g, {
+            x: flower.x + Math.cos(a) * r * between(rng, .42, .9),
+            y: flower.y + Math.sin(a) * r * between(rng, .34, .78),
+            rotate: between(rng, -180, 180),
+            rotateFrom: 0,
+            scale: 1,
+            initialScale: .4,
+            opacity: .9,
+            start: start + 900 + rng() * 1300,
+            duration: 880 + rng() * 900
+          });
+        }
+      }
+
+      function addFlower(rng, flower, index) {
+        const stem = addStem(rng, index, flower);
+        const start = stem.delay + stem.dur * .58 + index * 80;
+        addWashHalo(rng, flower, stem.delay, index);
+        addSepals(rng, flower, start);
+        addPetals(rng, flower, start);
+        addCenter(rng, flower, start);
+        addPigment(rng, flower, start);
+      }
+
+      function planFlowers(rng) {
+        const base = [
+          { x: 600, y: 225, scale: 1.27, baseOffset: 0, type: "round", tilt: -4 },
+          { x: 494, y: 292, scale: .93, baseOffset: -24, type: "cup", tilt: -18 },
+          { x: 715, y: 314, scale: 1.02, baseOffset: 30, type: "wild", tilt: 15 },
+          { x: 408, y: 405, scale: .76, baseOffset: -48, type: "round", tilt: -30 },
+          { x: 795, y: 438, scale: .79, baseOffset: 52, type: "cup", tilt: 27 },
+          { x: 560, y: 382, scale: .7, baseOffset: -8, type: "wild", tilt: 8 },
+          { x: 672, y: 482, scale: .68, baseOffset: 18, type: "round", tilt: -10 }
+        ];
+
+        if (rng() > .35) {
+          base.push({ x: 327, y: 506, scale: .55, baseOffset: -62, type: "cup", tilt: -36 });
+        }
+
+        if (rng() > .25) {
+          base.push({ x: 880, y: 540, scale: .57, baseOffset: 68, type: "wild", tilt: 33 });
+        }
+
+        return base.map((item) => ({
+          ...item,
+          x: item.x + between(rng, -34, 34),
+          y: item.y + between(rng, -24, 24),
+          scale: item.scale * between(rng, .92, 1.08),
+          tilt: item.tilt + between(rng, -9, 9),
+          baseOffset: item.baseOffset + between(rng, -12, 12)
+        }));
+      }
+
+      function animate() {
+        const startTime = performance.now();
+        const total = motions.reduce((max, item) => Math.max(max, item.start + item.duration), 0);
+
+        function tick(now) {
+          const elapsed = now - startTime;
+          for (const motion of motions) {
+            const p = (elapsed - motion.start) / motion.duration;
+            setMotion(motion, p);
+          }
+
+          if (elapsed < total + 120) {
+            frame = requestAnimationFrame(tick);
+          } else {
+            for (const motion of motions) setMotion(motion, 1);
+            bouquet.classList.add("settled");
+          }
+        }
+
+        frame = requestAnimationFrame(tick);
+      }
+
+      function render(nextSeed) {
+        clearArt();
+        seed = nextSeed;
+        const rng = mulberry32(seed);
+        seedNote.textContent = `seed ${seed}`;
+
+        const flowers = planFlowers(rng);
+        flowers.forEach((flower, index) => addFlower(rng, flower, index));
+
+        if (reduceQuery.matches) {
+          for (const motion of motions) setMotion(motion, 1);
+          bouquet.classList.add("settled");
+        } else {
+          animate();
+        }
+      }
+
+      button.addEventListener("click", () => {
+        seed = Math.floor(1000 + Math.random() * 8999);
+        render(seed);
+      });
+
+      render(seed);
+    })();
+  </script>
+</body>
+</html>
