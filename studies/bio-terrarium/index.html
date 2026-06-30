@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumenhusk Conservatory · Bio Terrarium Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --page-deep: #070807;
+      --surface: rgba(13, 17, 13, .82);
+      --surface-soft: rgba(18, 24, 17, .72);
+      --glass: rgba(206, 255, 184, .065);
+      --glass-strong: rgba(206, 255, 184, .15);
+      --line: rgba(196, 255, 153, .2);
+      --line-bright: rgba(196, 255, 153, .4);
+      --text: #e8f0e4;
+      --text-muted: #aec4a8;
+      --text-soft: #9fb89a;
+      --lime: #c4ff99;
+      --lime-hot: #e0ffc4;
+      --teal: #8cf3dc;
+      --violet: #b7a4ff;
+      --serif: "Noto Serif", Songti SC, STSong, serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 50% 18%, rgba(196, 255, 153, .08), transparent 28rem),
+        radial-gradient(circle at 82% 6%, rgba(140, 243, 220, .055), transparent 22rem),
+        radial-gradient(circle at 14% 38%, rgba(183, 164, 255, .045), transparent 24rem),
+        linear-gradient(180deg, #121410 0%, #0a0b0a 44%, #0d0d0d 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    @supports not (overflow: clip) {
+      body {
+        overflow-x: hidden;
+      }
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      z-index: 0;
+      opacity: .32;
+      background:
+        linear-gradient(rgba(196, 255, 153, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196, 255, 153, .022) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: radial-gradient(circle at 50% 34%, #000 0%, transparent 72%);
+    }
+
+    body::after {
+      z-index: 1;
+      opacity: .42;
+      background:
+        radial-gradient(circle at center, transparent 0 46%, rgba(0, 0, 0, .72) 100%),
+        repeating-linear-gradient(180deg, rgba(255, 255, 255, .016) 0 1px, transparent 1px 5px);
+      mix-blend-mode: screen;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      width: min(1280px, 100%);
+      margin: 0 auto;
+      padding: 28px 18px 184px;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 4px 0 28px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .eyebrow,
+    .meta,
+    .card-id,
+    .taxonomy,
+    .stat-label,
+    .readout {
+      font-family: var(--mono);
+      letter-spacing: 0;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--lime);
+      font-size: 11px;
+      line-height: 1.45;
+      text-transform: uppercase;
+      text-shadow: 0 0 16px rgba(196, 255, 153, .38);
+    }
+
+    .wordmark {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 1.04;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      max-width: 430px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .header-meta span {
+      padding: 7px 9px;
+      border: 1px solid rgba(196, 255, 153, .17);
+      border-radius: 999px;
+      background: rgba(8, 10, 8, .56);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .hero-copy {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 26px;
+      padding: 24px 0;
+    }
+
+    .hero-title {
+      display: grid;
+      gap: 18px;
+    }
+
+    h1 {
+      max-width: 9.5ch;
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 48px;
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    h1 span {
+      display: block;
+      margin-top: 8px;
+      color: var(--lime);
+      text-shadow:
+        0 0 18px rgba(196, 255, 153, .36),
+        0 0 56px rgba(196, 255, 153, .2);
+    }
+
+    .lede {
+      max-width: 35ch;
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .signal-board {
+      display: grid;
+      gap: 10px;
+      max-width: 420px;
+    }
+
+    .readout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: baseline;
+      padding: 12px 0;
+      border-top: 1px solid rgba(196, 255, 153, .16);
+      color: var(--text-soft);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .readout b {
+      min-width: 0;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .readout span {
+      color: var(--lime);
+      text-align: right;
+      white-space: nowrap;
+      text-shadow: 0 0 14px rgba(196, 255, 153, .32);
+    }
+
+    .terrarium {
+      position: relative;
+      min-width: 0;
+      min-height: 650px;
+      border: 1px solid rgba(196, 255, 153, .28);
+      border-radius: 8px;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse at 50% 82%, rgba(196, 255, 153, .15), transparent 35%),
+        linear-gradient(180deg, rgba(238, 242, 234, .05), rgba(0, 0, 0, .1) 28%, rgba(196, 255, 153, .035) 100%),
+        #080908;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, .8),
+        0 30px 86px -56px rgba(196, 255, 153, .72),
+        inset 0 1px 0 rgba(238, 242, 234, .09),
+        inset 0 -42px 72px rgba(0, 0, 0, .8);
+    }
+
+    .terrarium::before,
+    .terrarium::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .terrarium::before {
+      inset: 14px;
+      border: 1px solid rgba(196, 255, 153, .13);
+      border-radius: 6px;
+      box-shadow:
+        inset 0 1px 0 rgba(238, 242, 234, .08),
+        inset 0 -1px 0 rgba(196, 255, 153, .1);
+    }
+
+    .terrarium::after {
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .04), transparent 16% 84%, rgba(255, 255, 255, .03)),
+        linear-gradient(180deg, rgba(255, 255, 255, .055), transparent 18%),
+        radial-gradient(circle at 50% 45%, transparent 0 48%, rgba(0, 0, 0, .52) 100%);
+      mix-blend-mode: screen;
+    }
+
+    .spore-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .organism-wrap {
+      position: absolute;
+      inset: 34px 28px 52px;
+      z-index: 2;
+      display: grid;
+      place-items: end center;
+      pointer-events: none;
+    }
+
+    .organism-svg {
+      display: block;
+      width: min(100%, 650px);
+      max-height: 100%;
+      overflow: visible;
+      filter:
+        drop-shadow(0 0 22px rgba(196, 255, 153, .24))
+        drop-shadow(0 0 58px rgba(196, 255, 153, .13));
+    }
+
+    .vessel-caption {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 20px;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: rgba(232, 240, 228, .86);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.45;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(196, 255, 153, .35);
+    }
+
+    .vessel-caption span:last-child {
+      color: var(--lime);
+      text-align: right;
+    }
+
+    .catalog {
+      margin-top: 46px;
+      padding-top: 34px;
+      border-top: 1px solid rgba(196, 255, 153, .18);
+    }
+
+    .catalog-head {
+      display: grid;
+      gap: 12px;
+      max-width: 720px;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .catalog-head p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .catalog-card {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid rgba(196, 255, 153, .17);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(196, 255, 153, .055), rgba(196, 255, 153, .015)),
+        rgba(7, 9, 7, .88);
+      box-shadow:
+        inset 0 1px 0 rgba(238, 242, 234, .08),
+        0 18px 52px -42px rgba(196, 255, 153, .64);
+    }
+
+    .catalog-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .54;
+      background:
+        radial-gradient(circle at 22% 18%, rgba(196, 255, 153, .12), transparent 7rem),
+        linear-gradient(90deg, rgba(255, 255, 255, .035), transparent 36% 72%, rgba(255, 255, 255, .018));
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+      min-height: 100%;
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 15px;
+      padding: 18px;
+    }
+
+    .mini-vessel {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 96px;
+      height: 128px;
+      border: 1px solid rgba(196, 255, 153, .18);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 50% 76%, rgba(196, 255, 153, .12), transparent 46%),
+        rgba(6, 8, 6, .76);
+      box-shadow: inset 0 0 28px rgba(196, 255, 153, .035);
+    }
+
+    .mini-vessel::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(196, 255, 153, .095);
+      border-radius: 5px;
+      pointer-events: none;
+    }
+
+    .mini-plant {
+      width: 82px;
+      height: 112px;
+      overflow: visible;
+      filter: drop-shadow(0 0 16px rgba(196, 255, 153, .28));
+    }
+
+    .card-copy {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .card-id {
+      margin: 0;
+      color: var(--lime);
+      font-size: 10px;
+      line-height: 1.35;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(196, 255, 153, .32);
+    }
+
+    .catalog-card h3 {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 23px;
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .taxonomy {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .tiny-stat {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: baseline;
+      margin-top: 5px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(196, 255, 153, .12);
+      font-family: var(--mono);
+      line-height: 1.35;
+    }
+
+    .stat-label {
+      color: var(--text-soft);
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .tiny-stat b {
+      color: var(--lime-hot);
+      font-size: 12px;
+      font-weight: 500;
+      text-shadow: 0 0 12px rgba(196, 255, 153, .34);
+      white-space: nowrap;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .terrarium {
+        animation: vessel-glow 7.2s ease-in-out infinite;
+      }
+
+      .organism-svg .pulse-slow {
+        animation: organism-pulse 5.8s ease-in-out infinite;
+        transform-origin: center;
+      }
+
+      .organism-svg .pulse-delay {
+        animation: organism-pulse 6.4s ease-in-out infinite;
+        animation-delay: -2.1s;
+        transform-origin: center;
+      }
+
+      .organism-svg .sway {
+        animation: organism-sway 9s ease-in-out infinite;
+        transform-origin: 320px 690px;
+      }
+
+      .catalog-card {
+        transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease, background .28s ease;
+      }
+
+      .mini-plant {
+        transition: filter .28s ease, transform .28s ease;
+      }
+
+      .catalog-card:hover {
+        border-color: rgba(196, 255, 153, .42);
+        background:
+          linear-gradient(180deg, rgba(196, 255, 153, .08), rgba(196, 255, 153, .025)),
+          rgba(7, 9, 7, .9);
+        box-shadow:
+          inset 0 1px 0 rgba(238, 242, 234, .1),
+          0 24px 62px -38px rgba(196, 255, 153, .78);
+        transform: translateY(-3px);
+      }
+
+      .catalog-card:hover .mini-plant {
+        filter:
+          drop-shadow(0 0 18px rgba(196, 255, 153, .44))
+          drop-shadow(0 0 34px rgba(196, 255, 153, .18));
+        transform: translateY(-2px);
+      }
+    }
+
+    @keyframes vessel-glow {
+      0%, 100% {
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, .8),
+          0 30px 86px -56px rgba(196, 255, 153, .72),
+          inset 0 1px 0 rgba(238, 242, 234, .09),
+          inset 0 -42px 72px rgba(0, 0, 0, .8);
+      }
+      50% {
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, .8),
+          0 34px 104px -48px rgba(196, 255, 153, .92),
+          inset 0 1px 0 rgba(238, 242, 234, .1),
+          inset 0 -42px 72px rgba(0, 0, 0, .8);
+      }
+    }
+
+    @keyframes organism-pulse {
+      0%, 100% {
+        opacity: .74;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes organism-sway {
+      0%, 100% {
+        transform: rotate(-.7deg);
+      }
+      50% {
+        transform: rotate(.7deg);
+      }
+    }
+
+    @media (min-width: 720px) {
+      .page {
+        padding-inline: 24px;
+      }
+
+      .wordmark {
+        font-size: 39px;
+      }
+
+      h1 {
+        font-size: 62px;
+      }
+
+      h2 {
+        font-size: 42px;
+      }
+    }
+
+    @media (min-width: 1120px) {
+      .page {
+        padding-top: 34px;
+      }
+
+      .wordmark {
+        font-size: 44px;
+      }
+
+      h1 {
+        font-size: 78px;
+      }
+    }
+
+    @media (max-width: 1060px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        padding: 0;
+      }
+
+      h1 {
+        max-width: 12ch;
+      }
+
+      .signal-board {
+        max-width: none;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 12px 208px;
+      }
+
+      .site-header {
+        display: grid;
+        gap: 16px;
+        padding-bottom: 22px;
+      }
+
+      .header-meta {
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      h1 {
+        font-size: 47px;
+      }
+
+      .terrarium {
+        min-height: 560px;
+      }
+
+      .organism-wrap {
+        inset: 30px 14px 52px;
+      }
+
+      .signal-board,
+      .catalog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .catalog {
+        margin-top: 34px;
+        padding-top: 28px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .page {
+        padding-inline: 10px;
+      }
+
+      .wordmark {
+        font-size: 31px;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+      h2 {
+        font-size: 31px;
+      }
+
+      .terrarium {
+        min-height: 512px;
+      }
+
+      .vessel-caption {
+        left: 18px;
+        right: 18px;
+        bottom: 16px;
+        flex-direction: column;
+      }
+
+      .vessel-caption span:last-child {
+        text-align: left;
+      }
+
+      .readout,
+      .card-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .readout span {
+        text-align: left;
+      }
+
+      .mini-vessel {
+        width: 100%;
+        height: 118px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Bioluminescent terrarium effect study">
+    <header class="site-header">
+      <div class="brand">
+        <p class="eyebrow">SPECIMEN ARCHIVE / 标本</p>
+        <p class="wordmark">Lumenhusk Conservatory</p>
+      </div>
+      <div class="header-meta" aria-label="Archive metadata">
+        <span>sealed glass habitat</span>
+        <span>lime biolume culture</span>
+        <span>孢子观测</span>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="hero-title">
+          <p class="eyebrow">Digital terrarium / 夜荧温室</p>
+          <h1 id="hero-title">Living light <span>under glass.</span></h1>
+          <p class="lede">A fictional xeno-botany vessel where quiet stems pulse, spores drift, and every reading stays close to darkness.</p>
+        </div>
+
+        <div class="signal-board" aria-label="Terrarium readings">
+          <div class="readout"><b>Primary specimen</b><span>LH-VERDANT-01</span></div>
+          <div class="readout"><b>Glow index</b><span>high calm</span></div>
+          <div class="readout"><b>Spore density</b><span id="spore-count">160 motes</span></div>
+          <div class="readout"><b>Habitat</b><span>black glass</span></div>
+        </div>
+      </div>
+
+      <section class="terrarium" aria-label="Glass terrarium with glowing alien flora">
+        <canvas class="spore-canvas" id="spore-canvas" aria-label="Drifting lime spore particles"></canvas>
+        <div class="organism-wrap">
+          <svg class="organism-svg" viewBox="0 0 640 760" role="img" aria-labelledby="organism-title organism-desc">
+            <title id="organism-title">Bioluminescent alien flora specimen</title>
+            <desc id="organism-desc">A glowing lime plant form with branching stems, pods, and translucent leaves inside a dark terrarium.</desc>
+            <defs>
+              <filter id="soft-halo" x="-70%" y="-70%" width="240%" height="240%">
+                <feGaussianBlur stdDeviation="9" result="blur"></feGaussianBlur>
+                <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.77 0 0 0 0 1 0 0 0 0 0.6 0 0 0 .9 0" result="glow"></feColorMatrix>
+                <feMerge>
+                  <feMergeNode in="glow"></feMergeNode>
+                  <feMergeNode in="SourceGraphic"></feMergeNode>
+                </feMerge>
+              </filter>
+              <filter id="wide-halo" x="-90%" y="-90%" width="280%" height="280%">
+                <feGaussianBlur stdDeviation="22" result="blur"></feGaussianBlur>
+                <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.77 0 0 0 0 1 0 0 0 0 0.6 0 0 0 .72 0"></feColorMatrix>
+              </filter>
+              <linearGradient id="stem-gradient" x1="0" x2="0" y1="680" y2="120" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#608a52" stop-opacity=".34"></stop>
+                <stop offset=".42" stop-color="#c4ff99" stop-opacity=".9"></stop>
+                <stop offset="1" stop-color="#e0ffc4" stop-opacity="1"></stop>
+              </linearGradient>
+              <radialGradient id="pod-gradient" cx="45%" cy="36%" r="70%">
+                <stop offset="0" stop-color="#f2ffe7"></stop>
+                <stop offset=".28" stop-color="#c4ff99"></stop>
+                <stop offset=".72" stop-color="#7ddb70" stop-opacity=".54"></stop>
+                <stop offset="1" stop-color="#274323" stop-opacity=".18"></stop>
+              </radialGradient>
+              <radialGradient id="mound-gradient" cx="50%" cy="54%" r="62%">
+                <stop offset="0" stop-color="#c4ff99" stop-opacity=".28"></stop>
+                <stop offset=".48" stop-color="#506d44" stop-opacity=".12"></stop>
+                <stop offset="1" stop-color="#000" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+
+            <ellipse class="pulse-delay" cx="320" cy="694" rx="210" ry="54" fill="url(#mound-gradient)" filter="url(#wide-halo)"></ellipse>
+            <g class="sway">
+              <g opacity=".72" filter="url(#wide-halo)">
+                <path d="M320 684 C305 560 346 430 321 242" fill="none" stroke="#c4ff99" stroke-width="34" stroke-linecap="round"></path>
+                <path d="M302 690 C226 570 220 445 172 318" fill="none" stroke="#c4ff99" stroke-width="22" stroke-linecap="round"></path>
+                <path d="M340 688 C434 578 470 460 508 320" fill="none" stroke="#c4ff99" stroke-width="24" stroke-linecap="round"></path>
+                <path d="M318 690 C370 566 378 426 408 188" fill="none" stroke="#c4ff99" stroke-width="20" stroke-linecap="round"></path>
+              </g>
+
+              <g fill="none" stroke="url(#stem-gradient)" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-halo)">
+                <path d="M320 684 C305 560 346 430 321 242" stroke-width="7"></path>
+                <path d="M302 690 C226 570 220 445 172 318" stroke-width="5"></path>
+                <path d="M340 688 C434 578 470 460 508 320" stroke-width="5.5"></path>
+                <path d="M318 690 C370 566 378 426 408 188" stroke-width="4.5"></path>
+                <path d="M282 688 C268 590 305 506 292 410" stroke-width="3.5"></path>
+                <path d="M358 688 C374 590 334 520 354 414" stroke-width="3.5"></path>
+              </g>
+
+              <g fill="none" stroke="#c4ff99" stroke-linecap="round" stroke-linejoin="round" opacity=".82">
+                <path d="M310 502 C250 480 225 438 212 394" stroke-width="2.8" filter="url(#soft-halo)"></path>
+                <path d="M329 458 C382 428 404 386 410 338" stroke-width="3" filter="url(#soft-halo)"></path>
+                <path d="M315 384 C260 350 243 304 248 260" stroke-width="2.5" filter="url(#soft-halo)"></path>
+                <path d="M333 332 C382 300 402 260 400 218" stroke-width="2.4" filter="url(#soft-halo)"></path>
+                <path d="M238 486 C188 470 160 434 145 390" stroke-width="2.2" filter="url(#soft-halo)"></path>
+                <path d="M438 490 C494 466 524 424 540 376" stroke-width="2.4" filter="url(#soft-halo)"></path>
+              </g>
+
+              <g class="pulse-slow" fill="url(#pod-gradient)" filter="url(#soft-halo)">
+                <ellipse cx="321" cy="226" rx="36" ry="54" transform="rotate(-6 321 226)"></ellipse>
+                <ellipse cx="408" cy="174" rx="27" ry="42" transform="rotate(16 408 174)"></ellipse>
+                <ellipse cx="170" cy="304" rx="29" ry="43" transform="rotate(-26 170 304)"></ellipse>
+                <ellipse cx="508" cy="306" rx="31" ry="45" transform="rotate(22 508 306)"></ellipse>
+              </g>
+
+              <g class="pulse-delay" fill="none" stroke="#dfffca" stroke-linecap="round" opacity=".9" filter="url(#soft-halo)">
+                <path d="M286 506 C238 520 210 552 198 594" stroke-width="2"></path>
+                <path d="M300 566 C252 580 230 620 220 664" stroke-width="1.7"></path>
+                <path d="M354 552 C406 566 440 612 452 666" stroke-width="1.8"></path>
+                <path d="M338 604 C360 636 374 664 382 704" stroke-width="1.4"></path>
+                <path d="M304 618 C282 642 270 670 264 710" stroke-width="1.4"></path>
+              </g>
+
+              <g fill="#eaffd7" filter="url(#soft-halo)">
+                <circle cx="212" cy="394" r="5"></circle>
+                <circle cx="410" cy="338" r="5.5"></circle>
+                <circle cx="248" cy="260" r="4.8"></circle>
+                <circle cx="400" cy="218" r="4.5"></circle>
+                <circle cx="145" cy="390" r="4"></circle>
+                <circle cx="540" cy="376" r="4.5"></circle>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="vessel-caption" aria-hidden="true">
+          <span>glass pressure stable</span>
+          <span>chlorolume phase open</span>
+        </div>
+      </section>
+    </section>
+
+    <section class="catalog" aria-labelledby="catalog-title">
+      <div class="catalog-head">
+        <p class="eyebrow">SPECIMEN CATALOG / 标本目录</p>
+        <h2 id="catalog-title">Cultures held in low light.</h2>
+        <p>Each entry is a fictional archive record for small organisms sampled from the same sealed habitat.</p>
+      </div>
+
+      <div class="catalog-grid">
+        <article class="catalog-card">
+          <div class="card-inner">
+            <div class="mini-vessel" aria-hidden="true">
+              <svg class="mini-plant" viewBox="0 0 100 130">
+                <path d="M50 114 C47 82 56 55 49 22" fill="none" stroke="#c4ff99" stroke-width="4" stroke-linecap="round"></path>
+                <path d="M49 68 C30 58 25 44 27 32" fill="none" stroke="#c4ff99" stroke-width="2.2" stroke-linecap="round"></path>
+                <path d="M52 58 C70 50 75 36 73 24" fill="none" stroke="#c4ff99" stroke-width="2.2" stroke-linecap="round"></path>
+                <ellipse cx="49" cy="20" rx="10" ry="15" fill="url(#pod-gradient)"></ellipse>
+                <circle cx="27" cy="32" r="4" fill="#e0ffc4"></circle>
+                <circle cx="73" cy="24" r="4" fill="#e0ffc4"></circle>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <p class="card-id">SPC-LH-014</p>
+              <h3>Viridella lenis</h3>
+              <p class="taxonomy">Glow index: high / Spore rate: slow / Habitat: basalt glass</p>
+              <div class="tiny-stat"><span class="stat-label">tiny stat</span><b>soft pulse</b></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="catalog-card">
+          <div class="card-inner">
+            <div class="mini-vessel" aria-hidden="true">
+              <svg class="mini-plant" viewBox="0 0 100 130">
+                <path d="M48 114 C36 84 34 62 28 30" fill="none" stroke="#c4ff99" stroke-width="3.4" stroke-linecap="round"></path>
+                <path d="M52 114 C64 84 66 60 72 28" fill="none" stroke="#8cf3dc" stroke-width="2.8" stroke-linecap="round"></path>
+                <path d="M38 72 C54 64 58 50 58 38" fill="none" stroke="#c4ff99" stroke-width="2" stroke-linecap="round"></path>
+                <ellipse cx="28" cy="29" rx="8" ry="13" fill="url(#pod-gradient)"></ellipse>
+                <ellipse cx="72" cy="27" rx="7" ry="12" fill="#8cf3dc" opacity=".86"></ellipse>
+                <circle cx="58" cy="38" r="4" fill="#e0ffc4"></circle>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <p class="card-id">SPC-LH-021</p>
+              <h3>Myxa lucerna</h3>
+              <p class="taxonomy">Glow index: veiled / Spore rate: ribbon / Habitat: wet stone</p>
+              <div class="tiny-stat"><span class="stat-label">tiny stat</span><b>two crowns</b></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="catalog-card">
+          <div class="card-inner">
+            <div class="mini-vessel" aria-hidden="true">
+              <svg class="mini-plant" viewBox="0 0 100 130">
+                <path d="M50 116 C54 88 48 62 53 34" fill="none" stroke="#c4ff99" stroke-width="3.6" stroke-linecap="round"></path>
+                <path d="M53 66 C74 60 82 46 84 30" fill="none" stroke="#c4ff99" stroke-width="2.2" stroke-linecap="round"></path>
+                <path d="M49 76 C30 70 20 58 18 42" fill="none" stroke="#b7a4ff" stroke-width="2" stroke-linecap="round"></path>
+                <ellipse cx="84" cy="30" rx="10" ry="10" fill="url(#pod-gradient)"></ellipse>
+                <ellipse cx="18" cy="42" rx="8" ry="10" fill="#b7a4ff" opacity=".78"></ellipse>
+                <ellipse cx="53" cy="33" rx="8" ry="19" fill="url(#pod-gradient)"></ellipse>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <p class="card-id">SPC-LH-033</p>
+              <h3>Caulorium velum</h3>
+              <p class="taxonomy">Glow index: bright / Spore rate: held / Habitat: black loam</p>
+              <div class="tiny-stat"><span class="stat-label">tiny stat</span><b>glass calm</b></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="catalog-card">
+          <div class="card-inner">
+            <div class="mini-vessel" aria-hidden="true">
+              <svg class="mini-plant" viewBox="0 0 100 130">
+                <path d="M50 116 C48 88 50 63 50 36" fill="none" stroke="#c4ff99" stroke-width="3.8" stroke-linecap="round"></path>
+                <path d="M50 54 C34 50 24 40 19 27" fill="none" stroke="#c4ff99" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M50 54 C66 50 76 40 81 27" fill="none" stroke="#c4ff99" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M50 80 C35 82 24 92 18 106" fill="none" stroke="#c4ff99" stroke-width="1.8" stroke-linecap="round"></path>
+                <path d="M50 80 C65 82 76 92 82 106" fill="none" stroke="#c4ff99" stroke-width="1.8" stroke-linecap="round"></path>
+                <circle cx="50" cy="34" r="9" fill="url(#pod-gradient)"></circle>
+                <circle cx="19" cy="27" r="5" fill="#e0ffc4"></circle>
+                <circle cx="81" cy="27" r="5" fill="#e0ffc4"></circle>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <p class="card-id">SPC-LH-048</p>
+              <h3>Asterophyta umbra</h3>
+              <p class="taxonomy">Glow index: radial / Spore rate: quiet / Habitat: mineral fog</p>
+              <div class="tiny-stat"><span class="stat-label">tiny stat</span><b>star nerve</b></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="catalog-card">
+          <div class="card-inner">
+            <div class="mini-vessel" aria-hidden="true">
+              <svg class="mini-plant" viewBox="0 0 100 130">
+                <path d="M32 116 C32 88 42 68 40 42" fill="none" stroke="#c4ff99" stroke-width="2.8" stroke-linecap="round"></path>
+                <path d="M50 116 C49 84 51 60 50 26" fill="none" stroke="#c4ff99" stroke-width="3.1" stroke-linecap="round"></path>
+                <path d="M68 116 C68 88 58 68 60 42" fill="none" stroke="#c4ff99" stroke-width="2.8" stroke-linecap="round"></path>
+                <circle cx="40" cy="42" r="5" fill="#e0ffc4"></circle>
+                <ellipse cx="50" cy="25" rx="8" ry="15" fill="url(#pod-gradient)"></ellipse>
+                <circle cx="60" cy="42" r="5" fill="#e0ffc4"></circle>
+                <path d="M32 88 C44 82 56 82 68 88" fill="none" stroke="#8cf3dc" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <p class="card-id">SPC-LH-056</p>
+              <h3>Filamenta chloris</h3>
+              <p class="taxonomy">Glow index: threaded / Spore rate: fine / Habitat: sealed moss</p>
+              <div class="tiny-stat"><span class="stat-label">tiny stat</span><b>thin field</b></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="catalog-card">
+          <div class="card-inner">
+            <div class="mini-vessel" aria-hidden="true">
+              <svg class="mini-plant" viewBox="0 0 100 130">
+                <path d="M50 116 C52 84 47 62 51 34" fill="none" stroke="#c4ff99" stroke-width="3.8" stroke-linecap="round"></path>
+                <path d="M50 78 C28 74 20 60 19 44" fill="none" stroke="#c4ff99" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M51 70 C74 66 82 52 83 36" fill="none" stroke="#c4ff99" stroke-width="2" stroke-linecap="round"></path>
+                <ellipse cx="51" cy="32" rx="12" ry="17" fill="url(#pod-gradient)"></ellipse>
+                <ellipse cx="19" cy="44" rx="8" ry="12" fill="#e0ffc4" opacity=".9"></ellipse>
+                <ellipse cx="83" cy="36" rx="8" ry="12" fill="#e0ffc4" opacity=".9"></ellipse>
+                <path d="M37 95 C48 88 60 88 71 95" fill="none" stroke="#b7a4ff" stroke-width="1.7" stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <p class="card-id">SPC-LH-062</p>
+              <h3>Orchidia pallens</h3>
+              <p class="taxonomy">Glow index: pearl / Spore rate: dusk / Habitat: shadow water</p>
+              <div class="tiny-stat"><span class="stat-label">tiny stat</span><b>open cup</b></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Bioluminescent Terrarium》 by babatide1（社区 #123）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("spore-canvas");
+      const sporeCount = document.getElementById("spore-count");
+      const context = canvas.getContext("2d", { alpha: true });
+      const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const lime = { r: 196, g: 255, b: 153 };
+      const state = {
+        width: 1,
+        height: 1,
+        dpr: 1,
+        motes: [],
+        frame: 0,
+        last: 0,
+        reduce: reduceQuery.matches
+      };
+
+      function seeded(seed) {
+        return function random() {
+          let t = seed += 0x6D2B79F5;
+          t = Math.imul(t ^ t >>> 15, t | 1);
+          t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+
+      const random = seeded(91327);
+
+      function range(min, max) {
+        return min + (max - min) * random();
+      }
+
+      function rgba(alpha) {
+        return `rgba(${lime.r}, ${lime.g}, ${lime.b}, ${alpha})`;
+      }
+
+      function particleTarget() {
+        if (state.width < 520) return 120;
+        if (state.width < 860) return 140;
+        return 160;
+      }
+
+      function makeMotes() {
+        const total = particleTarget();
+        state.motes = Array.from({ length: total }, () => ({
+          x: range(.06, .94),
+          y: range(.04, .98),
+          radius: range(.7, 2.25),
+          drift: range(.006, .028),
+          lift: range(.014, .055),
+          phase: range(0, Math.PI * 2),
+          pulse: range(.0011, .0028),
+          alpha: range(.18, .58)
+        }));
+        sporeCount.textContent = `${total} motes`;
+      }
+
+      function sizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        state.width = Math.max(1, Math.floor(rect.width));
+        state.height = Math.max(1, Math.floor(rect.height));
+        state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(state.width * state.dpr);
+        canvas.height = Math.floor(state.height * state.dpr);
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        context.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+        makeMotes();
+        draw(1600, 16);
+      }
+
+      function drawMote(mote, time, delta) {
+        if (!state.reduce) {
+          mote.y -= mote.lift * delta * .045;
+          mote.x += Math.sin(time * .00022 + mote.phase) * mote.drift * delta * .0018;
+          if (mote.y < -.06) {
+            mote.y = 1.06;
+            mote.x = range(.06, .94);
+          }
+          if (mote.x < -.04) mote.x = 1.04;
+          if (mote.x > 1.04) mote.x = -.04;
+        }
+
+        const x = mote.x * state.width + Math.sin(time * .0004 + mote.phase) * state.width * mote.drift;
+        const y = mote.y * state.height;
+        const pulse = state.reduce ? .82 : .68 + Math.sin(time * mote.pulse + mote.phase) * .26;
+        const alpha = Math.max(.08, mote.alpha * pulse);
+        const radius = mote.radius;
+        const glow = context.createRadialGradient(x, y, 0, x, y, radius * 9);
+        glow.addColorStop(0, rgba(alpha));
+        glow.addColorStop(.2, rgba(alpha * .38));
+        glow.addColorStop(1, rgba(0));
+
+        context.fillStyle = glow;
+        context.beginPath();
+        context.arc(x, y, radius * 9, 0, Math.PI * 2);
+        context.fill();
+
+        context.fillStyle = rgba(Math.min(1, alpha + .16));
+        context.beginPath();
+        context.arc(x, y, Math.max(.55, radius * .42), 0, Math.PI * 2);
+        context.fill();
+      }
+
+      function draw(time, delta) {
+        context.clearRect(0, 0, state.width, state.height);
+
+        const mist = context.createRadialGradient(
+          state.width * .5,
+          state.height * .78,
+          0,
+          state.width * .5,
+          state.height * .78,
+          state.width * .5
+        );
+        mist.addColorStop(0, rgba(.1));
+        mist.addColorStop(.45, rgba(.035));
+        mist.addColorStop(1, rgba(0));
+        context.fillStyle = mist;
+        context.fillRect(0, 0, state.width, state.height);
+
+        context.save();
+        context.globalCompositeOperation = "lighter";
+        state.motes.forEach((mote) => drawMote(mote, time, delta));
+        context.restore();
+      }
+
+      function loop(time) {
+        const delta = Math.min(34, time - (state.last || time));
+        state.last = time;
+        draw(time, delta);
+        if (!state.reduce) {
+          state.frame = requestAnimationFrame(loop);
+        }
+      }
+
+      function start() {
+        cancelAnimationFrame(state.frame);
+        state.last = 0;
+        if (state.reduce) {
+          draw(1600, 16);
+          return;
+        }
+        state.frame = requestAnimationFrame(loop);
+      }
+
+      function handleResize() {
+        sizeCanvas();
+        start();
+      }
+
+      sizeCanvas();
+      start();
+
+      if ("ResizeObserver" in window) {
+        const observer = new ResizeObserver(handleResize);
+        observer.observe(canvas);
+      } else {
+        window.addEventListener("resize", handleResize, { passive: true });
+      }
+
+      const handleMotion = (event) => {
+        state.reduce = event.matches;
+        start();
+      };
+
+      if (typeof reduceQuery.addEventListener === "function") {
+        reduceQuery.addEventListener("change", handleMotion);
+      } else if (typeof reduceQuery.addListener === "function") {
+        reduceQuery.addListener(handleMotion);
+      }
+    })();
+  </script>
+</body>
+</html>
