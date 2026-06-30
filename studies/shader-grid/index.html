@@ -1,0 +1,1632 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shader Grid Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f2ebdb;
+      --paper-deep: #e7dcc5;
+      --paper-soft: #fbf5e8;
+      --ink: #2e211c;
+      --ink-soft: #4e3934;
+      --muted: #6f5d54;
+      --line: rgba(78, 57, 52, .24);
+      --line-strong: rgba(78, 57, 52, .42);
+      --amber: #aa6333;
+      --amber-deep: #7f432a;
+      --sage: #486a5f;
+      --cream-shadow: rgba(79, 49, 28, .15);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --serif: "Noto Serif", Georgia, "Times New Roman", serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 248, 231, .92), transparent 32%),
+        radial-gradient(circle at 82% 18%, rgba(199, 145, 85, .16), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(72, 106, 95, .11), transparent 34%),
+        linear-gradient(135deg, #f7f0df 0%, var(--paper) 44%, #eadfc9 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .36;
+      background:
+        linear-gradient(90deg, rgba(78, 57, 52, .045) 1px, transparent 1px),
+        linear-gradient(rgba(78, 57, 52, .036) 1px, transparent 1px),
+        radial-gradient(circle at 20% 30%, rgba(46, 33, 28, .16) 0 1px, transparent 1px),
+        radial-gradient(circle at 70% 64%, rgba(46, 33, 28, .13) 0 1px, transparent 1px);
+      background-size: 44px 44px, 44px 44px, 7px 7px, 11px 11px;
+      mix-blend-mode: multiply;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1320px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 38px 0 128px;
+    }
+
+    .lab-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 26px;
+      align-items: end;
+      padding: 0 2px 24px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .brand-lockup {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .brand-mark {
+      width: 56px;
+      height: 56px;
+      flex: 0 0 auto;
+      color: var(--ink-soft);
+      filter: drop-shadow(0 10px 14px rgba(78, 57, 52, .12));
+    }
+
+    .brand-title {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 5.35rem);
+      line-height: .92;
+      letter-spacing: 0;
+      font-weight: 700;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .brand-subline {
+      width: min(720px, 100%);
+      margin: 12px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px 14px;
+      align-items: center;
+      color: var(--muted);
+      font-size: clamp(.88rem, 1vw, .98rem);
+      line-height: 1.55;
+    }
+
+    .brand-subline strong {
+      color: var(--ink-soft);
+      font-weight: 650;
+    }
+
+    .header-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .control-btn {
+      min-height: 42px;
+      border: 1px solid rgba(78, 57, 52, .34);
+      border-radius: 999px;
+      background: rgba(255, 250, 238, .58);
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 10px 15px;
+      font: 700 12px/1 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow:
+        0 14px 26px -20px rgba(46, 33, 28, .36),
+        inset 0 1px 0 rgba(255, 255, 255, .72);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .control-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(78, 57, 52, .62);
+      background: rgba(255, 252, 243, .88);
+    }
+
+    .control-btn:active {
+      transform: translateY(1px);
+    }
+
+    .control-btn:focus-visible,
+    .panel-range:focus-visible {
+      outline: 3px solid rgba(72, 106, 95, .34);
+      outline-offset: 3px;
+    }
+
+    .control-btn svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+    }
+
+    .play-icon,
+    .pause-icon {
+      display: none;
+    }
+
+    .control-btn[data-state="running"] .pause-icon,
+    .control-btn[data-state="paused"] .play-icon,
+    .control-btn[data-state="static"] .pause-icon {
+      display: block;
+    }
+
+    .study-meta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 22px;
+      align-items: center;
+      padding: 18px 2px 20px;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+
+    .study-meta p {
+      max-width: 72ch;
+      margin: 0;
+    }
+
+    .run-status {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      color: var(--ink-soft);
+      font: 700 11px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .status-signal {
+      width: 28px;
+      height: 12px;
+      display: inline-grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      align-items: end;
+    }
+
+    .status-signal i {
+      display: block;
+      height: 100%;
+      border-radius: 6px 6px 2px 2px;
+      background: var(--ink-soft);
+      transform-origin: bottom;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .status-signal i:nth-child(1) {
+        animation: meter 1.15s ease-in-out infinite;
+      }
+
+      .status-signal i:nth-child(2) {
+        animation: meter 1.15s ease-in-out infinite .18s;
+      }
+
+      .status-signal i:nth-child(3) {
+        animation: meter 1.15s ease-in-out infinite .36s;
+      }
+    }
+
+    @keyframes meter {
+      0%, 100% {
+        transform: scaleY(.38);
+        opacity: .58;
+      }
+
+      50% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .panel {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid rgba(78, 57, 52, .28);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 250, 238, .74), rgba(232, 218, 195, .48)),
+        rgba(244, 237, 221, .82);
+      box-shadow:
+        0 24px 46px -34px var(--cream-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .64);
+      overflow: hidden;
+    }
+
+    .panel-top {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: start;
+      padding: 15px 15px 12px;
+      border-bottom: 1px solid rgba(78, 57, 52, .18);
+    }
+
+    .panel-label {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .panel-label span {
+      color: var(--ink);
+      font: 800 12px/1.2 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .panel-label b {
+      color: var(--muted);
+      font: 500 12px/1.35 var(--sans);
+    }
+
+    .panel-index {
+      color: var(--ink-soft);
+      font: 800 11px/1 var(--mono);
+      letter-spacing: .08em;
+      padding: 7px 8px;
+      border: 1px solid rgba(78, 57, 52, .22);
+      border-radius: 999px;
+      background: rgba(251, 245, 232, .58);
+      white-space: nowrap;
+    }
+
+    .canvas-frame {
+      position: relative;
+      min-height: 0;
+      aspect-ratio: 1.32;
+      margin: 12px;
+      border: 1px solid rgba(78, 57, 52, .3);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #efe5d0;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, .42),
+        inset 0 -18px 42px rgba(78, 57, 52, .08);
+    }
+
+    .canvas-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(46, 33, 28, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46, 33, 28, .035) 1px, transparent 1px);
+      background-size: 22px 22px;
+      mix-blend-mode: multiply;
+      opacity: .55;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-chip {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      z-index: 2;
+      display: inline-flex;
+      max-width: calc(100% - 20px);
+      align-items: center;
+      gap: 9px;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(46, 33, 28, .24);
+      background: rgba(242, 235, 219, .93);
+      color: var(--ink);
+      box-shadow: 0 8px 20px -16px rgba(46, 33, 28, .48);
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .canvas-chip small {
+      color: var(--muted);
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .panel-foot {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      padding: 0 15px 15px;
+    }
+
+    .panel-foot p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.48;
+    }
+
+    .range-row {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--ink-soft);
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .range-row output {
+      min-width: 38px;
+      text-align: right;
+      color: var(--muted);
+    }
+
+    .panel-range {
+      min-width: 0;
+      width: 100%;
+      height: 22px;
+      accent-color: var(--amber-deep);
+      cursor: pointer;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding-top: 22px;
+      color: var(--muted);
+    }
+
+    .note {
+      min-width: 0;
+      border-top: 1px solid rgba(78, 57, 52, .26);
+      padding-top: 12px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .note strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink-soft);
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 1040px) {
+      .panel-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .lab-header,
+      .study-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .header-controls,
+      .run-status {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page {
+        width: min(100% - 28px, 540px);
+        padding-top: 24px;
+      }
+
+      .brand-lockup {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+      }
+
+      .brand-title {
+        font-size: clamp(2.15rem, 14vw, 3.6rem);
+        line-height: .96;
+      }
+
+      .brand-subline {
+        display: grid;
+        gap: 7px;
+      }
+
+      .header-controls {
+        width: 100%;
+      }
+
+      .control-btn {
+        flex: 1 1 150px;
+      }
+
+      .panel-grid,
+      .notes {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-top {
+        gap: 10px;
+        padding-inline: 12px;
+      }
+
+      .canvas-frame {
+        margin: 10px;
+        aspect-ratio: 1.18;
+      }
+
+      .canvas-chip {
+        max-width: calc(100% - 16px);
+        left: 8px;
+        top: 8px;
+        gap: 6px;
+        padding: 6px 7px;
+        font-size: 9px;
+      }
+
+      .panel-foot {
+        padding-inline: 12px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .page {
+        width: calc(100% - 22px);
+      }
+
+      .study-meta {
+        gap: 14px;
+      }
+
+      .panel-index {
+        display: none;
+      }
+
+      .range-row {
+        grid-template-columns: 1fr auto;
+      }
+
+      .range-row label {
+        grid-column: 1 / 2;
+      }
+
+      .panel-range {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+
+      .range-row output {
+        grid-column: 2 / 3;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+
+      .control-btn {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Warm paper shader grid study">
+    <header class="lab-header">
+      <div class="brand-lockup">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="7" y="7" width="50" height="50" rx="10" fill="none" stroke="currentColor" stroke-width="2.4"/>
+          <path d="M18 43c6-19 22-24 29-22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M18 22c12 5 18 12 25 25" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="22" cy="22" r="3.2" fill="currentColor"/>
+          <circle cx="44" cy="24" r="3.2" fill="currentColor"/>
+          <circle cx="39" cy="43" r="3.2" fill="currentColor"/>
+        </svg>
+        <div>
+          <h1 class="brand-title">Paper Signal Atelier</h1>
+          <p class="brand-subline">
+            <strong>六幅生成面板</strong>
+            <span>six-panel generative study</span>
+            <span>vanilla canvas on warm paper</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="header-controls" aria-label="Global controls">
+        <button class="control-btn" id="toggle-motion" type="button" data-state="running" aria-pressed="true">
+          <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="7" y="5" width="3.5" height="14" rx="1.2" fill="currentColor"/>
+            <rect x="13.5" y="5" width="3.5" height="14" rx="1.2" fill="currentColor"/>
+          </svg>
+          <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.8v12.4c0 .9 1 1.5 1.8 1l9.2-6.2c.7-.5.7-1.5 0-2L9.8 4.8C9 4.3 8 4.9 8 5.8Z" fill="currentColor"/>
+          </svg>
+          <span id="toggle-label">暂停</span>
+        </button>
+        <button class="control-btn" id="reseed-all" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.7 8.1a7.4 7.4 0 1 0 1 6.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18.9 3.9v4.4h-4.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+          </svg>
+          <span>重新播种</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="study-meta" aria-label="Study notes">
+      <p>一张温纸上的六种算法速写。每个面板保留不同的运动逻辑，但共享同一帧调度，让画面保持安静、清晰、可读。</p>
+      <div class="run-status" aria-live="polite">
+        <span class="status-signal" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span id="run-status-text">LIVE CANVAS</span>
+      </div>
+    </section>
+
+    <section class="panel-grid" aria-label="Six live canvas panels">
+      <article class="panel" data-effect="flow">
+        <div class="panel-top">
+          <div class="panel-label">
+            <span>Field Drift</span>
+            <b>流场粒子</b>
+          </div>
+          <div class="panel-index">A1</div>
+        </div>
+        <div class="canvas-frame">
+          <canvas aria-label="Flow field of drifting particles"></canvas>
+          <div class="canvas-chip"><span>FLOW</span><small data-readout>speed .62</small></div>
+        </div>
+        <div class="panel-foot">
+          <p>Fine particles follow a rotating field, leaving soft carbon paths before returning to the paper grain.</p>
+          <div class="range-row">
+            <label for="control-flow">速度</label>
+            <input class="panel-range" id="control-flow" type="range" min="0" max="1" step="0.01" value="0.62" aria-label="Flow field speed">
+            <output for="control-flow">0.62</output>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" data-effect="contour">
+        <div class="panel-top">
+          <div class="panel-label">
+            <span>Quiet Contours</span>
+            <b>等值线噪声</b>
+          </div>
+          <div class="panel-index">B2</div>
+        </div>
+        <div class="canvas-frame">
+          <canvas aria-label="Shifting noise contour field"></canvas>
+          <div class="canvas-chip"><span>NOISE</span><small data-readout>bands .58</small></div>
+        </div>
+        <div class="panel-foot">
+          <p>A layered value field drifts like topography, with ink settling only along the contour thresholds.</p>
+          <div class="range-row">
+            <label for="control-contour">密度</label>
+            <input class="panel-range" id="control-contour" type="range" min="0" max="1" step="0.01" value="0.58" aria-label="Noise contour density">
+            <output for="control-contour">0.58</output>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" data-effect="plasma">
+        <div class="panel-top">
+          <div class="panel-label">
+            <span>Amber Plasma</span>
+            <b>干涉波场</b>
+          </div>
+          <div class="panel-index">C3</div>
+        </div>
+        <div class="canvas-frame">
+          <canvas aria-label="Plasma field made from interfering sine waves"></canvas>
+          <div class="canvas-chip"><span>PLASMA</span><small data-readout>heat .52</small></div>
+        </div>
+        <div class="panel-foot">
+          <p>Four restrained sine systems cross the frame, producing warm bands without leaving the paper palette.</p>
+          <div class="range-row">
+            <label for="control-plasma">热度</label>
+            <input class="panel-range" id="control-plasma" type="range" min="0" max="1" step="0.01" value="0.52" aria-label="Plasma heat">
+            <output for="control-plasma">0.52</output>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" data-effect="voronoi">
+        <div class="panel-top">
+          <div class="panel-label">
+            <span>Breathing Cells</span>
+            <b>蜂巢晶格</b>
+          </div>
+          <div class="panel-index">D4</div>
+        </div>
+        <div class="canvas-frame">
+          <canvas aria-label="Voronoi cellular mosaic that breathes"></canvas>
+          <div class="canvas-chip"><span>VORONOI</span><small data-readout>cells .46</small></div>
+        </div>
+        <div class="panel-foot">
+          <p>Seed points orbit in small gestures, so each paper tile expands and contracts like a slow aperture.</p>
+          <div class="range-row">
+            <label for="control-voronoi">单元</label>
+            <input class="panel-range" id="control-voronoi" type="range" min="0" max="1" step="0.01" value="0.46" aria-label="Voronoi cell count">
+            <output for="control-voronoi">0.46</output>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" data-effect="swarm">
+        <div class="panel-top">
+          <div class="panel-label">
+            <span>Swarm Loom</span>
+            <b>群集织线</b>
+          </div>
+          <div class="panel-index">E5</div>
+        </div>
+        <div class="canvas-frame">
+          <canvas aria-label="Boids style particle swarm cluster"></canvas>
+          <div class="canvas-chip"><span>SWARM</span><small data-readout>pull .64</small></div>
+        </div>
+        <div class="panel-foot">
+          <p>A compact flock balances separation and cohesion, connecting only when neighbors pass close enough.</p>
+          <div class="range-row">
+            <label for="control-swarm">引力</label>
+            <input class="panel-range" id="control-swarm" type="range" min="0" max="1" step="0.01" value="0.64" aria-label="Swarm cohesion">
+            <output for="control-swarm">0.64</output>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" data-effect="moire">
+        <div class="panel-top">
+          <div class="panel-label">
+            <span>Ripple Moire</span>
+            <b>同心涟漪</b>
+          </div>
+          <div class="panel-index">F6</div>
+        </div>
+        <div class="canvas-frame">
+          <canvas aria-label="Concentric ripple moire interference pattern"></canvas>
+          <div class="canvas-chip"><span>MOIRE</span><small data-readout>phase .57</small></div>
+        </div>
+        <div class="panel-foot">
+          <p>Three quiet ripple sources interfere, producing a tonal weave that moves like light under thin paper.</p>
+          <div class="range-row">
+            <label for="control-moire">相位</label>
+            <input class="panel-range" id="control-moire" type="range" min="0" max="1" step="0.01" value="0.57" aria-label="Moire phase rate">
+            <output for="control-moire">0.57</output>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="notes" aria-label="Implementation notes">
+      <div class="note"><strong>Frame</strong>One shared scheduler drives every canvas and skips panels outside the viewport.</div>
+      <div class="note"><strong>Motion</strong>Reduced-motion users receive a composed still frame from each renderer.</div>
+      <div class="note"><strong>Texture</strong>All imagery is generated locally by canvas math, with no network assets.</div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Six Shader Effects Dashboard》 by conisjiamu（社区 #78）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const palette = {
+        paper: [242, 235, 219],
+        paperDeep: [231, 220, 197],
+        paperSoft: [251, 245, 232],
+        ink: [46, 33, 28],
+        inkSoft: [78, 57, 52],
+        muted: [111, 93, 84],
+        amber: [170, 99, 51],
+        amberDeep: [127, 67, 42],
+        sage: [72, 106, 95],
+        moss: [89, 113, 84]
+      };
+
+      const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const maxDpr = 2;
+      const canvases = [];
+      let baseSeed = Math.floor(Math.random() * 1000000000);
+      let reducedMotion = reduceQuery.matches;
+      let manuallyPaused = false;
+      let rafId = 0;
+      let lastFrame = 0;
+      let clock = 0;
+
+      const toggleButton = document.getElementById("toggle-motion");
+      const toggleLabel = document.getElementById("toggle-label");
+      const reseedButton = document.getElementById("reseed-all");
+      const statusText = document.getElementById("run-status-text");
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function mix(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      function smoothstep(edge0, edge1, x) {
+        const t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+        return t * t * (3 - 2 * t);
+      }
+
+      function lerpColor(a, b, t) {
+        return [
+          Math.round(mix(a[0], b[0], t)),
+          Math.round(mix(a[1], b[1], t)),
+          Math.round(mix(a[2], b[2], t))
+        ];
+      }
+
+      function colorString(rgb, alpha = 1) {
+        return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+      }
+
+      function setPixel(data, offset, rgb, alpha = 255) {
+        data[offset] = rgb[0];
+        data[offset + 1] = rgb[1];
+        data[offset + 2] = rgb[2];
+        data[offset + 3] = alpha;
+      }
+
+      function mulberry32(seed) {
+        let t = seed >>> 0;
+        return function next() {
+          t += 0x6D2B79F5;
+          let r = Math.imul(t ^ (t >>> 15), 1 | t);
+          r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+          return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function hash2(x, y, seed) {
+        const n = Math.sin(x * 127.1 + y * 311.7 + seed * .013) * 43758.5453123;
+        return n - Math.floor(n);
+      }
+
+      function valueNoise(x, y, seed) {
+        const ix = Math.floor(x);
+        const iy = Math.floor(y);
+        const fx = x - ix;
+        const fy = y - iy;
+        const ux = fx * fx * (3 - 2 * fx);
+        const uy = fy * fy * (3 - 2 * fy);
+        const a = hash2(ix, iy, seed);
+        const b = hash2(ix + 1, iy, seed);
+        const c = hash2(ix, iy + 1, seed);
+        const d = hash2(ix + 1, iy + 1, seed);
+        return mix(mix(a, b, ux), mix(c, d, ux), uy);
+      }
+
+      function fbm(x, y, seed) {
+        let value = 0;
+        let amp = .52;
+        let freq = 1;
+        let norm = 0;
+        for (let i = 0; i < 5; i += 1) {
+          value += amp * valueNoise(x * freq, y * freq, seed + i * 101);
+          norm += amp;
+          amp *= .5;
+          freq *= 2;
+        }
+        return value / norm;
+      }
+
+      function resizeBuffer(renderer, divisor, minWidth, maxWidth) {
+        const w = renderer.panel.pixelWidth;
+        const h = renderer.panel.pixelHeight;
+        const bw = clamp(Math.round(w / divisor), minWidth, maxWidth);
+        const bh = clamp(Math.round(h / divisor), Math.round(minWidth * .62), Math.round(maxWidth * .72));
+        if (!renderer.buffer) {
+          renderer.buffer = document.createElement("canvas");
+          renderer.bctx = renderer.buffer.getContext("2d", { alpha: false });
+        }
+        if (renderer.buffer.width !== bw || renderer.buffer.height !== bh) {
+          renderer.buffer.width = bw;
+          renderer.buffer.height = bh;
+          renderer.image = renderer.bctx.createImageData(bw, bh);
+        }
+      }
+
+      class FlowField {
+        constructor(panel) {
+          this.panel = panel;
+          this.particles = [];
+          this.started = false;
+        }
+
+        init(seed) {
+          this.seed = seed;
+          this.rng = mulberry32(seed);
+          this.particles = [];
+          this.started = false;
+          this.ensureCount();
+        }
+
+        resize() {
+          this.rng = mulberry32((this.seed || 1) + this.panel.pixelWidth + this.panel.pixelHeight);
+          this.particles = [];
+          this.ensureCount();
+          this.started = false;
+        }
+
+        control() {
+          this.ensureCount();
+        }
+
+        ensureCount() {
+          const count = Math.round(90 + this.panel.value * 180);
+          const rng = this.rng || mulberry32(this.seed || 1);
+          while (this.particles.length < count) {
+            this.particles.push({
+              x: rng() * Math.max(1, this.panel.pixelWidth),
+              y: rng() * Math.max(1, this.panel.pixelHeight),
+              life: rng() * 80
+            });
+          }
+          this.particles.length = count;
+        }
+
+        angle(x, y, t) {
+          const nx = x / Math.max(1, this.panel.pixelWidth) - .5;
+          const ny = y / Math.max(1, this.panel.pixelHeight) - .5;
+          const twist = Math.atan2(ny, nx) * .62;
+          const wave =
+            Math.sin(nx * 7.2 + t * .44 + this.seed * .00003) +
+            Math.cos(ny * 6.4 - t * .36) +
+            Math.sin((nx + ny) * 5.6 + t * .21);
+          return wave * 1.7 + twist;
+        }
+
+        resetParticle(p) {
+          const rng = this.rng || mulberry32(this.seed || 1);
+          p.x = rng() * Math.max(1, this.panel.pixelWidth);
+          p.y = rng() * Math.max(1, this.panel.pixelHeight);
+          p.life = rng() * 80;
+        }
+
+        draw(t, dt, staticFrame = false) {
+          if (staticFrame) {
+            this.drawStatic();
+            return;
+          }
+          const ctx = this.panel.ctx;
+          const w = this.panel.pixelWidth;
+          const h = this.panel.pixelHeight;
+          if (!this.started) {
+            ctx.fillStyle = colorString(palette.paperDeep);
+            ctx.fillRect(0, 0, w, h);
+            this.started = true;
+          } else {
+            ctx.fillStyle = colorString(palette.paper, .105);
+            ctx.fillRect(0, 0, w, h);
+          }
+
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.lineWidth = Math.max(.55, this.panel.dpr * .7);
+          const speed = (26 + this.panel.value * 60) * this.panel.dpr;
+          for (const p of this.particles) {
+            const px = p.x;
+            const py = p.y;
+            const a = this.angle(p.x, p.y, t);
+            p.x += Math.cos(a) * speed * dt;
+            p.y += Math.sin(a) * speed * dt;
+            p.life += dt * 36;
+            if (p.x < -12 || p.x > w + 12 || p.y < -12 || p.y > h + 12 || p.life > 140) {
+              this.resetParticle(p);
+              continue;
+            }
+            const tone = .35 + .5 * Math.sin(p.life * .04 + this.seed);
+            ctx.strokeStyle = colorString(lerpColor(palette.inkSoft, palette.amberDeep, tone * .32), .34);
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+          }
+        }
+
+        drawStatic() {
+          const ctx = this.panel.ctx;
+          const w = this.panel.pixelWidth;
+          const h = this.panel.pixelHeight;
+          const rng = mulberry32(this.seed + 17);
+          ctx.fillStyle = colorString(palette.paperDeep);
+          ctx.fillRect(0, 0, w, h);
+          ctx.lineCap = "round";
+          ctx.lineWidth = Math.max(.6, this.panel.dpr * .62);
+          for (let i = 0; i < 112; i += 1) {
+            let x = rng() * w;
+            let y = rng() * h;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            for (let step = 0; step < 22; step += 1) {
+              const a = this.angle(x, y, 7.5);
+              x += Math.cos(a) * (4.3 + this.panel.value * 2.5) * this.panel.dpr;
+              y += Math.sin(a) * (4.3 + this.panel.value * 2.5) * this.panel.dpr;
+              ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = colorString(lerpColor(palette.inkSoft, palette.amber, rng() * .38), .25 + rng() * .22);
+            ctx.stroke();
+          }
+          this.started = false;
+        }
+      }
+
+      class ContourField {
+        constructor(panel) {
+          this.panel = panel;
+        }
+
+        init(seed) {
+          this.seed = seed;
+        }
+
+        resize() {
+          resizeBuffer(this, 4.8, 96, 210);
+        }
+
+        control() {}
+
+        draw(t, dt, staticFrame = false) {
+          const time = staticFrame ? 4.2 : t;
+          const ctx = this.panel.ctx;
+          resizeBuffer(this, 4.8, 96, 210);
+          const bw = this.buffer.width;
+          const bh = this.buffer.height;
+          const data = this.image.data;
+          const bands = 5.5 + this.panel.value * 7.5;
+          let offset = 0;
+          for (let y = 0; y < bh; y += 1) {
+            const ny = y / bh;
+            for (let x = 0; x < bw; x += 1) {
+              const nx = x / bw;
+              const n = fbm(nx * 3.2 + time * .055, ny * 3.7 - time * .035, this.seed);
+              const contourPhase = Math.abs((n * bands) % 1 - .5);
+              const contour = 1 - smoothstep(.018, .072, contourPhase);
+              const shade = smoothstep(.18, .92, n) * .34;
+              let rgb = lerpColor(palette.paperDeep, palette.sage, shade * .42);
+              rgb = lerpColor(rgb, palette.inkSoft, contour * .78);
+              setPixel(data, offset, rgb);
+              offset += 4;
+            }
+          }
+          this.bctx.putImageData(this.image, 0, 0);
+          ctx.imageSmoothingEnabled = true;
+          ctx.drawImage(this.buffer, 0, 0, this.panel.pixelWidth, this.panel.pixelHeight);
+        }
+      }
+
+      class PlasmaField {
+        constructor(panel) {
+          this.panel = panel;
+        }
+
+        init(seed) {
+          this.seed = seed;
+        }
+
+        resize() {
+          resizeBuffer(this, 4.6, 104, 220);
+        }
+
+        control() {}
+
+        draw(t, dt, staticFrame = false) {
+          const time = staticFrame ? 3.15 : t * (.58 + this.panel.value * .75);
+          const ctx = this.panel.ctx;
+          resizeBuffer(this, 4.6, 104, 220);
+          const bw = this.buffer.width;
+          const bh = this.buffer.height;
+          const data = this.image.data;
+          const heat = .42 + this.panel.value * .58;
+          let offset = 0;
+          for (let y = 0; y < bh; y += 1) {
+            const py = (y / bh - .5) * 2;
+            for (let x = 0; x < bw; x += 1) {
+              const px = (x / bw - .5) * 2;
+              const d = Math.hypot(px + .25 * Math.sin(time * .2), py - .18 * Math.cos(time * .17));
+              const v =
+                Math.sin(px * 4.2 + time * .72) +
+                Math.sin(py * 5.1 - time * .64) +
+                Math.sin((px + py) * 3.8 + time * .38) +
+                Math.sin(d * 9.2 - time * 1.05);
+              const normalized = (v + 4) / 8;
+              const ridge = Math.pow(1 - smoothstep(.16, .48, Math.abs(Math.sin(v * 1.35))), 1.5);
+              let rgb = lerpColor(palette.paperDeep, palette.amber, normalized * heat * .64);
+              rgb = lerpColor(rgb, palette.inkSoft, ridge * .5);
+              setPixel(data, offset, rgb);
+              offset += 4;
+            }
+          }
+          this.bctx.putImageData(this.image, 0, 0);
+          ctx.imageSmoothingEnabled = true;
+          ctx.drawImage(this.buffer, 0, 0, this.panel.pixelWidth, this.panel.pixelHeight);
+        }
+      }
+
+      class VoronoiField {
+        constructor(panel) {
+          this.panel = panel;
+          this.sites = [];
+        }
+
+        init(seed) {
+          this.seed = seed;
+          this.rng = mulberry32(seed);
+          this.sites = [];
+          this.ensureSites();
+        }
+
+        resize() {
+          resizeBuffer(this, 6.2, 86, 150);
+        }
+
+        control() {
+          this.ensureSites();
+        }
+
+        ensureSites() {
+          const count = Math.round(18 + this.panel.value * 34);
+          const rng = this.rng || mulberry32(this.seed || 1);
+          while (this.sites.length < count) {
+            this.sites.push({
+              x: rng(),
+              y: rng(),
+              ax: .018 + rng() * .044,
+              ay: .018 + rng() * .044,
+              sx: .34 + rng() * .72,
+              sy: .3 + rng() * .68,
+              phase: rng() * Math.PI * 2,
+              tone: rng()
+            });
+          }
+          this.sites.length = count;
+        }
+
+        draw(t, dt, staticFrame = false) {
+          const time = staticFrame ? 5.4 : t;
+          const ctx = this.panel.ctx;
+          resizeBuffer(this, 6.2, 86, 150);
+          const bw = this.buffer.width;
+          const bh = this.buffer.height;
+          const aspect = bw / Math.max(1, bh);
+          const data = this.image.data;
+          const moved = this.sites.map((site) => ({
+            x: clamp(site.x + Math.sin(time * site.sx + site.phase) * site.ax, 0, 1),
+            y: clamp(site.y + Math.cos(time * site.sy + site.phase * .9) * site.ay, 0, 1),
+            tone: site.tone
+          }));
+          let offset = 0;
+          for (let y = 0; y < bh; y += 1) {
+            const py = y / bh;
+            for (let x = 0; x < bw; x += 1) {
+              const px = x / bw;
+              let d1 = 99;
+              let d2 = 99;
+              let tone = 0;
+              for (const site of moved) {
+                const dx = (px - site.x) * aspect;
+                const dy = py - site.y;
+                const d = dx * dx + dy * dy;
+                if (d < d1) {
+                  d2 = d1;
+                  d1 = d;
+                  tone = site.tone;
+                } else if (d < d2) {
+                  d2 = d;
+                }
+              }
+              const edge = 1 - smoothstep(.0009, .0065, d2 - d1);
+              const centerShade = smoothstep(.0005, .028, d1);
+              let rgb = lerpColor(palette.paperSoft, palette.paperDeep, centerShade * .72);
+              rgb = lerpColor(rgb, palette.sage, tone * .16);
+              rgb = lerpColor(rgb, palette.inkSoft, edge * .86);
+              setPixel(data, offset, rgb);
+              offset += 4;
+            }
+          }
+          this.bctx.putImageData(this.image, 0, 0);
+          ctx.imageSmoothingEnabled = true;
+          ctx.drawImage(this.buffer, 0, 0, this.panel.pixelWidth, this.panel.pixelHeight);
+        }
+      }
+
+      class SwarmField {
+        constructor(panel) {
+          this.panel = panel;
+          this.boids = [];
+        }
+
+        init(seed) {
+          this.seed = seed;
+          this.rng = mulberry32(seed);
+          this.boids = [];
+          this.ensureBoids();
+          this.started = false;
+        }
+
+        resize() {
+          this.rng = mulberry32((this.seed || 1) + this.panel.pixelWidth * 3 + this.panel.pixelHeight);
+          this.boids = [];
+          this.ensureBoids();
+          this.started = false;
+        }
+
+        control() {
+          this.ensureBoids();
+        }
+
+        ensureBoids() {
+          const count = Math.round(52 + this.panel.value * 74);
+          const rng = this.rng || mulberry32(this.seed || 1);
+          const w = Math.max(1, this.panel.pixelWidth);
+          const h = Math.max(1, this.panel.pixelHeight);
+          while (this.boids.length < count) {
+            const a = rng() * Math.PI * 2;
+            this.boids.push({
+              x: w * (.38 + (rng() - .5) * .34),
+              y: h * (.52 + (rng() - .5) * .34),
+              vx: Math.cos(a) * (18 + rng() * 22),
+              vy: Math.sin(a) * (18 + rng() * 22)
+            });
+          }
+          this.boids.length = count;
+        }
+
+        step(t, dt) {
+          const w = this.panel.pixelWidth;
+          const h = this.panel.pixelHeight;
+          const neighborRadius = 62 * this.panel.dpr;
+          const repelRadius = 22 * this.panel.dpr;
+          const maxSpeed = (42 + this.panel.value * 36) * this.panel.dpr;
+          const pull = .24 + this.panel.value * .72;
+          const targetX = w * (.5 + Math.sin(t * .31 + this.seed) * .18);
+          const targetY = h * (.5 + Math.cos(t * .27 + this.seed * .7) * .18);
+
+          for (let i = 0; i < this.boids.length; i += 1) {
+            const a = this.boids[i];
+            let cx = 0;
+            let cy = 0;
+            let ax = 0;
+            let ay = 0;
+            let sx = 0;
+            let sy = 0;
+            let total = 0;
+            for (let j = 0; j < this.boids.length; j += 1) {
+              if (i === j) continue;
+              const b = this.boids[j];
+              const dx = b.x - a.x;
+              const dy = b.y - a.y;
+              const dist = Math.hypot(dx, dy);
+              if (dist > 0 && dist < neighborRadius) {
+                cx += b.x;
+                cy += b.y;
+                ax += b.vx;
+                ay += b.vy;
+                total += 1;
+                if (dist < repelRadius) {
+                  sx -= dx / dist;
+                  sy -= dy / dist;
+                }
+              }
+            }
+            if (total > 0) {
+              cx = cx / total - a.x;
+              cy = cy / total - a.y;
+              ax = ax / total - a.vx;
+              ay = ay / total - a.vy;
+              a.vx += (cx * .028 * pull + ax * .018 + sx * 17) * dt;
+              a.vy += (cy * .028 * pull + ay * .018 + sy * 17) * dt;
+            }
+            a.vx += (targetX - a.x) * .018 * pull * dt;
+            a.vy += (targetY - a.y) * .018 * pull * dt;
+            const speed = Math.hypot(a.vx, a.vy) || 1;
+            if (speed > maxSpeed) {
+              a.vx = (a.vx / speed) * maxSpeed;
+              a.vy = (a.vy / speed) * maxSpeed;
+            }
+          }
+
+          for (const boid of this.boids) {
+            boid.x += boid.vx * dt;
+            boid.y += boid.vy * dt;
+            if (boid.x < -18) boid.x = w + 18;
+            if (boid.x > w + 18) boid.x = -18;
+            if (boid.y < -18) boid.y = h + 18;
+            if (boid.y > h + 18) boid.y = -18;
+          }
+        }
+
+        draw(t, dt, staticFrame = false) {
+          const ctx = this.panel.ctx;
+          const w = this.panel.pixelWidth;
+          const h = this.panel.pixelHeight;
+
+          if (staticFrame) {
+            for (let i = 0; i < 40; i += 1) {
+              this.step(2.8 + i * .016, .016);
+            }
+          } else {
+            this.step(t, dt);
+          }
+
+          ctx.fillStyle = colorString(palette.paperDeep, staticFrame ? 1 : .58);
+          ctx.fillRect(0, 0, w, h);
+
+          ctx.lineWidth = Math.max(.45, this.panel.dpr * .55);
+          for (let i = 0; i < this.boids.length; i += 1) {
+            const a = this.boids[i];
+            for (let j = i + 1; j < this.boids.length; j += 1) {
+              const b = this.boids[j];
+              const dist = Math.hypot(a.x - b.x, a.y - b.y);
+              const limit = 48 * this.panel.dpr;
+              if (dist < limit) {
+                ctx.strokeStyle = colorString(palette.inkSoft, (1 - dist / limit) * .24);
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
+            }
+          }
+
+          for (const boid of this.boids) {
+            ctx.fillStyle = colorString(palette.ink, .72);
+            ctx.beginPath();
+            ctx.arc(boid.x, boid.y, Math.max(1.1, this.panel.dpr * 1.45), 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = colorString(palette.amber, .38);
+            ctx.beginPath();
+            ctx.arc(boid.x + this.panel.dpr * 1.2, boid.y - this.panel.dpr, Math.max(.7, this.panel.dpr * .8), 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+
+      class MoireField {
+        constructor(panel) {
+          this.panel = panel;
+        }
+
+        init(seed) {
+          this.seed = seed;
+        }
+
+        resize() {
+          resizeBuffer(this, 4.7, 104, 220);
+        }
+
+        control() {}
+
+        draw(t, dt, staticFrame = false) {
+          const time = staticFrame ? 6.2 : t * (.45 + this.panel.value * .82);
+          const ctx = this.panel.ctx;
+          resizeBuffer(this, 4.7, 104, 220);
+          const bw = this.buffer.width;
+          const bh = this.buffer.height;
+          const data = this.image.data;
+          const c1x = .35 + Math.sin(time * .25 + this.seed) * .08;
+          const c1y = .48 + Math.cos(time * .22) * .1;
+          const c2x = .66 + Math.cos(time * .2 + this.seed * .4) * .08;
+          const c2y = .52 + Math.sin(time * .24) * .1;
+          const c3x = .5 + Math.sin(time * .16) * .06;
+          const c3y = .32 + Math.cos(time * .2 + 1.4) * .06;
+          let offset = 0;
+          for (let y = 0; y < bh; y += 1) {
+            const py = y / bh;
+            for (let x = 0; x < bw; x += 1) {
+              const px = x / bw;
+              const d1 = Math.hypot(px - c1x, py - c1y);
+              const d2 = Math.hypot(px - c2x, py - c2y);
+              const d3 = Math.hypot(px - c3x, py - c3y);
+              const v =
+                Math.sin(d1 * 88 - time * 1.5) +
+                Math.sin(d2 * 92 + time * 1.2) +
+                .72 * Math.sin((d1 - d2 + d3 * .4) * 115 + time * .7);
+              const line = 1 - smoothstep(.04, .44, Math.abs(v));
+              const wash = smoothstep(-1.8, 2.2, v) * .26;
+              let rgb = lerpColor(palette.paperSoft, palette.paperDeep, wash);
+              rgb = lerpColor(rgb, palette.sage, Math.max(0, v) * .035);
+              rgb = lerpColor(rgb, palette.inkSoft, Math.pow(line, 1.2) * .78);
+              setPixel(data, offset, rgb);
+              offset += 4;
+            }
+          }
+          this.bctx.putImageData(this.image, 0, 0);
+          ctx.imageSmoothingEnabled = true;
+          ctx.drawImage(this.buffer, 0, 0, this.panel.pixelWidth, this.panel.pixelHeight);
+        }
+      }
+
+      const renderers = {
+        flow: FlowField,
+        contour: ContourField,
+        plasma: PlasmaField,
+        voronoi: VoronoiField,
+        swarm: SwarmField,
+        moire: MoireField
+      };
+
+      class CanvasPanel {
+        constructor(element, index) {
+          this.element = element;
+          this.index = index;
+          this.canvas = element.querySelector("canvas");
+          this.ctx = this.canvas.getContext("2d", { alpha: false });
+          this.range = element.querySelector(".panel-range");
+          this.output = element.querySelector("output");
+          this.readout = element.querySelector("[data-readout]");
+          this.effect = element.dataset.effect;
+          this.value = Number(this.range.value);
+          this.visible = true;
+          this.dpr = 1;
+          this.pixelWidth = 1;
+          this.pixelHeight = 1;
+          const Renderer = renderers[this.effect];
+          this.renderer = new Renderer(this);
+          this.seed = baseSeed + index * 1009;
+          this.renderer.init(this.seed);
+          this.range.addEventListener("input", () => {
+            this.value = Number(this.range.value);
+            this.output.textContent = this.value.toFixed(2);
+            this.updateReadout();
+            this.renderer.control();
+            if (reducedMotion || manuallyPaused) {
+              this.drawStatic();
+            }
+          });
+          this.canvas.addEventListener("click", () => {
+            this.reseed(baseSeed + Math.floor(Math.random() * 1000000) + this.index * 1009);
+          });
+          this.updateReadout();
+        }
+
+        updateReadout() {
+          const labels = {
+            flow: "speed",
+            contour: "bands",
+            plasma: "heat",
+            voronoi: "cells",
+            swarm: "pull",
+            moire: "phase"
+          };
+          this.readout.textContent = `${labels[this.effect]} ${this.value.toFixed(2)}`;
+          this.output.textContent = this.value.toFixed(2);
+        }
+
+        resize() {
+          const rect = this.canvas.getBoundingClientRect();
+          const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+          const nextWidth = Math.max(2, Math.round(rect.width * dpr));
+          const nextHeight = Math.max(2, Math.round(rect.height * dpr));
+          if (nextWidth === this.pixelWidth && nextHeight === this.pixelHeight && dpr === this.dpr) return;
+          this.dpr = dpr;
+          this.pixelWidth = nextWidth;
+          this.pixelHeight = nextHeight;
+          this.canvas.width = nextWidth;
+          this.canvas.height = nextHeight;
+          this.renderer.resize();
+          this.drawStatic();
+        }
+
+        reseed(seed) {
+          this.seed = seed;
+          this.renderer.init(seed);
+          this.renderer.resize();
+          this.drawStatic();
+          if (!reducedMotion && !manuallyPaused) {
+            startLoop();
+          }
+        }
+
+        draw(t, dt) {
+          this.renderer.draw(t + this.index * .73, dt);
+        }
+
+        drawStatic() {
+          this.renderer.draw(2.5 + this.index * .9, 0, true);
+        }
+      }
+
+      function updateGlobalState() {
+        const state = reducedMotion ? "static" : manuallyPaused ? "paused" : "running";
+        toggleButton.dataset.state = state;
+        toggleButton.setAttribute("aria-pressed", state === "running" ? "true" : "false");
+        toggleLabel.textContent = reducedMotion ? "静态" : manuallyPaused ? "播放" : "暂停";
+        statusText.textContent = reducedMotion ? "STATIC FRAME" : manuallyPaused ? "PAUSED CANVAS" : "LIVE CANVAS";
+      }
+
+      function drawStaticAll() {
+        for (const panel of canvases) {
+          panel.drawStatic();
+        }
+      }
+
+      function stopLoop() {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+      }
+
+      function startLoop() {
+        if (rafId || reducedMotion || manuallyPaused) return;
+        lastFrame = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function tick(now) {
+        const dt = clamp((now - lastFrame) / 1000, 0, .033);
+        lastFrame = now;
+        clock += dt;
+        let visibleCount = 0;
+        for (const panel of canvases) {
+          if (!panel.visible) continue;
+          visibleCount += 1;
+          panel.draw(clock, dt);
+        }
+        if (visibleCount > 0 && !reducedMotion && !manuallyPaused) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          rafId = 0;
+        }
+      }
+
+      function reseedAll() {
+        baseSeed = Math.floor(Math.random() * 1000000000);
+        canvases.forEach((panel, index) => {
+          panel.reseed(baseSeed + index * 1009);
+        });
+      }
+
+      document.querySelectorAll(".panel").forEach((element, index) => {
+        canvases.push(new CanvasPanel(element, index));
+      });
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        const changed = new Set(entries.map((entry) => entry.target));
+        for (const panel of canvases) {
+          if (changed.has(panel.canvas)) {
+            panel.resize();
+          }
+        }
+        if (!reducedMotion && !manuallyPaused) {
+          startLoop();
+        }
+      });
+
+      for (const panel of canvases) {
+        resizeObserver.observe(panel.canvas);
+        panel.resize();
+      }
+
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            const panel = canvases.find((item) => item.element === entry.target);
+            if (!panel) continue;
+            panel.visible = entry.isIntersecting;
+            if (entry.isIntersecting && !reducedMotion && !manuallyPaused) {
+              startLoop();
+            }
+          }
+        }, { rootMargin: "80px" });
+        for (const panel of canvases) {
+          observer.observe(panel.element);
+        }
+      }
+
+      toggleButton.addEventListener("click", () => {
+        if (reducedMotion) {
+          drawStaticAll();
+          updateGlobalState();
+          return;
+        }
+        manuallyPaused = !manuallyPaused;
+        if (manuallyPaused) {
+          stopLoop();
+        } else {
+          startLoop();
+        }
+        updateGlobalState();
+      });
+
+      reseedButton.addEventListener("click", reseedAll);
+
+      reduceQuery.addEventListener("change", (event) => {
+        reducedMotion = event.matches;
+        if (reducedMotion) {
+          stopLoop();
+          drawStaticAll();
+        } else if (!manuallyPaused) {
+          startLoop();
+        }
+        updateGlobalState();
+      });
+
+      window.addEventListener("resize", () => {
+        for (const panel of canvases) {
+          panel.resize();
+        }
+      }, { passive: true });
+
+      updateGlobalState();
+      if (reducedMotion) {
+        drawStaticAll();
+      } else {
+        startLoop();
+      }
+    })();
+  </script>
+</body>
+</html>
