@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System Initialization Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050505;
+      --bg-lift: #0b0d12;
+      --panel: #101219;
+      --panel-2: #171a22;
+      --line: rgba(154, 168, 184, .2);
+      --line-strong: rgba(232, 232, 236, .32);
+      --primary: #e8e8ec;
+      --secondary: #9aa8b8;
+      --dim: #687384;
+      --purple: #8b5cf6;
+      --cyan: #06b6d4;
+      --ready: #49f3b5;
+      --warn: #ffd166;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 20px 12px 136px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: clip;
+      color: var(--primary);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 50% 2%, rgba(139, 92, 246, .2), transparent 28%),
+        radial-gradient(circle at 82% 76%, rgba(6, 182, 212, .14), transparent 26%),
+        radial-gradient(circle at 14% 84%, rgba(73, 243, 181, .08), transparent 24%),
+        linear-gradient(180deg, #08080a 0%, #050505 48%, #0b0b0d 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      opacity: .34;
+      background:
+        linear-gradient(rgba(154, 168, 184, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(154, 168, 184, .042) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(circle at 50% 44%, #000 0%, transparent 78%);
+    }
+
+    body::after {
+      opacity: .23;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(232, 232, 236, .05) 0 1px,
+        transparent 1px 4px
+      );
+      mix-blend-mode: screen;
+    }
+
+    .boot-phone {
+      position: relative;
+      z-index: 1;
+      width: min(430px, 100%);
+      height: min(812px, calc(100dvh - 156px));
+      min-height: 696px;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      gap: 13px;
+      padding: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 232, 236, .18);
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(232, 232, 236, .09), transparent 20%),
+        linear-gradient(180deg, rgba(26, 26, 26, .94), rgba(5, 5, 5, .98)),
+        var(--bg);
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, .62),
+        0 0 54px rgba(139, 92, 246, .16),
+        inset 0 1px 0 rgba(232, 232, 236, .16),
+        inset 0 -1px 0 rgba(6, 182, 212, .18);
+      isolation: isolate;
+    }
+
+    .boot-phone::before,
+    .boot-phone::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .boot-phone::before {
+      background:
+        linear-gradient(rgba(6, 182, 212, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, .052) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: .52;
+      mask-image: radial-gradient(circle at center, #000 0%, transparent 76%);
+    }
+
+    .boot-phone::after {
+      inset: 7px;
+      border: 1px solid rgba(154, 168, 184, .11);
+      border-radius: 18px;
+      box-shadow: inset 0 0 28px rgba(6, 182, 212, .06);
+    }
+
+    .hud-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      color: var(--secondary);
+      font: 700 10px/1.2 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .brand-block {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .brand {
+      color: var(--primary);
+      font-size: 12px;
+      letter-spacing: .22em;
+      white-space: nowrap;
+    }
+
+    .node {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+      color: var(--secondary);
+      white-space: nowrap;
+    }
+
+    .node::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 16px rgba(6, 182, 212, .72);
+    }
+
+    .hud-code {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border: 1px solid rgba(154, 168, 184, .18);
+      border-radius: 8px;
+      background: rgba(232, 232, 236, .035);
+      color: #c6d1df;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, .32);
+    }
+
+    .core-zone {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      min-width: 0;
+      padding: 9px 0 4px;
+    }
+
+    .progress-orb {
+      position: relative;
+      width: min(230px, 62vw);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+    }
+
+    .progress-orb::before {
+      content: "";
+      position: absolute;
+      inset: 11%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(139, 92, 246, .34), transparent 44%),
+        radial-gradient(circle at 50% 55%, rgba(6, 182, 212, .18), transparent 56%),
+        #050505;
+      box-shadow:
+        inset 0 0 28px rgba(232, 232, 236, .04),
+        0 0 46px rgba(6, 182, 212, .12);
+    }
+
+    .progress-orb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(154, 168, 184, .16);
+      background:
+        radial-gradient(circle, transparent 57%, rgba(154, 168, 184, .09) 58%, transparent 59%),
+        conic-gradient(from 180deg, rgba(139, 92, 246, .22), transparent 32%, rgba(6, 182, 212, .18), transparent 70%);
+    }
+
+    .ring-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      filter: drop-shadow(0 0 14px rgba(6, 182, 212, .34));
+    }
+
+    .ring-track {
+      fill: none;
+      stroke: rgba(154, 168, 184, .14);
+      stroke-width: 4;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke: url(#ringGradient);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 527.79;
+      stroke-dashoffset: 527.79;
+    }
+
+    .logo-mark {
+      position: relative;
+      z-index: 2;
+      width: 112px;
+      height: 112px;
+      overflow: visible;
+      filter:
+        drop-shadow(0 0 12px rgba(139, 92, 246, .5))
+        drop-shadow(0 0 18px rgba(6, 182, 212, .22));
+    }
+
+    .logo-mark .piece {
+      opacity: .18;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .logo-mark .core-dot {
+      opacity: .2;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .logo-mark path,
+    .logo-mark polygon,
+    .logo-mark line {
+      vector-effect: non-scaling-stroke;
+    }
+
+    .title-stack {
+      display: grid;
+      justify-items: center;
+      gap: 5px;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .title {
+      margin: 0;
+      max-width: 100%;
+      color: var(--primary);
+      font: 800 clamp(24px, 8vw, 34px)/.96 var(--sans);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      text-shadow: 0 0 18px rgba(139, 92, 246, .26);
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 31ch;
+      color: var(--secondary);
+      font: 600 11px/1.35 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .overall-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      color: var(--secondary);
+      font: 700 10px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .overall-track {
+      min-width: 0;
+      height: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(154, 168, 184, .18);
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, rgba(232, 232, 236, .07), rgba(232, 232, 236, .02)),
+        rgba(5, 5, 5, .72);
+      box-shadow: inset 0 1px 7px rgba(0, 0, 0, .8);
+    }
+
+    .overall-fill {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--ready));
+      box-shadow: 0 0 14px rgba(6, 182, 212, .48);
+    }
+
+    .data-panel {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--secondary);
+      font: 800 10px/1.2 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .panel-title span:last-child {
+      color: #cbd5e1;
+    }
+
+    .module-list {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .module-row {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 42px 58px;
+      gap: 8px;
+      align-items: center;
+      padding: 9px 10px;
+      border: 1px solid rgba(154, 168, 184, .15);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(139, 92, 246, .07), transparent 40%),
+        rgba(9, 11, 15, .74);
+      box-shadow: inset 0 1px 0 rgba(232, 232, 236, .04);
+    }
+
+    .module-main {
+      min-width: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .module-name {
+      min-width: 0;
+      overflow: hidden;
+      color: #dfe6ef;
+      font: 700 11px/1.1 var(--mono);
+      letter-spacing: .04em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .module-track {
+      height: 5px;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(154, 168, 184, .12);
+    }
+
+    .module-fill {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, rgba(139, 92, 246, .88), rgba(6, 182, 212, .96));
+      box-shadow: 0 0 10px rgba(6, 182, 212, .38);
+    }
+
+    .module-percent {
+      color: #d7e0ec;
+      font: 800 11px/1 var(--mono);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .module-status {
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      color: var(--secondary);
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .module-status svg {
+      width: 13px;
+      height: 13px;
+      flex: 0 0 auto;
+    }
+
+    .module-row.is-done {
+      border-color: rgba(73, 243, 181, .26);
+      background:
+        linear-gradient(90deg, rgba(6, 182, 212, .12), rgba(73, 243, 181, .035) 54%, transparent),
+        rgba(9, 11, 15, .78);
+    }
+
+    .module-row.is-done .module-status {
+      color: var(--ready);
+      text-shadow: 0 0 10px rgba(73, 243, 181, .3);
+    }
+
+    .boot-log {
+      min-height: 130px;
+      max-height: 178px;
+      min-width: 0;
+      overflow: hidden;
+      padding: 11px 12px;
+      border: 1px solid rgba(154, 168, 184, .16);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(6, 182, 212, .055), transparent 34%),
+        rgba(3, 4, 6, .88);
+      box-shadow:
+        inset 0 1px 0 rgba(232, 232, 236, .04),
+        inset 0 -18px 36px rgba(0, 0, 0, .28);
+    }
+
+    .log-lines {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+      margin: 0;
+      color: var(--secondary);
+      font: 600 10px/1.35 var(--mono);
+      letter-spacing: .02em;
+    }
+
+    .log-line {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 7px;
+      min-width: 0;
+      opacity: .95;
+    }
+
+    .log-time {
+      color: #7d8b9d;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .log-msg {
+      min-width: 0;
+      overflow: hidden;
+      color: #b8c4d3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .footer-readout {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 12px;
+      min-width: 0;
+      padding-top: 1px;
+      color: var(--secondary);
+      font: 700 10px/1.3 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .ready-line {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ready-line strong {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .checksum {
+      color: #c9d3df;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .is-ready .title {
+      color: #f4fff9;
+      text-shadow:
+        0 0 16px rgba(73, 243, 181, .22),
+        0 0 26px rgba(6, 182, 212, .18);
+    }
+
+    .is-ready .node::before {
+      background: var(--ready);
+      box-shadow: 0 0 16px rgba(73, 243, 181, .76);
+    }
+
+    .is-ready .hud-code {
+      border-color: rgba(73, 243, 181, .24);
+      color: #d8fff0;
+    }
+
+    @media (max-width: 410px) {
+      body {
+        padding-inline: 8px;
+      }
+
+      .boot-phone {
+        height: min(812px, calc(100dvh - 150px));
+        min-height: 686px;
+        padding: 13px;
+        border-radius: 20px;
+        gap: 10px;
+      }
+
+      .progress-orb {
+        width: min(210px, 60vw);
+      }
+
+      .logo-mark {
+        width: 102px;
+        height: 102px;
+      }
+
+      .module-row {
+        grid-template-columns: minmax(0, 1fr) 38px 52px;
+        padding: 8px;
+      }
+
+      .module-name {
+        font-size: 10px;
+      }
+
+      .boot-log {
+        min-height: 120px;
+        padding: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="boot-phone" id="bootPhone" aria-label="Orrery-9 runtime initialization">
+    <header class="hud-top">
+      <div class="brand-block">
+        <div class="brand">ORRERY-9</div>
+        <div class="node" id="nodeState">local kernel handshake</div>
+      </div>
+      <div class="hud-code" id="hudCode">INIT 000</div>
+    </header>
+
+    <section class="core-zone" aria-live="polite">
+      <div class="progress-orb" aria-hidden="true">
+        <svg class="ring-svg" viewBox="0 0 190 190">
+          <defs>
+            <linearGradient id="ringGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#8b5cf6"/>
+              <stop offset="48%" stop-color="#06b6d4"/>
+              <stop offset="100%" stop-color="#49f3b5"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="95" cy="95" r="84"/>
+          <circle class="ring-progress" id="ringProgress" cx="95" cy="95" r="84"/>
+        </svg>
+
+        <svg class="logo-mark" id="logoMark" viewBox="0 0 120 120" role="img" aria-label="Orrery-9 assembling logo mark">
+          <g class="piece" data-x="-18" data-y="9">
+            <path d="M23 64 L60 19 L97 64" fill="none" stroke="#e8e8ec" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g class="piece" data-x="18" data-y="10">
+            <path d="M31 72 L60 101 L89 72" fill="none" stroke="#06b6d4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g class="piece" data-x="0" data-y="-16">
+            <path d="M60 27 L60 93" fill="none" stroke="#8b5cf6" stroke-width="5" stroke-linecap="round"/>
+            <path d="M39 60 L81 60" fill="none" stroke="#8b5cf6" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <polygon class="core-dot" points="60,45 75,60 60,75 45,60" fill="rgba(73,243,181,.22)" stroke="#49f3b5" stroke-width="3"/>
+          <line class="core-dot" x1="60" y1="51" x2="60" y2="69" stroke="#e8e8ec" stroke-width="2" stroke-linecap="round"/>
+          <line class="core-dot" x1="51" y1="60" x2="69" y2="60" stroke="#e8e8ec" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="title-stack">
+        <h1 class="title" id="bootTitle">INITIALIZING…</h1>
+        <p class="subtitle" id="bootSubtitle">Runtime mesh forming, design tokens locked to local memory</p>
+      </div>
+
+      <div class="overall-row" aria-label="Overall boot progress">
+        <span>boot</span>
+        <div class="overall-track"><div class="overall-fill" id="overallFill"></div></div>
+        <span id="overallPercent">000%</span>
+      </div>
+    </section>
+
+    <section class="data-panel" aria-label="Module initialization rows">
+      <div class="panel-title">
+        <span>module init queue</span>
+        <span id="queueState">staggered</span>
+      </div>
+      <div class="module-list" id="moduleList"></div>
+    </section>
+
+    <section class="boot-log" aria-label="Streaming boot log">
+      <pre class="log-lines" id="logLines"></pre>
+    </section>
+
+    <footer class="footer-readout">
+      <div class="ready-line" id="readyLine"><strong>standby</strong> awaiting final signal</div>
+      <div class="checksum" id="checksum">CHK 00A4</div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《AxH Devs - System Initialization》 by jessahn80（社区 #52）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const modules = [
+        { name: "core.lattice.seed", start: 120, duration: 1560 },
+        { name: "glyph.cache.bind", start: 520, duration: 1920 },
+        { name: "token.stream.lock", start: 940, duration: 2380 },
+        { name: "motion.clock.phase", start: 1380, duration: 2700 },
+        { name: "palette.bus.sync", start: 1840, duration: 2960 },
+        { name: "interface.ready.gate", start: 2300, duration: 3150 }
+      ];
+
+      const logEntries = [
+        ["00:00.00", "boot seed accepted by local kernel"],
+        ["00:00.22", "reading cached type tables"],
+        ["00:00.49", "calibrating violet and cyan rails"],
+        ["00:00.78", "grid anchors resolved at phone width"],
+        ["00:01.14", "module queue opened"],
+        ["00:01.63", "motion clock bound to display frame"],
+        ["00:02.21", "token stream sealed"],
+        ["00:02.88", "interface gate reporting clean"],
+        ["00:03.54", "ready signal confirmed"]
+      ];
+
+      const totalDuration = 6250;
+      const circumference = 2 * Math.PI * 84;
+      const prefersReduced = window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const root = document.getElementById("bootPhone");
+      const moduleList = document.getElementById("moduleList");
+      const logLines = document.getElementById("logLines");
+      const title = document.getElementById("bootTitle");
+      const subtitle = document.getElementById("bootSubtitle");
+      const percentText = document.getElementById("overallPercent");
+      const overallFill = document.getElementById("overallFill");
+      const ring = document.getElementById("ringProgress");
+      const hudCode = document.getElementById("hudCode");
+      const nodeState = document.getElementById("nodeState");
+      const queueState = document.getElementById("queueState");
+      const readyLine = document.getElementById("readyLine");
+      const checksum = document.getElementById("checksum");
+      const logoPieces = Array.from(document.querySelectorAll(".logo-mark .piece"));
+      const logoDots = Array.from(document.querySelectorAll(".logo-mark .core-dot"));
+
+      let rows = [];
+      let activeLogs = 0;
+      let startedAt = 0;
+      let lastOverall = 0;
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+
+      function checkIcon() {
+        return '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.3 8.4 6.5 11.6 12.9 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>OK</span>';
+      }
+
+      function createRows() {
+        moduleList.innerHTML = modules.map((mod) => (
+          '<article class="module-row" data-module="' + mod.name + '">' +
+            '<div class="module-main">' +
+              '<div class="module-name">' + mod.name + '</div>' +
+              '<div class="module-track"><div class="module-fill"></div></div>' +
+            '</div>' +
+            '<div class="module-percent">000%</div>' +
+            '<div class="module-status">INIT</div>' +
+          '</article>'
+        )).join("");
+        rows = Array.from(moduleList.querySelectorAll(".module-row")).map((row) => ({
+          row,
+          fill: row.querySelector(".module-fill"),
+          percent: row.querySelector(".module-percent"),
+          status: row.querySelector(".module-status"),
+          done: false
+        }));
+      }
+
+      function appendLogs(count) {
+        const safeCount = clamp(count, 0, logEntries.length);
+        if (safeCount === activeLogs) return;
+        activeLogs = safeCount;
+        logLines.innerHTML = logEntries.slice(0, safeCount).map(([time, msg]) => (
+          '<span class="log-line"><span class="log-time">' + time + '</span><span class="log-msg">' + msg + '</span></span>'
+        )).join("");
+      }
+
+      function setLogo(progress) {
+        const eased = easeOutCubic(clamp(progress, 0, 1));
+        logoPieces.forEach((piece, index) => {
+          const x = Number(piece.dataset.x) || 0;
+          const y = Number(piece.dataset.y) || 0;
+          const rest = 1 - eased;
+          piece.style.opacity = String(.18 + eased * .82);
+          piece.style.transform = "translate(" + (x * rest).toFixed(2) + "px, " + (y * rest).toFixed(2) + "px) scale(" + (.88 + eased * .12).toFixed(3) + ") rotate(" + ((index - 1) * rest * 10).toFixed(2) + "deg)";
+        });
+        logoDots.forEach((dot) => {
+          dot.style.opacity = String(.2 + eased * .8);
+          dot.style.transform = "scale(" + (.55 + eased * .45).toFixed(3) + ")";
+        });
+      }
+
+      function setOverall(percent) {
+        const bounded = clamp(percent, 0, 100);
+        lastOverall = Math.max(lastOverall, bounded);
+        const display = Math.floor(lastOverall);
+        percentText.textContent = String(display).padStart(3, "0") + "%";
+        overallFill.style.transform = "scaleX(" + (lastOverall / 100).toFixed(4) + ")";
+        ring.style.strokeDashoffset = String(circumference * (1 - lastOverall / 100));
+        hudCode.textContent = (lastOverall >= 100 ? "READY " : "INIT ") + String(display).padStart(3, "0");
+      }
+
+      function updateModules(elapsed) {
+        modules.forEach((mod, index) => {
+          const row = rows[index];
+          const raw = clamp((elapsed - mod.start) / mod.duration, 0, 1);
+          const progress = easeOutCubic(raw) * 100;
+          const display = Math.floor(progress);
+
+          row.fill.style.transform = "scaleX(" + (progress / 100).toFixed(4) + ")";
+          row.percent.textContent = String(display).padStart(3, "0") + "%";
+
+          if (raw <= 0) {
+            row.status.textContent = "INIT";
+          } else if (progress < 99.5) {
+            row.status.textContent = "SYNC";
+          } else if (!row.done) {
+            row.done = true;
+            row.row.classList.add("is-done");
+            row.percent.textContent = "100%";
+            row.fill.style.transform = "scaleX(1)";
+            row.status.innerHTML = checkIcon();
+          }
+        });
+      }
+
+      function setReadyState() {
+        root.classList.add("is-ready");
+        title.textContent = "SYSTEM READY";
+        subtitle.textContent = "Orrery-9 is stable. 初始化完成";
+        nodeState.textContent = "runtime online";
+        queueState.textContent = "all clear";
+        readyLine.innerHTML = "<strong>ready</strong> local interface released";
+        checksum.textContent = "CHK F7C9";
+      }
+
+      function renderComplete() {
+        setOverall(100);
+        setLogo(1);
+        modules.forEach((_, index) => {
+          const row = rows[index];
+          row.done = true;
+          row.row.classList.add("is-done");
+          row.fill.style.transform = "scaleX(1)";
+          row.percent.textContent = "100%";
+          row.status.innerHTML = checkIcon();
+        });
+        appendLogs(logEntries.length);
+        setReadyState();
+      }
+
+      function renderFrame(time) {
+        if (!startedAt) startedAt = time;
+        const elapsed = time - startedAt;
+        const overallRaw = clamp(elapsed / totalDuration, 0, 1);
+        const overall = easeOutCubic(overallRaw) * 100;
+
+        setOverall(overall);
+        setLogo(clamp(elapsed / 2100, 0, 1));
+        updateModules(elapsed);
+        appendLogs(Math.floor((elapsed / totalDuration) * (logEntries.length + 1)));
+
+        if (overallRaw < 1) {
+          window.requestAnimationFrame(renderFrame);
+        } else {
+          renderComplete();
+        }
+      }
+
+      createRows();
+      ring.style.strokeDasharray = String(circumference);
+      ring.style.strokeDashoffset = String(circumference);
+
+      if (prefersReduced) {
+        renderComplete();
+      } else {
+        window.requestAnimationFrame(renderFrame);
+      }
+    })();
+  </script>
+</body>
+</html>
