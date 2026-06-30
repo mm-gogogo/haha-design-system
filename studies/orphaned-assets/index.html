@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Shelf-Nil Registry</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #fafafa;
+      --page: #f3f4f6;
+      --panel: #ffffff;
+      --panel-soft: #f9fafb;
+      --line: #e5e7eb;
+      --line-strong: #d1d5db;
+      --ink: #111827;
+      --muted: #6b7280;
+      --quiet: #4b5563;
+      --faint: #9ca3af;
+      --amber: #f59e0b;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #10b981;
+      --red: #ef4444;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 20px 10px 138px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.28) 42%, rgba(229,231,235,.72)),
+        linear-gradient(90deg, rgba(17,24,39,.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(17,24,39,.03) 1px, transparent 1px),
+        var(--page);
+      background-size: auto, 32px 32px, 32px 32px, auto;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    svg {
+      display: block;
+      flex: 0 0 auto;
+    }
+
+    .phone {
+      width: min(430px, 100%);
+      min-height: calc(100dvh - 40px);
+      background: var(--canvas);
+      border: 1px solid var(--line-strong);
+      border-radius: 16px;
+      box-shadow:
+        0 34px 80px -50px rgba(17, 24, 39, .38),
+        0 1px 0 rgba(255, 255, 255, .96) inset;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .status-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--quiet);
+      background: #f8f8f8;
+      font: 500 10px/1.2 var(--mono);
+    }
+
+    .status-line span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .94);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-main {
+      min-height: 52px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px 10px;
+    }
+
+    .wordmark {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+      font-family: var(--mono);
+    }
+
+    .wordmark strong {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .wordmark small {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .count-pill {
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 8px;
+      color: var(--quiet);
+      background: var(--panel-soft);
+      font: 600 10px/1 var(--mono);
+    }
+
+    .icon-button {
+      width: 31px;
+      height: 31px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--quiet);
+      box-shadow: 0 1px 2px rgba(17, 24, 39, .04);
+    }
+
+    .intro {
+      padding: 0 14px 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .intro b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 0 14px 12px;
+    }
+
+    .filter {
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 5px 9px;
+      color: var(--quiet);
+      font: 600 10px/1 var(--mono);
+      white-space: nowrap;
+    }
+
+    .filter[aria-pressed="true"] {
+      background: var(--blue-soft);
+      border-color: #bfdbfe;
+      color: #1e3a8a;
+    }
+
+    .filter i {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--tag-color, var(--faint));
+      box-shadow: 0 0 0 1px rgba(17, 24, 39, .06);
+    }
+
+    .feed {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      background:
+        linear-gradient(180deg, rgba(229,231,235,.7), rgba(250,250,250,0) 56px),
+        var(--canvas);
+    }
+
+    .feed-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 4px 1px;
+      color: var(--muted);
+      font: 600 10px/1.2 var(--mono);
+    }
+
+    .item-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .86) inset;
+      overflow: hidden;
+    }
+
+    .item-head {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-soft);
+    }
+
+    .asset-id {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ink);
+      font: 700 12px/1.2 var(--mono);
+    }
+
+    .tag {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      border-radius: 5px;
+      padding: 4px 7px;
+      color: var(--tag-ink);
+      background: var(--tag-bg);
+      font: 700 10px/1 var(--mono);
+      box-shadow: inset 0 -1px 0 rgba(17, 24, 39, .1);
+    }
+
+    .tag.unclaimed {
+      --tag-bg: var(--amber);
+      --tag-ink: #111827;
+    }
+
+    .tag.archived {
+      --tag-bg: var(--blue);
+      --tag-ink: #ffffff;
+    }
+
+    .tag.rehomed {
+      --tag-bg: var(--green);
+      --tag-ink: #111827;
+    }
+
+    .tag.expiring {
+      --tag-bg: var(--red);
+      --tag-ink: #111827;
+    }
+
+    .item-body {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 10px;
+      padding: 11px 10px 10px;
+    }
+
+    .glyph-box {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.86), rgba(243,244,246,.74)),
+        repeating-linear-gradient(0deg, transparent 0 5px, rgba(17,24,39,.035) 5px 6px);
+      box-shadow: inset 0 1px 3px rgba(17, 24, 39, .04);
+    }
+
+    .glyph-box svg {
+      width: 35px;
+      height: 35px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .item-copy {
+      min-width: 0;
+      display: grid;
+      align-content: start;
+      gap: 6px;
+    }
+
+    .item-name {
+      min-width: 0;
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .meta {
+      min-width: 0;
+      color: var(--muted);
+      font: 500 10px/1.45 var(--mono);
+      overflow-wrap: anywhere;
+    }
+
+    .note-row {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+      color: var(--quiet);
+      font: 500 10px/1.35 var(--mono);
+    }
+
+    .note-row span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ledger-code {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .footer-note {
+      padding: 16px 14px 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      background: #f7f7f7;
+      font: 500 10px/1.5 var(--mono);
+      text-align: center;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .item-card {
+        opacity: 0;
+        transform: translateY(12px);
+        animation: card-in .46s cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: calc(var(--i) * 58ms);
+        transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+      }
+
+      .item-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        box-shadow: 0 12px 26px -22px rgba(17, 24, 39, .55);
+      }
+
+      .item-card:active {
+        transform: translateY(1px);
+      }
+
+      .icon-button,
+      .filter {
+        transition: transform .16s ease, background-color .16s ease, border-color .16s ease;
+      }
+
+      .icon-button:hover,
+      .filter:hover {
+        transform: translateY(-1px);
+        border-color: var(--line-strong);
+      }
+
+      .tag.expiring {
+        animation: tag-pulse 1.9s ease-in-out infinite;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+    @keyframes card-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes tag-pulse {
+      0%,
+      100% {
+        box-shadow: inset 0 -1px 0 rgba(17, 24, 39, .1), 0 0 0 rgba(239, 68, 68, 0);
+      }
+      50% {
+        box-shadow: inset 0 -1px 0 rgba(17, 24, 39, .1), 0 0 0 5px rgba(239, 68, 68, .14);
+      }
+    }
+
+    @media (max-width: 390px) {
+      body {
+        padding-inline: 8px;
+      }
+
+      .phone {
+        border-radius: 12px;
+      }
+
+      .topbar-main {
+        gap: 7px;
+        padding-inline: 12px;
+      }
+
+      .count-pill {
+        padding-inline: 7px;
+      }
+
+      .feed {
+        padding-inline: 8px;
+      }
+
+      .item-body {
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 9px;
+      }
+
+      .glyph-box {
+        width: 54px;
+        height: 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Shelf-Nil orphaned object registry">
+    <div class="status-line" aria-label="Registry system status">
+      <span>REGISTRY.OPEN</span>
+      <span>柜台 03 / quiet mode</span>
+    </div>
+
+    <header class="topbar">
+      <div class="topbar-main">
+        <div class="wordmark">
+          <strong>SHELF-NIL / 无主架</strong>
+          <small>OBJECT CUSTODY DESK</small>
+        </div>
+        <div class="count-pill" aria-label="Registered item count">ITEMS · 47</div>
+        <button class="icon-button" type="button" aria-label="Sort and filter registry">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h10M18 7h2M4 17h2M10 17h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="16" cy="7" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="8" cy="17" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </button>
+      </div>
+      <p class="intro"><b>无主物登记处</b> records small objects whose owners have not returned with convincing pockets.</p>
+      <nav class="filters" aria-label="Status filters">
+        <button class="filter" type="button" aria-pressed="true" style="--tag-color:#f59e0b"><i aria-hidden="true"></i>Unclaimed</button>
+        <button class="filter" type="button" aria-pressed="false" style="--tag-color:#2563eb"><i aria-hidden="true"></i>Archived</button>
+        <button class="filter" type="button" aria-pressed="false" style="--tag-color:#10b981"><i aria-hidden="true"></i>Rehomed</button>
+        <button class="filter" type="button" aria-pressed="false" style="--tag-color:#ef4444"><i aria-hidden="true"></i>Expiring</button>
+      </nav>
+    </header>
+
+    <section class="feed" aria-label="Object feed">
+      <div class="feed-label">
+        <span>TODAY'S LEDGER</span>
+        <span>sorted by shelf worry</span>
+      </div>
+
+      <article class="item-card" style="--i:0">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0047</div>
+          <span class="tag expiring">Expiring</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M18 12c5-3 11-2 15 2 2 2 3 6 1 9l-7 11c-2 4-8 5-12 2-3-2-4-6-2-9l5-8"/>
+              <path d="M18 12c1 5 0 9-4 13"/>
+              <path d="M25 13c-1 4-3 8-7 12"/>
+              <path d="M32 17c-2 4-4 7-8 11"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Left Glove Awaiting Its More Decisive Twin</h2>
+            <div class="meta">FOUND 2026-06-18 / BIN C2 / linted, structurally loyal</div>
+            <div class="note-row">
+              <span>Last claim attempt described the wrong thumb.</span>
+              <b class="ledger-code">SHELF-09</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:1">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0042</div>
+          <span class="tag unclaimed">Unclaimed</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <circle cx="19" cy="17" r="7"/>
+              <path d="M24 22l12 12"/>
+              <path d="M31 29l-4 4"/>
+              <path d="M35 33l-3 3"/>
+              <path d="M16 15h.1"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Small Brass Key With Administrative Confidence</h2>
+            <div class="meta">FOUND 2026-06-12 / HOOK R1 / opens nothing we admit to</div>
+            <div class="note-row">
+              <span>Filed beside two apologies and a gym tag.</span>
+              <b class="ledger-code">HOOK-01</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:2">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0038</div>
+          <span class="tag archived">Archived</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M19 15l13 13c4 4 4 10 0 13s-9 3-13-1L8 29c-3-3-3-8 0-11s8-3 11 0l13 13c2 2 2 5 0 7s-5 2-7 0L13 26"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Paper Clip Bent Into a Very Minor Opinion</h2>
+            <div class="meta">FOUND 2026-05-29 / TRAY A4 / tensile dignity reduced</div>
+            <div class="note-row">
+              <span>Retained for office folklore and possible charts.</span>
+              <b class="ledger-code">TRAY-14</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:3">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0035</div>
+          <span class="tag rehomed">Rehomed</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="12"/>
+              <circle cx="19" cy="20" r="1.8"/>
+              <circle cx="29" cy="20" r="1.8"/>
+              <circle cx="19" cy="28" r="1.8"/>
+              <circle cx="29" cy="28" r="1.8"/>
+              <path d="M24 12v24M12 24h24"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Black Coat Button Promoted to Drawer Elder</h2>
+            <div class="meta">FOUND 2026-05-18 / CUP B7 / four holes, no agenda</div>
+            <div class="note-row">
+              <span>Transferred to spare-fastener custody.</span>
+              <b class="ledger-code">CUP-07</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:4">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0031</div>
+          <span class="tag unclaimed">Unclaimed</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M17 10c7 2 12 7 13 14l2 12c1 4-2 7-6 7H15c-5 0-8-5-6-9l4-10c2-5 3-9 4-14Z"/>
+              <path d="M15 31c4 2 9 2 15 0"/>
+              <path d="M18 38h9"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Single Sock With Strong Exit Strategy</h2>
+            <div class="meta">FOUND 2026-05-03 / BAG D9 / cotton, rain-adjacent</div>
+            <div class="note-row">
+              <span>No paired witness has come forward.</span>
+              <b class="ledger-code">BAG-09</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:5">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0029</div>
+          <span class="tag expiring">Expiring</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M24 7v27"/>
+              <path d="M10 23c3-7 9-11 14-11s11 4 14 11"/>
+              <path d="M10 23c3-3 6-3 9 0 3-3 7-3 10 0 3-3 6-3 9 0"/>
+              <path d="M24 34c0 5-7 5-7 0"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Folding Umbrella Missing Its Weather Story</h2>
+            <div class="meta">FOUND 2026-04-26 / LOCKER F5 / hinge patient, canopy tired</div>
+            <div class="note-row">
+              <span>Will be reassigned if the forecast stays vague.</span>
+              <b class="ledger-code">LOCK-05</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:6">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0024</div>
+          <span class="tag archived">Archived</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <rect x="12" y="10" width="24" height="28" rx="3"/>
+              <path d="M17 17h14M17 23h14M17 29h9"/>
+              <path d="M31 34l5 5"/>
+              <path d="M36 39l2-6"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Receipt For Tea Paid in Exact Suspicion</h2>
+            <div class="meta">FOUND 2026-04-08 / ENVELOPE K3 / thermal ink fading politely</div>
+            <div class="note-row">
+              <span>Scanned before becoming mostly weather.</span>
+              <b class="ledger-code">ENV-03</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:7">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0018</div>
+          <span class="tag rehomed">Rehomed</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M16 10h16l2 8-5 20H19l-5-20 2-8Z"/>
+              <path d="M16 18h16"/>
+              <path d="M20 24h8"/>
+              <path d="M21 31h6"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Reusable Cup Lid Seeking Circular Work</h2>
+            <div class="meta">FOUND 2026-03-22 / RACK M2 / clean, mildly smug</div>
+            <div class="note-row">
+              <span>Matched with a mug that asked no questions.</span>
+              <b class="ledger-code">RACK-02</b>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card" style="--i:8">
+        <div class="item-head">
+          <div class="asset-id">OBJ-0011</div>
+          <span class="tag unclaimed">Unclaimed</span>
+        </div>
+        <div class="item-body">
+          <div class="glyph-box" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <rect x="12" y="17" width="24" height="18" rx="3"/>
+              <path d="M18 17v-3c0-3 2-5 6-5s6 2 6 5v3"/>
+              <path d="M24 24v5"/>
+              <circle cx="24" cy="23" r="1.5"/>
+            </svg>
+          </div>
+          <div class="item-copy">
+            <h2 class="item-name">Tiny Luggage Lock With No Remaining Voyage</h2>
+            <div class="meta">FOUND 2026-02-14 / BOX P6 / combination unknown, mood sealed</div>
+            <div class="note-row">
+              <span>Three guesses were spent responsibly.</span>
+              <b class="ledger-code">BOX-06</b>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer-note">
+      End of visible shelf. Items may regain narrative value without notice.
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Forgotten Object Emporium》 by ryanjamestop200（社区 #45）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
