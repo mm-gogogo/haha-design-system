@@ -1,0 +1,1327 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TallyHaus Mortgage Calculator Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --bone: #e8e5d8;
+      --bone-2: #f3f0e4;
+      --bone-3: #d9d4c2;
+      --ink: #1c1c1c;
+      --muted: #5f5d54;
+      --soft: rgba(255, 255, 255, .42);
+      --soft-strong: rgba(255, 255, 255, .58);
+      --line: rgba(28, 28, 28, .18);
+      --line-strong: rgba(28, 28, 28, .34);
+      --lime: #e7f65e;
+      --orange: #f9a16c;
+      --shadow: rgba(89, 80, 58, .2);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bone);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 18px 112px;
+      position: relative;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 15% 12%, rgba(249, 161, 108, .32), transparent 30%),
+        radial-gradient(circle at 84% 14%, rgba(231, 246, 94, .48), transparent 27%),
+        linear-gradient(135deg, #eeeade 0%, var(--bone) 48%, #ddd8c8 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .2;
+      background:
+        linear-gradient(rgba(28, 28, 28, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(28, 28, 28, .06) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at 50% 34%, #000 0%, transparent 76%);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1188px, calc(100vw - 28px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      min-width: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 -9px 0 rgba(255, 255, 255, .1);
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: var(--lime);
+    }
+
+    .brand-mark::before {
+      width: 27px;
+      height: 9px;
+      left: 12px;
+      top: 13px;
+      border-radius: 999px;
+      box-shadow: 0 14px 0 var(--orange);
+      transform: skewX(-18deg);
+    }
+
+    .brand-mark::after {
+      width: 9px;
+      height: 36px;
+      right: 12px;
+      top: 8px;
+      border-radius: 999px;
+      background: var(--bone);
+      transform: rotate(20deg);
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--muted);
+      font: 800 12px/1.1 var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(38px, 5.5vw, 84px);
+      line-height: .9;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .notice {
+      max-width: 292px;
+      border: 1px solid rgba(28, 28, 28, .24);
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, .36);
+      color: var(--muted);
+      font: 750 12px/1.25 var(--mono);
+      text-align: right;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42);
+    }
+
+    .studio-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(390px, .82fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid rgba(255, 255, 255, .38);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .46), rgba(255, 255, 255, .22)),
+        rgba(255, 255, 255, .28);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border-radius: 30px;
+      box-shadow:
+        0 32px 70px -46px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .7);
+    }
+
+    .controls {
+      padding: clamp(20px, 3vw, 34px);
+    }
+
+    .controls-head {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .controls-head h2 {
+      max-width: 10ch;
+      font-size: clamp(36px, 4.7vw, 68px);
+      line-height: .92;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .controls-head p {
+      max-width: 40ch;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    .control-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .control-card {
+      min-width: 0;
+      border-radius: 24px;
+      padding: 18px;
+      background: rgba(255, 255, 255, .38);
+      border: 1px solid rgba(28, 28, 28, .11);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .48);
+    }
+
+    .control-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(136px, .42fr);
+      gap: 14px;
+      align-items: end;
+      margin-bottom: 15px;
+    }
+
+    .field-label {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .field-label span:first-child {
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.1;
+      font-weight: 850;
+    }
+
+    .field-label span:last-child {
+      color: var(--muted);
+      font: 700 12px/1.2 var(--mono);
+    }
+
+    .input-shell {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 7px;
+      min-height: 52px;
+      padding: 8px 12px;
+      border-radius: 18px;
+      background: var(--bone-2);
+      border: 1px solid rgba(28, 28, 28, .2);
+    }
+
+    .input-shell:focus-within {
+      outline: 3px solid rgba(231, 246, 94, .58);
+      border-color: var(--ink);
+    }
+
+    .unit {
+      color: var(--muted);
+      font: 800 12px/1 var(--mono);
+    }
+
+    .number-input {
+      min-width: 0;
+      width: 100%;
+      border: 0;
+      outline: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--ink);
+      font: 850 18px/1 var(--mono);
+      appearance: textfield;
+    }
+
+    .number-input::-webkit-outer-spin-button,
+    .number-input::-webkit-inner-spin-button {
+      margin: 0;
+      appearance: none;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 22px;
+      margin: 0;
+      appearance: none;
+      border-radius: 999px;
+      outline: 0;
+      background:
+        linear-gradient(90deg, var(--lime) 0 var(--pct, 50%), rgba(28, 28, 28, .13) var(--pct, 50%) 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(28, 28, 28, .14),
+        inset 0 4px 10px rgba(28, 28, 28, .08);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 22px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      width: 34px;
+      height: 34px;
+      margin-top: -6px;
+      appearance: none;
+      border: 4px solid var(--ink);
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 6px 0 rgba(28, 28, 28, .16);
+      transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 22px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 26px;
+      height: 26px;
+      border: 4px solid var(--ink);
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 6px 0 rgba(28, 28, 28, .16);
+      transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    input[type="range"]:active::-webkit-slider-thumb {
+      transform: scale(1.12) translateY(-1px);
+      box-shadow: 0 10px 0 rgba(28, 28, 28, .18);
+    }
+
+    input[type="range"]:active::-moz-range-thumb {
+      transform: scale(1.12) translateY(-1px);
+      box-shadow: 0 10px 0 rgba(28, 28, 28, .18);
+    }
+
+    .range-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 9px;
+      color: var(--muted);
+      font: 700 11px/1.2 var(--mono);
+    }
+
+    .switchboard {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .segment-block {
+      min-width: 0;
+      display: grid;
+      gap: 9px;
+    }
+
+    .segment-title {
+      color: var(--muted);
+      font: 800 12px/1.2 var(--mono);
+    }
+
+    .segment {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(28, 28, 28, .1);
+      border: 1px solid rgba(28, 28, 28, .12);
+    }
+
+    .segment button {
+      min-width: 0;
+      min-height: 40px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font: 850 13px/1.1 var(--sans);
+      cursor: pointer;
+      transition: transform .18s cubic-bezier(.2, .8, .2, 1), background-color .18s ease, color .18s ease;
+    }
+
+    .segment button[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--bone);
+    }
+
+    .segment button:focus-visible {
+      outline: 3px solid rgba(231, 246, 94, .72);
+      outline-offset: 2px;
+    }
+
+    .segment button:active {
+      transform: translateY(1px) scale(.98);
+    }
+
+    .result-panel {
+      min-width: 0;
+      display: grid;
+      gap: 18px;
+    }
+
+    .payment-card {
+      min-width: 0;
+      min-height: 286px;
+      padding: clamp(22px, 3vw, 34px);
+      border-radius: 30px;
+      background: var(--lime);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      align-content: space-between;
+      gap: 24px;
+      box-shadow:
+        0 28px 58px -42px rgba(28, 28, 28, .58),
+        inset 0 1px 0 rgba(255, 255, 255, .52);
+    }
+
+    .payment-card::after {
+      content: "";
+      position: absolute;
+      width: 218px;
+      height: 218px;
+      right: -44px;
+      bottom: -56px;
+      opacity: .26;
+      background-image: radial-gradient(currentColor 1.5px, transparent 1.5px);
+      background-size: 11px 11px;
+      pointer-events: none;
+    }
+
+    .result-head {
+      min-width: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .result-label {
+      font-size: 21px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .scenario-chip {
+      flex: 0 0 auto;
+      max-width: 46%;
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: rgba(28, 28, 28, .12);
+      color: var(--ink);
+      font: 850 11px/1.2 var(--mono);
+      text-align: center;
+    }
+
+    .money-block {
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .money {
+      display: block;
+      max-width: 100%;
+      font: 900 clamp(46px, 6.2vw, 78px)/.92 var(--mono);
+      letter-spacing: 0;
+      white-space: nowrap;
+      transform-origin: left center;
+    }
+
+    .money-sub {
+      margin-top: 10px;
+      color: rgba(28, 28, 28, .72);
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 760;
+    }
+
+    .stat-strip {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      min-width: 0;
+      min-height: 100px;
+      border-radius: 24px;
+      padding: 15px;
+      background: var(--soft);
+      border: 1px solid rgba(28, 28, 28, .1);
+      display: grid;
+      gap: 9px;
+      align-content: space-between;
+    }
+
+    .stat strong {
+      min-width: 0;
+      color: var(--ink);
+      font: 900 clamp(18px, 2vw, 24px)/1 var(--mono);
+      white-space: nowrap;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 750;
+    }
+
+    .chart-panel {
+      min-width: 0;
+      padding: clamp(20px, 2.6vw, 30px);
+      border-radius: 30px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .52), rgba(255, 255, 255, .24)),
+        rgba(255, 255, 255, .3);
+      border: 1px solid rgba(255, 255, 255, .42);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .62);
+    }
+
+    .chart-top {
+      min-width: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .chart-top h3 {
+      font-size: clamp(24px, 2.8vw, 38px);
+      line-height: .96;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .legend {
+      flex: 0 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      max-width: 242px;
+      color: var(--muted);
+      font: 800 11px/1 var(--mono);
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 22px;
+    }
+
+    .legend i {
+      width: 18px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--ink);
+    }
+
+    .legend .lime-dot {
+      background: var(--lime);
+      border: 1px solid rgba(28, 28, 28, .2);
+    }
+
+    .legend .orange-dot {
+      background: var(--orange);
+      border: 1px solid rgba(28, 28, 28, .16);
+    }
+
+    .split-meter {
+      min-width: 0;
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .meter-bar {
+      min-width: 0;
+      height: 26px;
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      border: 1px solid rgba(28, 28, 28, .2);
+      background: rgba(28, 28, 28, .12);
+    }
+
+    .meter-bar span {
+      display: block;
+      min-width: 0;
+      transition: width .48s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .meter-principal {
+      background: var(--lime);
+      width: var(--principal-share, 60%);
+    }
+
+    .meter-interest {
+      background: var(--orange);
+      width: calc(100% - var(--principal-share, 60%));
+    }
+
+    .meter-copy {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--muted);
+      font: 800 12px/1.25 var(--mono);
+    }
+
+    .chart-wrap {
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 22px;
+      background:
+        linear-gradient(rgba(28, 28, 28, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(28, 28, 28, .045) 1px, transparent 1px),
+        rgba(232, 229, 216, .68);
+      background-size: 100% 58px, 54px 100%, auto;
+      border: 1px solid rgba(28, 28, 28, .12);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .axis-label {
+      fill: var(--muted);
+      font: 800 12px/1 var(--mono);
+    }
+
+    .chart-bar {
+      transform-box: fill-box;
+      transform-origin: bottom;
+    }
+
+    .balance-line {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .balance-fill {
+      fill: rgba(28, 28, 28, .08);
+    }
+
+    .chart-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 12px;
+      color: var(--muted);
+      font: 750 12px/1.35 var(--mono);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .panel,
+      .payment-card,
+      .control-card,
+      .stat,
+      .chart-panel {
+        animation: rise-in .72s cubic-bezier(.16, 1, .3, 1) both;
+      }
+
+      .payment-card {
+        animation-delay: .06s;
+      }
+
+      .chart-panel {
+        animation-delay: .12s;
+      }
+
+      .money.is-tweening {
+        animation: number-pop .28s cubic-bezier(.2, .8, .2, 1);
+      }
+
+      .chart-bar {
+        transform: scaleY(1);
+        transition: transform .62s cubic-bezier(.16, 1, .3, 1);
+        transition-delay: calc(var(--i, 0) * 16ms);
+      }
+
+      .chart-drawing .chart-bar {
+        transform: scaleY(.02);
+      }
+
+      .balance-line {
+        stroke-dasharray: var(--dash, 1);
+        stroke-dashoffset: 0;
+        transition: stroke-dashoffset .72s cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .chart-drawing .balance-line {
+        stroke-dashoffset: var(--dash, 1);
+      }
+    }
+
+    @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes number-pop {
+      0% {
+        transform: scale(.985);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .studio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-panel {
+        grid-template-columns: minmax(0, .86fr) minmax(0, 1fr);
+      }
+
+      .payment-card,
+      .chart-panel {
+        min-height: 100%;
+      }
+
+      .stat-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 18px 12px 166px;
+      }
+
+      .shell {
+        width: min(100%, calc(100vw - 24px));
+      }
+
+      .topbar {
+        display: grid;
+      }
+
+      .notice {
+        max-width: none;
+        text-align: left;
+      }
+
+      .studio-grid,
+      .result-panel,
+      .switchboard {
+        grid-template-columns: 1fr;
+      }
+
+      .control-row {
+        grid-template-columns: 1fr;
+      }
+
+      .controls-head h2 {
+        max-width: 11ch;
+      }
+
+      .stat-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .chart-top,
+      .meter-copy,
+      .chart-note {
+        display: grid;
+        justify-content: stretch;
+      }
+
+      .legend {
+        justify-content: flex-start;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+      }
+
+      .controls,
+      .payment-card,
+      .chart-panel {
+        border-radius: 24px;
+      }
+
+      .control-card,
+      .stat,
+      .chart-wrap {
+        border-radius: 18px;
+      }
+
+      .input-shell {
+        min-height: 50px;
+      }
+
+      .segment {
+        border-radius: 18px;
+        grid-template-columns: 1fr;
+      }
+
+      .segment button {
+        border-radius: 14px;
+      }
+
+      .stat-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .money {
+        font-size: clamp(34px, 11.5vw, 46px);
+      }
+
+      .result-head {
+        display: grid;
+      }
+
+      .scenario-chip {
+        max-width: none;
+        width: max-content;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell" aria-labelledby="page-title">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">calculator / 贷款计算器</p>
+          <h1 id="page-title">TallyHaus</h1>
+        </div>
+      </div>
+      <p class="notice">示例数据 / illustrative, not financial advice</p>
+    </header>
+
+    <section class="studio-grid" aria-label="Mortgage calculator">
+      <form class="panel controls" id="loanForm">
+        <div class="controls-head">
+          <h2>月供排版室</h2>
+          <p>调本金、利率和年限，观察每月付款与还款结构如何重排。</p>
+        </div>
+
+        <div class="control-stack">
+          <div class="control-card">
+            <div class="control-row">
+              <label class="field-label" for="amountInput">
+                <span>贷款本金</span>
+                <span>Loan amount</span>
+              </label>
+              <div class="input-shell">
+                <span class="unit">$</span>
+                <input class="number-input" id="amountInput" name="amount" type="number" min="120000" max="1400000" step="5000" value="520000" inputmode="decimal">
+                <span class="unit">USD</span>
+              </div>
+            </div>
+            <input id="amountRange" type="range" min="120000" max="1400000" step="5000" value="520000" aria-label="Loan amount slider">
+            <div class="range-meta"><span>$120k</span><span>$1.4m</span></div>
+          </div>
+
+          <div class="control-card">
+            <div class="control-row">
+              <label class="field-label" for="rateInput">
+                <span>年利率</span>
+                <span>Annual interest rate</span>
+              </label>
+              <div class="input-shell">
+                <input class="number-input" id="rateInput" name="rate" type="number" min="2.5" max="10.5" step="0.05" value="6.35" inputmode="decimal">
+                <span class="unit">%</span>
+              </div>
+            </div>
+            <input id="rateRange" type="range" min="2.5" max="10.5" step="0.05" value="6.35" aria-label="Annual interest rate slider">
+            <div class="range-meta"><span>2.50%</span><span>10.50%</span></div>
+          </div>
+
+          <div class="control-card">
+            <div class="control-row">
+              <label class="field-label" for="termInput">
+                <span>还款年限</span>
+                <span>Loan term</span>
+              </label>
+              <div class="input-shell">
+                <input class="number-input" id="termInput" name="term" type="number" min="10" max="35" step="1" value="30" inputmode="numeric">
+                <span class="unit">years</span>
+              </div>
+            </div>
+            <input id="termRange" type="range" min="10" max="35" step="1" value="30" aria-label="Loan term slider">
+            <div class="range-meta"><span>10y</span><span>35y</span></div>
+          </div>
+        </div>
+
+        <div class="switchboard">
+          <div class="segment-block">
+            <p class="segment-title">利率类型 / Rate plan</p>
+            <div class="segment" data-segment="rateMode">
+              <button type="button" data-value="fixed" aria-pressed="true">固定</button>
+              <button type="button" data-value="variable" aria-pressed="false">浮动</button>
+            </div>
+          </div>
+          <div class="segment-block">
+            <p class="segment-title">保险估算 / Insurance</p>
+            <div class="segment" data-segment="insurance">
+              <button type="button" data-value="off" aria-pressed="true">不含</button>
+              <button type="button" data-value="on" aria-pressed="false">含</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <section class="result-panel" aria-label="Estimated result">
+        <article class="payment-card" aria-live="polite">
+          <div class="result-head">
+            <p class="result-label">月供 / Monthly</p>
+            <p class="scenario-chip" id="scenarioLabel">固定利率</p>
+          </div>
+          <div class="money-block">
+            <strong class="money" id="monthlyText">$0</strong>
+            <p class="money-sub">含本金、利息与所选保险估算。</p>
+          </div>
+        </article>
+
+        <div class="stat-strip" aria-label="Payment summary">
+          <div class="stat">
+            <span>本金 + 利息</span>
+            <strong id="basePaymentText">$0</strong>
+          </div>
+          <div class="stat">
+            <span>总利息</span>
+            <strong id="interestText">$0</strong>
+          </div>
+          <div class="stat">
+            <span>总支付</span>
+            <strong id="totalText">$0</strong>
+          </div>
+        </div>
+
+        <article class="chart-panel">
+          <div class="chart-top">
+            <h3>本金与利息的分层</h3>
+            <div class="legend" aria-label="Chart legend">
+              <span><i class="lime-dot"></i>Principal</span>
+              <span><i class="orange-dot"></i>Interest</span>
+              <span><i></i>Balance</span>
+            </div>
+          </div>
+
+          <div class="split-meter" aria-label="Principal and interest split">
+            <div class="meter-bar">
+              <span class="meter-principal"></span>
+              <span class="meter-interest"></span>
+            </div>
+            <div class="meter-copy">
+              <span id="principalShareText">Principal 0%</span>
+              <span id="interestShareText">Interest 0%</span>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <svg id="amortChart" viewBox="0 0 720 320" role="img" aria-labelledby="chartTitle chartDesc">
+              <title id="chartTitle">Amortization chart</title>
+              <desc id="chartDesc">Stacked annual principal and interest bars with a remaining balance line.</desc>
+              <g id="chartBars"></g>
+              <path id="balanceFill" class="balance-fill"></path>
+              <path id="balanceLine" class="balance-line"></path>
+              <text id="chartStartLabel" class="axis-label" x="34" y="296">Year 1</text>
+              <text id="chartEndLabel" class="axis-label" x="642" y="296" text-anchor="end">Year 30</text>
+            </svg>
+          </div>
+
+          <div class="chart-note">
+            <span id="effectiveRateText">Effective rate 6.35%</span>
+            <span id="termNoteText">360 monthly payments</span>
+          </div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Mortgage Calculator》 by dusankolenovic（社区 #54）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    const state = {
+      rateMode: "fixed",
+      insurance: "off",
+      lastMonthly: 0,
+      moneyRaf: 0
+    };
+
+    const pairs = [
+      { input: document.getElementById("amountInput"), range: document.getElementById("amountRange") },
+      { input: document.getElementById("rateInput"), range: document.getElementById("rateRange") },
+      { input: document.getElementById("termInput"), range: document.getElementById("termRange") }
+    ];
+
+    const monthlyText = document.getElementById("monthlyText");
+    const basePaymentText = document.getElementById("basePaymentText");
+    const interestText = document.getElementById("interestText");
+    const totalText = document.getElementById("totalText");
+    const scenarioLabel = document.getElementById("scenarioLabel");
+    const principalShareText = document.getElementById("principalShareText");
+    const interestShareText = document.getElementById("interestShareText");
+    const effectiveRateText = document.getElementById("effectiveRateText");
+    const termNoteText = document.getElementById("termNoteText");
+    const chartBars = document.getElementById("chartBars");
+    const balanceLine = document.getElementById("balanceLine");
+    const balanceFill = document.getElementById("balanceFill");
+    const chartStartLabel = document.getElementById("chartStartLabel");
+    const chartEndLabel = document.getElementById("chartEndLabel");
+    const chartPanel = document.getElementById("amortChart");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    const money = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0
+    });
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function getNumber(id) {
+      const node = document.getElementById(id);
+      const min = Number(node.min);
+      const max = Number(node.max);
+      const value = Number.parseFloat(node.value);
+      return clamp(Number.isFinite(value) ? value : min, min, max);
+    }
+
+    function syncRangeFill(range) {
+      const min = Number(range.min);
+      const max = Number(range.max);
+      const value = Number(range.value);
+      const pct = ((value - min) / (max - min)) * 100;
+      range.style.setProperty("--pct", `${pct}%`);
+    }
+
+    function bindInputs() {
+      pairs.forEach(({ input, range }) => {
+        const syncFromInput = () => {
+          const min = Number(input.min);
+          const max = Number(input.max);
+          const next = clamp(Number.parseFloat(input.value) || min, min, max);
+          range.value = String(next);
+          syncRangeFill(range);
+          update();
+        };
+
+        input.addEventListener("input", syncFromInput);
+        input.addEventListener("blur", () => {
+          const min = Number(input.min);
+          const max = Number(input.max);
+          input.value = String(clamp(Number.parseFloat(input.value) || min, min, max));
+          syncFromInput();
+        });
+
+        range.addEventListener("input", () => {
+          input.value = range.value;
+          syncRangeFill(range);
+          update();
+        });
+
+        syncRangeFill(range);
+      });
+    }
+
+    function bindSegments() {
+      document.querySelectorAll(".segment").forEach((segment) => {
+        segment.addEventListener("click", (event) => {
+          const button = event.target.closest("button");
+          if (!button) return;
+          const key = segment.dataset.segment;
+          state[key] = button.dataset.value;
+          segment.querySelectorAll("button").forEach((item) => {
+            item.setAttribute("aria-pressed", item === button ? "true" : "false");
+          });
+          update();
+        });
+      });
+    }
+
+    function monthlyPayment(principal, annualRate, months) {
+      const monthlyRate = annualRate / 100 / 12;
+      if (monthlyRate <= 0) return principal / months;
+      const factor = Math.pow(1 + monthlyRate, months);
+      return principal * monthlyRate * factor / (factor - 1);
+    }
+
+    function buildSchedule(principal, annualRate, years, baseMonthly) {
+      const monthlyRate = annualRate / 100 / 12;
+      let balance = principal;
+      const rows = [];
+
+      for (let year = 1; year <= years; year += 1) {
+        let principalPaid = 0;
+        let interestPaid = 0;
+
+        for (let month = 0; month < 12; month += 1) {
+          const interest = balance * monthlyRate;
+          const paidPrincipal = Math.min(baseMonthly - interest, balance);
+          interestPaid += Math.max(0, interest);
+          principalPaid += Math.max(0, paidPrincipal);
+          balance = Math.max(0, balance - paidPrincipal);
+        }
+
+        rows.push({
+          year,
+          principal: principalPaid,
+          interest: interestPaid,
+          balance
+        });
+      }
+
+      return rows;
+    }
+
+    function setText(node, text) {
+      node.textContent = text;
+    }
+
+    function animateMoney(nextValue) {
+      if (state.moneyRaf) {
+        cancelAnimationFrame(state.moneyRaf);
+        state.moneyRaf = 0;
+      }
+
+      if (reducedMotion.matches) {
+        setText(monthlyText, money.format(nextValue));
+        state.lastMonthly = nextValue;
+        return;
+      }
+
+      const from = state.lastMonthly || nextValue;
+      const start = performance.now();
+      const duration = 360;
+      monthlyText.classList.remove("is-tweening");
+      void monthlyText.offsetWidth;
+      monthlyText.classList.add("is-tweening");
+
+      function frame(now) {
+        const t = clamp((now - start) / duration, 0, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const current = from + (nextValue - from) * eased;
+        state.lastMonthly = current;
+        setText(monthlyText, money.format(current));
+        if (t < 1) {
+          state.moneyRaf = requestAnimationFrame(frame);
+        } else {
+          state.lastMonthly = nextValue;
+          state.moneyRaf = 0;
+        }
+      }
+
+      state.moneyRaf = requestAnimationFrame(frame);
+    }
+
+    function drawChart(schedule, principal) {
+      chartBars.replaceChildren();
+      const pad = { left: 34, top: 25, right: 34, bottom: 45 };
+      const width = 720;
+      const height = 320;
+      const plotW = width - pad.left - pad.right;
+      const plotH = height - pad.top - pad.bottom;
+      const maxAnnual = Math.max(...schedule.map((row) => row.principal + row.interest), 1);
+      const gap = schedule.length > 30 ? 3 : 5;
+      const barW = Math.max(5, (plotW - gap * (schedule.length - 1)) / schedule.length);
+      const baseY = pad.top + plotH;
+      const points = [];
+
+      schedule.forEach((row, index) => {
+        const x = pad.left + index * (barW + gap);
+        const principalH = (row.principal / maxAnnual) * plotH;
+        const interestH = (row.interest / maxAnnual) * plotH;
+        const interestY = baseY - interestH;
+        const principalY = interestY - principalH;
+
+        const interestRect = document.createElementNS(svgNS, "rect");
+        interestRect.setAttribute("class", "chart-bar");
+        interestRect.setAttribute("x", x.toFixed(2));
+        interestRect.setAttribute("y", interestY.toFixed(2));
+        interestRect.setAttribute("width", barW.toFixed(2));
+        interestRect.setAttribute("height", Math.max(1, interestH).toFixed(2));
+        interestRect.setAttribute("rx", "5");
+        interestRect.setAttribute("fill", "#f9a16c");
+        interestRect.style.setProperty("--i", index);
+
+        const principalRect = document.createElementNS(svgNS, "rect");
+        principalRect.setAttribute("class", "chart-bar");
+        principalRect.setAttribute("x", x.toFixed(2));
+        principalRect.setAttribute("y", principalY.toFixed(2));
+        principalRect.setAttribute("width", barW.toFixed(2));
+        principalRect.setAttribute("height", Math.max(1, principalH).toFixed(2));
+        principalRect.setAttribute("rx", "5");
+        principalRect.setAttribute("fill", "#e7f65e");
+        principalRect.setAttribute("stroke", "rgba(28, 28, 28, .28)");
+        principalRect.style.setProperty("--i", index);
+
+        chartBars.append(interestRect, principalRect);
+
+        const px = x + barW / 2;
+        const py = pad.top + (1 - row.balance / principal) * plotH;
+        points.push([px, py]);
+      });
+
+      const lineD = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point[0].toFixed(2)} ${point[1].toFixed(2)}`).join(" ");
+      const fillD = `${lineD} L ${points[points.length - 1][0].toFixed(2)} ${baseY} L ${points[0][0].toFixed(2)} ${baseY} Z`;
+      balanceLine.setAttribute("d", lineD);
+      balanceFill.setAttribute("d", fillD);
+      chartStartLabel.textContent = "Year 1";
+      chartEndLabel.textContent = `Year ${schedule.length}`;
+
+      if (!reducedMotion.matches) {
+        const length = balanceLine.getTotalLength();
+        balanceLine.style.setProperty("--dash", length);
+        chartPanel.classList.add("chart-drawing");
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            chartPanel.classList.remove("chart-drawing");
+          });
+        });
+      }
+    }
+
+    function update() {
+      const principal = getNumber("amountInput");
+      const inputRate = getNumber("rateInput");
+      const years = Math.round(getNumber("termInput"));
+      const rateOffset = state.rateMode === "variable" ? 0.35 : 0;
+      const effectiveRate = inputRate + rateOffset;
+      const months = years * 12;
+      const baseMonthly = monthlyPayment(principal, effectiveRate, months);
+      const insuranceMonthly = state.insurance === "on" ? principal * 0.0045 / 12 : 0;
+      const monthly = baseMonthly + insuranceMonthly;
+      const totalInterest = baseMonthly * months - principal;
+      const totalPaid = baseMonthly * months + insuranceMonthly * months;
+      const principalShare = principal / (principal + totalInterest) * 100;
+      const interestShare = 100 - principalShare;
+      const schedule = buildSchedule(principal, effectiveRate, years, baseMonthly);
+
+      animateMoney(monthly);
+      setText(basePaymentText, money.format(baseMonthly));
+      setText(interestText, money.format(totalInterest));
+      setText(totalText, money.format(totalPaid));
+      setText(scenarioLabel, `${state.rateMode === "fixed" ? "固定利率" : "浮动利率"}${state.insurance === "on" ? " + 保险" : ""}`);
+      setText(principalShareText, `Principal ${principalShare.toFixed(1)}%`);
+      setText(interestShareText, `Interest ${interestShare.toFixed(1)}%`);
+      setText(effectiveRateText, `Effective rate ${effectiveRate.toFixed(2)}%`);
+      setText(termNoteText, `${months} monthly payments`);
+      document.documentElement.style.setProperty("--principal-share", `${principalShare}%`);
+      drawChart(schedule, principal);
+    }
+
+    bindInputs();
+    bindSegments();
+    update();
+  </script>
+</body>
+</html>
