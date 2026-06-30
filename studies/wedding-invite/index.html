@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liora &amp; Soren Botanical Wedding Invitation</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f8fcf8;
+      --paper-soft: #eef3ed;
+      --paper-warm: #fbfdf9;
+      --ink: #070908;
+      --text: #1a241c;
+      --forest: #25452b;
+      --green: #4a784d;
+      --leaf: #7eb87b;
+      --muted: #5f6b62;
+      --sage: #8a968f;
+      --gold: #b5a865;
+      --gold-bright: #d9ce8a;
+      --line: rgba(181, 168, 101, .54);
+      --line-soft: rgba(37, 69, 43, .15);
+      --shadow: 0 28px 80px -48px rgba(37, 69, 43, .62);
+      --display: "Noto Serif", "Songti SC", "STSong", serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0 0 112px;
+      overflow-x: clip;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 42%, var(--paper-soft) 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .46;
+      background:
+        repeating-linear-gradient(90deg, rgba(37, 69, 43, .026) 0 1px, transparent 1px 13px),
+        repeating-linear-gradient(0deg, rgba(181, 168, 101, .035) 0 1px, transparent 1px 17px);
+      mix-blend-mode: multiply;
+    }
+
+    ::selection {
+      color: var(--paper);
+      background: var(--forest);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .svg-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .page::before,
+    .page::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .page::before {
+      top: 0;
+      height: 55vh;
+      background:
+        linear-gradient(90deg, rgba(217, 206, 138, .22), transparent 18% 82%, rgba(126, 184, 123, .18)),
+        linear-gradient(180deg, rgba(255, 255, 255, .64), transparent);
+    }
+
+    .page::after {
+      bottom: 0;
+      height: 42vh;
+      background: linear-gradient(180deg, transparent, rgba(238, 243, 237, .8));
+    }
+
+    .shell {
+      width: min(1160px, calc(100vw - 44px));
+      margin-inline: auto;
+    }
+
+    .hero {
+      position: relative;
+      min-height: min(832px, 100dvh);
+      display: grid;
+      place-items: center;
+      padding: 30px 0 42px;
+    }
+
+    .hero-frame {
+      position: relative;
+      width: min(1180px, calc(100vw - 40px));
+      min-height: min(760px, calc(100dvh - 60px));
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .58), rgba(248, 252, 248, .88)),
+        var(--paper);
+      box-shadow: var(--shadow), inset 0 0 0 10px rgba(238, 243, 237, .56);
+      overflow: hidden;
+    }
+
+    .hero-frame::before {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(181, 168, 101, .38);
+      pointer-events: none;
+    }
+
+    .hero-topline,
+    .hero-footline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      align-items: center;
+      padding: 24px 32px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      z-index: 4;
+    }
+
+    .hero-topline span:nth-child(2),
+    .hero-footline span:nth-child(2) {
+      text-align: center;
+    }
+
+    .hero-topline span:nth-child(3),
+    .hero-footline span:nth-child(3) {
+      text-align: right;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      align-self: center;
+      justify-self: center;
+      width: min(880px, calc(100vw - 92px));
+      padding: 36px 0 34px;
+      text-align: center;
+    }
+
+    .kicker {
+      margin: 0 0 20px;
+      color: var(--forest);
+      font-size: clamp(12px, 1.2vw, 14px);
+      font-weight: 600;
+      letter-spacing: .18em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .names {
+      position: relative;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: clamp(68px, 12vw, 174px);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: .88;
+    }
+
+    .names span {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .names .amp {
+      margin: 0 -.08em;
+      color: var(--gold);
+      font-style: normal;
+      font-size: .92em;
+      letter-spacing: -.08em;
+    }
+
+    .monogram {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      color: rgba(217, 206, 138, .18);
+      font-family: var(--display);
+      font-size: clamp(210px, 34vw, 430px);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hero-date {
+      margin: 24px auto 0;
+      display: grid;
+      gap: 8px;
+      color: var(--forest);
+    }
+
+    .hero-date strong {
+      font-family: var(--display);
+      font-size: clamp(28px, 4vw, 58px);
+      font-weight: 400;
+      letter-spacing: .02em;
+      line-height: 1.05;
+    }
+
+    .hero-date span {
+      color: var(--muted);
+      font-size: clamp(14px, 1.5vw, 18px);
+      line-height: 1.6;
+    }
+
+    .frond,
+    .sprig {
+      position: absolute;
+      pointer-events: none;
+      z-index: 2;
+      color: var(--green);
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .frond-left {
+      width: min(450px, 46vw);
+      left: max(-92px, -9vw);
+      top: 7%;
+      color: var(--forest);
+      opacity: .9;
+      transform: rotate(13deg);
+      --sway-from: rotate(13deg) translate3d(0, 0, 0);
+      --sway-to: rotate(16deg) translate3d(6px, -12px, 0);
+    }
+
+    .frond-right {
+      width: min(510px, 50vw);
+      right: max(-126px, -11vw);
+      top: 18%;
+      color: var(--leaf);
+      opacity: .88;
+      transform: rotate(-27deg) scaleX(-1);
+      z-index: 5;
+      --sway-from: rotate(-27deg) scaleX(-1) translate3d(0, 0, 0);
+      --sway-to: rotate(-31deg) scaleX(-1) translate3d(-7px, 12px, 0);
+    }
+
+    .frond-bottom {
+      width: min(560px, 58vw);
+      left: 5%;
+      bottom: max(-170px, -17vw);
+      color: var(--green);
+      opacity: .78;
+      transform: rotate(58deg);
+      z-index: 5;
+    }
+
+    .sprig-top {
+      width: min(230px, 28vw);
+      right: 15%;
+      top: 7%;
+      color: var(--forest);
+      opacity: .72;
+      transform: rotate(26deg);
+    }
+
+    .sprig-low {
+      width: min(180px, 25vw);
+      left: 17%;
+      bottom: 12%;
+      color: var(--gold);
+      opacity: .54;
+      transform: rotate(-16deg);
+    }
+
+    .section {
+      position: relative;
+      padding: clamp(70px, 11vw, 142px) 0;
+    }
+
+    .section-label {
+      margin: 0 0 16px;
+      color: var(--forest);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .details {
+      border-top: 1px solid var(--line);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+      gap: clamp(34px, 6vw, 88px);
+      align-items: start;
+    }
+
+    .section-title {
+      margin: 0;
+      max-width: 11ch;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: clamp(42px, 6vw, 86px);
+      font-weight: 400;
+      letter-spacing: -.035em;
+      line-height: .98;
+    }
+
+    .intro-copy {
+      margin: 28px 0 0;
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: clamp(16px, 1.5vw, 19px);
+      line-height: 1.75;
+    }
+
+    .detail-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-item {
+      display: grid;
+      grid-template-columns: minmax(112px, .32fr) minmax(0, 1fr);
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      line-height: 1.45;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      min-width: 0;
+    }
+
+    .detail-value h3 {
+      margin: 0 0 9px;
+      color: var(--forest);
+      font-family: var(--display);
+      font-size: clamp(24px, 2.4vw, 34px);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .detail-value p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .location-card {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid rgba(181, 168, 101, .48);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .46);
+    }
+
+    .map {
+      width: 100%;
+      min-height: 106px;
+      border-radius: 4px;
+      color: var(--forest);
+      background: var(--paper-soft);
+      border: 1px solid rgba(37, 69, 43, .12);
+    }
+
+    .location-card b {
+      display: block;
+      margin: 2px 0 8px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .schedule {
+      padding-top: 0;
+    }
+
+    .schedule-panel {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(220px, .38fr) minmax(0, .62fr);
+      gap: clamp(30px, 6vw, 84px);
+      padding: clamp(34px, 6vw, 74px);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(238, 243, 237, .64)),
+        var(--paper-soft);
+      overflow: hidden;
+    }
+
+    .schedule-panel::before {
+      content: "";
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      right: -180px;
+      bottom: -210px;
+      border: 1px solid rgba(181, 168, 101, .32);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .schedule-date {
+      margin: 30px 0 0;
+      color: var(--forest);
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 42px);
+      line-height: 1.08;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 90px;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .timeline li {
+      position: relative;
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 28px;
+      padding: 0 0 36px;
+    }
+
+    .timeline li:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 86px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 1px solid var(--gold);
+      box-shadow: 0 0 0 6px rgba(217, 206, 138, .2);
+    }
+
+    .timeline time {
+      color: var(--gold);
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 40px);
+      line-height: 1;
+    }
+
+    .timeline h3 {
+      margin: 0 0 8px;
+      color: var(--forest);
+      font-family: var(--display);
+      font-size: clamp(24px, 2.5vw, 34px);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .timeline p {
+      margin: 0;
+      max-width: 34rem;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .rsvp {
+      padding-top: clamp(42px, 8vw, 98px);
+      padding-bottom: clamp(88px, 13vw, 150px);
+    }
+
+    .rsvp::before,
+    .rsvp::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      background: rgba(181, 168, 101, .42);
+    }
+
+    .rsvp::before {
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 1px;
+    }
+
+    .rsvp::after {
+      width: 1px;
+      top: 42px;
+      bottom: 96px;
+      left: calc(50% - min(580px, calc(50vw - 22px)));
+      opacity: .72;
+    }
+
+    .rsvp-frond-one,
+    .rsvp-frond-two {
+      position: absolute;
+      pointer-events: none;
+      color: var(--forest);
+      opacity: .1;
+      z-index: -1;
+    }
+
+    .rsvp-frond-one {
+      width: min(520px, 64vw);
+      right: max(-180px, -28vw);
+      top: -30px;
+      transform: rotate(-34deg) scaleX(-1);
+      --sway-from: rotate(-34deg) scaleX(-1) translate3d(0, 0, 0);
+      --sway-to: rotate(-38deg) scaleX(-1) translate3d(-8px, 10px, 0);
+    }
+
+    .rsvp-frond-two {
+      width: min(500px, 70vw);
+      left: max(-170px, -30vw);
+      bottom: -80px;
+      transform: rotate(48deg);
+      --sway-from: rotate(48deg) translate3d(0, 0, 0);
+      --sway-to: rotate(52deg) translate3d(8px, -11px, 0);
+    }
+
+    .rsvp-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(320px, .72fr);
+      gap: clamp(34px, 7vw, 94px);
+      align-items: start;
+    }
+
+    .rsvp-copy h2 {
+      margin: 0;
+      max-width: 10ch;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: clamp(46px, 7vw, 96px);
+      font-weight: 400;
+      letter-spacing: -.04em;
+      line-height: .98;
+    }
+
+    .rsvp-copy p:not(.section-label) {
+      max-width: 36rem;
+      margin: 26px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.76;
+    }
+
+    .rsvp-form {
+      position: relative;
+      display: grid;
+      gap: 20px;
+      padding: clamp(22px, 3.4vw, 36px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(248, 252, 248, .86)),
+        var(--paper);
+      box-shadow: 0 24px 70px -52px rgba(37, 69, 43, .72);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .field label,
+    .field legend {
+      padding: 0;
+      color: var(--forest);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      border: 1px solid rgba(37, 69, 43, .26);
+      border-radius: 6px;
+      padding: 12px 14px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .74);
+      outline: none;
+    }
+
+    .field input::placeholder {
+      color: #66716a;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(126, 184, 123, .28);
+    }
+
+    fieldset.field {
+      margin: 0;
+      border: 0;
+    }
+
+    .reply-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .reply-options input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .reply-options span {
+      display: grid;
+      gap: 3px;
+      min-height: 64px;
+      align-content: center;
+      border: 1px solid rgba(37, 69, 43, .24);
+      border-radius: 999px;
+      padding: 12px 16px;
+      color: var(--forest);
+      background: rgba(255, 255, 255, .6);
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .reply-options small {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .reply-options input:checked + span {
+      color: var(--paper);
+      border-color: var(--forest);
+      background: var(--forest);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+    }
+
+    .reply-options input:checked + span small {
+      color: rgba(248, 252, 248, .78);
+    }
+
+    .reply-options input:focus-visible + span {
+      outline: 3px solid rgba(126, 184, 123, .4);
+      outline-offset: 3px;
+    }
+
+    .select-shell {
+      position: relative;
+      display: block;
+    }
+
+    .select-shell select {
+      appearance: none;
+      padding-right: 46px;
+    }
+
+    .select-shell svg {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      color: var(--forest);
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+    }
+
+    .submit-button {
+      min-height: 50px;
+      border: 1px solid var(--forest);
+      border-radius: 999px;
+      padding: 0 24px;
+      color: var(--paper);
+      background: var(--forest);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .submit-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .form-message {
+      margin: 2px 0 0;
+      padding: 14px 16px;
+      border: 1px solid rgba(74, 120, 77, .32);
+      border-radius: 6px;
+      color: var(--forest);
+      background: rgba(126, 184, 123, .14);
+      line-height: 1.6;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+    }
+
+    .form-message.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        animation: reveal-rise .85s cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: var(--delay, 0ms);
+      }
+
+      .frond-left,
+      .rsvp-frond-two {
+        animation: sway-frond 12s ease-in-out infinite alternate;
+      }
+
+      .frond-right,
+      .rsvp-frond-one {
+        animation: sway-frond 15s ease-in-out infinite alternate;
+      }
+
+      .sprig {
+        animation: sway-small 10s ease-in-out infinite alternate;
+      }
+
+      .submit-button,
+      .reply-options span,
+      .field input,
+      .field select,
+      .form-message {
+        transition:
+          transform .28s cubic-bezier(.16, 1, .3, 1),
+          opacity .28s ease,
+          border-color .28s ease,
+          background-color .28s ease,
+          color .28s ease,
+          box-shadow .28s ease;
+      }
+
+      .submit-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 30px -22px rgba(37, 69, 43, .88);
+      }
+
+      .submit-button:active {
+        transform: translateY(1px);
+      }
+
+    }
+
+    @keyframes reveal-rise {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes sway-frond {
+      from {
+        transform: var(--sway-from);
+      }
+      to {
+        transform: var(--sway-to);
+      }
+    }
+
+    @keyframes sway-small {
+      from {
+        transform: rotate(var(--sprig-rotate, 0deg)) translate3d(0, 0, 0);
+      }
+      to {
+        transform: rotate(calc(var(--sprig-rotate, 0deg) + 3deg)) translate3d(3px, -8px, 0);
+      }
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding-bottom: 148px;
+      }
+
+      .shell {
+        width: min(100%, calc(100vw - 28px));
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 14px 0 38px;
+      }
+
+      .hero-frame {
+        width: min(100%, calc(100vw - 20px));
+        min-height: 690px;
+        box-shadow: inset 0 0 0 7px rgba(238, 243, 237, .62);
+      }
+
+      .hero-frame::before {
+        inset: 14px;
+      }
+
+      .hero-topline,
+      .hero-footline {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 22px;
+        text-align: center;
+      }
+
+      .hero-topline span,
+      .hero-topline span:nth-child(3),
+      .hero-footline span,
+      .hero-footline span:nth-child(3) {
+        text-align: center;
+      }
+
+      .hero-content {
+        width: min(100%, calc(100vw - 64px));
+      }
+
+      .names {
+        font-size: clamp(58px, 19vw, 92px);
+        letter-spacing: -.05em;
+      }
+
+      .names span {
+        display: block;
+      }
+
+      .names .amp {
+        display: inline-block;
+        margin: -.04em 0 -.02em;
+        font-size: .82em;
+      }
+
+      .monogram {
+        font-size: clamp(190px, 60vw, 280px);
+      }
+
+      .frond-left {
+        width: 290px;
+        left: -118px;
+        top: 10%;
+      }
+
+      .frond-right {
+        width: 330px;
+        right: -152px;
+        top: 28%;
+      }
+
+      .frond-bottom {
+        width: 350px;
+        left: -52px;
+        bottom: -118px;
+      }
+
+      .sprig-top {
+        width: 160px;
+        right: 5%;
+      }
+
+      .sprig-low {
+        width: 130px;
+        left: 5%;
+      }
+
+      .details-grid,
+      .schedule-panel,
+      .rsvp-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title,
+      .rsvp-copy h2 {
+        max-width: 100%;
+      }
+
+      .detail-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 24px 0;
+      }
+
+      .location-card {
+        grid-template-columns: 1fr;
+      }
+
+      .map {
+        min-height: 132px;
+      }
+
+      .schedule-panel {
+        padding: 28px 18px;
+      }
+
+      .timeline::before {
+        left: 68px;
+      }
+
+      .timeline li {
+        grid-template-columns: 68px minmax(0, 1fr);
+        gap: 22px;
+      }
+
+      .timeline li::before {
+        left: 64px;
+      }
+
+      .rsvp::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .hero-frame {
+        width: min(100%, calc(100vw - 18px));
+        min-height: 646px;
+      }
+
+      .hero-content {
+        width: min(100%, calc(100vw - 52px));
+      }
+
+      .kicker,
+      .section-label,
+      .detail-label,
+      .field label,
+      .field legend,
+      .submit-button {
+        letter-spacing: .1em;
+      }
+
+      .reply-options {
+        grid-template-columns: 1fr;
+      }
+
+      .submit-row {
+        align-items: stretch;
+      }
+
+      .submit-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="palm-frond" viewBox="0 0 420 700">
+        <path d="M210 676C236 548 231 416 209 294C190 188 158 96 110 24" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+        <g fill="currentColor">
+          <path d="M211 620C171 582 131 548 82 523C134 519 178 543 217 589C217 599 215 610 211 620Z"/>
+          <path d="M219 578C170 538 127 503 65 483C126 474 179 501 224 546C225 557 223 568 219 578Z"/>
+          <path d="M222 530C168 493 118 462 48 450C116 432 174 458 226 499C227 510 226 520 222 530Z"/>
+          <path d="M221 478C166 445 111 421 42 419C107 391 172 412 226 448C226 459 224 469 221 478Z"/>
+          <path d="M216 426C160 399 105 380 36 389C96 351 163 365 222 397C221 407 219 417 216 426Z"/>
+          <path d="M207 372C151 351 98 339 35 354C87 310 154 316 214 344C213 354 210 363 207 372Z"/>
+          <path d="M195 318C140 302 93 298 38 318C80 270 145 268 204 292C203 300 199 310 195 318Z"/>
+          <path d="M183 268C133 256 88 258 44 282C77 232 137 223 194 244C191 252 187 261 183 268Z"/>
+          <path d="M169 220C126 212 87 217 51 242C77 197 130 181 182 198C178 207 173 214 169 220Z"/>
+          <path d="M154 176C120 170 87 177 58 199C78 159 124 139 166 154C163 161 158 170 154 176Z"/>
+          <path d="M139 136C112 132 88 138 65 154C82 122 119 103 151 115C148 122 143 131 139 136Z"/>
+          <path d="M222 617C258 570 296 529 346 496C299 500 255 533 217 588C217 599 219 609 222 617Z"/>
+          <path d="M228 570C274 522 318 480 378 451C317 451 266 485 223 539C222 549 224 560 228 570Z"/>
+          <path d="M230 520C282 475 334 437 402 418C333 408 276 440 226 489C225 500 226 511 230 520Z"/>
+          <path d="M228 466C282 427 338 397 407 388C340 366 278 391 224 437C224 447 226 457 228 466Z"/>
+          <path d="M220 411C274 379 331 356 399 357C335 324 272 341 216 382C216 393 218 402 220 411Z"/>
+          <path d="M210 356C264 329 318 313 381 321C324 282 261 291 204 328C205 338 207 347 210 356Z"/>
+          <path d="M197 303C248 281 298 273 354 287C309 244 249 245 190 276C191 285 194 295 197 303Z"/>
+          <path d="M184 252C230 235 274 231 321 249C285 207 229 200 174 227C177 236 180 244 184 252Z"/>
+          <path d="M169 205C207 193 247 194 283 213C253 174 202 164 156 184C160 193 165 199 169 205Z"/>
+          <path d="M153 163C184 156 218 160 247 177C224 144 180 130 140 143C144 151 149 158 153 163Z"/>
+          <path d="M137 125C163 122 188 127 210 141C193 113 155 98 124 107C127 115 133 121 137 125Z"/>
+        </g>
+        <g fill="none" stroke="rgba(248,252,248,.42)" stroke-linecap="round" stroke-width="1.4">
+          <path d="M100 518C150 538 184 565 213 602"/>
+          <path d="M72 448C137 456 183 483 223 518"/>
+          <path d="M53 388C118 380 169 397 216 426"/>
+          <path d="M49 319C103 304 149 308 195 324"/>
+          <path d="M341 497C295 513 256 549 222 603"/>
+          <path d="M392 418C327 426 276 460 230 509"/>
+          <path d="M391 356C326 354 271 377 220 411"/>
+          <path d="M350 287C298 284 249 294 198 313"/>
+        </g>
+      </symbol>
+
+      <symbol id="leaf-sprig" viewBox="0 0 220 360">
+        <path d="M110 342C102 254 105 172 132 28" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <g fill="currentColor">
+          <path d="M116 292C78 264 49 236 30 196C74 204 106 231 122 271Z"/>
+          <path d="M121 240C82 213 56 185 42 150C83 154 113 181 127 221Z"/>
+          <path d="M129 186C96 160 73 132 63 99C101 106 126 132 136 168Z"/>
+          <path d="M138 134C112 112 94 89 88 61C120 70 140 93 145 120Z"/>
+          <path d="M115 294C151 263 178 232 192 190C151 203 123 235 110 276Z"/>
+          <path d="M121 242C158 212 181 181 190 144C150 153 123 183 116 225Z"/>
+          <path d="M130 188C162 161 182 132 187 96C151 110 128 139 125 174Z"/>
+          <path d="M139 136C166 113 182 88 184 61C153 73 135 99 135 124Z"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <main class="page">
+    <section class="hero" aria-label="Wedding invitation hero">
+      <div class="hero-frame reveal">
+        <svg class="frond frond-left" viewBox="0 0 420 700" aria-hidden="true"><use href="#palm-frond"></use></svg>
+        <svg class="frond frond-right" viewBox="0 0 420 700" aria-hidden="true"><use href="#palm-frond"></use></svg>
+        <svg class="frond frond-bottom" viewBox="0 0 420 700" aria-hidden="true"><use href="#palm-frond"></use></svg>
+        <svg class="sprig sprig-top" style="--sprig-rotate:26deg" viewBox="0 0 220 360" aria-hidden="true"><use href="#leaf-sprig"></use></svg>
+        <svg class="sprig sprig-low" style="--sprig-rotate:-16deg" viewBox="0 0 220 360" aria-hidden="true"><use href="#leaf-sprig"></use></svg>
+
+        <div class="hero-topline" aria-hidden="true">
+          <span>Botanical Wedding</span>
+          <span>诚邀观礼</span>
+          <span>Save the Date</span>
+        </div>
+
+        <div class="hero-content">
+          <div class="monogram" aria-hidden="true">&amp;</div>
+          <p class="kicker reveal" style="--delay:90ms">Are getting married / 诚邀观礼</p>
+          <h1 class="names reveal" style="--delay:160ms">
+            <span>Liora</span>
+            <span class="amp">&amp;</span>
+            <span>Soren</span>
+          </h1>
+          <p class="hero-date reveal" style="--delay:230ms">
+            <strong>18 May 2028</strong>
+            <span>Aurel Palm Conservatory, Lantana Bay<br>棕榈温室与海湾花园</span>
+          </p>
+        </div>
+
+        <div class="hero-footline" aria-hidden="true">
+          <span>Saturday</span>
+          <span>Ceremony at four thirty</span>
+          <span>Reception follows</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section details" aria-labelledby="details-title">
+      <div class="shell details-grid">
+        <div class="reveal" style="--delay:70ms">
+          <p class="section-label">Details / 婚礼信息</p>
+          <h2 class="section-title" id="details-title">Garden vows beneath the glass.</h2>
+          <p class="intro-copy">Please join us for a quiet ceremony, a candlelit dinner, and an evening shaped by palms, linen, and soft coastal light.</p>
+        </div>
+
+        <div class="detail-list reveal" style="--delay:150ms">
+          <article class="detail-item">
+            <div class="detail-label">Ceremony / 观礼</div>
+            <div class="detail-value">
+              <h3>Four thirty in the afternoon</h3>
+              <p>The garden doors open at four. Vows begin in the west palm room, followed by champagne in the courtyard.</p>
+            </div>
+          </article>
+
+          <article class="detail-item">
+            <div class="detail-label">Venue / 地点</div>
+            <div class="detail-value">
+              <h3>Aurel Palm Conservatory</h3>
+              <p>North Terrace, Lantana Bay. The venue is fictional for this study page.</p>
+              <div class="location-card">
+                <svg class="map" viewBox="0 0 160 132" aria-hidden="true" focusable="false">
+                  <rect x="0" y="0" width="160" height="132" fill="currentColor" opacity=".05"/>
+                  <path d="M18 33C42 19 62 23 82 40C105 60 123 57 144 43" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".34"/>
+                  <path d="M20 82C42 62 64 68 83 84C104 102 126 100 144 81" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".28"/>
+                  <path d="M52 13L41 120M106 11L119 122" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".22"/>
+                  <path d="M82 28C65 28 52 41 52 58C52 80 82 108 82 108C82 108 112 80 112 58C112 41 99 28 82 28ZM82 48C88 48 93 53 93 59C93 65 88 70 82 70C76 70 71 65 71 59C71 53 76 48 82 48Z" fill="currentColor"/>
+                </svg>
+                <div>
+                  <b>Arrival gate: Palmhouse North</b>
+                  <p>Car service may stop at the terrace entrance. The garden path is level stone with short indoor transitions.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="detail-item">
+            <div class="detail-label">Dress / 着装</div>
+            <div class="detail-value">
+              <h3>Botanical formal</h3>
+              <p>Deep green, black, ivory, and soft metallic accents are welcome. Light layers are recommended for the glasshouse after sunset.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section schedule" aria-labelledby="schedule-title">
+      <div class="shell schedule-panel reveal">
+        <div>
+          <p class="section-label">Schedule / 当日流程</p>
+          <h2 class="section-title" id="schedule-title">A slow evening in three movements.</h2>
+          <p class="schedule-date">Saturday<br>18 May</p>
+        </div>
+
+        <ol class="timeline">
+          <li>
+            <time datetime="2028-05-18T16:30">16:30</time>
+            <div>
+              <h3>Ceremony / 观礼</h3>
+              <p>Guests gather under the glass canopy for vows among palms, fern shadows, and low strings.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2028-05-18T18:00">18:00</time>
+            <div>
+              <h3>Dinner / 晚宴</h3>
+              <p>Seasonal courses are served at long tables with candlelight, pressed linens, and garden herbs.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2028-05-18T20:30">20:30</time>
+            <div>
+              <h3>Dancing / 舞会</h3>
+              <p>The evening moves to the east terrace for music, dessert, and a final toast beneath the palms.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section rsvp" aria-labelledby="rsvp-title">
+      <svg class="rsvp-frond-one" viewBox="0 0 420 700" aria-hidden="true"><use href="#palm-frond"></use></svg>
+      <svg class="rsvp-frond-two" viewBox="0 0 420 700" aria-hidden="true"><use href="#palm-frond"></use></svg>
+
+      <div class="shell rsvp-grid">
+        <div class="rsvp-copy reveal" style="--delay:90ms">
+          <p class="section-label">RSVP / 回执</p>
+          <h2 id="rsvp-title">Kindly reply by April twentieth.</h2>
+          <p>We are keeping the celebration intimate. Please send one reply for your household, and include only the guests named on your invitation.</p>
+        </div>
+
+        <form class="rsvp-form reveal" id="rsvpForm" style="--delay:160ms">
+          <div class="field">
+            <label for="guestName">Name / 姓名</label>
+            <input id="guestName" name="guestName" type="text" autocomplete="name" placeholder="Your name" required>
+          </div>
+
+          <fieldset class="field">
+            <legend>Reply / 是否出席</legend>
+            <div class="reply-options">
+              <label>
+                <input type="radio" name="reply" value="attending" checked>
+                <span>Attending<small>出席</small></span>
+              </label>
+              <label>
+                <input type="radio" name="reply" value="regrets">
+                <span>Regrets<small>婉谢</small></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="guestCount">Guest count / 人数</label>
+            <span class="select-shell">
+              <select id="guestCount" name="guestCount">
+                <option value="1">1 guest</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+              </select>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 9L12 14L17 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+
+          <div class="submit-row">
+            <button class="submit-button" type="submit">Send reply / 提交回执</button>
+            <p class="submit-note">A confirmation will appear here for this study form.</p>
+          </div>
+
+          <p class="form-message" id="rsvpMessage" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《palm tree wedding》 by marianasoares56（社区 #70）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (function () {
+      var form = document.getElementById("rsvpForm");
+      var message = document.getElementById("rsvpMessage");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var formData = new FormData(form);
+        var name = String(formData.get("guestName") || "").trim();
+        var reply = String(formData.get("reply") || "attending");
+        var count = String(formData.get("guestCount") || "1");
+        var displayName = name || "Guest";
+
+        if (reply === "attending") {
+          message.textContent = displayName + ", your reply has been saved for " + count + " guest" + (count === "1" ? "" : "s") + ". We look forward to welcoming you.";
+        } else {
+          message.textContent = displayName + ", thank you for sending your regrets. Your note has been recorded.";
+        }
+
+        message.classList.remove("is-visible");
+        void message.offsetWidth;
+        message.classList.add("is-visible");
+      });
+    })();
+  </script>
+</body>
+</html>
