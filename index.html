@@ -56,17 +56,33 @@
   .hero h1{margin:0;font-size:clamp(28px,4.4vw,46px);line-height:1.12;letter-spacing:-.03em;font-weight:680;max-width:20ch;text-wrap:balance}
   .hero .nb{white-space:nowrap}
   .hero p{margin:16px 0 0;color:var(--mut);max-width:54ch;font-size:clamp(15px,1.6vw,17px)}
-  /* —— Hero 右侧：49 格调色板（每格一套风格）—— */
+  /* —— Hero 右侧：实时风格预览轮播 —— */
   .hero-art{display:none}
   @media(min-width:980px){ .hero-art{display:block} }
-  .hero-art .sw-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-  .hero-art .sw{aspect-ratio:1;border-radius:7px;background:var(--c);display:block;
-    border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);
-    transition:transform .16s var(--ease,ease),box-shadow .16s}
-  .hero-art .sw:hover{transform:scale(1.14);box-shadow:0 6px 16px -6px rgba(0,0,0,.7),0 0 0 2px var(--acc);z-index:1}
-  .hero-art .sw:focus-visible{outline:none;transform:scale(1.14);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--acc);z-index:1}
-  .hero-art .sw-cap{margin-top:13px;font:11px/1.5 var(--mono);color:var(--faint);letter-spacing:.01em}
-  @media(prefers-reduced-motion:reduce){ .hero-art .sw{transition:none} }
+  .hero-show{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;background:var(--panel);box-shadow:0 22px 48px -26px rgba(0,0,0,.85);transition:border-color .2s}
+  .hero-show:hover{border-color:var(--line-2)}
+  .hero-show:focus-visible{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(91,157,255,.3)}
+  .hero-show .frame{position:relative;aspect-ratio:16/10;background:#0e0e12;overflow:hidden}
+  .hero-show .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;
+    opacity:0;transition:opacity .55s var(--ease,ease)}
+  .hero-show .frame img.on{opacity:1}
+  .hero-show .badge2{position:absolute;left:10px;top:10px;font:600 10px/1 var(--mono);letter-spacing:.06em;
+    color:#fff;background:rgba(10,10,14,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.16);padding:5px 8px;border-radius:7px}
+  .hero-show .meta{display:flex;align-items:center;gap:9px;padding:12px 14px}
+  .hero-show .dot2{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.05)}
+  .hero-show .nm{flex:1;min-width:0;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hero-show .go{flex:none;font:600 12px/1 var(--sans);color:var(--mut);transition:color .18s}
+  .hero-show:hover .go{color:var(--ink)}
+  .hero-show .bar{display:flex;gap:3px;padding:0 14px 12px}
+  .hero-show .seg2{height:3px;flex:1;border-radius:2px;background:var(--line);overflow:hidden;position:relative}
+  .hero-show .seg2 i{position:absolute;inset:0;background:var(--acc);transform-origin:left;transform:scaleX(0)}
+  .hero-show .seg2.done i{transform:scaleX(1)}
+  .hero-show .seg2.cur i{animation:hsfill 2.6s linear forwards}
+  @keyframes hsfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .hero-cap{margin-top:12px;font:11px/1.5 var(--mono);color:var(--faint);letter-spacing:.01em}
+  @media(prefers-reduced-motion:reduce){ .hero-show .frame img{transition:none} .hero-show .seg2.cur i{animation:none} }
   .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
   .stat{display:flex;align-items:baseline;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:9px 14px}
   .stat b{font:700 19px/1 var(--mono);letter-spacing:-.02em}
@@ -343,11 +359,40 @@ render(projects,"projects","projects");
 // 计数与 hero 调色板永远跟随 styles[]，不再手动维护
 document.getElementById("cntStyles").textContent = styles.length;
 document.getElementById("statStyles").textContent = styles.length;
-document.getElementById("heroArt").innerHTML =
-  '<div class="sw-grid">' + styles.map(([f,slug,name,color])=>
-    `<a class="sw" href="styles/${slug}/preview.html" target="_blank" rel="noopener" style="--c:${color}" title="${esc(name)}" aria-label="${esc(name)}"></a>`
-  ).join("") +
-  `</div><div class="sw-cap">${styles.length} 套风格 · 每格一套，点开看 preview</div>`;
+// Hero 右侧：实时风格预览轮播（真实截图 + 名称 + 打开链接，悬停暂停）
+(function(){
+  const ha = document.getElementById("heroArt");
+  ha.innerHTML =
+    '<a class="hero-show" id="hsLink" target="_blank" rel="noopener" aria-label="打开当前风格预览">'
+    + '<div class="frame"><img id="hsA" alt="" decoding="async"><img id="hsB" alt="" decoding="async"><span class="badge2" id="hsBadge"></span></div>'
+    + '<div class="meta"><span class="dot2" id="hsDot"></span><span class="nm" id="hsName"></span><span class="go">打开 →</span></div>'
+    + '<div class="bar"><span class="seg2" id="hsProg"><i></i></span></div></a>'
+    + '<div class="hero-cap">' + styles.length + ' 套设计风格 · 实时预览轮播，悬停暂停</div>';
+  const link=document.getElementById("hsLink"), name=document.getElementById("hsName"),
+        dot=document.getElementById("hsDot"), badge=document.getElementById("hsBadge"),
+        prog=document.getElementById("hsProg"), imgs=[document.getElementById("hsA"),document.getElementById("hsB")];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let i=0, top=0, timer=null;
+  function restartProg(){ prog.classList.remove("cur"); void prog.offsetWidth; if(!reduce) prog.classList.add("cur"); }
+  function show(idx){
+    const [f,slug,nm,color]=styles[idx];
+    name.textContent=nm; dot.style.background=color; link.href="styles/"+slug+"/preview.html";
+    badge.textContent=(idx+1)+" / "+styles.length;
+    const nx=imgs[1-top], cu=imgs[top];
+    nx.onload=function(){ nx.classList.add("on"); cu.classList.remove("on"); top=1-top; };
+    nx.alt=nm; nx.src="screenshots/thumbs/"+f+".jpg";
+    restartProg();
+  }
+  // 首帧直接显示（不淡入）
+  (function(){ const [f,slug,nm,color]=styles[0]; imgs[0].alt=nm; imgs[0].src="screenshots/thumbs/"+f+".jpg"; imgs[0].classList.add("on");
+    name.textContent=nm; dot.style.background=color; link.href="styles/"+slug+"/preview.html"; badge.textContent="1 / "+styles.length;
+    if(!reduce) prog.classList.add("cur"); })();
+  function play(){ if(reduce||timer) return; timer=setInterval(function(){ i=(i+1)%styles.length; show(i); }, 2600); }
+  function stop(){ clearInterval(timer); timer=null; prog.classList.remove("cur"); }
+  play();
+  link.addEventListener("mouseenter", stop);
+  link.addEventListener("mouseleave", function(){ restartProg(); play(); });
+})();
 document.getElementById("cntStudies").textContent = studies.length;
 document.getElementById("statStudies").textContent = studies.length;
 document.getElementById("ftStudies").textContent = studies.length;
