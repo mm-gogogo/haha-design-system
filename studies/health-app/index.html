@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Effect Study · LumaLoop Health</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f3ed;
+      --paper-raised: #fffdf6;
+      --paper-soft: #ebe8dc;
+      --ink: #111111;
+      --muted: #5a5a52;
+      --quiet: #7a776c;
+      --line: #d8d4c6;
+      --line-strong: #111111;
+      --lime: #dafc87;
+      --lime-deep: #a8d84b;
+      --peach: #f1b987;
+      --blue: #9cb9d4;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --round-card: 8px;
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #ded8c9;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 28px 18px 104px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        linear-gradient(90deg, rgba(17, 17, 17, .04) 1px, transparent 1px),
+        linear-gradient(180deg, #ece8dc 0%, #d8d0bd 100%);
+      background-size: 38px 100%, auto;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    .phone {
+      width: min(402px, calc(100vw - 36px));
+      max-width: 420px;
+      min-height: 874px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(17, 17, 17, .2);
+      border-radius: 30px;
+      background: var(--paper);
+      box-shadow:
+        0 30px 72px -36px rgba(17, 17, 17, .46),
+        0 3px 0 rgba(17, 17, 17, .08),
+        inset 0 1px 0 rgba(255, 255, 255, .74);
+      isolation: isolate;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .58), transparent 18%),
+        linear-gradient(90deg, rgba(17, 17, 17, .035), transparent 18%, transparent 82%, rgba(17, 17, 17, .04));
+      z-index: -1;
+    }
+
+    .app {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 18px 0;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 2px 0 18px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--ink);
+      box-shadow: inset 0 -2px 0 rgba(17, 17, 17, .12);
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .hello {
+      min-width: 0;
+    }
+
+    .hello strong {
+      display: block;
+      font: 700 18px/1.05 var(--sans);
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .hello time {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font: 500 12px/1.2 var(--sans);
+    }
+
+    .score {
+      flex: 0 0 auto;
+      min-width: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 7px 6px 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--paper-raised);
+      color: var(--ink);
+    }
+
+    .score span {
+      display: grid;
+      gap: 1px;
+      font: 600 10px/1.1 var(--sans);
+      color: var(--muted);
+    }
+
+    .score b {
+      color: var(--ink);
+      font: 500 18px/1 var(--mono);
+      letter-spacing: 0;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--lime);
+      border: 1px solid var(--line-strong);
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--round-card);
+      background:
+        linear-gradient(180deg, rgba(218, 252, 135, .34), transparent 42%),
+        var(--paper-raised);
+      box-shadow: inset 0 -1px 0 rgba(17, 17, 17, .08);
+    }
+
+    .hero-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 16px 0;
+    }
+
+    .section-kicker {
+      margin: 0;
+      color: var(--muted);
+      font: 700 11px/1.2 var(--sans);
+    }
+
+    .hero h1 {
+      max-width: 220px;
+      margin: 5px 0 0;
+      font: 700 24px/1.05 "Quicksand", var(--sans);
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .sync-pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 9px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--ink);
+      font: 700 11px/1 var(--sans);
+      white-space: nowrap;
+    }
+
+    .sync-pill svg {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+    }
+
+    .ring-stage {
+      position: relative;
+      min-height: 268px;
+      display: grid;
+      place-items: center;
+      padding: 0 14px 10px;
+    }
+
+    .ring-visual {
+      width: min(282px, 78vw);
+      max-width: 100%;
+      aspect-ratio: 1;
+      display: block;
+      overflow: visible;
+    }
+
+    .track {
+      fill: none;
+      stroke: rgba(17, 17, 17, .1);
+      stroke-width: 10;
+    }
+
+    .progress {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+      transform: rotate(-90deg);
+      transform-origin: 120px 120px;
+      stroke-dasharray: var(--value) 100;
+      stroke-dashoffset: 0;
+      animation: ringDraw 1.15s var(--ease-out) both;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .progress.primary {
+      stroke: var(--lime);
+      stroke-width: 13;
+      filter: drop-shadow(0 3px 0 rgba(17, 17, 17, .18));
+    }
+
+    .progress.steps {
+      stroke: var(--ink);
+      stroke-width: 9;
+    }
+
+    .progress.heart {
+      stroke: var(--peach);
+      stroke-width: 8;
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 76px 72px 66px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .metric-number {
+      display: block;
+      color: var(--ink);
+      font: 500 47px/.9 var(--mono);
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-label {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font: 700 12px/1.15 var(--sans);
+    }
+
+    .metric-note {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 10px;
+      padding: 6px 9px;
+      border: 1px solid rgba(17, 17, 17, .14);
+      border-radius: 999px;
+      background: rgba(218, 252, 135, .48);
+      color: var(--ink);
+      font: 700 11px/1 var(--sans);
+    }
+
+    .metric-note svg {
+      width: 13px;
+      height: 13px;
+      flex: 0 0 auto;
+    }
+
+    .ring-legend {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      border-top: 1px solid var(--line-strong);
+      background: var(--line-strong);
+    }
+
+    .legend-item {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+      padding: 11px 12px 12px;
+      background: var(--paper-raised);
+    }
+
+    .legend-item span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      color: var(--muted);
+      font: 700 10px/1.1 var(--sans);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--dot);
+      flex: 0 0 auto;
+    }
+
+    .legend-item b {
+      color: var(--ink);
+      font: 500 16px/1 var(--mono);
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .vitals {
+      padding: 17px 0 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font: 800 17px/1.1 var(--sans);
+      letter-spacing: 0;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font: 600 11px/1.2 var(--sans);
+      text-align: right;
+    }
+
+    .vital-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .vital-card {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 9px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--round-card);
+      background: var(--paper-raised);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72);
+    }
+
+    .vital-card.accent {
+      border-color: var(--line-strong);
+      background: var(--lime);
+    }
+
+    .vital-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .vital-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      color: var(--ink);
+    }
+
+    .trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: var(--muted);
+      font: 700 9px/1 var(--sans);
+      white-space: nowrap;
+    }
+
+    .accent .trend {
+      color: #2f351d;
+    }
+
+    .trend svg {
+      width: 11px;
+      height: 11px;
+      flex: 0 0 auto;
+    }
+
+    .vital-label {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .vital-label span {
+      color: var(--muted);
+      font: 700 11px/1.1 var(--sans);
+    }
+
+    .accent .vital-label span {
+      color: #30351d;
+    }
+
+    .vital-value {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      min-width: 0;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .vital-value b {
+      font: 500 22px/1 var(--mono);
+      letter-spacing: 0;
+    }
+
+    .vital-value small {
+      color: var(--muted);
+      font: 700 10px/1 var(--sans);
+    }
+
+    .accent .vital-value small {
+      color: #30351d;
+    }
+
+    .mini-chart {
+      align-self: end;
+      width: 100%;
+      height: 30px;
+      color: var(--ink);
+    }
+
+    .mini-chart path,
+    .mini-chart polyline {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mini-chart .soft {
+      stroke: rgba(17, 17, 17, .18);
+      stroke-width: 1.4;
+    }
+
+    .activity {
+      margin-top: 16px;
+      padding: 14px 14px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--round-card);
+      background: var(--paper-raised);
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .chart-head h2 {
+      margin: 0;
+      font: 800 17px/1.1 var(--sans);
+    }
+
+    .chart-head p {
+      max-width: 126px;
+      margin: 0;
+      color: var(--muted);
+      font: 600 11px/1.35 var(--sans);
+      text-align: right;
+    }
+
+    .bars {
+      height: 134px;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      align-items: end;
+      gap: 8px;
+      padding-top: 8px;
+    }
+
+    .bar-day {
+      min-width: 0;
+      height: 100%;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 8px;
+      align-items: end;
+      justify-items: center;
+    }
+
+    .bar-track {
+      width: 100%;
+      max-width: 30px;
+      height: 100%;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      border: 1px solid rgba(17, 17, 17, .1);
+      border-radius: 999px;
+      background: #ebe8dd;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 100%;
+      height: var(--h);
+      border-radius: 999px 999px 0 0;
+      background: var(--ink);
+      transform-origin: 50% 100%;
+      animation: barRise .8s var(--ease-out) both;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .bar-day.today .bar-track {
+      border-color: var(--line-strong);
+      background: #f1f6dc;
+    }
+
+    .bar-day.today .bar-fill {
+      background: var(--lime);
+      box-shadow: inset 0 -2px 0 rgba(17, 17, 17, .14);
+    }
+
+    .bar-day span {
+      color: var(--muted);
+      font: 700 10px/1 var(--sans);
+    }
+
+    .bar-day.today span {
+      color: var(--ink);
+    }
+
+    .coach {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid rgba(17, 17, 17, .14);
+      border-radius: var(--round-card);
+      background: #ece9dd;
+    }
+
+    .coach svg {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      color: var(--ink);
+    }
+
+    .coach p {
+      margin: 0;
+      color: var(--muted);
+      font: 600 12px/1.35 var(--sans);
+    }
+
+    .coach b {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .bottom-nav {
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid var(--line-strong);
+      background: rgba(244, 243, 237, .94);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      padding: 8px 10px max(10px, env(safe-area-inset-bottom));
+    }
+
+    .nav-item {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      min-width: 0;
+      display: grid;
+      place-items: center;
+      gap: 5px;
+      padding: 7px 4px;
+      border-radius: 999px;
+      cursor: default;
+      text-decoration: none;
+      font: 800 10px/1 var(--sans);
+    }
+
+    .nav-item svg {
+      width: 21px;
+      height: 21px;
+      stroke-width: 2.15;
+    }
+
+    .nav-item.active {
+      background: var(--lime);
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--line-strong);
+    }
+
+    @keyframes ringDraw {
+      from {
+        stroke-dasharray: 0 100;
+      }
+    }
+
+    @keyframes barRise {
+      from {
+        transform: scaleY(0);
+      }
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .bar-fill {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 460px) {
+      body {
+        padding: 0 0 96px;
+        place-items: start center;
+        background: var(--paper);
+      }
+
+      .phone {
+        width: 100%;
+        min-height: 100vh;
+        border-width: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .app {
+        padding-inline: 14px;
+      }
+    }
+
+    @media (max-width: 374px) {
+      .app {
+        padding-inline: 12px;
+      }
+
+      .hero-head {
+        padding-inline: 12px;
+      }
+
+      .hero h1 {
+        font-size: 22px;
+      }
+
+      .sync-pill {
+        padding-inline: 7px;
+      }
+
+      .ring-stage {
+        min-height: 246px;
+      }
+
+      .ring-center {
+        inset: 70px 60px 60px;
+      }
+
+      .metric-number {
+        font-size: 40px;
+      }
+
+      .vital-grid {
+        gap: 6px;
+      }
+
+      .vital-card {
+        padding: 8px;
+      }
+
+      .vital-value b {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="LumaLoop mobile health tracking design study">
+    <section class="app">
+      <header class="topbar">
+        <div class="brand-mark">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/>
+              <path d="M7.4 12.2h2.5l1.4-3.8 2.3 7.2 1.8-3.4h1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="hello">
+            <strong>LumaLoop</strong>
+            <time id="todayDate" datetime="2026-06-30">今天 6月30日 周二</time>
+          </div>
+        </div>
+
+        <div class="score" aria-label="Readiness score 86">
+          <span>恢复度<b>86</b></span>
+          <svg class="avatar" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect width="40" height="40" fill="#dafc87"/>
+            <circle cx="20" cy="15" r="6" fill="#111111"/>
+            <path d="M8 35c1.8-8 6.2-12 12-12s10.2 4 12 12" fill="#111111"/>
+            <path d="M12 11c3.7-4.7 11.7-4.8 16 0" stroke="#f4f3ed" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </header>
+
+      <article class="hero" aria-label="今日活动圆环">
+        <div class="hero-head">
+          <div>
+            <p class="section-kicker">今日体能 · Daily Flow</p>
+            <h1>稳步达标，午后保持轻量活动</h1>
+          </div>
+          <div class="sync-pill">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 8a7 7 0 0 1 11.8-3.1L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 3v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 16A7 7 0 0 1 6.2 19.1L4 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 21v-4h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            已同步
+          </div>
+        </div>
+
+        <div class="ring-stage">
+          <svg class="ring-visual" viewBox="0 0 240 240" role="img" aria-label="活动圆环显示燃动 78%, 步数 64%, 心率区间 42%">
+            <circle class="track" cx="120" cy="120" r="96" pathLength="100"/>
+            <circle class="progress primary" style="--value: 78; --delay: 80ms;" cx="120" cy="120" r="96" pathLength="100"/>
+            <circle class="track" cx="120" cy="120" r="74" pathLength="100"/>
+            <circle class="progress steps" style="--value: 64; --delay: 180ms;" cx="120" cy="120" r="74" pathLength="100"/>
+            <circle class="track" cx="120" cy="120" r="52" pathLength="100"/>
+            <circle class="progress heart" style="--value: 42; --delay: 280ms;" cx="120" cy="120" r="52" pathLength="100"/>
+          </svg>
+
+          <div class="ring-center" aria-live="polite">
+            <div>
+              <span class="metric-number" data-count="9486">9,486</span>
+              <span class="metric-label">步数 today steps</span>
+              <span class="metric-note">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 11.2 6.3 7.9l2 2L13 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 5.2h3v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                目标 78%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ring-legend" aria-label="活动圆环图例">
+          <div class="legend-item">
+            <span><i class="legend-dot" style="--dot:#dafc87"></i>Move</span>
+            <b>520 kcal</b>
+          </div>
+          <div class="legend-item">
+            <span><i class="legend-dot" style="--dot:#111111"></i>Steps</span>
+            <b>9.4k</b>
+          </div>
+          <div class="legend-item">
+            <span><i class="legend-dot" style="--dot:#f1b987"></i>Heart</span>
+            <b>68 bpm</b>
+          </div>
+        </div>
+      </article>
+
+      <section class="vitals" aria-label="今日关键健康指标">
+        <div class="section-title">
+          <h2>Vitals 生命体征</h2>
+          <span>设计样例 · 非真实数据</span>
+        </div>
+
+        <div class="vital-grid">
+          <article class="vital-card accent">
+            <div class="vital-top">
+              <svg class="vital-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 20.4 5.2 13.7a4.5 4.5 0 0 1 0-6.4 4.2 4.2 0 0 1 6.1 0l.7.7.7-.7a4.2 4.2 0 0 1 6.1 0 4.5 4.5 0 0 1 0 6.4L12 20.4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+              <span class="trend">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 10h3l2-5 2 8 1.5-3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                平稳
+              </span>
+            </div>
+            <div class="vital-label">
+              <span>心率</span>
+              <div class="vital-value"><b>68</b><small>bpm</small></div>
+            </div>
+            <svg class="mini-chart" viewBox="0 0 92 30" preserveAspectRatio="none" aria-hidden="true">
+              <path class="soft" d="M2 22H90"/>
+              <path d="M3 20h12l5-9 7 15 6-18 8 12h10l5-7 6 10h27"/>
+            </svg>
+          </article>
+
+          <article class="vital-card">
+            <div class="vital-top">
+              <svg class="vital-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M18.8 14.7A7.8 7.8 0 0 1 9.3 5.2 8.4 8.4 0 1 0 18.8 14.7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M15.8 5.5h3.2M17.4 3.9v3.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <span class="trend">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 8.5h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                充足
+              </span>
+            </div>
+            <div class="vital-label">
+              <span>睡眠</span>
+              <div class="vital-value"><b>7.7</b><small>hrs</small></div>
+            </div>
+            <svg class="mini-chart" viewBox="0 0 92 30" preserveAspectRatio="none" aria-hidden="true">
+              <path class="soft" d="M2 23H90"/>
+              <polyline points="3,22 12,18 21,20 30,12 39,10 48,14 57,9 66,11 75,8 89,12"/>
+            </svg>
+          </article>
+
+          <article class="vital-card">
+            <div class="vital-top">
+              <svg class="vital-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12.4 21c4.1 0 7-2.8 7-6.8 0-2.2-1.1-4.1-3.3-5.9-1.8-1.5-2.8-3-3.2-5.3-1.4 2-3.2 3.9-4.8 5.4-2 1.8-3.5 3.6-3.5 5.9 0 4 3.3 6.7 7.8 6.7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M10.1 17.4c-.7-1.7-.2-3.3 1.7-5 1.8 1.5 2.6 3.1 2.2 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="trend">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 11.5 6.3 8.2l2 2 4.2-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                已达标
+              </span>
+            </div>
+            <div class="vital-label">
+              <span>消耗</span>
+              <div class="vital-value"><b>520</b><small>kcal</small></div>
+            </div>
+            <svg class="mini-chart" viewBox="0 0 92 30" preserveAspectRatio="none" aria-hidden="true">
+              <path class="soft" d="M2 22H90"/>
+              <polyline points="3,24 14,21 25,22 36,17 47,15 58,13 69,9 80,10 89,6"/>
+            </svg>
+          </article>
+        </div>
+      </section>
+
+      <section class="activity" aria-label="每周活动柱状图">
+        <div class="chart-head">
+          <h2>Weekly Activity</h2>
+          <p>今天以低强度步行为主，晚间留出 18 分钟舒展。</p>
+        </div>
+
+        <div class="bars">
+          <div class="bar-day" style="--delay: 50ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 42%;"></div></div>
+            <span>Mon</span>
+          </div>
+          <div class="bar-day today" style="--delay: 100ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 68%;"></div></div>
+            <span>Tue</span>
+          </div>
+          <div class="bar-day" style="--delay: 150ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 52%;"></div></div>
+            <span>Wed</span>
+          </div>
+          <div class="bar-day" style="--delay: 200ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 76%;"></div></div>
+            <span>Thu</span>
+          </div>
+          <div class="bar-day" style="--delay: 250ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 88%;"></div></div>
+            <span>Fri</span>
+          </div>
+          <div class="bar-day" style="--delay: 300ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 63%;"></div></div>
+            <span>Sat</span>
+          </div>
+          <div class="bar-day" style="--delay: 350ms;">
+            <div class="bar-track"><div class="bar-fill" style="--h: 72%;"></div></div>
+            <span>Sun</span>
+          </div>
+        </div>
+
+        <div class="coach">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 17h4l2-7 3 12 2-5h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p><b>Coach note</b> · 保持当前节奏，睡前减少高强度训练。</p>
+        </div>
+      </section>
+    </section>
+
+    <nav class="bottom-nav" aria-label="健康应用底部导航">
+      <a class="nav-item active" href="#" aria-label="首页">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 10.8 12 4l8 6.8V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1v-9.2Z" stroke="currentColor" stroke-linejoin="round"/>
+        </svg>
+        首页
+      </a>
+      <a class="nav-item" href="#" aria-label="活动">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="7" stroke="currentColor"/>
+          <path d="M12 5a7 7 0 0 1 6.6 4.7" stroke="currentColor" stroke-linecap="round"/>
+          <path d="M12 9v4l3 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        活动
+      </a>
+      <a class="nav-item" href="#" aria-label="心率">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 20.4 5.2 13.7a4.5 4.5 0 0 1 0-6.4 4.2 4.2 0 0 1 6.1 0l.7.7.7-.7a4.2 4.2 0 0 1 6.1 0 4.5 4.5 0 0 1 0 6.4L12 20.4Z" stroke="currentColor" stroke-linejoin="round"/>
+        </svg>
+        心率
+      </a>
+      <a class="nav-item" href="#" aria-label="我的">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="8" r="4" stroke="currentColor"/>
+          <path d="M4.8 20c1.3-4 3.7-6 7.2-6s5.9 2 7.2 6" stroke="currentColor" stroke-linecap="round"/>
+        </svg>
+        我的
+      </a>
+    </nav>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《health tracking app》 by accounts58382（社区 #100）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const dateNode = document.getElementById("todayDate");
+      const now = new Date();
+      const weekday = new Intl.DateTimeFormat("zh-CN", { weekday: "short" }).format(now);
+      dateNode.textContent = `今天 ${now.getMonth() + 1}月${now.getDate()}日 ${weekday}`;
+      dateNode.setAttribute("datetime", now.toISOString().slice(0, 10));
+
+      const metric = document.querySelector("[data-count]");
+      const target = Number(metric.dataset.count || 0);
+      const format = new Intl.NumberFormat("en-US");
+
+      if (reduceMotion) {
+        metric.textContent = format.format(target);
+        return;
+      }
+
+      const duration = 1180;
+      const start = performance.now();
+      const ease = (t) => 1 - Math.pow(1 - t, 4);
+
+      function tick(nowTime) {
+        const progress = Math.min(1, (nowTime - start) / duration);
+        metric.textContent = format.format(Math.round(target * ease(progress)));
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        }
+      }
+
+      metric.textContent = "0";
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+</html>
