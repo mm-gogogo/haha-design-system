@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>夜序周历 · Weekly Planner Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --app-bg: #121213;
+      --backdrop: #080809;
+      --panel: #232325;
+      --panel-2: #262628;
+      --panel-soft: rgba(255, 255, 255, .045);
+      --line: #262628;
+      --line-strong: #343438;
+      --text: #f2f2f2;
+      --text-2: #b0b0b4;
+      --text-3: #8e8e92;
+      --text-dim: #6f6f75;
+      --red: #e84855;
+      --terracotta: #d98868;
+      --magenta: #7a1966;
+      --green: #2eae50;
+      --indigo: #230854;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      --hour-height: 66px;
+      --time-width: 54px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--backdrop);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px 10px 116px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        linear-gradient(180deg, #18181a 0%, #0b0b0d 42%, #050506 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .phone {
+      width: min(430px, calc(100vw - 20px));
+      max-width: 100%;
+      height: min(812px, calc(100vh - 48px));
+      min-height: 720px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .045), transparent 18%),
+        var(--app-bg);
+      border: 1px solid rgba(255, 255, 255, .08);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, .58),
+        inset 0 1px 0 rgba(255, 255, 255, .08);
+      isolation: isolate;
+    }
+
+    .phone::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      box-shadow: inset 0 -60px 80px rgba(0, 0, 0, .28);
+      z-index: 5;
+    }
+
+    .app-header {
+      position: relative;
+      z-index: 6;
+      padding: max(16px, env(safe-area-inset-top)) 14px 10px;
+      background: linear-gradient(180deg, var(--app-bg) 0%, rgba(18, 18, 19, .95) 76%, rgba(18, 18, 19, 0) 100%);
+    }
+
+    .brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 14px;
+      padding: 0 3px 8px;
+    }
+
+    .brand-lockup {
+      min-width: 0;
+    }
+
+    .brand-name {
+      display: block;
+      font-size: 16px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--text);
+    }
+
+    .brand-sub {
+      display: block;
+      margin-top: 3px;
+      font: 500 10px/1.2 var(--mono);
+      color: var(--text-3);
+    }
+
+    .week-code {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: var(--text-2);
+      background: rgba(255, 255, 255, .055);
+      border: 1px solid rgba(255, 255, 255, .06);
+      font: 500 11px/1 var(--mono);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(46, 174, 80, .72);
+    }
+
+    .top-panel {
+      border-radius: 20px;
+      padding: 10px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .012)),
+        var(--panel);
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, .36),
+        inset 0 1px 0 rgba(255, 255, 255, .075);
+    }
+
+    .month-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 2px 8px;
+    }
+
+    .month-title {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .month-meta {
+      flex: 0 0 auto;
+      font: 500 10px/1 var(--mono);
+      color: var(--text-3);
+    }
+
+    .week-strip {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 5px;
+    }
+
+    .day-chip {
+      position: relative;
+      min-width: 0;
+      height: 42px;
+      padding: 6px 0;
+      display: grid;
+      place-items: center;
+      gap: 1px;
+      border: 0;
+      border-radius: 14px;
+      color: var(--text-3);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .day-chip:hover {
+      background: rgba(255, 255, 255, .045);
+      color: var(--text-2);
+    }
+
+    .day-chip:focus-visible {
+      outline: 2px solid rgba(232, 72, 85, .82);
+      outline-offset: 2px;
+    }
+
+    .day-chip[aria-selected="true"] {
+      color: var(--text);
+      background: #2b2b2e;
+    }
+
+    .day-chip[aria-selected="true"]::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 7px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 12px rgba(232, 72, 85, .76);
+    }
+
+    .day-name {
+      display: block;
+      font-size: 9px;
+      line-height: 1;
+      font-weight: 600;
+    }
+
+    .day-num {
+      display: block;
+      font: 500 12px/1 var(--mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .summary {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px 8px;
+    }
+
+    .summary-copy {
+      min-width: 0;
+    }
+
+    .summary-kicker {
+      display: block;
+      margin-bottom: 4px;
+      font: 500 9px/1 var(--mono);
+      color: var(--text-3);
+    }
+
+    .summary-title {
+      display: block;
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-meter {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      color: var(--text);
+      background: conic-gradient(var(--green) var(--load), rgba(255, 255, 255, .08) 0);
+    }
+
+    .summary-meter::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: inherit;
+      background: var(--app-bg);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .055);
+    }
+
+    .summary-meter span {
+      position: relative;
+      z-index: 1;
+      font: 500 11px/1 var(--mono);
+    }
+
+    .schedule {
+      position: absolute;
+      inset: 214px 0 0;
+      z-index: 3;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 5px 0 26px;
+      scrollbar-width: thin;
+      scrollbar-color: #39393d transparent;
+    }
+
+    .schedule::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .schedule::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .schedule::-webkit-scrollbar-thumb {
+      background: #39393d;
+      border-radius: 999px;
+    }
+
+    .timeline {
+      position: relative;
+      width: 100%;
+      min-height: calc(var(--hour-height) * 12 + 36px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .timeline.is-switching .events-layer {
+      opacity: .18;
+      transform: translateY(4px);
+    }
+
+    .hour-row {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(var(--row) * var(--hour-height));
+      height: var(--hour-height);
+      display: grid;
+      grid-template-columns: var(--time-width) minmax(0, 1fr);
+      pointer-events: none;
+    }
+
+    .hour-label {
+      padding-right: 10px;
+      transform: translateY(-6px);
+      text-align: right;
+      color: var(--text-3);
+      font: 500 10px/1 var(--mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hour-line {
+      border-top: 1px solid var(--line);
+      min-width: 0;
+    }
+
+    .hour-row:first-child .hour-line,
+    .hour-row:last-child .hour-line {
+      border-top-color: var(--line-strong);
+    }
+
+    .events-layer {
+      position: absolute;
+      left: var(--time-width);
+      right: 8px;
+      top: 0;
+      height: calc(var(--hour-height) * 12);
+      min-width: 0;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .event-card {
+      position: absolute;
+      left: 9px;
+      right: 8px;
+      top: calc(var(--start) * var(--hour-height));
+      height: calc(var(--span) * var(--hour-height) - 6px);
+      min-height: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+      padding: 9px 11px 9px 12px;
+      border-radius: 8px;
+      color: var(--event-ink);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, 0) 42%),
+        var(--event-color);
+      box-shadow:
+        0 8px 16px rgba(0, 0, 0, .22),
+        inset 0 1px 0 rgba(255, 255, 255, .18);
+      overflow: hidden;
+      animation: event-in 360ms cubic-bezier(.2, .72, .18, 1) both;
+      animation-delay: calc(var(--i) * 42ms);
+    }
+
+    .event-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255, 255, 255, .18), transparent 34%);
+      opacity: .36;
+      mix-blend-mode: overlay;
+    }
+
+    .event-card.compact {
+      padding-top: 7px;
+      padding-bottom: 7px;
+      gap: 3px;
+    }
+
+    .event-title,
+    .event-meta,
+    .event-tag {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .event-title {
+      font-size: 13px;
+      line-height: 1.18;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .event-meta {
+      font: 500 10px/1.2 var(--mono);
+      font-variant-numeric: tabular-nums;
+      opacity: .9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .event-tag {
+      align-self: flex-start;
+      max-width: 100%;
+      margin-top: 1px;
+      padding: 3px 6px;
+      border-radius: 999px;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 600;
+      color: var(--event-ink);
+      background: rgba(255, 255, 255, .16);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .event-card[data-tone="dark"] .event-tag {
+      background: rgba(0, 0, 0, .12);
+    }
+
+    .now-line {
+      position: absolute;
+      left: var(--time-width);
+      right: 8px;
+      top: calc(var(--now) * var(--hour-height));
+      height: 1px;
+      background: var(--red);
+      z-index: 4;
+      box-shadow: 0 0 14px rgba(232, 72, 85, .42);
+      pointer-events: none;
+    }
+
+    .now-line::before {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: -4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 4px rgba(232, 72, 85, .14);
+      animation: now-pulse 1.8s ease-out infinite;
+    }
+
+    .now-label {
+      position: absolute;
+      left: calc(-1 * var(--time-width) + 8px);
+      top: -8px;
+      width: 42px;
+      text-align: right;
+      color: var(--text);
+      font: 500 10px/1 var(--mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timeline[data-today="false"] .now-line {
+      opacity: .24;
+      box-shadow: none;
+    }
+
+    .timeline[data-today="false"] .now-line::before {
+      animation: none;
+      box-shadow: none;
+    }
+
+    .empty-day {
+      position: absolute;
+      left: calc(var(--time-width) + 17px);
+      right: 16px;
+      top: calc(var(--hour-height) * 3);
+      padding: 16px;
+      border-radius: 12px;
+      color: var(--text-2);
+      background: var(--panel-soft);
+      border: 1px solid rgba(255, 255, 255, .065);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @keyframes event-in {
+      from {
+        opacity: .001;
+        transform: translateY(10px) scale(.985);
+        filter: blur(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes now-pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(232, 72, 85, .32);
+      }
+      70% {
+        box-shadow: 0 0 0 9px rgba(232, 72, 85, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(232, 72, 85, 0);
+      }
+    }
+
+    @media (max-width: 390px) {
+      body {
+        padding-inline: 0;
+      }
+
+      .phone {
+        width: 100%;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+      }
+
+      .app-header {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .summary {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .day-chip {
+        height: 46px;
+        border-radius: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .event-card {
+        animation: none !important;
+      }
+
+      .now-line::before {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="夜序周历移动日程">
+    <header class="app-header">
+      <div class="brand-row">
+        <div class="brand-lockup">
+          <span class="brand-name">夜序周历</span>
+          <span class="brand-sub">Nocturne Grid</span>
+        </div>
+        <div class="week-code" aria-label="同步状态">
+          <i class="status-dot" aria-hidden="true"></i>
+          W27
+        </div>
+      </div>
+
+      <section class="top-panel" aria-label="本周日期选择">
+        <div class="month-line">
+          <div class="month-title" id="monthTitle">六月 / June</div>
+          <div class="month-meta" id="monthMeta">2026</div>
+        </div>
+        <div class="week-strip" role="tablist" aria-label="选择日期">
+          <button class="day-chip" type="button" role="tab" data-day="mon" aria-selected="false">
+            <span class="day-name">Mon</span>
+            <span class="day-num">29</span>
+          </button>
+          <button class="day-chip" type="button" role="tab" data-day="tue" aria-selected="true">
+            <span class="day-name">Tue</span>
+            <span class="day-num">30</span>
+          </button>
+          <button class="day-chip" type="button" role="tab" data-day="wed" aria-selected="false">
+            <span class="day-name">Wed</span>
+            <span class="day-num">01</span>
+          </button>
+          <button class="day-chip" type="button" role="tab" data-day="thu" aria-selected="false">
+            <span class="day-name">Thu</span>
+            <span class="day-num">02</span>
+          </button>
+          <button class="day-chip" type="button" role="tab" data-day="fri" aria-selected="false">
+            <span class="day-name">Fri</span>
+            <span class="day-num">03</span>
+          </button>
+          <button class="day-chip" type="button" role="tab" data-day="sat" aria-selected="false">
+            <span class="day-name">Sat</span>
+            <span class="day-num">04</span>
+          </button>
+          <button class="day-chip" type="button" role="tab" data-day="sun" aria-selected="false">
+            <span class="day-name">Sun</span>
+            <span class="day-num">05</span>
+          </button>
+        </div>
+      </section>
+    </header>
+
+    <section class="summary" aria-live="polite">
+      <div class="summary-copy">
+        <span class="summary-kicker" id="summaryKicker">今天 / Today</span>
+        <span class="summary-title" id="summaryTitle">6 events · 6h 45m</span>
+      </div>
+      <div class="summary-meter" id="summaryMeter" style="--load: 72%;">
+        <span id="summaryLoad">72</span>
+      </div>
+    </section>
+
+    <section class="schedule" aria-label="时间表">
+      <div class="timeline" id="timeline" data-today="true" style="--now: 7.58;">
+        <div id="hourGrid" aria-hidden="true"></div>
+        <div class="events-layer" id="eventsLayer"></div>
+        <div class="now-line" aria-hidden="true">
+          <span class="now-label">15:35</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Weekly Planner》 by heidendude（社区 #166）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    const startHour = 8;
+    const endHour = 20;
+    const nowTime = "15:35";
+    const colors = {
+      red: { bg: "#e84855", ink: "#1a080c", tone: "dark" },
+      terracotta: { bg: "#d98868", ink: "#160c08", tone: "dark" },
+      magenta: { bg: "#7a1966", ink: "#fff5fb", tone: "light" },
+      green: { bg: "#2eae50", ink: "#041407", tone: "dark" },
+      indigo: { bg: "#230854", ink: "#f4eeff", tone: "light" }
+    };
+
+    const days = [
+      {
+        key: "mon",
+        month: "六月 / June",
+        meta: "2026 · W27",
+        label: "周一 / Monday",
+        load: 54,
+        today: false,
+        events: [
+          { title: "晨间路线校准", start: "08:30", end: "09:20", tag: "Ops bay", color: "green" },
+          { title: "纸样资料归档", start: "10:10", end: "11:20", tag: "Archive", color: "terracotta" },
+          { title: "供应窗口确认", start: "14:00", end: "15:10", tag: "Remote", color: "red" },
+          { title: "夜航清单预排", start: "17:30", end: "18:25", tag: "Desk 04", color: "indigo" }
+        ]
+      },
+      {
+        key: "tue",
+        month: "六月 / June",
+        meta: "2026 · 今天",
+        label: "今天 / Today",
+        load: 72,
+        today: true,
+        events: [
+          { title: "晨间排程地图", start: "08:15", end: "09:05", tag: "Room C", color: "green" },
+          { title: "仓储巡检记录", start: "09:35", end: "10:35", tag: "North dock", color: "red" },
+          { title: "产品草图评审", start: "11:15", end: "12:10", tag: "Studio", color: "magenta" },
+          { title: "午后构建窗口", start: "13:40", end: "15:10", tag: "Focus", color: "indigo" },
+          { title: "河岸现场笔记", start: "16:00", end: "17:20", tag: "Field", color: "terracotta" },
+          { title: "周报封口检查", start: "18:15", end: "19:00", tag: "Inbox", color: "magenta" }
+        ]
+      },
+      {
+        key: "wed",
+        month: "七月 / July",
+        meta: "2026 · W27",
+        label: "周三 / Wednesday",
+        load: 61,
+        today: false,
+        events: [
+          { title: "清晨指标读数", start: "08:45", end: "09:30", tag: "Lab", color: "indigo" },
+          { title: "客户回声整理", start: "10:20", end: "11:40", tag: "Notes", color: "terracotta" },
+          { title: "样机色彩过审", start: "13:10", end: "14:25", tag: "Studio", color: "red" },
+          { title: "晚间发布清点", start: "17:45", end: "18:50", tag: "Release", color: "green" }
+        ]
+      },
+      {
+        key: "thu",
+        month: "七月 / July",
+        meta: "2026 · W27",
+        label: "周四 / Thursday",
+        load: 68,
+        today: false,
+        events: [
+          { title: "采购节奏复盘", start: "09:00", end: "10:00", tag: "Ledger", color: "magenta" },
+          { title: "西窗方案走查", start: "10:45", end: "12:00", tag: "Room A", color: "green" },
+          { title: "静默写作时段", start: "14:15", end: "16:05", tag: "Draft", color: "indigo" },
+          { title: "暮色风险扫尾", start: "18:05", end: "19:15", tag: "Review", color: "red" }
+        ]
+      },
+      {
+        key: "fri",
+        month: "七月 / July",
+        meta: "2026 · W27",
+        label: "周五 / Friday",
+        load: 80,
+        today: false,
+        events: [
+          { title: "咖啡台账整理", start: "08:20", end: "09:15", tag: "Cafe", color: "terracotta" },
+          { title: "北区节拍同步", start: "10:00", end: "11:10", tag: "Ops", color: "red" },
+          { title: "二层动线试跑", start: "12:40", end: "13:45", tag: "Floor 2", color: "green" },
+          { title: "月初账页确认", start: "15:15", end: "16:35", tag: "Finance", color: "magenta" },
+          { title: "收尾窗口", start: "18:00", end: "19:30", tag: "Focus", color: "indigo" }
+        ]
+      },
+      {
+        key: "sat",
+        month: "七月 / July",
+        meta: "2026 · W27",
+        label: "周六 / Saturday",
+        load: 38,
+        today: false,
+        events: [
+          { title: "慢速晨读", start: "09:10", end: "10:20", tag: "Home", color: "green" },
+          { title: "器材归位", start: "11:30", end: "12:25", tag: "Shelf", color: "terracotta" },
+          { title: "夜间影片单", start: "19:00", end: "20:00", tag: "Personal", color: "indigo" }
+        ]
+      },
+      {
+        key: "sun",
+        month: "七月 / July",
+        meta: "2026 · W27",
+        label: "周日 / Sunday",
+        load: 24,
+        today: false,
+        events: [
+          { title: "植物浇灌记录", start: "08:40", end: "09:25", tag: "Balcony", color: "green" },
+          { title: "下周草案预排", start: "16:30", end: "17:50", tag: "Desk", color: "magenta" }
+        ]
+      }
+    ];
+
+    const hourGrid = document.getElementById("hourGrid");
+    const eventsLayer = document.getElementById("eventsLayer");
+    const timeline = document.getElementById("timeline");
+    const summaryKicker = document.getElementById("summaryKicker");
+    const summaryTitle = document.getElementById("summaryTitle");
+    const summaryMeter = document.getElementById("summaryMeter");
+    const summaryLoad = document.getElementById("summaryLoad");
+    const monthTitle = document.getElementById("monthTitle");
+    const monthMeta = document.getElementById("monthMeta");
+    const dayButtons = Array.from(document.querySelectorAll(".day-chip"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let selectedDay = "tue";
+
+    function toMinutes(time) {
+      const parts = time.split(":").map(Number);
+      return (parts[0] - startHour) * 60 + parts[1];
+    }
+
+    function durationLabel(events) {
+      const minutes = events.reduce((total, event) => {
+        return total + Math.max(0, toMinutes(event.end) - toMinutes(event.start));
+      }, 0);
+      const hours = Math.floor(minutes / 60);
+      const rest = minutes % 60;
+      return `${hours}h ${String(rest).padStart(2, "0")}m`;
+    }
+
+    function renderHours() {
+      const rows = [];
+      for (let hour = startHour; hour <= endHour; hour += 1) {
+        const label = `${String(hour).padStart(2, "0")}:00`;
+        rows.push(`
+          <div class="hour-row" style="--row:${hour - startHour};">
+            <div class="hour-label">${label}</div>
+            <div class="hour-line"></div>
+          </div>
+        `);
+      }
+      hourGrid.innerHTML = rows.join("");
+    }
+
+    function renderEvents(day) {
+      if (!day.events.length) {
+        eventsLayer.innerHTML = `<div class="empty-day">今天留白。适合补记、整理，或者把一个窗口留给真正重要的事。</div>`;
+        return;
+      }
+
+      eventsLayer.innerHTML = day.events.map((event, index) => {
+        const color = colors[event.color];
+        const start = toMinutes(event.start) / 60;
+        const span = (toMinutes(event.end) - toMinutes(event.start)) / 60;
+        const compact = span < .85 ? " compact" : "";
+        return `
+          <article class="event-card${compact}" data-tone="${color.tone}" style="--start:${start};--span:${span};--i:${index};--event-color:${color.bg};--event-ink:${color.ink};" aria-label="${event.title} ${event.start} to ${event.end}">
+            <div class="event-title">${event.title}</div>
+            <div class="event-meta">${event.start} - ${event.end}</div>
+            <div class="event-tag">${event.tag}</div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderDay(dayKey) {
+      const day = days.find((item) => item.key === dayKey) || days[1];
+      selectedDay = day.key;
+      dayButtons.forEach((button) => {
+        const active = button.dataset.day === day.key;
+        button.setAttribute("aria-selected", String(active));
+        button.tabIndex = active ? 0 : -1;
+      });
+      monthTitle.textContent = day.month;
+      monthMeta.textContent = day.meta;
+      summaryKicker.textContent = day.label;
+      summaryTitle.textContent = `${day.events.length} events · ${durationLabel(day.events)}`;
+      summaryMeter.style.setProperty("--load", `${day.load}%`);
+      summaryLoad.textContent = String(day.load);
+      timeline.dataset.today = String(day.today);
+      timeline.style.setProperty("--now", String(toMinutes(nowTime) / 60));
+      renderEvents(day);
+    }
+
+    function switchDay(dayKey) {
+      if (dayKey === selectedDay) return;
+      timeline.classList.add("is-switching");
+      window.setTimeout(() => {
+        renderDay(dayKey);
+        window.requestAnimationFrame(() => {
+          timeline.classList.remove("is-switching");
+        });
+      }, reduceMotion ? 0 : 120);
+    }
+
+    dayButtons.forEach((button) => {
+      button.addEventListener("click", () => switchDay(button.dataset.day));
+      button.addEventListener("keydown", (event) => {
+        const index = dayButtons.indexOf(button);
+        if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+          event.preventDefault();
+          const delta = event.key === "ArrowRight" ? 1 : -1;
+          const next = dayButtons[(index + delta + dayButtons.length) % dayButtons.length];
+          next.focus();
+          switchDay(next.dataset.day);
+        }
+      });
+    });
+
+    renderHours();
+    renderDay(selectedDay);
+  </script>
+</body>
+</html>
