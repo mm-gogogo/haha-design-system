@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Hyper Realistic Ticket</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --stage: #03050a;
+      --stage-2: #0a0d18;
+      --ink: #161722;
+      --ink-soft: rgba(22, 23, 34, .66);
+      --paper: #e9e1cf;
+      --paper-hi: #fbf4df;
+      --paper-low: #cfc3aa;
+      --light: #f6f8ff;
+      --muted: #a7adba;
+      --magenta: #ff0080;
+      --pink: #ffb6ff;
+      --orange: #ff8c00;
+      --turquoise: #40e0d0;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --rx: 0deg;
+      --ry: 0deg;
+      --lift: 0px;
+      --shine-x: 52%;
+      --shine-y: 34%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--stage);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 30px 16px 116px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--light);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 18%),
+        radial-gradient(120% 68% at 18% 0%, rgba(255, 0, 128, .28), transparent 48%),
+        radial-gradient(92% 58% at 88% 8%, rgba(64, 224, 208, .18), transparent 48%),
+        linear-gradient(148deg, #03050a 0%, #0a0d18 47%, #1c1c1c 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      opacity: .45;
+      background:
+        linear-gradient(118deg, transparent 0 28%, rgba(255, 182, 255, .11) 29%, transparent 44%),
+        linear-gradient(63deg, transparent 0 38%, rgba(255, 140, 0, .12) 39%, transparent 54%),
+        linear-gradient(180deg, rgba(255, 255, 255, .05), transparent 12% 84%, rgba(0, 0, 0, .52));
+      mix-blend-mode: screen;
+    }
+
+    body::after {
+      opacity: .34;
+      background:
+        radial-gradient(rgba(255, 255, 255, .12) .7px, transparent .8px),
+        linear-gradient(rgba(255, 255, 255, .026) 1px, transparent 1px);
+      background-size: 17px 17px, 100% 5px;
+      mask-image: linear-gradient(180deg, transparent, #000 10%, #000 86%, transparent);
+    }
+
+    .study {
+      width: min(368px, calc(100vw - 32px));
+      position: relative;
+      perspective: 1100px;
+      isolation: isolate;
+      animation: ticket-enter .78s cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .study::before {
+      content: "";
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: -24px;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, .68);
+      filter: blur(18px);
+      transform: rotateX(62deg);
+      z-index: -1;
+    }
+
+    .scene-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin: 0 3px 14px;
+      color: var(--muted);
+      font: 500 10px/1.45 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .scene-label b {
+      display: block;
+      color: #f9f9ff;
+      font: 700 13px/1.15 var(--sans);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .scene-label span:last-child {
+      text-align: right;
+    }
+
+    .ticket {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(255, 247, 220, .36);
+      border-radius: 16px;
+      color: var(--ink);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .46), transparent 21%, rgba(50, 35, 16, .1) 100%),
+        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, .52), transparent 19%),
+        radial-gradient(circle at 86% 82%, rgba(108, 72, 26, .12), transparent 32%),
+        repeating-linear-gradient(0deg, rgba(34, 28, 17, .035) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .14) 0 1px, transparent 1px 5px),
+        var(--paper);
+      box-shadow:
+        0 46px 88px -34px rgba(0, 0, 0, .96),
+        0 18px 28px -20px rgba(255, 0, 128, .34),
+        0 6px 0 rgba(0, 0, 0, .42),
+        inset 0 1px 0 rgba(255, 255, 255, .86),
+        inset 0 -1px 0 rgba(72, 47, 19, .38),
+        inset 0 0 0 1px rgba(41, 31, 20, .12);
+      transform:
+        rotateX(var(--rx))
+        rotateY(var(--ry))
+        translate3d(0, var(--lift), 0);
+      transform-style: preserve-3d;
+      transition: transform .42s cubic-bezier(.16, 1, .3, 1);
+      will-change: transform;
+    }
+
+    .ticket::before,
+    .ticket::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .ticket::before {
+      opacity: .22;
+      background:
+        radial-gradient(circle at 24% 32%, rgba(31, 24, 15, .44) 0 .7px, transparent .9px),
+        radial-gradient(circle at 72% 58%, rgba(255, 255, 255, .5) 0 .6px, transparent .9px),
+        repeating-linear-gradient(12deg, rgba(42, 31, 18, .12) 0 1px, transparent 1px 9px);
+      background-size: 9px 9px, 13px 13px, 100% 100%;
+      mix-blend-mode: multiply;
+    }
+
+    .ticket::after {
+      background:
+        linear-gradient(105deg, rgba(255, 255, 255, .48), transparent 17% 70%, rgba(46, 32, 16, .2)),
+        linear-gradient(180deg, rgba(255, 255, 255, .32), transparent 12%, transparent 86%, rgba(0, 0, 0, .17));
+      mix-blend-mode: soft-light;
+    }
+
+    .ticket-main,
+    .ticket-stub,
+    .tear {
+      position: relative;
+      z-index: 2;
+    }
+
+    .ticket-main {
+      padding: 20px 18px 16px;
+    }
+
+    .ticket-header,
+    .stub-row,
+    .micro-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .issuer {
+      color: rgba(22, 23, 34, .78);
+      font: 700 10px/1.2 var(--mono);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .sample-chip {
+      flex: 0 0 auto;
+      padding: 5px 7px;
+      border: 1px solid rgba(22, 23, 34, .33);
+      border-radius: 999px;
+      background: rgba(255, 251, 232, .62);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .8),
+        0 1px 0 rgba(22, 23, 34, .08);
+      color: rgba(22, 23, 34, .75);
+      font: 600 8px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .event-title {
+      margin: 18px 0 8px;
+      color: #11131e;
+      font: 800 clamp(36px, 10.6vw, 44px)/.91 var(--sans);
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, .72),
+        0 0 1px rgba(0, 0, 0, .22);
+    }
+
+    .event-title span {
+      display: block;
+    }
+
+    .event-subtitle {
+      margin: 0 0 16px;
+      color: rgba(22, 23, 34, .82);
+      font: 700 12px/1.35 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .venue {
+      margin: 0 0 16px;
+      color: rgba(22, 23, 34, .72);
+      font: 600 12px/1.5 var(--sans);
+    }
+
+    .foil-band {
+      position: relative;
+      min-height: 54px;
+      margin: 14px -4px 17px;
+      padding: 11px 12px;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .64);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .86),
+        inset 0 -1px 0 rgba(0, 0, 0, .24),
+        0 10px 20px -18px rgba(0, 0, 0, .8);
+    }
+
+    .foil-motion {
+      background:
+        radial-gradient(circle at var(--shine-x) var(--shine-y), rgba(255, 255, 255, .92), transparent 22%),
+        linear-gradient(115deg, transparent 0 11%, rgba(255, 255, 255, .55) 16%, transparent 22%, transparent 48%, rgba(255, 255, 255, .44) 54%, transparent 62%),
+        conic-gradient(from 16deg at 52% 44%, var(--magenta), var(--pink), var(--orange), var(--turquoise), var(--magenta), var(--pink), var(--turquoise), var(--magenta));
+      background-size: 100% 100%, 230% 230%, 100% 100%;
+      background-position: center, 0% 50%, center;
+      animation: foil-sweep 7s linear infinite;
+    }
+
+    .foil-band::before,
+    .foil-seal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .18) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, .12) 0 1px, transparent 1px 7px);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .foil-band::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 9px;
+      border: 1px solid rgba(16, 17, 27, .24);
+      pointer-events: none;
+    }
+
+    .foil-band-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 30px;
+    }
+
+    .foil-text {
+      padding: 7px 9px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 999px;
+      background: rgba(13, 15, 24, .86);
+      color: #f8fbff;
+      box-shadow: 0 6px 14px -10px rgba(0, 0, 0, .8);
+      font: 700 9px/1 var(--mono);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .foil-code {
+      color: rgba(13, 15, 24, .76);
+      font: 800 13px/1 var(--mono);
+      letter-spacing: .1em;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .42);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 12px;
+    }
+
+    .info-cell,
+    .seat-cell {
+      min-width: 0;
+      border: 1px solid rgba(22, 23, 34, .16);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .36), rgba(255, 255, 255, .03)),
+        rgba(255, 251, 232, .3);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .58),
+        inset 0 -1px 0 rgba(22, 23, 34, .09);
+    }
+
+    .info-cell {
+      min-height: 58px;
+      padding: 8px 7px;
+      border-radius: 8px;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 5px;
+      color: rgba(22, 23, 34, .55);
+      font: 700 8px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .value {
+      display: block;
+      color: #151620;
+      font: 800 15px/1.1 var(--mono);
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .value small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(22, 23, 34, .65);
+      font: 600 9px/1.1 var(--mono);
+      letter-spacing: .04em;
+    }
+
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: hidden;
+      border: 1px solid rgba(22, 23, 34, .28);
+      border-radius: 10px;
+      background: rgba(20, 21, 31, .06);
+      box-shadow:
+        inset 0 2px 8px rgba(25, 18, 10, .12),
+        0 1px 0 rgba(255, 255, 255, .45);
+    }
+
+    .seat-cell {
+      padding: 9px 8px 10px;
+      border-width: 0 1px 0 0;
+      border-radius: 0;
+    }
+
+    .seat-cell:last-child {
+      border-right-width: 0;
+    }
+
+    .seat-cell .value {
+      font-size: 18px;
+    }
+
+    .micro-row {
+      margin-top: 13px;
+      padding-top: 11px;
+      border-top: 1px solid rgba(22, 23, 34, .16);
+      color: rgba(22, 23, 34, .68);
+      font: 700 9px/1.35 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .admit-type {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 8px;
+      border: 1.5px solid rgba(22, 23, 34, .82);
+      border-radius: 6px;
+      color: #141620;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .35),
+        0 1px 0 rgba(255, 255, 255, .34);
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
+
+    .price {
+      text-align: right;
+    }
+
+    .tear {
+      height: 36px;
+      background:
+        radial-gradient(circle at 0 50%, var(--stage) 0 13px, transparent 13.5px),
+        radial-gradient(circle at 100% 50%, var(--stage) 0 13px, transparent 13.5px),
+        linear-gradient(180deg, rgba(92, 61, 22, .16), rgba(255, 255, 255, .16) 48%, rgba(41, 31, 20, .13));
+    }
+
+    .tear::before,
+    .tear::after {
+      content: "";
+      position: absolute;
+      left: 30px;
+      right: 30px;
+      top: 50%;
+      pointer-events: none;
+    }
+
+    .tear::before {
+      height: 1px;
+      background: repeating-linear-gradient(90deg, rgba(22, 23, 34, .5) 0 6px, transparent 6px 12px);
+      transform: translateY(-50%);
+    }
+
+    .tear::after {
+      height: 12px;
+      transform: translateY(-50%);
+      background-image: radial-gradient(circle, rgba(22, 23, 34, .32) 0 1px, transparent 1.5px);
+      background-size: 12px 12px;
+      opacity: .62;
+    }
+
+    .ticket-stub {
+      padding: 13px 16px 16px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .18), rgba(35, 25, 12, .07)),
+        rgba(236, 228, 210, .38);
+    }
+
+    .stub-row {
+      align-items: stretch;
+    }
+
+    .stub-copy {
+      min-width: 0;
+      flex: 1 1 auto;
+      display: grid;
+      gap: 8px;
+    }
+
+    .stub-title {
+      color: #141620;
+      font: 800 16px/1 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .stub-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: rgba(22, 23, 34, .62);
+      font: 700 8px/1.3 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .barcode-wrap {
+      position: relative;
+      padding: 8px 8px 7px;
+      border-radius: 8px;
+      border: 1px solid rgba(22, 23, 34, .18);
+      background: rgba(255, 251, 232, .58);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .62),
+        inset 0 -1px 0 rgba(22, 23, 34, .1);
+    }
+
+    .barcode {
+      height: 56px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, .38);
+    }
+
+    .barcode span {
+      flex: 0 0 calc(var(--w) * 1px);
+      width: calc(var(--w) * 1px);
+      margin-right: calc(var(--g) * 1px);
+      background: #161722;
+      box-shadow: 0 0 .2px rgba(0, 0, 0, .5);
+    }
+
+    .barcode-id {
+      display: block;
+      margin-top: 6px;
+      color: rgba(22, 23, 34, .64);
+      font: 700 8px/1 var(--mono);
+      letter-spacing: .12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .stub-side {
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border-left: 1px solid rgba(22, 23, 34, .16);
+      color: rgba(22, 23, 34, .76);
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .foil-seal {
+      position: absolute;
+      right: 17px;
+      top: 78px;
+      z-index: 3;
+      width: 58px;
+      height: 58px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .66);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, .86),
+        inset 0 -2px 5px rgba(0, 0, 0, .28),
+        0 10px 18px -12px rgba(0, 0, 0, .78);
+      transform: translateZ(18px) rotate(7deg);
+    }
+
+    .foil-seal b {
+      position: absolute;
+      inset: auto 8px 19px;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(14, 15, 23, .86);
+      color: #f7fbff;
+      font: 800 8px/1 var(--mono);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .foil-seal i {
+      position: absolute;
+      inset: 17px;
+      z-index: 2;
+      border-radius: 999px;
+      background: rgba(255, 251, 232, .66);
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, .8),
+        inset 0 -1px 2px rgba(0, 0, 0, .2);
+    }
+
+    @keyframes ticket-enter {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 28px, 0) rotateX(9deg) scale(.96);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      }
+    }
+
+    @keyframes foil-sweep {
+      0% {
+        background-position: center, 0% 50%, center;
+      }
+      100% {
+        background-position: center, 190% 50%, center;
+      }
+    }
+
+    @media (min-width: 760px) {
+      body {
+        padding-top: 44px;
+      }
+
+      .study {
+        width: min(386px, calc(100vw - 32px));
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .study {
+        width: min(342px, calc(100vw - 24px));
+      }
+
+      .ticket-main {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .event-title {
+        font-size: 34px;
+      }
+
+      .foil-seal {
+        right: 14px;
+        width: 52px;
+        height: 52px;
+      }
+
+      .info-grid {
+        gap: 6px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+
+      .study {
+        animation: none !important;
+      }
+
+      .ticket {
+        transform: none !important;
+        transition: none !important;
+        will-change: auto;
+      }
+
+      .foil-motion {
+        animation: none !important;
+        background-position: center, 58% 50%, center;
+      }
+    }
+
+    html[data-reduced-motion="true"] .ticket {
+      transform: none !important;
+      transition: none !important;
+      will-change: auto;
+    }
+
+    html[data-reduced-motion="true"] .foil-motion {
+      animation: none !important;
+      background-position: center, 58% 50%, center;
+    }
+  </style>
+</head>
+<body>
+  <main class="study" aria-label="效果临摹，虚构演出门票">
+    <div class="scene-label" aria-hidden="true">
+      <span><b>Effect Study</b>Hyper realistic ticket</span>
+      <span>样票 · sample ticket</span>
+    </div>
+
+    <article class="ticket" id="ticket" aria-label="Fictional sample concert ticket for Velvet Static">
+      <div class="foil-seal foil-motion" aria-hidden="true">
+        <i></i>
+        <b>AUTH</b>
+      </div>
+
+      <section class="ticket-main">
+        <div class="ticket-header">
+          <div class="issuer">Glassline Bureau</div>
+          <div class="sample-chip">样票 · sample</div>
+        </div>
+
+        <h1 class="event-title">
+          <span>Velvet</span>
+          <span>Static</span>
+        </h1>
+        <p class="event-subtitle">Midnight Prism Set</p>
+        <p class="venue">Obsidian Room, Lumen Quay</p>
+
+        <div class="foil-band foil-motion" aria-label="Holographic foil strip">
+          <div class="foil-band-content">
+            <span class="foil-text">全息 · hologram</span>
+            <span class="foil-code">VS31</span>
+          </div>
+        </div>
+
+        <div class="info-grid" aria-label="Event schedule">
+          <div class="info-cell">
+            <span class="label">Date</span>
+            <span class="value">Oct 18<small>Sat 2031</small></span>
+          </div>
+          <div class="info-cell">
+            <span class="label">Time</span>
+            <span class="value">20:40<small>show</small></span>
+          </div>
+          <div class="info-cell">
+            <span class="label">Door</span>
+            <span class="value">19:30<small>entry</small></span>
+          </div>
+        </div>
+
+        <div class="seat-grid" aria-label="Section row seat">
+          <div class="seat-cell">
+            <span class="label">Section</span>
+            <span class="value">N4</span>
+          </div>
+          <div class="seat-cell">
+            <span class="label">Row</span>
+            <span class="value">07</span>
+          </div>
+          <div class="seat-cell">
+            <span class="label">Seat</span>
+            <span class="value">118</span>
+          </div>
+        </div>
+
+        <div class="micro-row">
+          <span class="admit-type">Admit One</span>
+          <span class="price">CNY 268.00<br>Order GS-41Q7-K8M</span>
+        </div>
+      </section>
+
+      <div class="tear" aria-hidden="true"></div>
+
+      <section class="ticket-stub" aria-label="Ticket stub with barcode">
+        <div class="stub-row">
+          <div class="stub-copy">
+            <div>
+              <div class="stub-title">Admit One</div>
+              <div class="stub-meta">
+                <span>Void sample</span>
+                <span>Gate C</span>
+              </div>
+            </div>
+
+            <div class="barcode-wrap">
+              <div class="barcode" aria-label="Barcode">
+                <span style="--w:2;--g:2"></span><span style="--w:1;--g:1"></span><span style="--w:4;--g:2"></span><span style="--w:2;--g:1"></span><span style="--w:1;--g:3"></span><span style="--w:5;--g:1"></span><span style="--w:1;--g:2"></span><span style="--w:3;--g:1"></span><span style="--w:2;--g:3"></span><span style="--w:6;--g:1"></span><span style="--w:1;--g:2"></span><span style="--w:2;--g:1"></span><span style="--w:4;--g:3"></span><span style="--w:1;--g:1"></span><span style="--w:3;--g:2"></span><span style="--w:5;--g:1"></span><span style="--w:1;--g:3"></span><span style="--w:2;--g:1"></span><span style="--w:4;--g:2"></span><span style="--w:1;--g:2"></span><span style="--w:6;--g:1"></span><span style="--w:2;--g:3"></span><span style="--w:1;--g:1"></span><span style="--w:3;--g:2"></span><span style="--w:5;--g:1"></span><span style="--w:1;--g:2"></span><span style="--w:2;--g:1"></span><span style="--w:4;--g:2"></span><span style="--w:1;--g:3"></span><span style="--w:3;--g:1"></span><span style="--w:2;--g:2"></span><span style="--w:5;--g:1"></span>
+              </div>
+              <span class="barcode-id">VX-2031-10-18-118</span>
+            </div>
+          </div>
+          <div class="stub-side">Ticket ID</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Hyper Realistic Ticket》 by antoine96846（社区 #97）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const ticket = document.getElementById("ticket");
+      const doc = document.documentElement;
+      const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let reduced = reduceQuery.matches;
+
+      function setStatic() {
+        doc.dataset.reducedMotion = "true";
+        ticket.style.setProperty("--rx", "0deg");
+        ticket.style.setProperty("--ry", "0deg");
+        ticket.style.setProperty("--lift", "0px");
+        ticket.style.setProperty("--shine-x", "47%");
+        ticket.style.setProperty("--shine-y", "36%");
+      }
+
+      function clearStatic() {
+        delete doc.dataset.reducedMotion;
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function applyTilt(px, py) {
+        if (reduced) return;
+        const x = clamp(px, -1, 1);
+        const y = clamp(py, -1, 1);
+        ticket.style.setProperty("--rx", `${(-y * 7).toFixed(2)}deg`);
+        ticket.style.setProperty("--ry", `${(x * 9).toFixed(2)}deg`);
+        ticket.style.setProperty("--lift", "-2px");
+        ticket.style.setProperty("--shine-x", `${(52 + x * 27).toFixed(1)}%`);
+        ticket.style.setProperty("--shine-y", `${(34 + y * 18).toFixed(1)}%`);
+      }
+
+      function resetTilt() {
+        if (reduced) return;
+        ticket.style.setProperty("--rx", "0deg");
+        ticket.style.setProperty("--ry", "0deg");
+        ticket.style.setProperty("--lift", "0px");
+        ticket.style.setProperty("--shine-x", "52%");
+        ticket.style.setProperty("--shine-y", "34%");
+      }
+
+      function handlePointer(event) {
+        const rect = ticket.getBoundingClientRect();
+        const px = ((event.clientX - rect.left) / rect.width - .5) * 2;
+        const py = ((event.clientY - rect.top) / rect.height - .5) * 2;
+        applyTilt(px, py);
+      }
+
+      function handleOrientation(event) {
+        if (reduced || event.beta === null || event.gamma === null) return;
+        applyTilt(event.gamma / 28, (event.beta - 42) / 36);
+      }
+
+      function handleMotionChange(event) {
+        reduced = event.matches;
+        if (reduced) {
+          setStatic();
+        } else {
+          clearStatic();
+          resetTilt();
+        }
+      }
+
+      ticket.addEventListener("pointermove", handlePointer, { passive: true });
+      ticket.addEventListener("pointerleave", resetTilt, { passive: true });
+      window.addEventListener("deviceorientation", handleOrientation, { passive: true });
+
+      if (reduced) {
+        setStatic();
+      } else {
+        clearStatic();
+      }
+
+      if (typeof reduceQuery.addEventListener === "function") {
+        reduceQuery.addEventListener("change", handleMotionChange);
+      } else if (typeof reduceQuery.addListener === "function") {
+        reduceQuery.addListener(handleMotionChange);
+      }
+    })();
+  </script>
+</body>
+</html>

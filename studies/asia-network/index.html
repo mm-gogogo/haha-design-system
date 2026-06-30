@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="效果临摹页面：手绘亚太城市网络地图，含城市节点、枢纽路线、办公室列表与响应式交互。">
+  <title>Asia Network Map Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f4ee;
+      --paper-2: #f1ede4;
+      --paper-3: #ebe4d8;
+      --ink: #1f211c;
+      --ink-soft: #3a3933;
+      --muted: #6a665e;
+      --quiet: #5f5a52;
+      --line: #d9d0c2;
+      --line-strong: #c8bcaa;
+      --red: #be2323;
+      --red-soft: rgba(190, 35, 35, .18);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --serif: "Noto Serif", Georgia, serif;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: clip;
+      padding: 24px clamp(14px, 2.7vw, 34px) 118px;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 16% 8%, rgba(190, 35, 35, .055), transparent 32%),
+        linear-gradient(90deg, rgba(31, 33, 28, .045) 1px, transparent 1px),
+        linear-gradient(rgba(31, 33, 28, .035) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 92px 92px, 92px 92px, auto;
+    }
+
+    @supports not (overflow-x: clip) {
+      body {
+        overflow-x: hidden;
+      }
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      min-height: 70px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 18px;
+      padding: 4px 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .wordmark {
+      margin: 0;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .wordmark strong {
+      font-family: var(--serif);
+      font-size: clamp(28px, 5vw, 56px);
+      font-weight: 700;
+    }
+
+    .wordmark span {
+      font-size: clamp(14px, 2vw, 19px);
+      font-weight: 700;
+    }
+
+    .tagline {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.8vw, 17px);
+      line-height: 1.62;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding-top: 6px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 7px 10px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--ink);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, .38);
+      outline: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, .78fr) minmax(280px, .34fr);
+      gap: clamp(18px, 2vw, 30px);
+      align-items: end;
+      padding: clamp(28px, 5vw, 68px) 0 clamp(18px, 3vw, 38px);
+    }
+
+    .hero h2 {
+      margin: 0;
+      max-width: 900px;
+      font-family: var(--serif);
+      font-size: clamp(38px, 7.7vw, 104px);
+      font-weight: 650;
+      line-height: .95;
+    }
+
+    .hero h2 .red {
+      color: var(--red);
+    }
+
+    .hero-copy {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .meta-rail {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin: 0 0 clamp(22px, 3vw, 36px);
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .meta-item {
+      min-width: 0;
+      padding: 16px;
+      background: rgba(247, 244, 238, .88);
+    }
+
+    .meta-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .meta-value {
+      display: block;
+      color: var(--ink);
+      font-size: clamp(18px, 2.4vw, 26px);
+      font-weight: 760;
+      line-height: 1.1;
+    }
+
+    .network-board {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(308px, 360px);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .map-panel,
+    .side-panel {
+      border: 1px solid var(--line-strong);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .42), rgba(255, 255, 255, .08)),
+        rgba(247, 244, 238, .88);
+      box-shadow: 0 24px 60px -48px rgba(77, 57, 37, .72);
+    }
+
+    .map-panel {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .map-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(31, 33, 28, .038) 1px, transparent 1px),
+        linear-gradient(rgba(31, 33, 28, .032) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(180deg, transparent, #000 15%, #000 86%, transparent);
+    }
+
+    .map-toolbar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px clamp(16px, 2vw, 22px);
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .map-toolbar strong {
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .map-wrap {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      padding: clamp(12px, 2vw, 24px);
+    }
+
+    .network-map {
+      width: 100%;
+      height: auto;
+      min-height: 440px;
+      display: block;
+      overflow: visible;
+      color: var(--ink);
+    }
+
+    .land {
+      fill: #e9e3d7;
+      stroke: #d4c9b8;
+      stroke-width: 1.15;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .land-secondary {
+      fill: #ede8de;
+      stroke: #d8cdba;
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .coast-note {
+      fill: none;
+      stroke: rgba(106, 102, 94, .24);
+      stroke-width: 1;
+      stroke-dasharray: 2.5 8;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .route {
+      fill: none;
+      stroke: rgba(106, 102, 94, .34);
+      stroke-width: 1.08;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+      pathLength: 1;
+      opacity: .94;
+      transition: opacity .24s ease, stroke .24s ease, stroke-width .24s ease;
+    }
+
+    .route.primary {
+      stroke: rgba(190, 35, 35, .42);
+      stroke-width: 1.2;
+    }
+
+    .route.active {
+      stroke: var(--red);
+      stroke-width: 2.15;
+      opacity: 1;
+    }
+
+    .route.muted {
+      opacity: .12;
+    }
+
+    .node-hit {
+      fill: transparent;
+      pointer-events: all;
+    }
+
+    .city {
+      cursor: pointer;
+      outline: none;
+      transition: opacity .2s ease;
+    }
+
+    .city.muted {
+      opacity: .24;
+    }
+
+    .node-pulse {
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 1.2;
+      opacity: .22;
+      transform-box: fill-box;
+      transform-origin: center;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .node-core {
+      fill: var(--paper);
+      stroke: var(--red);
+      stroke-width: 1.35;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .city.hub .node-core {
+      fill: var(--red);
+      stroke: var(--red);
+    }
+
+    .hub-ring {
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 1.25;
+      stroke-dasharray: 2.2 3.4;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .node-label {
+      fill: var(--ink-soft);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      pointer-events: none;
+      transition: fill .2s ease, opacity .2s ease;
+    }
+
+    .node-sub {
+      fill: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      pointer-events: none;
+      transition: fill .2s ease, opacity .2s ease;
+    }
+
+    .city.active .node-label,
+    .city.active .node-sub {
+      fill: var(--red);
+    }
+
+    .city:focus-visible .node-focus {
+      stroke: var(--red);
+      stroke-width: 2.4;
+      opacity: .8;
+    }
+
+    .node-focus {
+      fill: none;
+      stroke: transparent;
+      opacity: 0;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .map-footer {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px clamp(16px, 2vw, 22px);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .legend-mark {
+      position: relative;
+      display: inline-block;
+      flex: 0 0 auto;
+      width: 16px;
+      height: 16px;
+    }
+
+    .legend-mark::before,
+    .legend-mark::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+    }
+
+    .legend-mark.hub::before {
+      width: 14px;
+      height: 14px;
+      border: 1px dashed var(--red);
+    }
+
+    .legend-mark.hub::after {
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+    }
+
+    .legend-mark.node::before {
+      width: 9px;
+      height: 9px;
+      border: 1px solid var(--red);
+      background: var(--paper);
+    }
+
+    .legend-mark.route-line {
+      width: 26px;
+    }
+
+    .legend-mark.route-line::before {
+      width: 26px;
+      height: 0;
+      border-radius: 0;
+      border-top: 2px solid var(--red);
+    }
+
+    .side-panel {
+      min-width: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .side-head {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .side-head h3 {
+      margin: 0 0 8px;
+      font-family: var(--serif);
+      font-size: 28px;
+      line-height: 1.08;
+    }
+
+    .side-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .city-ledger {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .city-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+      padding: 13px 16px;
+      border: 0;
+      color: var(--ink);
+      background: rgba(247, 244, 238, .92);
+      text-align: left;
+      cursor: pointer;
+      transition: color .2s ease, background-color .2s ease;
+    }
+
+    .city-row:hover,
+    .city-row:focus-visible,
+    .city-row.active {
+      color: var(--red);
+      background: #fffaf1;
+      outline: none;
+    }
+
+    .city-row.muted {
+      color: var(--quiet);
+      background: rgba(247, 244, 238, .62);
+    }
+
+    .city-main {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .city-name {
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .city-focus {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .city-row:hover .city-focus,
+    .city-row:focus-visible .city-focus,
+    .city-row.active .city-focus {
+      color: #7b2823;
+    }
+
+    .city-stat {
+      display: grid;
+      gap: 4px;
+      justify-items: end;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .city-stat strong {
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .city-row:hover .city-stat,
+    .city-row:focus-visible .city-stat,
+    .city-row.active .city-stat,
+    .city-row:hover .city-stat strong,
+    .city-row:focus-visible .city-stat strong,
+    .city-row.active .city-stat strong {
+      color: var(--red);
+    }
+
+    .side-note {
+      padding: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      border-top: 1px solid var(--line);
+    }
+
+    .side-note strong {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .below {
+      display: grid;
+      grid-template-columns: minmax(0, .62fr) minmax(240px, .38fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .principle,
+    .signal-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(247, 244, 238, .78);
+      padding: clamp(18px, 2.5vw, 26px);
+    }
+
+    .principle h3,
+    .signal-card h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .principle p,
+    .signal-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.68;
+    }
+
+    .signal-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .signal-grid span {
+      min-width: 0;
+      padding: 12px;
+      background: var(--paper);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .signal-grid strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .route {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: route-draw 1200ms cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: calc(var(--order, 0) * 90ms + 220ms);
+      }
+
+      .node-pulse {
+        animation: node-pulse 3100ms ease-in-out infinite;
+        animation-delay: var(--pulse-delay, 0ms);
+      }
+
+      .city.hub .hub-ring {
+        animation: hub-turn 6800ms linear infinite;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      .map-panel {
+        animation: panel-in 700ms cubic-bezier(.16, 1, .3, 1) both;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+
+      .route {
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes route-draw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes node-pulse {
+      0%,
+      100% {
+        opacity: .1;
+        transform: scale(.82);
+      }
+
+      50% {
+        opacity: .34;
+        transform: scale(1.24);
+      }
+    }
+
+    @keyframes hub-turn {
+      to {
+        transform: rotate(1turn);
+      }
+    }
+
+    @keyframes panel-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .site-header,
+      .hero,
+      .network-board,
+      .below {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        justify-content: flex-start;
+        padding-top: 0;
+      }
+
+      .hero {
+        gap: 14px;
+      }
+
+      .hero-copy {
+        max-width: 680px;
+      }
+
+      .network-map {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .site-header {
+        gap: 14px;
+        padding-bottom: 18px;
+      }
+
+      .hero h2 {
+        font-size: clamp(38px, 15vw, 64px);
+      }
+
+      .meta-rail {
+        grid-template-columns: 1fr;
+      }
+
+      .meta-item {
+        padding: 13px 14px;
+      }
+
+      .map-toolbar,
+      .map-footer {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .map-toolbar {
+        display: grid;
+      }
+
+      .map-footer {
+        display: grid;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+
+      .map-wrap {
+        padding: 10px 8px 12px;
+      }
+
+      .network-map {
+        width: 100%;
+      }
+
+      .node-label {
+        font-size: 13px;
+      }
+
+      .node-sub {
+        display: none;
+      }
+
+      .city-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .city-stat {
+        justify-items: start;
+        grid-template-columns: auto auto;
+        gap: 8px;
+      }
+
+      .signal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header" aria-label="Tidegate Meridian header">
+      <div class="brand">
+        <h1 class="wordmark"><strong>Tidegate</strong><span>Meridian</span></h1>
+        <p class="tagline">亚太网络 / A fictional operating network for founders moving across markets, talent corridors, and launch cities.</p>
+      </div>
+      <nav class="nav" aria-label="Page sections">
+        <a href="#map">Map</a>
+        <a href="#offices">Offices</a>
+        <a href="#signals">Signals</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <h2 id="page-title">Asia network, drawn as a living <span class="red">route field</span>.</h2>
+      <p class="hero-copy">A warm editorial study of city relationships: hubs, working nodes, and regional lines that sharpen when a city is selected.</p>
+    </section>
+
+    <section class="meta-rail" aria-label="Network summary">
+      <div class="meta-item">
+        <span class="meta-label">REGION / 区域</span>
+        <span class="meta-value">Asia-Pacific</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">HUBS / 枢纽</span>
+        <span class="meta-value">Hong Kong, Singapore</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">DATA / 数据</span>
+        <span class="meta-value">Fictional sample</span>
+      </div>
+    </section>
+
+    <section id="map" class="network-board" aria-label="Asia-Pacific network map and office ledger">
+      <article class="map-panel">
+        <div class="map-toolbar">
+          <strong>亚太网络图</strong>
+          <span>Hover or focus a city to isolate connected routes</span>
+        </div>
+
+        <div class="map-wrap">
+          <svg class="network-map" viewBox="0 0 1100 700" role="img" aria-labelledby="map-title map-desc">
+            <title id="map-title">Stylized Asia-Pacific city network map</title>
+            <desc id="map-desc">An approximate hand-drawn Asia-Pacific map with city nodes and curved routes from Hong Kong and Singapore.</desc>
+
+            <g aria-hidden="true">
+              <path class="land" d="M132 154C214 109 351 86 488 101C619 116 718 149 765 201C802 242 781 282 716 300C665 314 650 331 628 357C604 385 607 412 581 434C552 458 521 425 525 393C529 359 496 350 454 363C410 377 394 343 350 334C306 326 279 349 264 394C250 438 278 469 258 491C232 519 187 466 159 418C124 359 98 285 109 224C115 189 123 168 132 154Z"/>
+              <path class="land-secondary" d="M212 314C247 294 285 302 315 333C344 363 349 413 334 456C320 498 286 522 253 498C224 477 207 433 206 389C205 354 196 326 212 314Z"/>
+              <path class="land-secondary" d="M486 360C512 348 540 354 552 378C562 397 556 429 575 451C591 470 617 470 621 492C624 510 598 519 572 506C547 494 541 471 521 455C504 441 485 437 476 417C468 398 466 371 486 360Z"/>
+              <path class="land-secondary" d="M618 516C653 501 708 507 756 523C796 537 836 543 869 533C901 523 921 541 908 564C895 588 838 594 779 580C730 569 694 557 650 565C607 573 582 557 594 536C599 527 607 521 618 516Z"/>
+              <path class="land-secondary" d="M862 540C913 517 986 531 1025 578C1054 613 1031 659 978 668C919 677 858 650 833 610C813 579 823 557 862 540Z"/>
+              <path class="land-secondary" d="M782 185C805 170 837 181 843 206C847 224 833 244 810 250C786 256 763 243 760 221C758 205 766 194 782 185Z"/>
+              <path class="land-secondary" d="M848 215C875 197 914 205 929 230C943 254 925 283 892 290C861 297 833 279 832 251C831 236 836 225 848 215Z"/>
+              <path class="land-secondary" d="M928 274C958 254 994 257 1008 280C1022 303 1006 331 974 340C944 348 915 333 911 307C909 292 914 282 928 274Z"/>
+              <path class="land-secondary" d="M738 342C757 329 786 333 799 353C812 374 799 399 773 406C748 413 727 398 726 375C725 360 729 350 738 342Z"/>
+              <path class="land-secondary" d="M683 286C700 275 721 281 728 299C734 316 724 335 705 338C686 342 670 329 671 311C671 300 675 292 683 286Z"/>
+              <path class="land-secondary" d="M395 496C417 489 443 497 451 516C459 536 443 555 417 557C392 559 373 544 373 523C373 510 380 501 395 496Z"/>
+              <path class="land-secondary" d="M507 502C525 494 548 500 557 517C567 535 554 556 530 560C506 565 487 552 486 531C485 518 492 508 507 502Z"/>
+              <path class="land-secondary" d="M704 442C724 430 752 436 764 458C775 479 762 505 736 511C711 516 689 502 687 477C686 462 691 450 704 442Z"/>
+              <path class="coast-note" d="M165 180C244 148 359 126 488 135C600 143 696 171 742 219"/>
+              <path class="coast-note" d="M219 464C274 496 354 501 432 475C493 455 531 459 572 492"/>
+              <path class="coast-note" d="M632 582C717 606 810 619 904 602"/>
+            </g>
+
+            <g class="routes" aria-hidden="true">
+              <path class="route primary" data-route="singapore tokyo" style="--order:1" pathLength="1" d="M560 475Q657 301 805 225"/>
+              <path class="route primary" data-route="singapore seoul" style="--order:2" pathLength="1" d="M560 475Q632 280 725 205"/>
+              <path class="route primary" data-route="singapore shanghai" style="--order:3" pathLength="1" d="M560 475Q590 333 650 245"/>
+              <path class="route primary" data-route="singapore hong-kong" style="--order:4" pathLength="1" d="M560 475Q576 379 628 320"/>
+              <path class="route primary" data-route="singapore taipei" style="--order:5" pathLength="1" d="M560 475Q626 361 690 305"/>
+              <path class="route primary" data-route="singapore bangkok" style="--order:6" pathLength="1" d="M560 475Q524 434 518 394"/>
+              <path class="route primary" data-route="singapore jakarta" style="--order:7" pathLength="1" d="M560 475Q554 517 570 555"/>
+              <path class="route primary" data-route="singapore mumbai" style="--order:8" pathLength="1" d="M560 475Q400 392 230 385"/>
+              <path class="route primary" data-route="singapore bengaluru" style="--order:9" pathLength="1" d="M560 475Q420 461 260 438"/>
+              <path class="route primary" data-route="singapore sydney" style="--order:10" pathLength="1" d="M560 475Q754 530 890 610"/>
+              <path class="route" data-route="hong-kong tokyo" style="--order:11" pathLength="1" d="M628 320Q704 246 805 225"/>
+              <path class="route" data-route="hong-kong seoul" style="--order:12" pathLength="1" d="M628 320Q662 248 725 205"/>
+              <path class="route" data-route="hong-kong shanghai" style="--order:13" pathLength="1" d="M628 320Q626 275 650 245"/>
+              <path class="route" data-route="hong-kong taipei" style="--order:14" pathLength="1" d="M628 320Q657 300 690 305"/>
+              <path class="route" data-route="hong-kong bangkok" style="--order:15" pathLength="1" d="M628 320Q560 342 518 394"/>
+              <path class="route" data-route="hong-kong manila" style="--order:16" pathLength="1" d="M628 320Q682 352 715 405"/>
+              <path class="route" data-route="bangkok bengaluru" style="--order:17" pathLength="1" d="M518 394Q389 388 260 438"/>
+            </g>
+
+            <g class="cities">
+              <g class="city interactive-city" data-city="mumbai" tabindex="0" role="button" aria-label="Highlight Mumbai routes" style="--pulse-delay:120ms" transform="translate(230 385)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="-54" y="-14">Mumbai</text>
+                <text class="node-sub" x="-54" y="0">IN-WEST</text>
+              </g>
+              <g class="city interactive-city" data-city="bengaluru" tabindex="0" role="button" aria-label="Highlight Bengaluru routes" style="--pulse-delay:260ms" transform="translate(260 438)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="-18" y="30">Bengaluru</text>
+                <text class="node-sub" x="-18" y="44">IN-SOUTH</text>
+              </g>
+              <g class="city interactive-city" data-city="bangkok" tabindex="0" role="button" aria-label="Highlight Bangkok routes" style="--pulse-delay:390ms" transform="translate(518 394)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="-78" y="-16">Bangkok</text>
+                <text class="node-sub" x="-78" y="-2">TH-CORE</text>
+              </g>
+              <g class="city hub interactive-city" data-city="singapore" tabindex="0" role="button" aria-label="Highlight Singapore hub routes" style="--pulse-delay:0ms" transform="translate(560 475)">
+                <circle class="node-hit" r="30"/>
+                <circle class="node-focus" r="21"/>
+                <circle class="node-pulse" r="17"/>
+                <circle class="hub-ring" r="13"/>
+                <circle class="node-core" r="5.5"/>
+                <text class="node-label" x="14" y="-10">Singapore</text>
+                <text class="node-sub" x="14" y="4">HUB / SG</text>
+              </g>
+              <g class="city interactive-city" data-city="jakarta" tabindex="0" role="button" aria-label="Highlight Jakarta routes" style="--pulse-delay:530ms" transform="translate(570 555)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="-70" y="28">Jakarta</text>
+                <text class="node-sub" x="-70" y="42">ID-WEST</text>
+              </g>
+              <g class="city hub interactive-city" data-city="hong-kong" tabindex="0" role="button" aria-label="Highlight Hong Kong hub routes" style="--pulse-delay:80ms" transform="translate(628 320)">
+                <circle class="node-hit" r="30"/>
+                <circle class="node-focus" r="21"/>
+                <circle class="node-pulse" r="17"/>
+                <circle class="hub-ring" r="13"/>
+                <circle class="node-core" r="5.5"/>
+                <text class="node-label" x="15" y="2">Hong Kong</text>
+                <text class="node-sub" x="15" y="16">HUB / HK</text>
+              </g>
+              <g class="city interactive-city" data-city="taipei" tabindex="0" role="button" aria-label="Highlight Taipei routes" style="--pulse-delay:610ms" transform="translate(690 305)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="18" y="-10">Taipei</text>
+                <text class="node-sub" x="18" y="4">TW-NORTH</text>
+              </g>
+              <g class="city interactive-city" data-city="shanghai" tabindex="0" role="button" aria-label="Highlight Shanghai routes" style="--pulse-delay:760ms" transform="translate(650 245)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="-80" y="-14">Shanghai</text>
+                <text class="node-sub" x="-80" y="0">CN-EAST</text>
+              </g>
+              <g class="city interactive-city" data-city="seoul" tabindex="0" role="button" aria-label="Highlight Seoul routes" style="--pulse-delay:900ms" transform="translate(725 205)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="-54" y="-20">Seoul</text>
+                <text class="node-sub" x="-54" y="-6">KR-NORTH</text>
+              </g>
+              <g class="city interactive-city" data-city="tokyo" tabindex="0" role="button" aria-label="Highlight Tokyo routes" style="--pulse-delay:1040ms" transform="translate(805 225)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="18" y="-10">Tokyo</text>
+                <text class="node-sub" x="18" y="4">JP-KANTO</text>
+              </g>
+              <g class="city interactive-city" data-city="manila" tabindex="0" role="button" aria-label="Highlight Manila routes" style="--pulse-delay:1180ms" transform="translate(715 405)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="16" y="5">Manila</text>
+                <text class="node-sub" x="16" y="19">PH-LUZON</text>
+              </g>
+              <g class="city interactive-city" data-city="sydney" tabindex="0" role="button" aria-label="Highlight Sydney routes" style="--pulse-delay:1320ms" transform="translate(890 610)">
+                <circle class="node-hit" r="25"/>
+                <circle class="node-focus" r="18"/>
+                <circle class="node-pulse" r="13"/>
+                <circle class="node-core" r="4.8"/>
+                <text class="node-label" x="18" y="8">Sydney</text>
+                <text class="node-sub" x="18" y="22">AU-EAST</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <footer class="map-footer">
+          <span>Projection is illustrative. Coastlines and distances are intentionally abstract.</span>
+          <div class="legend" aria-label="Map legend">
+            <span class="legend-item"><span class="legend-mark hub" aria-hidden="true"></span>Hub / 枢纽</span>
+            <span class="legend-item"><span class="legend-mark node" aria-hidden="true"></span>Node / 城市</span>
+            <span class="legend-item"><span class="legend-mark route-line" aria-hidden="true"></span>Route / 路线</span>
+          </div>
+        </footer>
+      </article>
+
+      <aside id="offices" class="side-panel" aria-labelledby="office-title">
+        <div class="side-head">
+          <h3 id="office-title">Office Ledger</h3>
+          <p>Fictional office notes for the study. Select any row to mirror the route state on the map.</p>
+        </div>
+
+        <div class="city-ledger" role="list" aria-label="Fictional city office data">
+          <button class="city-row interactive-city" type="button" data-city="hong-kong" role="listitem">
+            <span class="city-main"><span class="city-name">HKG / Hong Kong</span><span class="city-focus">Capital formation, board search</span></span>
+            <span class="city-stat"><strong>2016</strong><span>42 partners</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="singapore" role="listitem">
+            <span class="city-main"><span class="city-name">SGP / Singapore</span><span class="city-focus">Market launch, regulatory desk</span></span>
+            <span class="city-stat"><strong>2018</strong><span>38 partners</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="tokyo" role="listitem">
+            <span class="city-main"><span class="city-name">TYO / Tokyo</span><span class="city-focus">Enterprise pilots</span></span>
+            <span class="city-stat"><strong>2019</strong><span>21 advisors</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="seoul" role="listitem">
+            <span class="city-main"><span class="city-name">SEL / Seoul</span><span class="city-focus">Hardware supply, gaming</span></span>
+            <span class="city-stat"><strong>2020</strong><span>18 advisors</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="shanghai" role="listitem">
+            <span class="city-main"><span class="city-name">SHA / Shanghai</span><span class="city-focus">Industrial AI, logistics</span></span>
+            <span class="city-stat"><strong>2017</strong><span>29 operators</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="taipei" role="listitem">
+            <span class="city-main"><span class="city-name">TPE / Taipei</span><span class="city-focus">Semiconductor counsel</span></span>
+            <span class="city-stat"><strong>2021</strong><span>16 advisors</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="bangkok" role="listitem">
+            <span class="city-main"><span class="city-name">BKK / Bangkok</span><span class="city-focus">Payments, commerce ops</span></span>
+            <span class="city-stat"><strong>2022</strong><span>14 operators</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="jakarta" role="listitem">
+            <span class="city-main"><span class="city-name">JKT / Jakarta</span><span class="city-focus">Consumer finance</span></span>
+            <span class="city-stat"><strong>2020</strong><span>19 operators</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="manila" role="listitem">
+            <span class="city-main"><span class="city-name">MNL / Manila</span><span class="city-focus">Services, talent networks</span></span>
+            <span class="city-stat"><strong>2022</strong><span>13 advisors</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="mumbai" role="listitem">
+            <span class="city-main"><span class="city-name">BOM / Mumbai</span><span class="city-focus">Fintech, public markets</span></span>
+            <span class="city-stat"><strong>2018</strong><span>24 advisors</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="bengaluru" role="listitem">
+            <span class="city-main"><span class="city-name">BLR / Bengaluru</span><span class="city-focus">Developer tools, SaaS</span></span>
+            <span class="city-stat"><strong>2019</strong><span>27 operators</span></span>
+          </button>
+          <button class="city-row interactive-city" type="button" data-city="sydney" role="listitem">
+            <span class="city-main"><span class="city-name">SYD / Sydney</span><span class="city-focus">Climate, health systems</span></span>
+            <span class="city-stat"><strong>2023</strong><span>12 advisors</span></span>
+          </button>
+        </div>
+
+        <div class="side-note">
+          <strong>Interaction note:</strong> hub cities carry the densest route load. Non-hub nodes keep quieter rings so the map reads as a network, not a scatter plot.
+        </div>
+      </aside>
+    </section>
+
+    <section id="signals" class="below" aria-label="Network notes">
+      <article class="principle">
+        <h3>Cartographic restraint</h3>
+        <p>The map uses approximate land silhouettes, hairline routes, and small mono labels. The red accent appears only where a route or active node needs attention.</p>
+      </article>
+      <article class="signal-card">
+        <h3>Fictional signal sample</h3>
+        <div class="signal-grid" aria-label="Fictional network metrics">
+          <span><strong>11</strong>Cities tracked</span>
+          <span><strong>2</strong>Regional hubs</span>
+          <span><strong>17</strong>Illustrated routes</span>
+          <span><strong>260</strong>Sample contacts</span>
+        </div>
+        <p>Counts are mock values created for the visual study and do not represent any real organization.</p>
+      </article>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Asia Network Map》 by yjshin122（社区 #134）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (function () {
+      var map = document.querySelector(".network-map");
+      var routes = Array.prototype.slice.call(document.querySelectorAll("path.route"));
+      var cities = Array.prototype.slice.call(document.querySelectorAll(".interactive-city"));
+      var activeCity = "";
+
+      function connected(route, city) {
+        return route.getAttribute("data-route").split(" ").indexOf(city) !== -1;
+      }
+
+      function setActive(city) {
+        activeCity = city || "";
+
+        routes.forEach(function (route) {
+          var isConnected = activeCity && connected(route, activeCity);
+          route.classList.toggle("active", Boolean(isConnected));
+          route.classList.toggle("muted", Boolean(activeCity && !isConnected));
+        });
+
+        cities.forEach(function (item) {
+          var isCity = item.getAttribute("data-city") === activeCity;
+          var hasRoute = routes.some(function (route) {
+            return activeCity && connected(route, item.getAttribute("data-city")) && connected(route, activeCity);
+          });
+
+          item.classList.toggle("active", Boolean(isCity));
+          item.classList.toggle("muted", Boolean(activeCity && !isCity && !hasRoute));
+        });
+      }
+
+      cities.forEach(function (item) {
+        var city = item.getAttribute("data-city");
+
+        item.addEventListener("mouseenter", function () {
+          setActive(city);
+        });
+
+        item.addEventListener("focus", function () {
+          setActive(city);
+        });
+
+        item.addEventListener("click", function () {
+          setActive(activeCity === city ? "" : city);
+        });
+      });
+
+      document.addEventListener("pointermove", function (event) {
+        if (!map || map.contains(event.target) || event.target.closest(".city-row")) {
+          return;
+        }
+        if (activeCity) {
+          setActive("");
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          setActive("");
+        }
+      });
+    }());
+  </script>
+</body>
+</html>
