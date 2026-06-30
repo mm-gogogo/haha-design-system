@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scratch Card Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f5f5f7;
+      --paper: #ffffff;
+      --paper-soft: #fbfbfd;
+      --ink: #1a1a1c;
+      --muted: #6b6b70;
+      --quiet: #8a8a91;
+      --line: #e5e5ea;
+      --line-strong: #d1d1d6;
+      --mist: #f2f2f7;
+      --accent: #2f6fdb;
+      --accent-soft: #eaf2ff;
+      --mint: #dff7ee;
+      --peach: #fff0e6;
+      --violet: #efeafb;
+      --radius-card: 32px;
+      --radius-panel: 22px;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px 14px 142px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, .98), transparent 28%),
+        radial-gradient(circle at 88% 26%, rgba(224, 238, 255, .9), transparent 32%),
+        radial-gradient(circle at 18% 86%, rgba(255, 238, 225, .9), transparent 30%),
+        linear-gradient(180deg, #fafafa 0%, var(--page) 38%, #ededf2 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(26, 26, 28, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26, 26, 28, .025) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, #000 0%, transparent 78%);
+      opacity: .45;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page-shell {
+      width: min(100%, 438px);
+      position: relative;
+      isolation: isolate;
+    }
+
+    .brand-row {
+      width: min(100%, 400px);
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--ink);
+    }
+
+    .brand-lockup {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border-radius: 12px;
+      color: #1f5dcb;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(233, 241, 255, .88)),
+        var(--accent-soft);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .9),
+        0 9px 20px -14px rgba(47, 111, 219, .7);
+    }
+
+    .brand-text {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      line-height: 1.05;
+      font-weight: 770;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 560;
+      white-space: nowrap;
+    }
+
+    .hint-pill {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 32px;
+      padding: 8px 11px;
+      border: 1px solid rgba(209, 209, 214, .82);
+      border-radius: 999px;
+      color: #333337;
+      background: rgba(255, 255, 255, .72);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .9),
+        0 16px 30px -24px rgba(80, 84, 96, .72);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .hint-pill svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+    }
+
+    .reward-card {
+      width: min(100%, 400px);
+      min-height: min(600px, calc(100dvh - 180px));
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      overflow: hidden;
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(255, 255, 255, .82);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(255, 255, 255, .96), transparent 30%),
+        linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(248, 248, 251, .92) 58%, rgba(244, 245, 249, .96)),
+        var(--paper);
+      box-shadow:
+        0 34px 72px -42px rgba(65, 68, 76, .46),
+        0 18px 38px -34px rgba(39, 46, 68, .62),
+        inset 0 1px 0 rgba(255, 255, 255, .98);
+    }
+
+    .reward-card::before,
+    .reward-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .reward-card::before {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .7), transparent 28%, rgba(26, 26, 28, .03) 100%),
+        radial-gradient(circle at 84% 18%, rgba(223, 247, 238, .9), transparent 24%),
+        radial-gradient(circle at 8% 80%, rgba(255, 240, 230, .95), transparent 24%);
+      opacity: .92;
+    }
+
+    .reward-card::after {
+      inset: 1px;
+      border: 1px solid rgba(255, 255, 255, .72);
+      box-shadow: inset 0 -1px 0 rgba(209, 209, 214, .44);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100%;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    .card-top {
+      display: grid;
+      gap: 17px;
+      padding-top: 2px;
+    }
+
+    .title-block {
+      display: grid;
+      gap: 8px;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(28px, 8vw, 36px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 780;
+    }
+
+    .title-block p {
+      max-width: 28ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 520;
+    }
+
+    .detail-line {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 12px;
+      padding: 14px 15px;
+      border: 1px solid rgba(229, 229, 234, .86);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(250, 250, 252, .76)),
+        rgba(255, 255, 255, .7);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .95),
+        0 13px 28px -26px rgba(28, 35, 56, .5);
+    }
+
+    .detail-line span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.2;
+      font-weight: 650;
+    }
+
+    .detail-line strong {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.1;
+      font-weight: 750;
+      letter-spacing: -.02em;
+    }
+
+    .detail-line code {
+      color: #3b3b40;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 650;
+      letter-spacing: .03em;
+    }
+
+    .scratch-section {
+      position: relative;
+      margin-top: 22px;
+    }
+
+    .scratch-stage {
+      position: relative;
+      aspect-ratio: 1.74 / 1;
+      min-height: 184px;
+      border-radius: var(--radius-panel);
+      overflow: hidden;
+      border: 1px solid rgba(209, 209, 214, .72);
+      background: #f7f8fb;
+      box-shadow:
+        inset 0 2px 15px rgba(42, 44, 52, .07),
+        0 18px 42px -34px rgba(32, 42, 68, .62);
+      isolation: isolate;
+    }
+
+    .prize-layer {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(255, 255, 255, .9), transparent 29%),
+        radial-gradient(circle at 82% 8%, rgba(223, 247, 238, .92), transparent 30%),
+        radial-gradient(circle at 18% 88%, rgba(255, 240, 230, .9), transparent 31%),
+        linear-gradient(135deg, #ffffff 0%, #f6f7fb 44%, #edf3ff 100%);
+    }
+
+    .prize-layer::before {
+      content: "";
+      position: absolute;
+      inset: -35%;
+      background:
+        conic-gradient(from 120deg at 50% 50%,
+          rgba(223, 247, 238, .22),
+          rgba(234, 242, 255, .7),
+          rgba(255, 240, 230, .58),
+          rgba(239, 234, 251, .5),
+          rgba(223, 247, 238, .22));
+      opacity: .76;
+      transform: rotate(12deg);
+    }
+
+    .prize-layer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, .82) 44%, transparent 66%);
+      opacity: .7;
+      transform: translateX(-76%);
+    }
+
+    .reward-card.is-revealed .prize-layer::after {
+      animation: shine-pass 1050ms var(--ease) 70ms both;
+    }
+
+    .prize-copy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      width: 100%;
+      text-align: center;
+      transform: scale(.985);
+      transition: transform 520ms var(--ease);
+    }
+
+    .reward-card.is-revealed .prize-copy {
+      transform: scale(1.035);
+      animation: prize-settle 680ms var(--ease) 150ms both;
+    }
+
+    .prize-kicker {
+      color: #52525a;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 760;
+      letter-spacing: .04em;
+    }
+
+    .prize-amount {
+      color: #171719;
+      font-family: var(--mono);
+      font-size: clamp(38px, 12vw, 54px);
+      line-height: .95;
+      letter-spacing: -.055em;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .prize-name {
+      color: #303036;
+      font-size: 15px;
+      line-height: 1.25;
+      font-weight: 760;
+    }
+
+    .prize-note {
+      max-width: 28ch;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 560;
+    }
+
+    .scratch-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      cursor: crosshair;
+      touch-action: none;
+      opacity: 1;
+      transition: opacity 620ms var(--ease);
+    }
+
+    .scratch-canvas[hidden] {
+      display: none;
+    }
+
+    .scratch-canvas:focus-visible {
+      outline: 3px solid rgba(47, 111, 219, .34);
+      outline-offset: -6px;
+    }
+
+    .feedback-ring {
+      position: absolute;
+      inset: 12px;
+      z-index: 2;
+      border-radius: calc(var(--radius-panel) - 8px);
+      border: 1px solid rgba(47, 111, 219, .3);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(.98);
+    }
+
+    .reward-card.is-celebrating .feedback-ring {
+      animation: reveal-ring 720ms var(--ease) both;
+    }
+
+    .confetti,
+    .glints {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .confetti i {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      width: var(--w, 7px);
+      height: var(--h, 12px);
+      border-radius: var(--br, 2px);
+      background: var(--c, #2f6fdb);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.55) rotate(0deg);
+    }
+
+    .confetti i:nth-child(3n) {
+      border-radius: 999px;
+    }
+
+    .confetti i:nth-child(4n) {
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+
+    .reward-card.is-celebrating .confetti i {
+      animation: confetti-burst 980ms var(--ease) forwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .glint {
+      position: absolute;
+      left: var(--gx);
+      top: var(--gy);
+      width: var(--gs, 16px);
+      height: var(--gs, 16px);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.2) rotate(45deg);
+    }
+
+    .glint::before,
+    .glint::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(47, 111, 219, .72);
+      transform: translate(-50%, -50%);
+    }
+
+    .glint::after {
+      width: 2px;
+      height: 100%;
+    }
+
+    .reward-card.is-celebrating .glint {
+      animation: glint-pop 780ms var(--ease) forwards;
+      animation-delay: var(--gd, 0ms);
+    }
+
+    .scratch-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 0 3px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 620;
+    }
+
+    .scratch-percent {
+      flex: 0 0 auto;
+      color: #3b3b40;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bottom-block {
+      margin-top: auto;
+      padding-top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .voucher-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(229, 229, 234, .84);
+      background: rgba(255, 255, 255, .66);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
+    }
+
+    .voucher-strip span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.2;
+      font-weight: 650;
+    }
+
+    .voucher-strip strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 740;
+    }
+
+    .barcode {
+      width: 82px;
+      height: 38px;
+      border-radius: 7px;
+      opacity: .66;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          #1a1a1c 0 2px,
+          transparent 2px 4px,
+          #1a1a1c 4px 5px,
+          transparent 5px 8px,
+          #1a1a1c 8px 11px,
+          transparent 11px 14px,
+          #1a1a1c 14px 15px,
+          transparent 15px 18px
+        );
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .fine-print {
+      margin: 0;
+      color: var(--quiet);
+      font-size: 11px;
+      line-height: 1.45;
+      font-weight: 520;
+    }
+
+    .reset-button {
+      flex: 0 0 auto;
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border: 1px solid rgba(26, 26, 28, .12);
+      border-radius: 999px;
+      color: #ffffff;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .18), transparent),
+        #1d1d20;
+      box-shadow:
+        0 15px 30px -22px rgba(18, 18, 24, .84),
+        inset 0 1px 0 rgba(255, 255, 255, .22);
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 720;
+      white-space: nowrap;
+      transition:
+        transform 180ms var(--ease),
+        box-shadow 180ms var(--ease),
+        background-color 180ms var(--ease);
+    }
+
+    .reset-button svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+    }
+
+    .reset-button:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 20px 36px -24px rgba(18, 18, 24, .9),
+        inset 0 1px 0 rgba(255, 255, 255, .26);
+    }
+
+    .reset-button:active {
+      transform: translateY(0) scale(.985);
+    }
+
+    .reset-button:focus-visible {
+      outline: 3px solid rgba(47, 111, 219, .34);
+      outline-offset: 3px;
+    }
+
+    @keyframes confetti-burst {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.45) rotate(0deg);
+      }
+      16% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform:
+          translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+          scale(1)
+          rotate(var(--r));
+      }
+    }
+
+    @keyframes glint-pop {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.2) rotate(45deg);
+      }
+      38% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.25) rotate(45deg);
+      }
+    }
+
+    @keyframes reveal-ring {
+      0% {
+        opacity: .9;
+        transform: scale(.985);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.075);
+      }
+    }
+
+    @keyframes prize-settle {
+      0% {
+        transform: scale(.97);
+      }
+      62% {
+        transform: scale(1.045);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes shine-pass {
+      0% {
+        transform: translateX(-76%);
+      }
+      100% {
+        transform: translateX(76%);
+      }
+    }
+
+    @media (max-width: 430px) {
+      body {
+        padding-inline: 12px;
+      }
+
+      .brand-row {
+        align-items: flex-start;
+      }
+
+      .hint-pill {
+        padding-inline: 10px;
+        font-size: 11px;
+      }
+
+      .reward-card {
+        padding: 20px;
+        border-radius: 28px;
+      }
+
+      .detail-line,
+      .voucher-strip {
+        border-radius: 16px;
+      }
+
+      .scratch-stage {
+        min-height: 172px;
+        border-radius: 20px;
+      }
+
+      .scratch-meta {
+        align-items: flex-start;
+      }
+
+      .actions {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .brand-row {
+        display: grid;
+      }
+
+      .reward-card {
+        padding: 18px;
+      }
+
+      .actions {
+        display: grid;
+      }
+
+      .reset-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .confetti,
+      .glints,
+      .feedback-ring {
+        display: none !important;
+      }
+
+      .prize-copy {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell" aria-label="Paleora scratch reward">
+    <header class="brand-row">
+      <div class="brand-lockup">
+        <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true">
+          <rect x="10" y="16" width="24" height="18" rx="6" fill="currentColor" opacity=".12"></rect>
+          <rect x="12" y="18" width="20" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect>
+          <path d="M22 18v14M12 23h20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M17 16c-2-4 4-6 5 0M27 16c2-4-4-6-5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <div class="brand-text">
+          <div class="brand-name">Paleora 礼遇</div>
+          <div class="brand-sub">gift rewards studio</div>
+        </div>
+      </div>
+      <div class="hint-pill" aria-label="刮一刮 scratch to reveal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="4" width="14" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="2"></rect>
+          <path d="M8 9h8M8 13h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <span>刮一刮 / scratch to reveal</span>
+      </div>
+    </header>
+
+    <section class="reward-card" data-scratch-root>
+      <div class="card-content">
+        <div class="card-top">
+          <div class="title-block">
+            <h1>晨光礼券</h1>
+            <p>轻刮银色覆膜，解锁本次专属礼遇。Scratch the foil to reveal your voucher.</p>
+          </div>
+
+          <div class="detail-line">
+            <div>
+              <span>礼金余额 / Balance</span>
+              <strong data-balance>428.00 CNY</strong>
+            </div>
+            <code data-voucher-id>PR-0729</code>
+          </div>
+        </div>
+
+        <div class="scratch-section">
+          <div class="scratch-stage" data-scratch-stage>
+            <div class="prize-layer" aria-live="polite">
+              <div class="prize-copy">
+                <div class="prize-kicker" data-reward-kicker>你抽中 / You unlocked</div>
+                <div class="prize-amount" data-reward-amount>128 CNY</div>
+                <div class="prize-name" data-reward-name>Cloud Desk Voucher</div>
+                <div class="prize-note" data-reward-note>可用于下一次数字素材或模板订单。</div>
+              </div>
+            </div>
+
+            <canvas class="scratch-canvas" data-scratch-canvas tabindex="0" aria-label="Scratch area. Drag to reveal the reward."></canvas>
+            <span class="feedback-ring" aria-hidden="true"></span>
+
+            <div class="confetti" aria-hidden="true">
+              <i style="--x:-132px;--y:-92px;--r:330deg;--c:#2f6fdb;--delay:0ms;--w:7px;--h:12px"></i>
+              <i style="--x:-96px;--y:-118px;--r:220deg;--c:#79c7b0;--delay:35ms;--w:9px;--h:9px;--br:999px"></i>
+              <i style="--x:-58px;--y:-98px;--r:420deg;--c:#f7a76c;--delay:80ms;--w:6px;--h:13px"></i>
+              <i style="--x:0px;--y:-128px;--r:260deg;--c:#8da7e8;--delay:55ms;--w:8px;--h:10px"></i>
+              <i style="--x:58px;--y:-104px;--r:510deg;--c:#efc26a;--delay:15ms;--w:7px;--h:12px"></i>
+              <i style="--x:104px;--y:-116px;--r:295deg;--c:#8fd7c0;--delay:75ms;--w:9px;--h:9px;--br:999px"></i>
+              <i style="--x:137px;--y:-78px;--r:445deg;--c:#6d93df;--delay:40ms;--w:7px;--h:13px"></i>
+              <i style="--x:-145px;--y:-18px;--r:385deg;--c:#f1b987;--delay:95ms;--w:8px;--h:11px"></i>
+              <i style="--x:-104px;--y:38px;--r:250deg;--c:#7ac0a7;--delay:20ms;--w:7px;--h:12px"></i>
+              <i style="--x:-38px;--y:70px;--r:515deg;--c:#376fca;--delay:105ms;--w:9px;--h:9px;--br:999px"></i>
+              <i style="--x:42px;--y:72px;--r:340deg;--c:#f0be68;--delay:60ms;--w:7px;--h:12px"></i>
+              <i style="--x:106px;--y:34px;--r:465deg;--c:#a8a4df;--delay:85ms;--w:7px;--h:11px"></i>
+              <i style="--x:146px;--y:-8px;--r:310deg;--c:#6cc3ad;--delay:30ms;--w:9px;--h:9px;--br:999px"></i>
+              <i style="--x:-12px;--y:112px;--r:440deg;--c:#f59f6c;--delay:115ms;--w:8px;--h:12px"></i>
+            </div>
+
+            <div class="glints" aria-hidden="true">
+              <span class="glint" style="--gx:26%;--gy:31%;--gs:14px;--gd:60ms"></span>
+              <span class="glint" style="--gx:70%;--gy:27%;--gs:18px;--gd:130ms"></span>
+              <span class="glint" style="--gx:78%;--gy:70%;--gs:13px;--gd:210ms"></span>
+              <span class="glint" style="--gx:35%;--gy:74%;--gs:16px;--gd:170ms"></span>
+            </div>
+          </div>
+
+          <div class="scratch-meta">
+            <span data-status-text>拖动手指或鼠标刮开银色覆膜。</span>
+            <span class="scratch-percent" data-progress-text>0%</span>
+          </div>
+        </div>
+
+        <div class="bottom-block">
+          <div class="voucher-strip">
+            <div>
+              <span>券包 / Voucher detail</span>
+              <strong data-voucher-detail>结算时自动抵扣，30 天内有效。</strong>
+            </div>
+            <div class="barcode" aria-hidden="true"></div>
+          </div>
+
+          <div class="actions">
+            <p class="fine-print">礼券仅作页面交互演示，不代表真实权益。Code and value are sample rewards.</p>
+            <button class="reset-button" type="button" data-reset-button>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7.5 8.2A6.4 6.4 0 0 1 18 10.7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
+                <path d="M16.5 15.8A6.4 6.4 0 0 1 6 13.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
+                <path d="M17.7 7.1V11h-3.9M6.3 16.9V13h3.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>再抽一次 / Scratch again</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Apple Inspired Scratch Card》 by kayvancm（社区 #81）· 仅作前端技法学习，版权归原作者</div>
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+
+  <script>
+    (() => {
+      const root = document.querySelector("[data-scratch-root]");
+      const stage = document.querySelector("[data-scratch-stage]");
+      const canvas = document.querySelector("[data-scratch-canvas]");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const resetButton = document.querySelector("[data-reset-button]");
+      const statusText = document.querySelector("[data-status-text]");
+      const progressText = document.querySelector("[data-progress-text]");
+      const rewardKicker = document.querySelector("[data-reward-kicker]");
+      const rewardAmount = document.querySelector("[data-reward-amount]");
+      const rewardName = document.querySelector("[data-reward-name]");
+      const rewardNote = document.querySelector("[data-reward-note]");
+      const voucherDetail = document.querySelector("[data-voucher-detail]");
+      const balance = document.querySelector("[data-balance]");
+      const voucherId = document.querySelector("[data-voucher-id]");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const rewards = [
+        {
+          amount: "128 CNY",
+          name: "Cloud Desk Voucher",
+          note: "可用于下一次数字素材或模板订单。",
+          detail: "结算时自动抵扣，30 天内有效。",
+          balance: "428.00 CNY",
+          code: "PR-0729"
+        },
+        {
+          amount: "86 CNY",
+          name: "Quiet Studio Credit",
+          note: "适用于桌面壁纸、图标包与轻量工具。",
+          detail: "礼券会保存在 Paleora 券包中。",
+          balance: "386.00 CNY",
+          code: "PR-1816"
+        },
+        {
+          amount: "168 CNY",
+          name: "Morning Kit Pass",
+          note: "可用于购买本月新上线的创作组件。",
+          detail: "单笔订单可用一次，过期自动清零。",
+          balance: "468.00 CNY",
+          code: "PR-2450"
+        }
+      ];
+
+      let rewardIndex = 0;
+      let drawing = false;
+      let revealed = false;
+      let dpr = 1;
+      let cssWidth = 0;
+      let cssHeight = 0;
+      let lastPoint = null;
+      let progressQueued = false;
+      let resizeFrame = 0;
+
+      function prefersReducedMotion() {
+        return reducedMotion.matches;
+      }
+
+      function applyReward() {
+        const reward = rewards[rewardIndex];
+        rewardKicker.textContent = "你抽中 / You unlocked";
+        rewardAmount.textContent = reward.amount;
+        rewardName.textContent = reward.name;
+        rewardNote.textContent = reward.note;
+        voucherDetail.textContent = reward.detail;
+        balance.textContent = reward.balance;
+        voucherId.textContent = reward.code;
+      }
+
+      function setProgress(value) {
+        const rounded = Math.max(0, Math.min(100, Math.round(value)));
+        progressText.textContent = `${rounded}%`;
+      }
+
+      function setStatus(message) {
+        statusText.textContent = message;
+      }
+
+      function roundedRect(context, x, y, width, height, radius) {
+        const r = Math.min(radius, width / 2, height / 2);
+        context.beginPath();
+        context.moveTo(x + r, y);
+        context.lineTo(x + width - r, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + r);
+        context.lineTo(x + width, y + height - r);
+        context.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+        context.lineTo(x + r, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - r);
+        context.lineTo(x, y + r);
+        context.quadraticCurveTo(x, y, x + r, y);
+        context.closePath();
+      }
+
+      function resizeCanvas() {
+        const rect = stage.getBoundingClientRect();
+        cssWidth = Math.max(1, Math.round(rect.width));
+        cssHeight = Math.max(1, Math.round(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 3);
+
+        canvas.width = Math.round(cssWidth * dpr);
+        canvas.height = Math.round(cssHeight * dpr);
+        canvas.style.width = `${cssWidth}px`;
+        canvas.style.height = `${cssHeight}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function drawFoil() {
+        resizeCanvas();
+        canvas.hidden = false;
+        canvas.style.opacity = "1";
+        canvas.style.pointerEvents = "auto";
+        ctx.globalCompositeOperation = "source-over";
+        ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+        ctx.save();
+        roundedRect(ctx, 0, 0, cssWidth, cssHeight, 22);
+        ctx.clip();
+
+        const base = ctx.createLinearGradient(0, 0, cssWidth, cssHeight);
+        base.addColorStop(0, "#f7f7fb");
+        base.addColorStop(.16, "#e5e5ea");
+        base.addColorStop(.38, "#fbfbfd");
+        base.addColorStop(.58, "#d8d8de");
+        base.addColorStop(.78, "#f2f2f7");
+        base.addColorStop(1, "#dadbe2");
+        ctx.fillStyle = base;
+        ctx.fillRect(0, 0, cssWidth, cssHeight);
+
+        for (let x = -cssHeight; x < cssWidth + cssHeight; x += 34) {
+          const band = ctx.createLinearGradient(x, 0, x + 76, cssHeight);
+          band.addColorStop(0, "rgba(255, 255, 255, 0)");
+          band.addColorStop(.44, "rgba(255, 255, 255, .42)");
+          band.addColorStop(.62, "rgba(255, 255, 255, .12)");
+          band.addColorStop(1, "rgba(255, 255, 255, 0)");
+          ctx.fillStyle = band;
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x + 18, 0);
+          ctx.lineTo(x + cssHeight + 18, cssHeight);
+          ctx.lineTo(x + cssHeight, cssHeight);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        const glow = ctx.createRadialGradient(cssWidth * .18, cssHeight * .14, 0, cssWidth * .18, cssHeight * .14, cssWidth * .82);
+        glow.addColorStop(0, "rgba(255, 255, 255, .72)");
+        glow.addColorStop(.42, "rgba(234, 242, 255, .2)");
+        glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, cssWidth, cssHeight);
+
+        const flecks = Math.floor((cssWidth * cssHeight) / 115);
+        for (let i = 0; i < flecks; i += 1) {
+          const x = Math.random() * cssWidth;
+          const y = Math.random() * cssHeight;
+          const alpha = Math.random() * .08 + .025;
+          const size = Math.random() > .72 ? 2 : 1;
+          ctx.fillStyle = Math.random() > .5
+            ? `rgba(255, 255, 255, ${alpha + .08})`
+            : `rgba(72, 72, 78, ${alpha})`;
+          ctx.fillRect(x, y, size, size);
+        }
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(255, 255, 255, .92)";
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetY = 1;
+        ctx.fillStyle = "rgba(58, 58, 64, .72)";
+        ctx.font = "760 15px Inter, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillText("刮开礼遇", cssWidth / 2, cssHeight / 2 - 9);
+        ctx.font = "580 12px Inter, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillStyle = "rgba(93, 93, 101, .76)";
+        ctx.fillText("scratch the silver layer", cssWidth / 2, cssHeight / 2 + 16);
+        ctx.restore();
+
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.lineWidth = Math.max(28, Math.min(42, cssWidth * .095));
+        ctx.strokeStyle = "rgba(0, 0, 0, 1)";
+        ctx.fillStyle = "rgba(0, 0, 0, 1)";
+      }
+
+      function getPoint(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+
+      function eraseDot(point) {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, ctx.lineWidth / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function eraseLine(from, to) {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+
+      function startScratch(event) {
+        if (revealed || prefersReducedMotion()) return;
+        event.preventDefault();
+        drawing = true;
+        canvas.setPointerCapture(event.pointerId);
+        lastPoint = getPoint(event);
+        eraseDot(lastPoint);
+        scheduleProgressCheck();
+        setStatus("继续刮开，礼券内容正在显现。");
+      }
+
+      function moveScratch(event) {
+        if (!drawing || revealed || prefersReducedMotion()) return;
+        event.preventDefault();
+        const point = getPoint(event);
+        eraseLine(lastPoint, point);
+        lastPoint = point;
+        scheduleProgressCheck();
+      }
+
+      function stopScratch(event) {
+        if (!drawing) return;
+        drawing = false;
+        lastPoint = null;
+        if (event && canvas.hasPointerCapture(event.pointerId)) {
+          canvas.releasePointerCapture(event.pointerId);
+        }
+        scheduleProgressCheck();
+      }
+
+      function scheduleProgressCheck() {
+        if (progressQueued) return;
+        progressQueued = true;
+        requestAnimationFrame(() => {
+          progressQueued = false;
+          checkProgress();
+        });
+      }
+
+      function checkProgress() {
+        if (revealed || prefersReducedMotion()) return;
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let transparent = 0;
+        let total = 0;
+        const stride = 4 * 14;
+
+        for (let i = 3; i < imageData.length; i += stride) {
+          total += 1;
+          if (imageData[i] < 90) {
+            transparent += 1;
+          }
+        }
+
+        const percent = total ? (transparent / total) * 100 : 0;
+        setProgress(percent);
+
+        if (percent >= 55) {
+          finishReveal(true);
+        }
+      }
+
+      function triggerCelebration() {
+        if (prefersReducedMotion()) return;
+        root.classList.remove("is-celebrating");
+        void root.offsetWidth;
+        root.classList.add("is-celebrating");
+        window.setTimeout(() => {
+          root.classList.remove("is-celebrating");
+        }, 1300);
+      }
+
+      function finishReveal(withCelebration) {
+        if (revealed) return;
+        revealed = true;
+        drawing = false;
+        setProgress(100);
+        setStatus("礼券已揭晓，可点击按钮再抽一次。");
+        root.classList.add("is-revealed");
+        canvas.style.opacity = "0";
+        canvas.style.pointerEvents = "none";
+        if (withCelebration) {
+          triggerCelebration();
+        }
+        window.setTimeout(() => {
+          if (revealed) {
+            ctx.clearRect(0, 0, cssWidth, cssHeight);
+            canvas.hidden = true;
+          }
+        }, prefersReducedMotion() ? 0 : 640);
+      }
+
+      function revealForReducedMotion() {
+        revealed = true;
+        drawing = false;
+        setProgress(100);
+        setStatus("已按减少动态偏好直接显示礼券。");
+        root.classList.add("is-revealed");
+        root.classList.remove("is-celebrating");
+        canvas.hidden = true;
+        canvas.style.opacity = "0";
+        canvas.style.pointerEvents = "none";
+      }
+
+      function resetCard() {
+        rewardIndex = (rewardIndex + 1) % rewards.length;
+        applyReward();
+        revealed = false;
+        drawing = false;
+        lastPoint = null;
+        root.classList.remove("is-revealed", "is-celebrating");
+        setProgress(0);
+        setStatus("拖动手指或鼠标刮开银色覆膜。");
+
+        if (prefersReducedMotion()) {
+          revealForReducedMotion();
+          return;
+        }
+
+        drawFoil();
+      }
+
+      function handleResize() {
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => {
+          if (prefersReducedMotion()) {
+            revealForReducedMotion();
+            return;
+          }
+          if (!revealed) {
+            setProgress(0);
+            drawFoil();
+          } else {
+            resizeCanvas();
+          }
+        });
+      }
+
+      canvas.addEventListener("pointerdown", startScratch);
+      canvas.addEventListener("pointermove", moveScratch);
+      canvas.addEventListener("pointerup", stopScratch);
+      canvas.addEventListener("pointercancel", stopScratch);
+      canvas.addEventListener("lostpointercapture", stopScratch);
+      canvas.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          finishReveal(true);
+        }
+      });
+      resetButton.addEventListener("click", resetCard);
+
+      if ("ResizeObserver" in window) {
+        const observer = new ResizeObserver(handleResize);
+        observer.observe(stage);
+      } else {
+        window.addEventListener("resize", handleResize);
+      }
+
+      if ("addEventListener" in reducedMotion) {
+        reducedMotion.addEventListener("change", () => {
+          if (prefersReducedMotion()) {
+            revealForReducedMotion();
+          } else {
+            resetCard();
+          }
+        });
+      }
+
+      applyReward();
+      const boot = () => {
+        if (prefersReducedMotion()) {
+          resizeCanvas();
+          revealForReducedMotion();
+        } else {
+          drawFoil();
+        }
+      };
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(boot);
+      } else {
+        boot();
+      }
+    })();
+  </script>
+</body>
+</html>

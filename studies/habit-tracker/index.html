@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小循环 Little Loops · Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #eceff1;
+      --page-line: rgba(28, 28, 30, .07);
+      --phone: #f8f8f8;
+      --card: #ffffff;
+      --card-soft: #fbfbfb;
+      --ink: #1c1c1e;
+      --muted: #6a6a6e;
+      --quiet: #6a6a6e;
+      --line: #ececec;
+      --line-strong: #dedede;
+      --coral: #ff8c66;
+      --coral-4: #ff8c66;
+      --coral-3: #ffae96;
+      --coral-2: #ffd1c3;
+      --coral-1: #fff0eb;
+      --coral-0: #ffffff;
+      --shadow: rgba(28, 28, 30, .10);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --round: "Quicksand", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 22px 14px 130px;
+      display: grid;
+      place-items: start center;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .68) 0%, rgba(255, 255, 255, 0) 32%),
+        linear-gradient(160deg, #f4f5f5 0%, #e8ebed 52%, #f6f0ed 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(var(--page-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--page-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, .7), rgba(0, 0, 0, .05));
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app-shell {
+      width: min(400px, 100%);
+      position: relative;
+      padding: 10px;
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .62)),
+        #f1f2f2;
+      box-shadow:
+        0 34px 78px -42px rgba(28, 28, 30, .46),
+        0 12px 28px -24px rgba(28, 28, 30, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .82);
+    }
+
+    .phone {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 24px;
+      background: var(--phone);
+      border: 1px solid rgba(28, 28, 30, .08);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .88),
+        inset 0 -1px 0 rgba(28, 28, 30, .04);
+    }
+
+    .app {
+      padding: 22px 18px 20px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .greeting {
+      display: grid;
+      gap: 5px;
+    }
+
+    .brand {
+      margin: 0;
+      font-family: var(--round);
+      font-size: clamp(29px, 8vw, 36px);
+      line-height: .95;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .date-line {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .streak-badge {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #fff5f1;
+      border: 1px solid rgba(255, 140, 102, .32);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
+      color: var(--ink);
+      font: 750 12px/1 var(--mono);
+    }
+
+    .badge-icon,
+    .habit-icon,
+    .check-svg {
+      display: block;
+      flex: 0 0 auto;
+    }
+
+    .badge-icon {
+      width: 15px;
+      height: 15px;
+      color: var(--coral);
+    }
+
+    .status-copy {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 560;
+    }
+
+    .calendar-card,
+    .stats-card,
+    .habits-card {
+      border-radius: 8px;
+      background: var(--card);
+      border: 1px solid rgba(28, 28, 30, .07);
+      box-shadow:
+        0 16px 32px -28px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+
+    .calendar-card {
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .section-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font: 700 11px/1.1 var(--mono);
+      white-space: nowrap;
+    }
+
+    .weekday-grid,
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .weekday-grid {
+      gap: 5px;
+      margin-bottom: 7px;
+    }
+
+    .weekday {
+      color: var(--quiet);
+      text-align: center;
+      font: 700 10px/1 var(--mono);
+    }
+
+    .calendar-grid {
+      gap: 5px;
+    }
+
+    .heat-cell,
+    .blank-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+    }
+
+    .heat-cell {
+      position: relative;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(28, 28, 30, .075);
+      background: var(--fill, var(--coral-0));
+      color: var(--ink);
+      font: 720 11px/1 var(--mono);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72);
+      transform: translateZ(0);
+    }
+
+    .heat-cell[data-level="0"] {
+      color: var(--quiet);
+    }
+
+    .heat-cell.is-today {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+      z-index: 1;
+    }
+
+    .heat-cell.is-future {
+      background: #f5f5f5;
+      color: var(--muted);
+      border-style: dashed;
+      box-shadow: none;
+    }
+
+    .stats-card {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .stat {
+      padding: 13px 8px 12px;
+      text-align: center;
+      background: var(--card-soft);
+    }
+
+    .stat + .stat {
+      border-left: 1px solid var(--line);
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--ink);
+      font: 720 clamp(22px, 7vw, 29px)/1 var(--mono);
+      letter-spacing: -.04em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 760;
+    }
+
+    .habits-card {
+      padding: 7px 0;
+      overflow: hidden;
+    }
+
+    .habit-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 14px 9px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .habit-caption {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .habit-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .habit-row {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px;
+      background: var(--card);
+    }
+
+    .habit-row + .habit-row {
+      border-top: 1px solid var(--line);
+    }
+
+    .habit-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #f8f8f8;
+      border: 1px solid rgba(28, 28, 30, .08);
+      color: var(--ink);
+    }
+
+    .habit-icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .habit-name {
+      display: grid;
+      gap: 2px;
+    }
+
+    .habit-zh {
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.15;
+      font-weight: 780;
+    }
+
+    .habit-en {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.15;
+      font-weight: 650;
+    }
+
+    .mini-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 7px);
+      gap: 3px;
+      align-items: center;
+      justify-content: end;
+      width: 67px;
+    }
+
+    .mini-cell {
+      width: 7px;
+      height: 20px;
+      border-radius: 999px;
+      background: #ececec;
+      border: 1px solid rgba(28, 28, 30, .04);
+    }
+
+    .mini-cell.is-on {
+      background: var(--coral);
+      border-color: rgba(255, 140, 102, .62);
+    }
+
+    .check-button {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1.5px solid var(--line-strong);
+      background: #ffffff;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92);
+    }
+
+    .check-button[aria-pressed="true"] {
+      background: var(--coral);
+      border-color: var(--coral);
+      box-shadow: 0 8px 18px -12px rgba(255, 140, 102, .78);
+    }
+
+    .check-svg {
+      width: 17px;
+      height: 17px;
+      stroke: #ffffff;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      opacity: 0;
+      transform: scale(.74);
+    }
+
+    .check-button[aria-pressed="true"] .check-svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .habit-row.is-complete .habit-mark {
+      color: var(--coral);
+      background: #fff3ee;
+      border-color: rgba(255, 140, 102, .28);
+    }
+
+    .note-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 12px 13px;
+      border-radius: 8px;
+      background: #fff7f3;
+      border: 1px solid rgba(255, 140, 102, .22);
+      color: var(--ink);
+    }
+
+    .note-icon {
+      width: 23px;
+      height: 23px;
+      flex: 0 0 auto;
+      color: var(--coral);
+    }
+
+    .note-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding-inline: 8px;
+      }
+
+      .app-shell {
+        padding: 7px;
+        border-radius: 25px;
+      }
+
+      .phone {
+        border-radius: 20px;
+      }
+
+      .app {
+        padding: 18px 13px 18px;
+      }
+
+      .habit-row {
+        grid-template-columns: 32px minmax(0, 1fr) 58px 30px;
+        gap: 8px;
+        padding-inline: 11px;
+      }
+
+      .mini-strip {
+        grid-template-columns: repeat(7, 6px);
+        gap: 2px;
+        width: 54px;
+      }
+
+      .mini-cell {
+        width: 6px;
+        height: 18px;
+      }
+
+      .calendar-card {
+        padding: 12px;
+      }
+
+      .calendar-grid,
+      .weekday-grid {
+        gap: 4px;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .streak-badge,
+      .heat-cell,
+      .mini-cell,
+      .check-button,
+      .check-svg,
+      .habit-mark,
+      .stat-value {
+        transition:
+          background-color .28s cubic-bezier(.2, .8, .2, 1),
+          border-color .28s cubic-bezier(.2, .8, .2, 1),
+          color .28s cubic-bezier(.2, .8, .2, 1),
+          box-shadow .28s cubic-bezier(.2, .8, .2, 1),
+          opacity .22s ease,
+          transform .24s cubic-bezier(.2, .8, .2, 1);
+      }
+
+      .habit-row.just-toggled .check-button {
+        animation: check-pop .34s cubic-bezier(.18, .9, .2, 1.24);
+      }
+
+      .heat-cell.is-today.pulse {
+        animation: heat-pulse .42s cubic-bezier(.2, .8, .2, 1);
+      }
+
+      .stat-value.counting {
+        animation: number-lift .28s cubic-bezier(.2, .8, .2, 1);
+      }
+
+      @keyframes check-pop {
+        0% { transform: scale(.88); }
+        58% { transform: scale(1.13); }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes heat-pulse {
+        0% { transform: scale(.94); }
+        56% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes number-lift {
+        0% { transform: translateY(3px); opacity: .72; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell" aria-label="小循环习惯追踪界面">
+    <section class="phone">
+      <div class="app">
+        <header class="topbar">
+          <div class="greeting">
+            <h1 class="brand">小循环<br>Little Loops</h1>
+            <p class="date-line" id="todayLabel">今天</p>
+          </div>
+          <div class="streak-badge" aria-label="当前连续天数">
+            <svg class="badge-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3.5c2.2 2.2 3.4 4.1 3.4 5.7 0 1.1-.4 2-1.1 2.7.1-2.2-1.1-4-3.1-5.4-2.7 2.4-4.1 5-4.1 7.7 0 3.3 2.3 5.8 5.4 5.8 3.2 0 5.7-2.4 5.7-5.8 0-2.3-1-4.7-3.1-7.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M11.6 19.8c-1.3-.9-1.9-2-1.9-3.2 0-1.4.7-2.7 2-3.8 1.3 1.2 2 2.5 2 3.8 0 1.3-.7 2.4-2.1 3.2Z" fill="currentColor"></path>
+            </svg>
+            <span><span id="badgeStreak">8</span>d</span>
+          </div>
+        </header>
+
+        <p class="status-copy" id="statusCopy">今天留一个温柔的记录，完成的小格子会变得更暖。</p>
+
+        <section class="calendar-card" aria-labelledby="monthTitle">
+          <div class="section-top">
+            <h2 class="section-title" id="monthTitle">本月习惯热力</h2>
+            <span class="section-note" id="monthLabel">Month</span>
+          </div>
+          <div class="weekday-grid" aria-hidden="true">
+            <span class="weekday">一</span>
+            <span class="weekday">二</span>
+            <span class="weekday">三</span>
+            <span class="weekday">四</span>
+            <span class="weekday">五</span>
+            <span class="weekday">六</span>
+            <span class="weekday">日</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid" aria-label="本月每天完成强度"></div>
+        </section>
+
+        <section class="stats-card" aria-label="连续与完成统计">
+          <div class="stat">
+            <span class="stat-value" id="currentStreak">8</span>
+            <span class="stat-label">连续<br>Current</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="bestStreak">12</span>
+            <span class="stat-label">最佳<br>Best</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value"><span id="completionRate">75</span><span aria-hidden="true">%</span></span>
+            <span class="stat-label">完成<br>Done</span>
+          </div>
+        </section>
+
+        <section class="habits-card" aria-labelledby="habitTitle">
+          <div class="habit-header">
+            <div>
+              <h2 class="section-title" id="habitTitle">今日小事</h2>
+              <p class="habit-caption">轻一点也算数，点亮就会同步到今天。</p>
+            </div>
+            <span class="section-note"><span id="doneCount">3</span>/4</span>
+          </div>
+
+          <ul class="habit-list">
+            <li class="habit-row" data-habit="rise">
+              <span class="habit-mark" aria-hidden="true">
+                <svg class="habit-icon" viewBox="0 0 24 24">
+                  <path d="M4 16h16"></path>
+                  <path d="M7 16a5 5 0 0 1 10 0"></path>
+                  <path d="M12 5v3"></path>
+                  <path d="M5.8 8.8l2.1 2.1"></path>
+                  <path d="M18.2 8.8l-2.1 2.1"></path>
+                </svg>
+              </span>
+              <span class="habit-name">
+                <span class="habit-zh">早起</span>
+                <span class="habit-en">Morning rise</span>
+              </span>
+              <span class="mini-strip" aria-hidden="true"></span>
+              <button class="check-button" type="button" aria-pressed="true" aria-label="切换早起完成状态">
+                <svg class="check-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5.5 12.7l4.1 4.1 8.9-9.4"></path>
+                </svg>
+              </button>
+            </li>
+
+            <li class="habit-row" data-habit="water">
+              <span class="habit-mark" aria-hidden="true">
+                <svg class="habit-icon" viewBox="0 0 24 24">
+                  <path d="M12 3.8C9.1 7.1 7 10 7 13a5 5 0 0 0 10 0c0-3-2.1-5.9-5-9.2Z"></path>
+                  <path d="M10 15.4c.5.7 1.2 1.1 2.1 1.1"></path>
+                </svg>
+              </span>
+              <span class="habit-name">
+                <span class="habit-zh">喝水</span>
+                <span class="habit-en">Hydrate well</span>
+              </span>
+              <span class="mini-strip" aria-hidden="true"></span>
+              <button class="check-button" type="button" aria-pressed="true" aria-label="切换喝水完成状态">
+                <svg class="check-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5.5 12.7l4.1 4.1 8.9-9.4"></path>
+                </svg>
+              </button>
+            </li>
+
+            <li class="habit-row" data-habit="read">
+              <span class="habit-mark" aria-hidden="true">
+                <svg class="habit-icon" viewBox="0 0 24 24">
+                  <path d="M5.5 5.5h5.2c1.3 0 2.3 1 2.3 2.3v11c0-1.2-1-2.2-2.3-2.2H5.5Z"></path>
+                  <path d="M18.5 5.5h-5.2c-1.3 0-2.3 1-2.3 2.3v11c0-1.2 1-2.2 2.3-2.2h5.2Z"></path>
+                </svg>
+              </span>
+              <span class="habit-name">
+                <span class="habit-zh">阅读</span>
+                <span class="habit-en">Read pages</span>
+              </span>
+              <span class="mini-strip" aria-hidden="true"></span>
+              <button class="check-button" type="button" aria-pressed="true" aria-label="切换阅读完成状态">
+                <svg class="check-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5.5 12.7l4.1 4.1 8.9-9.4"></path>
+                </svg>
+              </button>
+            </li>
+
+            <li class="habit-row" data-habit="walk">
+              <span class="habit-mark" aria-hidden="true">
+                <svg class="habit-icon" viewBox="0 0 24 24">
+                  <path d="M9.5 5.5a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4Z"></path>
+                  <path d="M10.8 10.3l2.6 3.2"></path>
+                  <path d="M13.4 13.5l3.2.7"></path>
+                  <path d="M12.4 12.3l-2.1 3.1-3.1 2"></path>
+                  <path d="M11 16.2l2.2 3"></path>
+                </svg>
+              </span>
+              <span class="habit-name">
+                <span class="habit-zh">步行</span>
+                <span class="habit-en">Evening walk</span>
+              </span>
+              <span class="mini-strip" aria-hidden="true"></span>
+              <button class="check-button" type="button" aria-pressed="false" aria-label="切换步行完成状态">
+                <svg class="check-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5.5 12.7l4.1 4.1 8.9-9.4"></path>
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </section>
+
+        <aside class="note-card" aria-label="今日鼓励">
+          <svg class="note-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3.5l1.6 4.9h5.1l-4.1 3 1.5 5-4.1-3-4.1 3 1.5-5-4.1-3h5.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+            <path d="M12 7.7v4.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+          </svg>
+          <p id="microcopy">今晚复盘时，只看已经出现的好习惯。</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《habit tracker calendar》 by mmi5574（社区 #98）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const totalHabits = 4;
+      const habits = [
+        { id: "rise", complete: true, history: [true, true, false, true, true, true, true] },
+        { id: "water", complete: true, history: [true, false, true, true, true, true, true] },
+        { id: "read", complete: true, history: [false, true, true, true, false, true, true] },
+        { id: "walk", complete: false, history: [true, true, true, false, true, false, false] }
+      ];
+
+      const copyByDone = [
+        "空白也可以被重新开始，先选最轻的一件。",
+        "一个小格子亮了，今天已经有了方向。",
+        "节奏正在回来，再补一个就很好。",
+        "今天已经很稳，最后一格留给轻松的收尾。",
+        "今天满格，明天只需要继续一点点。"
+      ];
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth();
+      const todayDate = today.getDate();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7;
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const weekdayNames = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+      const dayCounts = {};
+      const heatFills = ["#ffffff", "#fff0eb", "#ffd1c3", "#ffae96", "#ff8c66"];
+
+      const calendarGrid = document.getElementById("calendarGrid");
+      const todayLabel = document.getElementById("todayLabel");
+      const monthLabel = document.getElementById("monthLabel");
+      const statusCopy = document.getElementById("statusCopy");
+      const microcopy = document.getElementById("microcopy");
+      const doneCountEl = document.getElementById("doneCount");
+      const completionRateEl = document.getElementById("completionRate");
+      const currentStreakEl = document.getElementById("currentStreak");
+      const bestStreakEl = document.getElementById("bestStreak");
+      const badgeStreakEl = document.getElementById("badgeStreak");
+
+      function seedMonth() {
+        for (let day = 1; day <= daysInMonth; day += 1) {
+          if (day > todayDate) {
+            dayCounts[day] = null;
+            continue;
+          }
+          const seeded = (day * 7 + Math.floor(day / 2) + month) % 5;
+          dayCounts[day] = Math.min(totalHabits, seeded);
+        }
+
+        for (let day = Math.max(1, todayDate - 8); day < todayDate; day += 1) {
+          dayCounts[day] = totalHabits;
+        }
+
+        dayCounts[todayDate] = getDoneCount();
+      }
+
+      function getDoneCount() {
+        return habits.filter((habit) => habit.complete).length;
+      }
+
+      function getCompletionRate() {
+        return Math.round((getDoneCount() / totalHabits) * 100);
+      }
+
+      function getCurrentStreak() {
+        let streak = 0;
+        let cursor = dayCounts[todayDate] === totalHabits ? todayDate : todayDate - 1;
+        while (cursor >= 1 && dayCounts[cursor] === totalHabits) {
+          streak += 1;
+          cursor -= 1;
+        }
+        return streak;
+      }
+
+      function getBestStreak() {
+        let best = 0;
+        let run = 0;
+        for (let day = 1; day <= todayDate; day += 1) {
+          if (dayCounts[day] === totalHabits) {
+            run += 1;
+            best = Math.max(best, run);
+          } else {
+            run = 0;
+          }
+        }
+        return Math.max(best, 12);
+      }
+
+      function levelForCount(count) {
+        if (count === null) return "future";
+        return String(Math.max(0, Math.min(totalHabits, count)));
+      }
+
+      function labelForDay(day, count) {
+        if (count === null) return `${month + 1}月${day}日，未来日期`;
+        return `${month + 1}月${day}日，完成 ${count}/${totalHabits}`;
+      }
+
+      function renderCalendar() {
+        calendarGrid.innerHTML = "";
+
+        for (let i = 0; i < firstWeekday; i += 1) {
+          const blank = document.createElement("span");
+          blank.className = "blank-cell";
+          blank.setAttribute("aria-hidden", "true");
+          calendarGrid.appendChild(blank);
+        }
+
+        for (let day = 1; day <= daysInMonth; day += 1) {
+          const count = dayCounts[day];
+          const level = levelForCount(count);
+          const cell = document.createElement("span");
+          cell.className = "heat-cell";
+          cell.dataset.day = String(day);
+          cell.dataset.level = level === "future" ? "0" : level;
+          cell.style.setProperty("--fill", level === "future" ? "#f5f5f5" : heatFills[Number(level)]);
+          cell.textContent = String(day);
+          cell.setAttribute("role", "img");
+          cell.setAttribute("aria-label", labelForDay(day, count));
+
+          if (day === todayDate) cell.classList.add("is-today");
+          if (level === "future") cell.classList.add("is-future");
+
+          calendarGrid.appendChild(cell);
+        }
+      }
+
+      function renderMiniStrips() {
+        habits.forEach((habit) => {
+          const row = document.querySelector(`[data-habit="${habit.id}"]`);
+          const strip = row.querySelector(".mini-strip");
+          const button = row.querySelector(".check-button");
+          strip.innerHTML = "";
+
+          habit.history[6] = habit.complete;
+          habit.history.forEach((done) => {
+            const cell = document.createElement("span");
+            cell.className = `mini-cell${done ? " is-on" : ""}`;
+            strip.appendChild(cell);
+          });
+
+          row.classList.toggle("is-complete", habit.complete);
+          button.setAttribute("aria-pressed", habit.complete ? "true" : "false");
+        });
+      }
+
+      function animateNumber(el, from, to, suffix = "") {
+        if (from === to) {
+          el.textContent = `${to}${suffix}`;
+          return;
+        }
+
+        if (reduceMotion) {
+          el.textContent = `${to}${suffix}`;
+          return;
+        }
+
+        const start = performance.now();
+        const duration = 430;
+        el.classList.remove("counting");
+        void el.offsetWidth;
+        el.classList.add("counting");
+
+        function tick(now) {
+          const progress = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const value = Math.round(from + (to - from) * eased);
+          el.textContent = `${value}${suffix}`;
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            el.textContent = `${to}${suffix}`;
+            el.classList.remove("counting");
+          }
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      function updateStats() {
+        const done = getDoneCount();
+        const completion = getCompletionRate();
+        const current = getCurrentStreak();
+        const best = getBestStreak();
+        const oldCurrent = Number(currentStreakEl.textContent) || 0;
+        const oldBest = Number(bestStreakEl.textContent) || 0;
+        const oldCompletion = Number(completionRateEl.textContent) || 0;
+
+        doneCountEl.textContent = String(done);
+        animateNumber(currentStreakEl, oldCurrent, current);
+        animateNumber(bestStreakEl, oldBest, best);
+        animateNumber(completionRateEl, oldCompletion, completion);
+        badgeStreakEl.textContent = String(current);
+        statusCopy.textContent = copyByDone[done];
+        microcopy.textContent = done === totalHabits
+          ? "今天满格，明天从一个轻松的小动作开始。"
+          : "今晚复盘时，只看已经出现的好习惯。";
+      }
+
+      function refreshTodayCell() {
+        const todayCell = calendarGrid.querySelector(`[data-day="${todayDate}"]`);
+        if (!todayCell) return;
+
+        const count = dayCounts[todayDate];
+        todayCell.dataset.level = String(count);
+        todayCell.style.setProperty("--fill", heatFills[count]);
+        todayCell.setAttribute("aria-label", labelForDay(todayDate, count));
+        todayCell.classList.remove("pulse");
+        void todayCell.offsetWidth;
+        todayCell.classList.add("pulse");
+      }
+
+      function syncFromHabits() {
+        dayCounts[todayDate] = getDoneCount();
+        renderMiniStrips();
+        refreshTodayCell();
+        updateStats();
+      }
+
+      function wireToggles() {
+        document.querySelectorAll(".habit-row").forEach((row) => {
+          const id = row.dataset.habit;
+          const habit = habits.find((item) => item.id === id);
+          const button = row.querySelector(".check-button");
+
+          button.addEventListener("click", () => {
+            habit.complete = !habit.complete;
+            row.classList.remove("just-toggled");
+            void row.offsetWidth;
+            row.classList.add("just-toggled");
+            syncFromHabits();
+            window.setTimeout(() => row.classList.remove("just-toggled"), 380);
+          });
+        });
+      }
+
+      function renderDate() {
+        todayLabel.textContent = `今天 ${month + 1}月${todayDate}日 ${weekdayNames[today.getDay()]}`;
+        monthLabel.textContent = `${monthNames[month]} ${year}`;
+      }
+
+      seedMonth();
+      renderDate();
+      renderCalendar();
+      renderMiniStrips();
+      updateStats();
+      wireToggles();
+    })();
+  </script>
+</body>
+</html>
