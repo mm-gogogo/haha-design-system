@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voidline Atlas - Text Terrain Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #030303;
+      --panel: #090909;
+      --panel-2: #0f0f0f;
+      --panel-3: #151515;
+      --line: #2f2f2f;
+      --line-soft: rgba(250, 250, 250, .12);
+      --ink: #fafafa;
+      --text: #e5e7eb;
+      --muted: #a1a1aa;
+      --dim: #71717a;
+      --low: #52525b;
+      --lower: #3f3f46;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: clamp(14px, 2.2vw, 30px) clamp(10px, 2vw, 24px) 132px;
+      overflow-x: clip;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 52% -12%, #1a1a1a 0%, rgba(26, 26, 26, .42) 30%, transparent 58%),
+        radial-gradient(circle at 12% 112%, #101010 0%, transparent 44%),
+        linear-gradient(180deg, #050505 0%, #030303 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .34;
+      background:
+        linear-gradient(rgba(250, 250, 250, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(250, 250, 250, .025) 1px, transparent 1px);
+      background-size: 48px 48px, 48px 48px;
+      mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+    }
+
+    .atlas-shell {
+      position: relative;
+      z-index: 1;
+      width: min(1380px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(250, 250, 250, .055), rgba(250, 250, 250, .012) 26%, rgba(0, 0, 0, .18)),
+        var(--panel);
+      box-shadow:
+        0 34px 90px rgba(0, 0, 0, .58),
+        inset 0 1px 0 rgba(250, 250, 250, .10);
+      overflow: hidden;
+    }
+
+    .atlas-shell::before,
+    .atlas-shell::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      inset: 0;
+    }
+
+    .atlas-shell::before {
+      opacity: .14;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 22px, rgba(250, 250, 250, .08) 23px),
+        repeating-linear-gradient(90deg, transparent 0 22px, rgba(250, 250, 250, .055) 23px);
+    }
+
+    .atlas-shell::after {
+      inset: 10px;
+      border: 1px solid rgba(250, 250, 250, .08);
+    }
+
+    .topbar,
+    .instrument-grid,
+    .footer-log {
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      padding: clamp(18px, 2.5vw, 30px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker,
+    .system-stamp,
+    .panel-title,
+    .readout-label,
+    .map-chip,
+    .legend-label,
+    .footer-log {
+      font-family: var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: clamp(10px, .9vw, 12px);
+      line-height: 1.35;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font: 700 clamp(34px, 7vw, 102px)/.9 var(--mono);
+      letter-spacing: 0;
+    }
+
+    .system-stamp {
+      justify-self: end;
+      min-width: 250px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(15, 15, 16, .82);
+      font-size: 10px;
+      line-height: 1.65;
+      text-align: right;
+      box-shadow: inset 0 1px 0 rgba(250, 250, 250, .08);
+    }
+
+    .system-stamp span {
+      color: var(--dim);
+    }
+
+    .instrument-grid {
+      display: grid;
+      grid-template-columns: minmax(230px, 270px) minmax(0, 1fr) minmax(250px, 308px);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .panel,
+    .map-module {
+      min-width: 0;
+      background: rgba(9, 9, 9, .96);
+    }
+
+    .panel {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0;
+      color: var(--ink);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .panel-title span {
+      color: var(--dim);
+      font-weight: 500;
+    }
+
+    .readout-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .readout {
+      display: grid;
+      grid-template-columns: minmax(84px, .72fr) minmax(0, 1fr);
+      gap: 10px;
+      align-items: baseline;
+      padding: 10px 0;
+      border-top: 1px solid rgba(250, 250, 250, .09);
+    }
+
+    .readout:last-child {
+      border-bottom: 1px solid rgba(250, 250, 250, .09);
+    }
+
+    .readout-label {
+      color: var(--dim);
+      font-size: 9px;
+      line-height: 1.35;
+    }
+
+    .readout-value {
+      min-width: 0;
+      color: var(--text);
+      font: 600 12px/1.35 var(--mono);
+      overflow-wrap: anywhere;
+    }
+
+    .layer-stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .layer-control {
+      position: relative;
+      display: block;
+    }
+
+    .layer-control input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+    }
+
+    .layer-control span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 38px;
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: #080808;
+      font: 700 11px/1 var(--mono);
+      letter-spacing: .09em;
+      transition: background .18s ease, color .18s ease, border-color .18s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .layer-control span::after {
+      content: "OFF";
+      color: var(--dim);
+      font-weight: 500;
+      letter-spacing: .08em;
+    }
+
+    .layer-control input:checked + span {
+      border-color: #d4d4d4;
+      background: #e5e7eb;
+      color: #030303;
+    }
+
+    .layer-control input:checked + span::after {
+      content: "ON";
+      color: #3f3f46;
+    }
+
+    .layer-control input:focus-visible + span {
+      outline: 2px solid #fafafa;
+      outline-offset: 3px;
+    }
+
+    .note-block {
+      padding: 13px;
+      border: 1px solid rgba(250, 250, 250, .11);
+      background: #0d0d0d;
+      color: var(--muted);
+      font: 500 12px/1.65 var(--sans);
+    }
+
+    .note-block strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--text);
+      font: 700 11px/1.35 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .map-module {
+      display: grid;
+      grid-template-rows: auto minmax(360px, 1fr) auto;
+    }
+
+    .map-header,
+    .map-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(250, 250, 250, .10);
+      background: #080808;
+    }
+
+    .map-status {
+      border-top: 1px solid rgba(250, 250, 250, .10);
+      border-bottom: 0;
+      color: var(--dim);
+      font: 600 10px/1.4 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .map-chip {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .map-chip strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .map-frame {
+      position: relative;
+      min-height: min(61vh, 650px);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: clamp(22px, 3.2vw, 40px) clamp(12px, 2.2vw, 30px);
+      background:
+        radial-gradient(circle at 48% 42%, rgba(250, 250, 250, .055) 0%, transparent 46%),
+        linear-gradient(rgba(250, 250, 250, .022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(250, 250, 250, .018) 1px, transparent 1px),
+        #030303;
+      background-size: auto, 100% 11px, 34px 100%, auto;
+    }
+
+    .map-frame::before,
+    .map-frame::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      inset: 14px;
+      border: 1px solid rgba(250, 250, 250, .16);
+    }
+
+    .map-frame::after {
+      inset: 30px;
+      border-color: rgba(250, 250, 250, .07);
+    }
+
+    .terrain-viewport {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px;
+    }
+
+    #terrain {
+      margin: 0;
+      max-width: 100%;
+      white-space: pre;
+      overflow: hidden;
+      color: var(--muted);
+      font: 700 clamp(6.1px, .74vw, 10.4px)/1.05 var(--mono);
+      letter-spacing: 0;
+      text-align: left;
+      user-select: none;
+      -webkit-user-select: none;
+      text-rendering: geometricPrecision;
+    }
+
+    .cell {
+      display: inline;
+    }
+
+    .t0 { color: #030303; }
+    .t1 { color: #3f3f46; }
+    .t2 { color: #52525b; }
+    .t3 { color: #71717a; }
+    .t4 { color: #8b8b8b; }
+    .t5 { color: #a1a1aa; }
+    .t6 { color: #c7c7c7; }
+    .t7 { color: #d4d4d4; }
+    .t8 { color: #e5e7eb; }
+    .t9 { color: #fafafa; }
+
+    .contour {
+      font-weight: 800;
+      text-shadow: 0 0 8px rgba(250, 250, 250, .14);
+    }
+
+    .gridmark {
+      color: #52525b;
+      text-shadow: none;
+    }
+
+    .reticle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 54px;
+      height: 54px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      mix-blend-mode: difference;
+      opacity: .62;
+    }
+
+    .reticle::before,
+    .reticle::after {
+      content: "";
+      position: absolute;
+      background: rgba(250, 250, 250, .54);
+    }
+
+    .reticle::before {
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+    }
+
+    .reticle::after {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+    }
+
+    .axis-tag {
+      position: absolute;
+      color: var(--dim);
+      font: 700 9px/1 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .axis-tag.north { top: 16px; left: 50%; transform: translateX(-50%); }
+    .axis-tag.south { bottom: 16px; left: 50%; transform: translateX(-50%); }
+    .axis-tag.west { left: 16px; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: center; }
+    .axis-tag.east { right: 16px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; }
+
+    .map-label {
+      position: absolute;
+      padding: 5px 7px;
+      border: 1px solid rgba(250, 250, 250, .14);
+      background: rgba(3, 3, 3, .78);
+      color: var(--muted);
+      font: 700 9px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .map-label.one { left: 9%; top: 20%; }
+    .map-label.two { right: 8%; top: 32%; }
+    .map-label.three { left: 18%; bottom: 18%; }
+
+    .legend-ramp {
+      display: grid;
+      gap: 7px;
+    }
+
+    .legend-step {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) 58px;
+      gap: 10px;
+      align-items: center;
+      padding: 7px 0;
+      border-top: 1px solid rgba(250, 250, 250, .09);
+    }
+
+    .legend-step:last-child {
+      border-bottom: 1px solid rgba(250, 250, 250, .09);
+    }
+
+    .legend-glyph {
+      display: inline-grid;
+      place-items: center;
+      min-height: 26px;
+      border: 1px solid rgba(250, 250, 250, .12);
+      background: #070707;
+      font: 800 14px/1 var(--mono);
+    }
+
+    .legend-label {
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.35;
+    }
+
+    .legend-range {
+      color: var(--dim);
+      font: 600 10px/1 var(--mono);
+      text-align: right;
+    }
+
+    .sample-strip {
+      display: grid;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
+    .sample-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font: 600 10px/1.5 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .sample-line span:last-child {
+      color: var(--text);
+      text-align: right;
+    }
+
+    .footer-log {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--line);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .footer-log div {
+      min-width: 0;
+      padding: 12px 14px;
+      background: #080808;
+      color: var(--dim);
+    }
+
+    .footer-log strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .measure {
+      position: absolute;
+      visibility: hidden;
+      pointer-events: none;
+      white-space: pre;
+      font: 700 clamp(6.1px, .74vw, 10.4px)/1.05 var(--mono);
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 1120px) {
+      .instrument-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .map-module {
+        grid-column: 1 / -1;
+        order: -1;
+      }
+
+      .footer-log {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        padding: 18px;
+      }
+
+      .system-stamp {
+        justify-self: stretch;
+        min-width: 0;
+        text-align: left;
+      }
+
+      .instrument-grid,
+      .footer-log {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .map-header,
+      .map-status {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .map-frame {
+        min-height: 430px;
+        padding-left: 9px;
+        padding-right: 9px;
+      }
+
+      .map-label {
+        display: none;
+      }
+    }
+
+    @media (max-width: 430px) {
+      body {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .atlas-shell::after {
+        inset: 6px;
+      }
+
+      h1 {
+        font-size: clamp(30px, 14vw, 50px);
+      }
+
+      .map-frame::before {
+        inset: 9px;
+      }
+
+      .map-frame::after {
+        inset: 22px;
+      }
+
+      .axis-tag {
+        font-size: 8px;
+      }
+
+      .legend-step {
+        grid-template-columns: 30px minmax(0, 1fr) 52px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="atlas-shell" aria-label="Voidline Atlas text terrain cartography engine">
+    <header class="topbar">
+      <div>
+        <p class="kicker">测绘引擎 / CARTOGRAPHY ENGINE</p>
+        <h1>Voidline Atlas</h1>
+      </div>
+      <div class="system-stamp">
+        Monochrome terrain field<br>
+        <span>ASCII relief sampler / 等高线字符场</span>
+      </div>
+    </header>
+
+    <section class="instrument-grid" aria-label="Cartography controls and terrain field">
+      <aside class="panel" aria-label="Survey readouts">
+        <p class="panel-title">Survey Datum <span>观测基准</span></p>
+
+        <div class="readout-grid">
+          <div class="readout">
+            <div class="readout-label">Region</div>
+            <div class="readout-value" id="regionReadout">Mire Fold / 霭褶区</div>
+          </div>
+          <div class="readout">
+            <div class="readout-label">Latitude</div>
+            <div class="readout-value" id="latReadout">N 31.4800</div>
+          </div>
+          <div class="readout">
+            <div class="readout-label">Longitude</div>
+            <div class="readout-value" id="lonReadout">E 117.9200</div>
+          </div>
+          <div class="readout">
+            <div class="readout-label">Zoom</div>
+            <div class="readout-value" id="zoomReadout">1.000X</div>
+          </div>
+          <div class="readout">
+            <div class="readout-label">Seed</div>
+            <div class="readout-value" id="seedReadout">VX-8419</div>
+          </div>
+        </div>
+
+        <div>
+          <p class="panel-title">Layer Stack <span>图层</span></p>
+          <div class="layer-stack" role="group" aria-label="Terrain layers">
+            <label class="layer-control">
+              <input type="checkbox" data-layer="contour" checked>
+              <span>CONTOUR / 等高线</span>
+            </label>
+            <label class="layer-control">
+              <input type="checkbox" data-layer="relief" checked>
+              <span>RELIEF / 起伏</span>
+            </label>
+            <label class="layer-control">
+              <input type="checkbox" data-layer="grid">
+              <span>GRID / 网格</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="note-block">
+          <strong>Raster note</strong>
+          Elevation is sampled from layered sine fields and seeded value-noise. Bands are translated into glyph density and grayscale altitude.
+        </div>
+      </aside>
+
+      <section class="map-module" aria-label="Typographic terrain map">
+        <div class="map-header">
+          <div class="map-chip"><strong id="cellReadout">080 x 042</strong> text cells</div>
+          <div class="map-chip">Scale <strong id="scaleReadout">1:48 000</strong></div>
+          <div class="map-chip">Mode <strong id="modeReadout">CONTOUR + RELIEF</strong></div>
+        </div>
+
+        <div class="map-frame" id="mapFrame">
+          <div class="axis-tag north">N 31.50</div>
+          <div class="axis-tag south">N 31.42</div>
+          <div class="axis-tag west">E 117.84</div>
+          <div class="axis-tag east">E 118.02</div>
+          <div class="map-label one">RIDGE 04</div>
+          <div class="map-label two">SADDLE 12</div>
+          <div class="map-label three">BASIN 07</div>
+          <div class="terrain-viewport" id="terrainViewport">
+            <pre id="terrain" aria-label="Generated typographic elevation field"></pre>
+          </div>
+          <div class="reticle" aria-hidden="true"></div>
+          <span class="measure" id="measure">MMMMMMMMMMMMMMMMMMMM</span>
+        </div>
+
+        <div class="map-status">
+          <span id="motionReadout">Motion: procedural drift</span>
+          <span id="edgeReadout">Contour edges: 0000</span>
+        </div>
+      </section>
+
+      <aside class="panel" aria-label="Elevation legend">
+        <p class="panel-title">Elevation Legend <span>海拔</span></p>
+        <div class="legend-ramp" aria-label="Character ramp mapped to elevation">
+          <div class="legend-step">
+            <span class="legend-glyph t1">.</span>
+            <span class="legend-label">Silt floor</span>
+            <span class="legend-range">000-119</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t2">:</span>
+            <span class="legend-label">Low wash</span>
+            <span class="legend-range">120-219</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t3">-</span>
+            <span class="legend-label">Shallow rise</span>
+            <span class="legend-range">220-339</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t4">=</span>
+            <span class="legend-label">Broken shelf</span>
+            <span class="legend-range">340-459</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t5">+</span>
+            <span class="legend-label">Upper shelf</span>
+            <span class="legend-range">460-579</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t6">*</span>
+            <span class="legend-label">Ridge face</span>
+            <span class="legend-range">580-699</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t7">#</span>
+            <span class="legend-label">High saddle</span>
+            <span class="legend-range">700-819</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t8">%</span>
+            <span class="legend-label">Summit plate</span>
+            <span class="legend-range">820-919</span>
+          </div>
+          <div class="legend-step">
+            <span class="legend-glyph t9">@</span>
+            <span class="legend-label">Peak cap</span>
+            <span class="legend-range">920-999</span>
+          </div>
+        </div>
+
+        <div class="sample-strip">
+          <div class="sample-line"><span>Band count</span><span>11</span></div>
+          <div class="sample-line"><span>Drift rate</span><span>0.08</span></div>
+          <div class="sample-line"><span>Relief step</span><span>ASCII</span></div>
+          <div class="sample-line"><span>Contour lock</span><span>0.036</span></div>
+        </div>
+
+        <div class="note-block">
+          <strong>Region packet</strong>
+          Mire Fold is a fictional survey block. The live map is generated locally in this page from the displayed seed.
+        </div>
+      </aside>
+    </section>
+
+    <footer class="footer-log" aria-label="Engine status">
+      <div><strong>Projection</strong>Local orthographic grid</div>
+      <div><strong>Sampler</strong>Layered sine plus value-noise</div>
+      <div><strong>Palette</strong>Black, white, and measured gray</div>
+      <div><strong>Output</strong>Monospace text terrain</div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Text Terrain Map》（社区 Featured · #112）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const terrain = document.getElementById("terrain");
+      const viewport = document.getElementById("terrainViewport");
+      const measure = document.getElementById("measure");
+      const latReadout = document.getElementById("latReadout");
+      const lonReadout = document.getElementById("lonReadout");
+      const zoomReadout = document.getElementById("zoomReadout");
+      const cellReadout = document.getElementById("cellReadout");
+      const scaleReadout = document.getElementById("scaleReadout");
+      const modeReadout = document.getElementById("modeReadout");
+      const motionReadout = document.getElementById("motionReadout");
+      const edgeReadout = document.getElementById("edgeReadout");
+      const layerInputs = Array.from(document.querySelectorAll("[data-layer]"));
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const seed = 8419;
+      const ramp = [" ", ".", ":", "-", "=", "+", "*", "#", "%", "@"];
+      const contourGlyphs = [":", "-", "=", "+", "*", "#", "%", "@"];
+      const state = {
+        contour: true,
+        relief: true,
+        grid: false
+      };
+
+      let cols = 80;
+      let rows = 42;
+      let lastRenderTime = 0;
+      let staticTime = 19.75;
+      let rafId = 0;
+      let resizedOnce = false;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function smoothstep(t) {
+        return t * t * (3 - 2 * t);
+      }
+
+      function fract(value) {
+        return value - Math.floor(value);
+      }
+
+      function hash2(ix, iy, channel) {
+        const n = Math.sin(ix * 127.1 + iy * 311.7 + channel * 74.7 + seed * .071) * 43758.5453123;
+        return fract(n);
+      }
+
+      function valueNoise(x, y, channel) {
+        const ix = Math.floor(x);
+        const iy = Math.floor(y);
+        const fx = smoothstep(x - ix);
+        const fy = smoothstep(y - iy);
+
+        const a = hash2(ix, iy, channel);
+        const b = hash2(ix + 1, iy, channel);
+        const c = hash2(ix, iy + 1, channel);
+        const d = hash2(ix + 1, iy + 1, channel);
+        const x1 = a + (b - a) * fx;
+        const x2 = c + (d - c) * fx;
+
+        return x1 + (x2 - x1) * fy;
+      }
+
+      function fbm(x, y, t) {
+        let total = 0;
+        let amplitude = .52;
+        let frequency = 1;
+        let norm = 0;
+
+        for (let i = 0; i < 5; i += 1) {
+          total += valueNoise(x * frequency + t * .11 * (i + 1), y * frequency - t * .07 * (i + 1), i + 3) * amplitude;
+          norm += amplitude;
+          amplitude *= .52;
+          frequency *= 2.03;
+        }
+
+        return total / norm;
+      }
+
+      function ridge(x, y, cx, cy, sx, sy, gain) {
+        const dx = (x - cx) * sx;
+        const dy = (y - cy) * sy;
+        return Math.exp(-(dx * dx + dy * dy)) * gain;
+      }
+
+      function heightAt(col, row, t) {
+        const nx = (col / Math.max(1, cols - 1) - .5) * 5.8;
+        const ny = (row / Math.max(1, rows - 1) - .5) * 3.9;
+        const warp = fbm(nx * .58 + 12.4, ny * .72 - 4.1, t) - .5;
+        const x = nx + warp * .82 + Math.sin(t * .18) * .18;
+        const y = ny - warp * .54 + Math.cos(t * .16) * .14;
+
+        const foldedSine =
+          Math.sin(x * 1.22 + Math.cos(y * 1.48 + t * .20)) * .17 +
+          Math.cos(y * 1.66 - Math.sin(x * .96 - t * .13)) * .15 +
+          Math.sin((x + y) * .82 + t * .11) * .09;
+
+        const grain = fbm(x * .86 + 2.7, y * .94 - 1.8, t) - .5;
+        const highlands =
+          ridge(x, y, -1.25, -.18, .82, 1.28, .30) +
+          ridge(x, y, .95, .58, 1.05, .92, .24) +
+          ridge(x, y, 1.88, -.72, .72, 1.55, .18);
+        const trench =
+          ridge(x, y, -.18, .88, 1.26, .62, -.26) +
+          ridge(x, y, -2.28, -.94, .82, 1.02, -.18);
+
+        return clamp(.48 + foldedSine + grain * .34 + highlands + trench, 0, 1);
+      }
+
+      function measureGrid() {
+        if (!viewport || !measure) return;
+
+        const terrainStyle = window.getComputedStyle(terrain);
+        measure.style.font = terrainStyle.font;
+        measure.textContent = "MMMMMMMMMMMMMMMMMMMM";
+
+        const width = viewport.clientWidth;
+        const charWidth = Math.max(3.8, measure.getBoundingClientRect().width / 20);
+        const availableCols = Math.floor(Math.max(160, width - 8) / charWidth);
+        const mobile = width < 520;
+        const minCols = mobile ? 48 : 66;
+        const maxCols = mobile ? 78 : 98;
+
+        cols = availableCols < minCols ? clamp(availableCols, 36, maxCols) : clamp(availableCols, minCols, maxCols);
+        rows = clamp(Math.round(cols * (mobile ? .57 : .52)), mobile ? 26 : 34, mobile ? 44 : 54);
+        cellReadout.textContent = String(cols).padStart(3, "0") + " x " + String(rows).padStart(3, "0");
+        resizedOnce = true;
+      }
+
+      function isGridMark(col, row) {
+        const stepX = Math.max(8, Math.round(cols / 8));
+        const stepY = Math.max(5, Math.round(rows / 7));
+        const verticalTick = col % stepX === 0 && row % 2 === 0;
+        const horizontalTick = row % stepY === 0 && col % 2 === 0;
+        return verticalTick || horizontalTick;
+      }
+
+      function renderTerrain(t) {
+        if (!resizedOnce) measureGrid();
+
+        const contourBands = 11;
+        const lines = [];
+        let edgeCount = 0;
+        let sum = 0;
+
+        for (let row = 0; row < rows; row += 1) {
+          let line = "";
+
+          for (let col = 0; col < cols; col += 1) {
+            const h = heightAt(col, row, t);
+            sum += h;
+            const band = clamp(Math.floor(h * ramp.length), 0, ramp.length - 1);
+            const contourPhase = h * contourBands;
+            const contourDistance = Math.abs(contourPhase - Math.round(contourPhase));
+            const edge = contourDistance < .036 || (h > .70 && contourDistance < .049);
+            const grid = state.grid && isGridMark(col, row);
+
+            let glyph = " ";
+            let tone = 0;
+            let extra = "";
+
+            if (state.relief) {
+              glyph = ramp[band];
+              tone = clamp(band, 1, 9);
+            }
+
+            if (state.contour && edge) {
+              const contourIndex = Math.abs(Math.round(contourPhase) + band) % contourGlyphs.length;
+              glyph = contourGlyphs[contourIndex];
+              tone = clamp(band + 2, 3, 9);
+              extra = " contour";
+              edgeCount += 1;
+            }
+
+            if (!state.relief && state.contour && !edge) {
+              glyph = " ";
+              tone = 0;
+              extra = "";
+            }
+
+            if (grid && (glyph === " " || tone < 4)) {
+              const stepX = Math.max(8, Math.round(cols / 8));
+              const stepY = Math.max(5, Math.round(rows / 7));
+              const intersection = col % stepX === 0 && row % stepY === 0;
+              glyph = intersection ? "+" : (row % stepY === 0 ? "-" : "|");
+              tone = 2;
+              extra = " gridmark";
+            }
+
+            if (!state.relief && !state.contour && !state.grid) {
+              const baseline = (col * 3 + row * 5) % 29 === 0;
+              glyph = baseline ? "." : " ";
+              tone = baseline ? 1 : 0;
+            }
+
+            line += '<span class="cell t' + tone + extra + '">' + glyph + "</span>";
+          }
+
+          lines.push(line);
+        }
+
+        terrain.innerHTML = lines.join("\n");
+        edgeReadout.textContent = "Contour edges: " + String(edgeCount).padStart(4, "0");
+
+        const avg = sum / (cols * rows);
+        const lat = 31.48 + Math.sin(t * .21) * .022 + (avg - .5) * .04;
+        const lon = 117.92 + Math.cos(t * .17) * .035 - (avg - .5) * .03;
+        const zoom = 1 + (cols - 70) / 120 + (state.grid ? .04 : 0);
+        const scale = Math.round(52000 - cols * 42 - rows * 17);
+
+        latReadout.textContent = "N " + lat.toFixed(4);
+        lonReadout.textContent = "E " + lon.toFixed(4);
+        zoomReadout.textContent = zoom.toFixed(3) + "X";
+        scaleReadout.textContent = "1:" + String(Math.max(32000, scale)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+        const modeParts = [];
+        if (state.contour) modeParts.push("CONTOUR");
+        if (state.relief) modeParts.push("RELIEF");
+        if (state.grid) modeParts.push("GRID");
+        modeReadout.textContent = modeParts.length ? modeParts.join(" + ") : "BASELINE";
+      }
+
+      function stopLoop() {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+      }
+
+      function startLoop() {
+        stopLoop();
+        measureGrid();
+
+        if (reducedMotion.matches) {
+          motionReadout.textContent = "Motion: reduced, static frame";
+          renderTerrain(staticTime);
+          return;
+        }
+
+        motionReadout.textContent = "Motion: procedural drift";
+
+        const tick = (now) => {
+          rafId = requestAnimationFrame(tick);
+          if (now - lastRenderTime < 145) return;
+          lastRenderTime = now;
+          staticTime = now * .00008;
+          renderTerrain(staticTime);
+        };
+
+        rafId = requestAnimationFrame(tick);
+      }
+
+      layerInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          state[input.dataset.layer] = input.checked;
+          renderTerrain(staticTime);
+        });
+      });
+
+      if ("ResizeObserver" in window) {
+        const observer = new ResizeObserver(() => {
+          measureGrid();
+          renderTerrain(staticTime);
+        });
+        observer.observe(viewport);
+      } else {
+        window.addEventListener("resize", () => {
+          measureGrid();
+          renderTerrain(staticTime);
+        });
+      }
+
+      if (typeof reducedMotion.addEventListener === "function") {
+        reducedMotion.addEventListener("change", startLoop);
+      } else if (typeof reducedMotion.addListener === "function") {
+        reducedMotion.addListener(startLoop);
+      }
+
+      measureGrid();
+      renderTerrain(staticTime);
+      startLoop();
+    })();
+  </script>
+</body>
+</html>
