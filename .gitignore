@@ -25,3 +25,4 @@ _assets/_gen.log
 
 # 小红书营销素材(不部署)
 xhs/
+.claude/scheduled_tasks.lock

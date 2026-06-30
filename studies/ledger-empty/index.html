@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mossnote Empty Ledger Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f4f2;
+      --paper-soft: #f0efed;
+      --paper-warm: #eae9e6;
+      --line: #e8e7e4;
+      --card: #fbfaf7;
+      --ink: #1a1a1a;
+      --muted: #6f6f6d;
+      --quiet: #7a7a78;
+      --coral: #ffa984;
+      --coral-soft: #ffe0d0;
+      --sage: #c2daa6;
+      --sage-soft: #e5eed9;
+      --shadow: rgba(74, 62, 50, .12);
+      --shadow-soft: rgba(74, 62, 50, .07);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      --friendly: "Quicksand", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #ecebe7;
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px 0 112px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      background:
+        radial-gradient(circle at 21% 10%, rgba(255, 169, 132, .22), transparent 32%),
+        radial-gradient(circle at 78% 86%, rgba(194, 218, 166, .32), transparent 34%),
+        linear-gradient(155deg, #f7f6f3 0%, #ecebe7 47%, #e4e2dc 100%);
+    }
+
+    @supports not (overflow-x: clip) {
+      body {
+        overflow-x: hidden;
+      }
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .phone {
+      position: relative;
+      width: min(100vw, 420px);
+      min-height: min(844px, calc(100dvh - 48px));
+      overflow: hidden;
+      isolation: isolate;
+      border-radius: 32px;
+      border: 1px solid rgba(142, 132, 118, .22);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .72), rgba(245, 244, 242, .7)),
+        var(--paper);
+      box-shadow:
+        0 34px 80px -42px rgba(53, 45, 38, .62),
+        0 14px 32px -24px rgba(53, 45, 38, .38),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .62;
+      background:
+        radial-gradient(circle at 16% 7%, rgba(255, 169, 132, .2), transparent 30%),
+        radial-gradient(circle at 88% 30%, rgba(194, 218, 166, .3), transparent 34%),
+        linear-gradient(90deg, rgba(255, 255, 255, .18) 1px, transparent 1px);
+      background-size: auto, auto, 34px 100%;
+    }
+
+    .app {
+      min-height: inherit;
+      padding: 18px clamp(16px, 5vw, 24px) 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      padding: 2px 0 4px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      color: var(--ink);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 11px;
+      background: var(--sage);
+      color: var(--ink);
+      font-family: var(--friendly);
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6);
+    }
+
+    .brand-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .month-selector {
+      min-width: 124px;
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(251, 250, 247, .78);
+      color: var(--ink);
+      box-shadow: 0 8px 18px -16px var(--shadow);
+    }
+
+    .month-selector span {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      white-space: nowrap;
+    }
+
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      justify-self: end;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(251, 250, 247, .8);
+      color: var(--ink);
+      box-shadow: 0 8px 18px -16px var(--shadow);
+    }
+
+    .icon-button svg,
+    .month-selector svg {
+      flex: 0 0 auto;
+    }
+
+    .balance-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 112px;
+      align-items: center;
+      gap: 12px;
+      min-height: 140px;
+      padding: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 231, 228, .95);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .74), rgba(245, 244, 242, .78)),
+        var(--card);
+      box-shadow:
+        0 18px 40px -28px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .85);
+    }
+
+    .balance-card::after {
+      content: "";
+      position: absolute;
+      width: 138px;
+      height: 138px;
+      right: -55px;
+      top: -58px;
+      border-radius: 50%;
+      background: rgba(255, 169, 132, .16);
+      pointer-events: none;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+
+    .amount {
+      display: block;
+      font-family: var(--mono);
+      font-size: clamp(34px, 10vw, 44px);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.045em;
+      color: var(--ink);
+    }
+
+    .balance-note {
+      margin: 10px 0 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .mini-chart {
+      width: 112px;
+      max-width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 10px 12px rgba(74, 62, 50, .06));
+    }
+
+    .empty-card {
+      padding: 28px 20px 22px;
+      border: 1px solid rgba(232, 231, 228, .98);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 7%, rgba(255, 169, 132, .12), transparent 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, .7), rgba(240, 239, 237, .55)),
+        var(--card);
+      box-shadow:
+        0 20px 52px -34px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .86);
+      text-align: center;
+    }
+
+    .illustration-wrap {
+      width: min(248px, 78vw);
+      margin: 0 auto 20px;
+      transform-origin: 50% 72%;
+      will-change: transform;
+    }
+
+    .empty-illustration {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .headline {
+      margin: 0;
+      font-family: var(--friendly);
+      font-size: clamp(26px, 7vw, 32px);
+      line-height: 1.08;
+      font-weight: 760;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .subtext {
+      width: min(100%, 284px);
+      margin: 11px auto 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .primary-action {
+      width: min(100%, 300px);
+      min-height: 56px;
+      margin: 22px auto 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 999px;
+      background: var(--coral);
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow:
+        0 16px 26px -18px rgba(190, 94, 58, .58),
+        inset 0 1px 0 rgba(255, 255, 255, .46);
+    }
+
+    .primary-action:focus-visible,
+    .chip:focus-visible,
+    .month-selector:focus-visible,
+    .icon-button:focus-visible {
+      outline: 3px solid rgba(26, 26, 26, .78);
+      outline-offset: 3px;
+    }
+
+    .quick-area {
+      display: grid;
+      gap: 10px;
+    }
+
+    .quick-title {
+      margin: 0 2px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .03em;
+    }
+
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .chip {
+      min-width: 0;
+      min-height: 70px;
+      padding: 9px 6px 8px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 18px;
+      border: 1px solid rgba(232, 231, 228, .95);
+      background: var(--card);
+      color: var(--ink);
+      box-shadow: 0 12px 24px -22px var(--shadow);
+    }
+
+    .chip.sage {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(194, 218, 166, .3)), var(--sage-soft);
+    }
+
+    .chip.coral {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .52), rgba(255, 169, 132, .25)), var(--coral-soft);
+    }
+
+    .chip span {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #565654;
+      font-size: 12px;
+      font-weight: 760;
+      line-height: 1.15;
+    }
+
+    .preview-card {
+      padding: 15px 16px;
+      border: 1px solid rgba(232, 231, 228, .92);
+      border-radius: 20px;
+      background: rgba(251, 250, 247, .62);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .74);
+    }
+
+    .preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      letter-spacing: .02em;
+    }
+
+    .preview-count {
+      font-family: var(--mono);
+      color: var(--quiet);
+      font-size: 11px;
+      letter-spacing: -.02em;
+    }
+
+    .preview-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .preview-row {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 32px;
+      color: #5f5f5d;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .preview-row svg {
+      color: var(--quiet);
+    }
+
+    .ghost-line {
+      display: block;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #dfddd8, #eeece8);
+    }
+
+    .ghost-line.one {
+      width: 72px;
+    }
+
+    .ghost-line.two {
+      width: 54px;
+    }
+
+    .ghost-line.three {
+      width: 64px;
+    }
+
+    svg {
+      max-width: 100%;
+    }
+
+    @media (max-width: 390px) {
+      body {
+        padding-top: 0;
+      }
+
+      .phone {
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+      }
+
+      .app {
+        padding-inline: 16px;
+      }
+
+      .balance-card {
+        grid-template-columns: minmax(0, 1fr) 96px;
+        padding: 18px;
+      }
+
+      .mini-chart {
+        width: 96px;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .phone {
+        animation: phone-in 560ms cubic-bezier(.16, 1, .3, 1) both;
+      }
+
+      .topbar,
+      .balance-card,
+      .empty-card,
+      .quick-area,
+      .preview-card {
+        opacity: 0;
+        animation: rise-in 620ms cubic-bezier(.16, 1, .3, 1) both;
+      }
+
+      .balance-card {
+        animation-delay: 80ms;
+      }
+
+      .empty-card {
+        animation-delay: 150ms;
+      }
+
+      .quick-area {
+        animation-delay: 230ms;
+      }
+
+      .preview-card {
+        animation-delay: 300ms;
+      }
+
+      .illustration-wrap {
+        animation: float-soft 5.2s ease-in-out 760ms infinite;
+      }
+
+      .primary-action,
+      .chip,
+      .month-selector,
+      .icon-button {
+        transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+      }
+
+      .primary-action:active {
+        transform: translateY(1px) scale(.985);
+        box-shadow:
+          0 10px 18px -16px rgba(190, 94, 58, .5),
+          inset 0 1px 0 rgba(255, 255, 255, .38);
+      }
+
+      .chip:active,
+      .month-selector:active,
+      .icon-button:active {
+        transform: translateY(1px) scale(.985);
+      }
+
+      @keyframes phone-in {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(.985);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes rise-in {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float-soft {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-.25deg);
+        }
+        50% {
+          transform: translateY(-7px) rotate(.35deg);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="苔记 Mossnote 空账本界面">
+    <div class="app">
+      <header class="topbar">
+        <div class="brand" aria-label="苔记 Mossnote">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <span class="brand-name">苔记</span>
+        </div>
+
+        <button class="month-selector" type="button" aria-label="切换月份">
+          <span>本月 · 06</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+            <path d="M3.5 5.5 7 9l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="icon-button" type="button" aria-label="打开设置">
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <circle cx="9" cy="9" r="6.25" fill="none" stroke="currentColor" stroke-width="1.45"/>
+            <path d="M6.75 8.25c.38-1.06 1.14-1.68 2.25-1.68 1.11 0 1.87.62 2.25 1.68M5.9 12.6c.7-1.1 1.74-1.65 3.1-1.65s2.4.55 3.1 1.65" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </header>
+
+      <section class="balance-card" aria-labelledby="balance-title">
+        <div>
+          <span class="label" id="balance-title">本月余额</span>
+          <data class="amount" value="0">¥0.00</data>
+          <p class="balance-note">账户还很安静，第一笔记录会从这里开始。</p>
+        </div>
+
+        <svg class="mini-chart" viewBox="0 0 112 96" aria-label="空白趋势图">
+          <rect x="8" y="10" width="96" height="76" rx="18" fill="#f0efed"/>
+          <path d="M24 66h64" stroke="#d8d6d0" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 7"/>
+          <path d="M24 54c10-9 18-9 28 0s17 9 28 0" fill="none" stroke="#c2daa6" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="33" cy="42" r="12" fill="#ffa984" opacity=".78"/>
+          <circle cx="78" cy="35" r="15" fill="#c2daa6" opacity=".82"/>
+          <path d="M30 70h51" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" opacity=".18"/>
+          <circle cx="86" cy="66" r="4" fill="#1a1a1a" opacity=".22"/>
+        </svg>
+      </section>
+
+      <section class="empty-card" aria-labelledby="empty-title">
+        <div class="illustration-wrap" aria-hidden="true">
+          <svg class="empty-illustration" viewBox="0 0 248 198" role="img">
+            <defs>
+              <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
+                <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#4a3e32" flood-opacity=".12"/>
+              </filter>
+            </defs>
+            <ellipse cx="124" cy="166" rx="74" ry="12" fill="#dedbd4" opacity=".55"/>
+            <circle cx="90" cy="82" r="58" fill="#c2daa6" opacity=".78"/>
+            <rect x="112" y="52" width="86" height="86" rx="25" fill="#ffa984" opacity=".75" transform="rotate(12 155 95)"/>
+            <path d="M75 54h74c10.5 0 19 8.5 19 19v78H63V66c0-6.6 5.4-12 12-12Z" fill="#fbfaf7" stroke="#e8e7e4" stroke-width="2" filter="url(#soft-shadow)" transform="rotate(-5 116 103)"/>
+            <path d="M84 76h49M84 92h34M84 126h56" stroke="#d8d5cf" stroke-width="6" stroke-linecap="round" transform="rotate(-5 116 103)"/>
+            <path d="M74 113h106c8.8 0 16 7.2 16 16v26c0 8.8-7.2 16-16 16H74c-8.8 0-16-7.2-16-16v-26c0-8.8 7.2-16 16-16Z" fill="#f6f5f2" stroke="#dedbd4" stroke-width="2.2" filter="url(#soft-shadow)"/>
+            <path d="M58 132h108c11 0 20 9 20 20v4c0 8.3-6.7 15-15 15H74c-8.8 0-16-7.2-16-16v-23Z" fill="#fbfaf7"/>
+            <path d="M153 135h36c6.6 0 12 5.4 12 12v10c0 6.6-5.4 12-12 12h-36c-6.6 0-12-5.4-12-12v-10c0-6.6 5.4-12 12-12Z" fill="#f0efed" stroke="#dedbd4" stroke-width="2"/>
+            <circle cx="163" cy="152" r="6" fill="#ffa984"/>
+            <circle cx="54" cy="126" r="14" fill="#e5eed9" stroke="#c2daa6" stroke-width="2"/>
+            <path d="M49 126h10M54 121v10" stroke="#6f6f6d" stroke-width="1.7" stroke-linecap="round"/>
+            <circle cx="198" cy="79" r="13" fill="#ffe0d0" stroke="#ffa984" stroke-width="2"/>
+            <path d="M194 79h8" stroke="#6f6f6d" stroke-width="1.7" stroke-linecap="round"/>
+            <path d="M95 144h28" stroke="#d8d5cf" stroke-width="5" stroke-linecap="round"/>
+            <path d="M95 156h38" stroke="#e6e3dd" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <h1 class="headline" id="empty-title">先记下第一笔</h1>
+        <p class="subtext">还没有交易记录。添加一笔收入或支出，月末对账会更轻松。</p>
+
+        <button class="primary-action" type="button">
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path d="M9 3.75v10.5M3.75 9h10.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          记一笔
+        </button>
+      </section>
+
+      <section class="quick-area" aria-labelledby="quick-title">
+        <p class="quick-title" id="quick-title">快速开始</p>
+        <div class="chips">
+          <button class="chip sage" type="button">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M4.2 8.5h11.6l-.78 3.2a4.3 4.3 0 0 1-4.18 3.28H9.16a4.3 4.3 0 0 1-4.18-3.28L4.2 8.5Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>
+              <path d="M6.3 8.4c.3-1.6 1.3-2.9 3.7-3.3 2.4.4 3.4 1.7 3.7 3.3" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/>
+            </svg>
+            <span>餐食</span>
+          </button>
+
+          <button class="chip coral" type="button">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M5 8h10l1.5 3.2v3.3a1.2 1.2 0 0 1-1.2 1.2H4.7a1.2 1.2 0 0 1-1.2-1.2v-3.3L5 8Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>
+              <path d="M6 8l1.2-3h5.6L14 8M6 15.7v1.2M14 15.7v1.2" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/>
+            </svg>
+            <span>通勤</span>
+          </button>
+
+          <button class="chip sage" type="button">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M10 16V4M5.2 8.8 10 4l4.8 4.8" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4.5 16h11" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/>
+            </svg>
+            <span>收入</span>
+          </button>
+
+          <button class="chip coral" type="button">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M10 4.4v11.2M4.4 10h11.2" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/>
+              <circle cx="10" cy="10" r="6.1" fill="none" stroke="currentColor" stroke-width="1.55"/>
+            </svg>
+            <span>其他</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="preview-card" aria-labelledby="preview-title">
+        <div class="preview-head">
+          <span id="preview-title">之后会在这里看到</span>
+          <span class="preview-count">0 items</span>
+        </div>
+        <div class="preview-list" aria-label="空状态预览">
+          <div class="preview-row">
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+              <path d="M5 16.5V10M11 16.5V5.5M17 16.5v-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M4.5 17.5h13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <span>分类节奏</span>
+            <i class="ghost-line one" aria-hidden="true"></i>
+          </div>
+          <div class="preview-row">
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+              <path d="M5.5 7.5h11M5.5 11h9M5.5 14.5h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <rect x="4" y="4" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+            <span>月度明细</span>
+            <i class="ghost-line two" aria-hidden="true"></i>
+          </div>
+          <div class="preview-row">
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+              <path d="M6 12.5c2.6-5.2 7.4-5.2 10 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M6 15.5h10M11 5.5v3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <span>余额提醒</span>
+            <i class="ghost-line three" aria-hidden="true"></i>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Ledger - Empty State》 by ddiu8081（社区 #47）· 仅作前端技法学习，版权归原作者</div>
+</body>
+</html>
