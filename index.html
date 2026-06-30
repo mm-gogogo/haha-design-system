@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>哈哈设计系统 · 截图总览</title>
-<meta name="description" content="一份 --ds-* Token 契约，换出 49 套设计风格 + 6 个开源项目定制 + 68 例效果临摹。亮 / 暗双主题，含 iPhone 真机布局。">
+<meta name="description" content="一份 --ds-* Token 契约，换出 49 套设计风格 + 6 个开源项目定制 + 67 例效果临摹。亮 / 暗双主题，含 iPhone 真机布局。">
 <link rel="stylesheet" href="_fonts/fonts.css">
 <style>
   :root{
@@ -107,6 +107,17 @@
   /* —— 临摹声明 —— */
   .disclaim{margin:0 0 20px;color:#d8cba0;background:rgba(255,196,84,.06);border:1px solid rgba(255,196,84,.2);
     border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.7;max-width:74ch}
+
+  /* —— 分类筛选 chips —— */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+  .chip{appearance:none;cursor:pointer;font:600 12.5px/1 var(--sans);color:var(--mut);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:8px 13px;
+    display:inline-flex;align-items:center;gap:7px;transition:border-color .16s,color .16s,background .16s}
+  .chip:hover{border-color:var(--line-2);color:var(--ink)}
+  .chip:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+  .chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+  .chip .n{font:600 11px/1 var(--mono);opacity:.66}
+  .chip[aria-pressed="true"] .n{opacity:.85}
   .disclaim b{color:#ffd166}.disclaim strong{color:#f0e6c8;font-weight:600}.disclaim a{color:var(--acc-2);text-decoration:none}
   .disclaim a:hover{text-decoration:underline}
 
@@ -190,7 +201,7 @@
       <div class="stats">
         <span class="stat"><b id="statStyles">49</b><span>通用风格</span></span>
         <span class="stat"><b>6</b><span>项目定制</span></span>
-        <span class="stat"><b id="statStudies">24</b><span>效果临摹</span></span>
+        <span class="stat"><b id="statStudies">67</b><span>效果临摹</span></span>
         <span class="stat"><b>AA</b><span>对比度</span></span>
       </div>
       <div class="curl" id="curl" role="button" tabindex="0" title="点击复制">
@@ -214,12 +225,13 @@
     </section>
 
     <section class="sec" id="sec-studies" data-sec>
-      <div class="sec-head"><h2>效果临摹 · Effect Studies</h2><span class="count" id="cntStudies">24</span><span class="rule"></span></div>
+      <div class="sec-head"><h2>效果临摹 · Effect Studies</h2><span class="count" id="cntStudies">67</span><span class="rule"></span></div>
       <div class="disclaim">
         <b>这一栏是临摹练习。</b>每个页面都照着社区作品的视觉效果<strong>从零重写</strong>了一遍，用来练前端手感 ——
         都是<strong>非原创</strong>：自己写代码、配自己的文案，页内也标了原作和作者。版权归原作者所有，只作学习展示、不商用。
         来源：<a href="https://www.vibehub.xin/" target="_blank" rel="noopener">vibehub.xin</a> 与 variant.com 社区。
       </div>
+      <div class="chips" id="studyChips" role="group" aria-label="按类别筛选效果临摹"></div>
       <div class="grid" id="studies"></div>
     </section>
 
@@ -227,7 +239,7 @@
   </main>
 
   <footer>
-    <code>~/mineproj/designsystem</code> · <span id="ftStyles">49</span> 套风格 + 6 个项目定制 + <span id="ftStudies">25</span> 例临摹。<br>
+    <code>~/mineproj/designsystem</code> · <span id="ftStyles">49</span> 套风格 + 6 个项目定制 + <span id="ftStudies">67</span> 例临摹。<br>
     骨架与思想基于 <a href="https://vercel.com/geist" target="_blank" rel="noopener">Geist（Vercel）</a> 衍生。顶部可切亮 / 暗预览；每个 preview.html 双击就能离线打开。
   </footer>
 </div>
@@ -368,7 +380,6 @@ const studies = [
   ["study-health-app","health-app","健康追踪 App · Health Rings","《health tracking app》 by accounts58382 · 社区 #100","#c4f24a"],
   ["study-ticket-skeuo","ticket-skeuo","拟物演出票 · Holographic Ticket","《Hyper Realistic Ticket》 by antoine96846 · 社区 #97","#ff0080"],
   ["study-asia-network","asia-network","亚太网络图 · City Route Field","《Asia Network Map》 by yjshin122 · 社区 #134","#c0392f"],
-  ["study-sso-login","sso-login","科幻单点登录 · SSO Auth","《Sci-Fi SSO Login》 by shukaizhang · 社区 #2","#4a88ff"],
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -426,8 +437,25 @@ document.getElementById("cntStudies").textContent = studies.length;
 document.getElementById("statStudies").textContent = studies.length;
 document.getElementById("ftStudies").textContent = studies.length;
 document.getElementById("ftStyles").textContent = styles.length;
+// 临摹分类（slug → 类别）；新条目未登记时归入「工具交互」
+const STUDY_CAT_DEFS = [
+  ["all","全部 All"],["dash","仪表盘 Dashboard"],["gen","生成视觉 Generative"],
+  ["land","落地页 Landing"],["edit","编辑排版 Editorial"],["app","移动应用 Mobile"],
+  ["tool","工具交互 Tool"],["d3","3D · 玻璃 Glass"],["retro","复古终端 Retro · TUI"],
+];
+const STUDY_CAT = {
+  "text-ring-globe":"dash","weather-dashboard":"dash","neural-feed":"dash","bitstream-manager":"dash","geo-dashboard":"dash","system-init":"dash","abyss-telemetry":"dash","asia-network":"dash",
+  "fly-through":"gen","sound-organism":"gen","dream-journal":"gen","watercolor-bloom":"gen","bio-terrarium":"gen","shader-grid":"gen","cosmic-nebula":"gen","octo-kinetic":"gen","text-terrain":"gen",
+  "symbolon-branding":"edit","cutting-mat":"edit","designer-portfolio":"edit","art-museum":"edit","orphaned-assets":"edit","scent-palette":"edit","sci-journal":"edit","ship-log":"edit","edu-atelier":"edit","essays-blog":"edit","wedding-invite":"edit",
+  "terrain-contour":"land","ai-cards":"land","gallery-waitlist":"land","growth-agency":"land","mosaic-landing":"land","kinetic-liquidity":"land","ai-labor":"land","ai-companion":"land","legal-ai":"land","coffee-store":"land","parallax-travel":"land","music-sync":"land",
+  "voice-recorder":"app","breath-ui":"app","habit-tracker":"app","weekly-planner":"app","brutalist-app":"app","orb-capture":"app","health-app":"app","ticket-skeuo":"app",
+  "voice-widget":"tool","make-from-image":"tool","convert-to-code":"tool","explore-colors":"tool","aura-sso":"tool","ledger-empty":"tool","mortgage-calc":"tool","warm-board":"tool","scratch-card":"tool",
+  "glass-music":"d3","3d-shelf":"d3","book-flip":"d3","liquid-glass":"d3","camera-control":"d3",
+  "ascii-pricing":"retro","fig-mint":"retro","y2k-pixel":"retro","linux-tui":"retro","brutalist-404":"retro",
+};
+const catOf = slug => STUDY_CAT[slug] || "tool";
 document.getElementById("studies").innerHTML = studies.map(([f,slug,name,cite,color],i)=>`
-  <div class="card" style="--i:${Math.min(i,14)}" data-name="${esc((name+' '+slug+' '+cite).toLowerCase())}">
+  <div class="card" style="--i:${Math.min(i,14)}" data-cat="${catOf(slug)}" data-name="${esc((name+' '+slug+' '+cite).toLowerCase())}">
     <div class="ttl"><span class="dot" style="background:${color}"></span><b>${esc(name)}</b><a class="open" href="studies/${slug}/index.html" target="_blank" rel="noopener">打开</a></div>
     <a class="zoom" href="screenshots/${f}.png">
       <img class="shot" src="screenshots/thumbs/${f}.jpg" decoding="async" loading="lazy" alt="${esc(name)}">
@@ -449,22 +477,44 @@ function setShot(mode){
 }
 try{ if(localStorage.getItem('ds-shot')==='dark') setShot('dark'); }catch(e){}
 
-// —— 搜索筛选 ——
+// —— 搜索 + 分类筛选 ——
 const q = document.getElementById('q'), empty = document.getElementById('empty');
+let activeCat = 'all';
 function applyFilter(){
   const term = q.value.trim().toLowerCase();
   let total = 0;
   document.querySelectorAll('[data-sec]').forEach(sec=>{
+    const isStudies = sec.id === 'sec-studies';
+    if(!isStudies && activeCat !== 'all'){ sec.hidden = true; return; } // 选定类别时聚焦临摹栏
     let shown = 0;
     sec.querySelectorAll('.card').forEach(c=>{
-      const hit = !term || c.dataset.name.includes(term);
+      let hit = !term || c.dataset.name.includes(term);
+      if(hit && isStudies && activeCat !== 'all') hit = c.dataset.cat === activeCat;
       c.hidden = !hit; if(hit) shown++;
     });
-    sec.hidden = shown===0; total += shown;
+    sec.hidden = shown === 0; total += shown;
   });
-  empty.toggleAttribute('data-on', total===0);
+  empty.toggleAttribute('data-on', total === 0);
 }
 q.addEventListener('input', applyFilter);
+
+// 分类 chips：按类别计数、渲染、切换（默认「全部」）
+(function(){
+  const counts = {};
+  studies.forEach(([f,slug])=>{ const c = catOf(slug); counts[c] = (counts[c]||0) + 1; });
+  const host = document.getElementById('studyChips');
+  host.innerHTML = STUDY_CAT_DEFS.map(([k,label])=>{
+    const n = k==='all' ? studies.length : (counts[k]||0);
+    if(k!=='all' && n===0) return '';
+    return `<button class="chip" type="button" data-cat="${k}" aria-pressed="${k==='all'}">${esc(label)}<span class="n">${n}</span></button>`;
+  }).join('');
+  host.addEventListener('click', e=>{
+    const b = e.target.closest('.chip'); if(!b) return;
+    activeCat = b.dataset.cat;
+    host.querySelectorAll('.chip').forEach(c=> c.setAttribute('aria-pressed', String(c.dataset.cat === activeCat)));
+    applyFilter();
+  });
+})();
 // 「/」聚焦搜索；Esc 清空
 document.addEventListener('keydown', e=>{
   if(e.key==='/' && document.activeElement!==q){ e.preventDefault(); q.focus(); }
@@ -489,7 +539,7 @@ const curl = document.getElementById('curl'), cpHint = document.getElementById('
 function copyCurl(){
   const t='curl design.hahaha.chat/design.md';
   (navigator.clipboard?.writeText(t) ?? Promise.reject()).then(()=>{
-    cpHint.textContent='已复制 ✓'; setTimeout(()=>cpHint.textContent='点击复制',1600);
+    cpHint.textContent='已复制'; setTimeout(()=>cpHint.textContent='点击复制',1600);
   }).catch(()=>{ cpHint.textContent='手动复制'; setTimeout(()=>cpHint.textContent='点击复制',1600); });
 }
 curl.addEventListener('click', copyCurl);
