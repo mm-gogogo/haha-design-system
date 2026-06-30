@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brutalist App Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #f3f3e1;
+      --ink: #151516;
+      --blue: #1c00ff;
+      --white: #ffffff;
+      --backdrop: #070709;
+      --line: 3px solid var(--ink);
+      --line-thin: 2px solid var(--ink);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--backdrop);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 16px 132px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, transparent 0 52%, rgba(28, 0, 255, .34) 52% 58%, transparent 58%),
+        linear-gradient(180deg, #070709 0%, #151516 100%);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .phone {
+      width: min(400px, calc(100vw - 42px));
+      max-width: 100%;
+      min-height: 812px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      background: var(--cream);
+      border: var(--line);
+      border-radius: 0;
+      box-shadow: 8px 8px 0 var(--blue), 15px 15px 0 #000000;
+    }
+
+    .status-row,
+    .brand-row,
+    .marquee,
+    .bottom-nav {
+      flex: 0 0 auto;
+    }
+
+    .status-row {
+      height: 34px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-bottom: var(--line);
+      font: 800 10px/1 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .status-row > span:last-child {
+      justify-self: end;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 20px;
+      padding: 0 7px;
+      border: var(--line-thin);
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .status-icons {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .status-icons svg,
+    .nav-button svg,
+    .icon-button svg,
+    .feed-mark svg,
+    .action svg {
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+    }
+
+    .brand-row {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) 56px;
+      min-height: 72px;
+      border-bottom: var(--line);
+    }
+
+    .icon-button {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-right: var(--line);
+      border-radius: 0;
+      background: var(--cream);
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform 140ms ease-out, background 140ms ease-out, color 140ms ease-out;
+    }
+
+    .icon-button:last-child {
+      border-right: 0;
+      border-left: var(--line);
+    }
+
+    .icon-button:hover,
+    .nav-button:hover {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .icon-button:active,
+    .nav-button:active,
+    .action:active {
+      transform: translate(3px, 3px);
+    }
+
+    .wordmark {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8px 12px 7px;
+      text-align: center;
+    }
+
+    .wordmark strong {
+      display: block;
+      font-size: 35px;
+      line-height: .88;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .wordmark span {
+      margin-top: 5px;
+      font: 800 9px/1 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .marquee {
+      height: 29px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-bottom: var(--line);
+      background: var(--ink);
+      color: var(--cream);
+      font: 900 11px/1 var(--mono);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      min-width: max-content;
+      animation: marquee 13s linear infinite;
+      will-change: transform;
+    }
+
+    .marquee-track span {
+      padding-right: 24px;
+    }
+
+    .app-body {
+      flex: 1 1 auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+      background: var(--cream);
+    }
+
+    .block {
+      min-width: 0;
+      position: relative;
+      border-right: var(--line);
+      border-bottom: var(--line);
+      background: var(--cream);
+    }
+
+    .edge-right {
+      border-right: 0;
+    }
+
+    .span-2 {
+      grid-column: 1 / -1;
+      border-right: 0;
+    }
+
+    .hero {
+      min-height: 205px;
+      padding: 13px 14px 15px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      animation: slab-in 520ms cubic-bezier(.2, .8, .12, 1) both;
+    }
+
+    .coord-line,
+    .section-bar,
+    .meta-row,
+    .mini-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font: 800 10px/1.25 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      align-self: center;
+      margin: 12px 0 8px;
+      max-width: 7ch;
+      font-size: 57px;
+      line-height: .82;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-chip {
+      justify-self: start;
+      align-self: end;
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border: var(--line-thin);
+      background: var(--blue);
+      color: var(--white);
+      font: 900 11px/1 var(--mono);
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .stat {
+      min-height: 120px;
+      padding: 11px 12px 10px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .stat strong {
+      align-self: center;
+      display: block;
+      font-size: 49px;
+      line-height: .82;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .stat small {
+      font: 800 10px/1.2 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .stat.blue {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--ink);
+      gap: 3px;
+      padding: 0;
+    }
+
+    .action {
+      min-width: 0;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 140ms ease-out, background 140ms ease-out, color 140ms ease-out;
+    }
+
+    .action.primary {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .action svg {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+    }
+
+    .feed {
+      background: var(--cream);
+    }
+
+    .section-bar {
+      min-height: 34px;
+      padding: 0 11px;
+      border-bottom: var(--line);
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .feed-item {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 54px;
+      gap: 0;
+      border-bottom: var(--line);
+    }
+
+    .feed-item:last-child {
+      border-bottom: 0;
+    }
+
+    .feed-mark {
+      display: grid;
+      place-items: center;
+      border-right: var(--line);
+      color: var(--ink);
+    }
+
+    .feed-mark svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .feed-copy {
+      min-width: 0;
+      padding: 10px 10px 11px;
+    }
+
+    .feed-copy strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 900;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+
+    .feed-copy p {
+      margin: 0;
+      font: 700 10px/1.35 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .feed-time {
+      display: grid;
+      place-items: center;
+      border-left: var(--line);
+      font: 900 10px/1 var(--mono);
+      text-transform: uppercase;
+      background: var(--cream);
+    }
+
+    .panel {
+      min-height: 139px;
+      padding: 11px 12px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .map-grid {
+      align-self: center;
+      width: 100%;
+      aspect-ratio: 1 / .66;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      border: var(--line-thin);
+      background: var(--ink);
+      gap: 2px;
+    }
+
+    .map-grid i {
+      display: block;
+      background: var(--cream);
+    }
+
+    .map-grid i:nth-child(3),
+    .map-grid i:nth-child(7),
+    .map-grid i:nth-child(11) {
+      background: var(--blue);
+    }
+
+    .queue-list {
+      align-self: center;
+      display: grid;
+      gap: 5px;
+      font: 900 12px/1 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .queue-list span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 23px;
+      padding: 0 5px;
+      border: var(--line-thin);
+      background: var(--cream);
+    }
+
+    .queue-list b {
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .bottom-nav {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      min-height: 70px;
+      border-top: var(--line);
+      background: var(--cream);
+    }
+
+    .nav-button {
+      min-width: 0;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-right: var(--line);
+      border-radius: 0;
+      background: var(--cream);
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform 140ms ease-out, background 140ms ease-out, color 140ms ease-out;
+    }
+
+    .nav-button:last-child {
+      border-right: 0;
+    }
+
+    .nav-button[aria-current="page"] {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .nav-button svg {
+      width: 27px;
+      height: 27px;
+    }
+
+    @keyframes marquee {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes slab-in {
+      0% {
+        transform: translateY(14px);
+        box-shadow: 0 0 0 var(--ink);
+      }
+      60% {
+        transform: translateY(0);
+        box-shadow: 0 6px 0 var(--ink);
+      }
+      100% {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 390px) {
+      body {
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+
+      .phone {
+        width: min(386px, calc(100vw - 34px));
+        box-shadow: 6px 6px 0 var(--blue), 11px 11px 0 #000000;
+      }
+
+      .wordmark strong {
+        font-size: 31px;
+      }
+
+      .hero h1 {
+        font-size: 50px;
+      }
+
+      .stat strong {
+        font-size: 43px;
+      }
+
+      .feed-item {
+        grid-template-columns: 38px minmax(0, 1fr) 48px;
+      }
+
+      .action {
+        font-size: 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .marquee-track {
+        animation: none !important;
+        transform: translateX(0) !important;
+      }
+
+      .hero {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="BLOKNOTE brutalist mobile app study">
+    <div class="status-row" aria-label="Fake device status">
+      <span>09:41</span>
+      <span class="status-chip">Cell 03</span>
+      <span class="status-icons">
+        <span>LTE</span>
+        <svg width="25" height="14" viewBox="0 0 25 14" aria-hidden="true">
+          <rect x="1" y="2" width="19" height="10"></rect>
+          <rect x="21" y="5" width="3" height="4"></rect>
+          <rect x="4" y="5" width="11" height="4" fill="currentColor" stroke="none"></rect>
+        </svg>
+      </span>
+    </div>
+
+    <header class="brand-row">
+      <button class="icon-button" type="button" aria-label="Open navigation">
+        <svg width="29" height="29" viewBox="0 0 29 29" aria-hidden="true">
+          <path d="M4 8h21M4 14.5h21M4 21h21"></path>
+        </svg>
+      </button>
+      <div class="wordmark">
+        <strong>BLOKNOTE</strong>
+        <span>Concrete field utility</span>
+      </div>
+      <button class="icon-button" type="button" aria-label="Open scanner">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <rect x="5" y="5" width="20" height="20"></rect>
+          <path d="M10 10h10v10H10z"></path>
+          <path d="M5 15h20M15 5v20"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="marquee" aria-label="Live system ticker">
+      <div class="marquee-track">
+        <span>BLOKNOTE LIVE / CITY NOISE INDEX 72 / BLUE ROUTE READY / FOUR NOTES UNSENT /</span>
+        <span>BLOKNOTE LIVE / CITY NOISE INDEX 72 / BLUE ROUTE READY / FOUR NOTES UNSENT /</span>
+      </div>
+    </div>
+
+    <section class="app-body" aria-label="Field dashboard">
+      <article class="block span-2 hero">
+        <div class="coord-line">
+          <span>X 037 / Y 812</span>
+          <span>Sector CN</span>
+        </div>
+        <h1>Raw City Field Log</h1>
+        <div class="meta-row">
+          <span class="hero-chip">Walk mode armed</span>
+          <span>Rev 06</span>
+        </div>
+      </article>
+
+      <article class="block stat">
+        <div class="mini-label">
+          <span>Blocks</span>
+          <span>Today</span>
+        </div>
+        <strong data-count="27">27</strong>
+        <small>Captured before noon</small>
+      </article>
+
+      <article class="block stat blue edge-right">
+        <div class="mini-label">
+          <span>Noise</span>
+          <span>Live</span>
+        </div>
+        <strong data-count="72">72</strong>
+        <small>Index reads high</small>
+      </article>
+
+      <div class="block span-2 actions" aria-label="Primary actions">
+        <button class="action primary" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="4" width="16" height="16"></rect>
+            <path d="M8 12h8M12 8v8"></path>
+          </svg>
+          Start run
+        </button>
+        <button class="action" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="5" width="14" height="14"></rect>
+            <path d="M8 9h8M8 13h8M8 17h5"></path>
+          </svg>
+          Pin note
+        </button>
+      </div>
+
+      <section class="block span-2 feed" aria-label="Field feed">
+        <div class="section-bar">
+          <span>Field feed</span>
+          <span>Seq 04</span>
+        </div>
+        <article class="feed-item">
+          <div class="feed-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="5" width="14" height="14"></rect>
+              <path d="M8 8h8v8H8z"></path>
+            </svg>
+          </div>
+          <div class="feed-copy">
+            <strong>Platform west</strong>
+            <p>Concrete glare logged, two crews passed, no sponsor marks.</p>
+          </div>
+          <time class="feed-time" datetime="2026-06-30T07:32">07:32</time>
+        </article>
+        <article class="feed-item">
+          <div class="feed-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="4" y="7" width="16" height="10"></rect>
+              <path d="M7 10h10M7 14h10"></path>
+            </svg>
+          </div>
+          <div class="feed-copy">
+            <strong>Blue door cut</strong>
+            <p>Paint is fresh, latch is loud, tag cluster sits at knee height.</p>
+          </div>
+          <time class="feed-time" datetime="2026-06-30T09:15">09:15</time>
+        </article>
+        <article class="feed-item">
+          <div class="feed-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 19h14V5H5z"></path>
+              <path d="M5 13h14M11 5v14"></path>
+            </svg>
+          </div>
+          <div class="feed-copy">
+            <strong>Underpass meter</strong>
+            <p>Signal jumped twice, crowd gap opened, route stays usable.</p>
+          </div>
+          <time class="feed-time" datetime="2026-06-30T11:38">11:38</time>
+        </article>
+      </section>
+
+      <article class="block panel edge-right">
+        <div class="mini-label">
+          <span>Map</span>
+          <span>A03</span>
+        </div>
+        <div class="map-grid" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="mini-label">
+          <span>Offset</span>
+          <span>14 m</span>
+        </div>
+      </article>
+
+      <article class="block panel">
+        <div class="mini-label">
+          <span>Queue</span>
+          <span>Open</span>
+        </div>
+        <div class="queue-list">
+          <span>Tag batch <b>06</b></span>
+          <span>Audio pins <b>12</b></span>
+          <span>Dead zones <b>03</b></span>
+        </div>
+        <div class="mini-label">
+          <span>Sync</span>
+          <span>Manual</span>
+        </div>
+      </article>
+    </section>
+
+    <nav class="bottom-nav" aria-label="App navigation">
+      <button class="nav-button" type="button" aria-label="Dashboard" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="4" width="6" height="6"></rect>
+          <rect x="14" y="4" width="6" height="6"></rect>
+          <rect x="4" y="14" width="6" height="6"></rect>
+          <rect x="14" y="14" width="6" height="6"></rect>
+        </svg>
+      </button>
+      <button class="nav-button" type="button" aria-label="Route">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="4" width="16" height="16"></rect>
+          <path d="M8 16V8h8v8"></path>
+        </svg>
+      </button>
+      <button class="nav-button" type="button" aria-label="Capture">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="7" width="14" height="10"></rect>
+          <rect x="9" y="4" width="6" height="3"></rect>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+      <button class="nav-button" type="button" aria-label="Profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="6" y="5" width="12" height="14"></rect>
+          <path d="M9 10h6M9 14h6"></path>
+        </svg>
+      </button>
+    </nav>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Brutalist Mobile App》 by info55684（社区 #85）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const counters = document.querySelectorAll("[data-count]");
+
+      counters.forEach((counter) => {
+        const target = Number(counter.dataset.count || counter.textContent);
+
+        if (reducedMotion || !Number.isFinite(target)) {
+          counter.textContent = String(target);
+          return;
+        }
+
+        const duration = 620;
+        const start = performance.now();
+
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const stepped = 1 - Math.pow(1 - progress, 4);
+          counter.textContent = String(Math.round(target * stepped).padStart(2, "0"));
+
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            counter.textContent = String(target);
+          }
+        };
+
+        counter.textContent = "00";
+        requestAnimationFrame(tick);
+      });
+    })();
+  </script>
+</body>
+</html>

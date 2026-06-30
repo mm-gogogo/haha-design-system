@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>效果临摹 · Scientific Journal Field Conditions</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #ffffff;
+      --ink: #000000;
+      --muted: #4f4f4f;
+      --soft: #f4f4f4;
+      --rule: #000000;
+      --hair: rgba(0, 0, 0, .18);
+      --grid: rgba(0, 0, 0, .075);
+      --serif: "Noto Serif", Georgia, serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0 0 112px;
+      overflow-x: clip;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, .025) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(0, 0, 0, .018) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px, 32px 32px, auto;
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.56;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .paper {
+      width: min(1440px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr);
+      background: var(--paper);
+      border-left: 1px solid var(--rule);
+      border-right: 1px solid var(--rule);
+    }
+
+    .folio {
+      min-width: 0;
+      border-right: 1px solid var(--rule);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 32px 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .folio-number {
+      font-family: var(--serif);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .folio-spine {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+
+    .folio-code {
+      writing-mode: vertical-rl;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+
+    .content {
+      min-width: 0;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(290px, .85fr);
+      gap: 40px;
+      padding: 44px clamp(26px, 5vw, 72px) 38px;
+      border-bottom: 2px solid var(--rule);
+      background:
+        linear-gradient(180deg, transparent calc(100% - 1px), var(--rule) calc(100% - 1px)),
+        var(--paper);
+    }
+
+    .journal-kicker,
+    .meta-block,
+    .section-label,
+    .reading-row,
+    .table-section caption,
+    .fig-caption,
+    .chart text,
+    .segmented,
+    .live-readout {
+      font-family: var(--mono);
+    }
+
+    .journal-kicker {
+      margin: 0 0 12px;
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .journal-title {
+      margin: 0;
+      max-width: 14ch;
+      font-family: var(--serif);
+      font-size: clamp(38px, 6vw, 82px);
+      font-weight: 700;
+      line-height: .95;
+    }
+
+    .journal-subtitle {
+      margin: 18px 0 0;
+      max-width: 56ch;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #1f1f1f;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-content: start;
+      border-top: 1px solid var(--rule);
+      border-left: 1px solid var(--rule);
+    }
+
+    .meta-block {
+      min-width: 0;
+      padding: 12px;
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .meta-block b {
+      display: block;
+      margin-bottom: 5px;
+      font-family: var(--sans);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, .43fr) minmax(0, .57fr);
+      min-width: 0;
+    }
+
+    .text-panel {
+      min-width: 0;
+      padding: 40px clamp(22px, 4.2vw, 58px) 52px;
+      border-right: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .section-label {
+      margin: 0 0 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .abstract-title,
+    .section-title {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.8vw, 38px);
+      line-height: 1.12;
+    }
+
+    .abstract-copy {
+      max-width: 70ch;
+      margin: 14px 0 0;
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.72;
+    }
+
+    .article-copy {
+      max-width: 70ch;
+      padding-top: 18px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .article-copy p {
+      margin: 0 0 18px;
+      color: #111111;
+    }
+
+    .article-copy a {
+      font-family: var(--mono);
+      font-size: .82em;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .live-readout {
+      margin-top: auto;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .reading-row {
+      display: grid;
+      grid-template-columns: minmax(110px, .8fr) minmax(0, 1fr);
+      gap: 16px;
+      padding: 8px 0;
+      border-bottom: 1px dotted var(--hair);
+    }
+
+    .reading-row:last-child {
+      border-bottom: 0;
+    }
+
+    .reading-row span:first-child {
+      color: var(--muted);
+    }
+
+    .figures-panel {
+      min-width: 0;
+      padding: 40px clamp(18px, 3.6vw, 58px) 52px;
+      background:
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        linear-gradient(180deg, var(--grid) 1px, transparent 1px),
+        var(--paper);
+      background-size: 20px 20px;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 34px 28px;
+      min-width: 0;
+    }
+
+    .figure {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .figure[data-wide="true"] {
+      grid-column: 1 / -1;
+    }
+
+    .figure-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .figure-title {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .segmented {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      font-size: 10px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .segmented button {
+      appearance: none;
+      border: 0;
+      border-right: 1px solid var(--rule);
+      border-radius: 0;
+      padding: 8px 10px;
+      color: var(--ink);
+      background: var(--paper);
+      cursor: pointer;
+    }
+
+    .segmented button:last-child {
+      border-right: 0;
+    }
+
+    .segmented button[aria-pressed="true"] {
+      color: var(--paper);
+      background: var(--ink);
+    }
+
+    .segmented button:focus-visible,
+    .data-target:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .chart-frame {
+      position: relative;
+      min-width: 0;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    .chart {
+      display: block;
+      width: 100%;
+      height: auto;
+      color: var(--ink);
+    }
+
+    .chart .axis,
+    .chart .plot-line,
+    .chart .error-line {
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart .grid-line {
+      stroke: rgba(0, 0, 0, .18);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart .axis {
+      stroke: var(--ink);
+      stroke-width: 1;
+    }
+
+    .chart text {
+      fill: var(--ink);
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .chart .label-muted {
+      fill: #525252;
+    }
+
+    .chart .plot-line {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 1.6;
+    }
+
+    .chart .line-dashed {
+      stroke-dasharray: 7 5;
+    }
+
+    .chart .data-target {
+      cursor: crosshair;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart .point-solid {
+      fill: var(--ink);
+      stroke: var(--ink);
+      stroke-width: 1;
+    }
+
+    .chart .point-open {
+      fill: var(--paper);
+      stroke: var(--ink);
+      stroke-width: 1.4;
+    }
+
+    .chart .bar {
+      fill: var(--ink);
+    }
+
+    .chart .bar-muted {
+      fill: #5b5b5b;
+    }
+
+    .chart .shade {
+      fill: rgba(0, 0, 0, .055);
+    }
+
+    .fig-caption {
+      display: grid;
+      grid-template-columns: minmax(120px, auto) minmax(0, 1fr);
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid var(--rule);
+      font-size: 10.5px;
+      line-height: 1.45;
+    }
+
+    .fig-caption strong {
+      font-weight: 700;
+    }
+
+    .fig-caption span:last-child {
+      color: #303030;
+    }
+
+    .data-note {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+    }
+
+    .table-section {
+      padding: 36px clamp(18px, 4vw, 72px) 52px;
+      border-top: 1px solid var(--rule);
+      min-width: 0;
+    }
+
+    .table-layout {
+      display: grid;
+      grid-template-columns: minmax(240px, .36fr) minmax(0, .64fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .table-section h2 {
+      margin: 0 0 12px;
+      font-family: var(--serif);
+      font-size: clamp(25px, 3vw, 42px);
+      line-height: 1.12;
+    }
+
+    .table-section p {
+      max-width: 62ch;
+      margin: 0;
+      color: #1c1c1c;
+    }
+
+    .table-scroll {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      border-top: 1px solid var(--rule);
+      border-left: 1px solid var(--rule);
+      background: var(--paper);
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    caption {
+      caption-side: top;
+      padding: 0 0 8px;
+      text-align: left;
+      color: var(--muted);
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      text-align: left;
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 700;
+      background: #f7f7f7;
+    }
+
+    .fineprint {
+      margin-top: 16px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1180px) {
+      .paper {
+        grid-template-columns: 58px minmax(0, 1fr);
+      }
+
+      .masthead,
+      .article-grid,
+      .table-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .text-panel {
+        border-right: 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .meta-grid {
+        max-width: 720px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding-bottom: 168px;
+      }
+
+      .paper {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .folio {
+        display: none;
+      }
+
+      .masthead {
+        gap: 24px;
+        padding: 30px 16px 28px;
+      }
+
+      .journal-title {
+        max-width: 11ch;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .text-panel,
+      .figures-panel,
+      .table-section {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .figure-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .figure[data-wide="true"] {
+        grid-column: auto;
+      }
+
+      .figure-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .segmented {
+        width: 100%;
+      }
+
+      .segmented button {
+        min-width: 0;
+      }
+
+      .fig-caption {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      .reading-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .journal-title {
+        font-size: 36px;
+      }
+
+      .abstract-copy {
+        font-size: 16px;
+      }
+
+      .chart text {
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="paper">
+    <aside class="folio" aria-label="Paper margin">
+      <div class="folio-number">87</div>
+      <div class="folio-spine">WHITE ELM FIELD REGISTER / FIELD CONDITIONS</div>
+      <div class="folio-code">WEFR-04-02</div>
+    </aside>
+
+    <div class="content">
+      <header class="masthead">
+        <div>
+          <p class="journal-kicker">白榆野外记录 / Fictional field-research journal</p>
+          <h1 class="journal-title">White Elm Field Register</h1>
+          <p class="journal-subtitle">Interactive report on shallow air, vapor, soil, and light conditions across a controlled floodplain transect. All readings and findings are illustrative.</p>
+        </div>
+        <div class="meta-grid" aria-label="Publication metadata">
+          <div class="meta-block"><b>Volume / Issue</b>Vol. 04, Issue 02</div>
+          <div class="meta-block"><b>Date</b>30 Jun 2026</div>
+          <div class="meta-block"><b>Station</b>Larkspur Transect Station</div>
+          <div class="meta-block"><b>Paper Code</b>WEFR-FC-2026-061</div>
+          <div class="meta-block"><b>DOI-style code</b>10.8462/wefr.field.2026.061</div>
+          <div class="meta-block"><b>Authors</b>Mina T. Ellery, Guo Ren, Ivo Sal</div>
+        </div>
+      </header>
+
+      <section class="article-grid" aria-label="Abstract and figures">
+        <article class="text-panel">
+          <div>
+            <p class="section-label">摘要 / Abstract</p>
+            <h2 class="abstract-title">A restrained field sheet for fictional microclimate readings.</h2>
+            <p class="abstract-copy">This study compares two instrumented plots on the invented White Elm floodplain. A reed-margin site and a gravel-bank site were sampled during one clear field day, with simultaneous logging of air temperature, relative humidity, light exposure, and soil response. The figures report invented values with academic-paper conventions: ruled axes, explicit ticks, visible error, and traceable data notes.</p>
+          </div>
+
+          <div class="article-copy">
+            <p>The report is organized as a working sheet rather than a dashboard. <a href="#fig-1">Fig. 1</a> presents a day profile that can be switched between sites. <a href="#fig-2">Fig. 2</a> tests whether higher surface moisture corresponded with cooler canopy-adjacent air.</p>
+            <p><a href="#fig-3">Fig. 3</a> summarizes repeated chamber readings by substrate class, while <a href="#fig-4">Fig. 4</a> compresses a transect contour and a late-day sparkline into a small plate. The plotted points, bars, and sparkline markers report values in the field register below.</p>
+            <p>No source data, place, station, or institutional identity is real. The page is a front-end effect study of monochrome scientific-journal graphics and interactive SVG charting.</p>
+          </div>
+
+          <div class="live-readout" aria-live="polite" aria-label="Interactive data readout">
+            <div class="reading-row"><span>Selected marker</span><span id="readout-target">none</span></div>
+            <div class="reading-row"><span>Value</span><span id="readout-value">no marker selected</span></div>
+            <div class="reading-row"><span>Note</span><span id="readout-note">fictional readings, displayed for interaction study</span></div>
+          </div>
+        </article>
+
+        <section class="figures-panel" aria-label="Figures">
+          <div class="figure-grid">
+            <figure class="figure" id="fig-1" data-wide="true">
+              <div class="figure-head">
+                <h3 class="figure-title">Diurnal air and vapor profile</h3>
+                <div class="segmented" role="group" aria-label="Switch site series">
+                  <button type="button" data-site="a" aria-pressed="true">Site A</button>
+                  <button type="button" data-site="b" aria-pressed="false">Site B</button>
+                </div>
+              </div>
+              <div class="chart-frame">
+                <svg class="chart" id="line-chart" viewBox="0 0 720 324" role="img" aria-labelledby="line-title line-desc">
+                  <title id="line-title">Line chart showing temperature and humidity over a field day</title>
+                  <desc id="line-desc">A monochrome SVG time-series chart with axes, gridlines, tick labels, solid temperature line, and dashed humidity line.</desc>
+                  <rect x="0" y="0" width="720" height="324" fill="#fff"></rect>
+                  <g aria-hidden="true">
+                    <line class="grid-line" x1="62" y1="47" x2="650" y2="47"></line>
+                    <line class="grid-line" x1="62" y1="100" x2="650" y2="100"></line>
+                    <line class="grid-line" x1="62" y1="153" x2="650" y2="153"></line>
+                    <line class="grid-line" x1="62" y1="206" x2="650" y2="206"></line>
+                    <line class="grid-line" x1="62" y1="259" x2="650" y2="259"></line>
+                    <line class="grid-line" x1="160" y1="47" x2="160" y2="259"></line>
+                    <line class="grid-line" x1="258" y1="47" x2="258" y2="259"></line>
+                    <line class="grid-line" x1="356" y1="47" x2="356" y2="259"></line>
+                    <line class="grid-line" x1="454" y1="47" x2="454" y2="259"></line>
+                    <line class="grid-line" x1="552" y1="47" x2="552" y2="259"></line>
+                  </g>
+                  <line class="axis" x1="62" y1="259" x2="650" y2="259"></line>
+                  <line class="axis" x1="62" y1="47" x2="62" y2="259"></line>
+                  <line class="axis" x1="650" y1="47" x2="650" y2="259"></line>
+                  <text x="62" y="285" text-anchor="middle">06</text>
+                  <text x="160" y="285" text-anchor="middle">09</text>
+                  <text x="258" y="285" text-anchor="middle">12</text>
+                  <text x="356" y="285" text-anchor="middle">15</text>
+                  <text x="454" y="285" text-anchor="middle">18</text>
+                  <text x="552" y="285" text-anchor="middle">21</text>
+                  <text x="650" y="285" text-anchor="middle">24</text>
+                  <text x="35" y="263" text-anchor="end">12°C</text>
+                  <text x="35" y="210" text-anchor="end">16</text>
+                  <text x="35" y="157" text-anchor="end">21</text>
+                  <text x="35" y="104" text-anchor="end">25</text>
+                  <text x="35" y="51" text-anchor="end">30</text>
+                  <text x="682" y="263">38%</text>
+                  <text x="682" y="210">50</text>
+                  <text x="682" y="157">63</text>
+                  <text x="682" y="104">75</text>
+                  <text x="682" y="51">88</text>
+                  <text class="label-muted" x="62" y="26">temp solid / RH dashed / <tspan id="line-site-label">Site A</tspan></text>
+                  <text class="label-muted" x="356" y="310" text-anchor="middle">field hour</text>
+                  <g id="line-paths"></g>
+                  <g id="line-markers"></g>
+                </svg>
+              </div>
+              <figcaption class="fig-caption">
+                <strong>Fig. 1 —</strong>
+                <span>Air temperature and relative humidity across one field day. <span class="data-note">Data note: seven fictional paired observations per site, linearly connected.</span></span>
+              </figcaption>
+            </figure>
+
+            <figure class="figure" id="fig-2">
+              <h3 class="figure-title">Moisture and cooling relation</h3>
+              <div class="chart-frame">
+                <svg class="chart" id="scatter-chart" viewBox="0 0 420 324" role="img" aria-labelledby="scatter-title scatter-desc">
+                  <title id="scatter-title">Scatter plot of soil moisture versus cooling index</title>
+                  <desc id="scatter-desc">A scatter plot with fitted trend line, gridlines, axes, and hoverable data points.</desc>
+                  <rect x="0" y="0" width="420" height="324" fill="#fff"></rect>
+                  <g aria-hidden="true">
+                    <line class="grid-line" x1="66" y1="48" x2="366" y2="48"></line>
+                    <line class="grid-line" x1="66" y1="89" x2="366" y2="89"></line>
+                    <line class="grid-line" x1="66" y1="130" x2="366" y2="130"></line>
+                    <line class="grid-line" x1="66" y1="171" x2="366" y2="171"></line>
+                    <line class="grid-line" x1="66" y1="212" x2="366" y2="212"></line>
+                    <line class="grid-line" x1="66" y1="253" x2="366" y2="253"></line>
+                    <line class="grid-line" x1="126" y1="48" x2="126" y2="253"></line>
+                    <line class="grid-line" x1="186" y1="48" x2="186" y2="253"></line>
+                    <line class="grid-line" x1="246" y1="48" x2="246" y2="253"></line>
+                    <line class="grid-line" x1="306" y1="48" x2="306" y2="253"></line>
+                  </g>
+                  <line class="axis" x1="66" y1="253" x2="366" y2="253"></line>
+                  <line class="axis" x1="66" y1="48" x2="66" y2="253"></line>
+                  <text x="66" y="278" text-anchor="middle">10</text>
+                  <text x="126" y="278" text-anchor="middle">15</text>
+                  <text x="186" y="278" text-anchor="middle">20</text>
+                  <text x="246" y="278" text-anchor="middle">25</text>
+                  <text x="306" y="278" text-anchor="middle">30</text>
+                  <text x="366" y="278" text-anchor="middle">35</text>
+                  <text x="40" y="257" text-anchor="end">0</text>
+                  <text x="40" y="216" text-anchor="end">1</text>
+                  <text x="40" y="175" text-anchor="end">2</text>
+                  <text x="40" y="134" text-anchor="end">3</text>
+                  <text x="40" y="93" text-anchor="end">4</text>
+                  <text x="40" y="52" text-anchor="end">5</text>
+                  <text class="label-muted" x="66" y="28">cooling index vs soil moisture</text>
+                  <text class="label-muted" x="216" y="307" text-anchor="middle">soil moisture %</text>
+                  <g id="scatter-fit"></g>
+                  <g id="scatter-points"></g>
+                </svg>
+              </div>
+              <figcaption class="fig-caption">
+                <strong>Fig. 2 —</strong>
+                <span>Cooling index plotted against near-surface moisture with an ordinary least-squares line. <span class="data-note">Data note: n=12 fictional plot pairs.</span></span>
+              </figcaption>
+            </figure>
+
+            <figure class="figure" id="fig-3">
+              <h3 class="figure-title">Substrate chamber response</h3>
+              <div class="chart-frame">
+                <svg class="chart" id="bar-chart" viewBox="0 0 420 324" role="img" aria-labelledby="bar-title bar-desc">
+                  <title id="bar-title">Bar chart with error bars</title>
+                  <desc id="bar-desc">A small bar chart comparing fictional substrate chamber response with error bars.</desc>
+                  <rect x="0" y="0" width="420" height="324" fill="#fff"></rect>
+                  <g aria-hidden="true">
+                    <line class="grid-line" x1="68" y1="54" x2="366" y2="54"></line>
+                    <line class="grid-line" x1="68" y1="94" x2="366" y2="94"></line>
+                    <line class="grid-line" x1="68" y1="134" x2="366" y2="134"></line>
+                    <line class="grid-line" x1="68" y1="174" x2="366" y2="174"></line>
+                    <line class="grid-line" x1="68" y1="214" x2="366" y2="214"></line>
+                    <line class="grid-line" x1="68" y1="254" x2="366" y2="254"></line>
+                  </g>
+                  <line class="axis" x1="68" y1="254" x2="366" y2="254"></line>
+                  <line class="axis" x1="68" y1="54" x2="68" y2="254"></line>
+                  <text x="42" y="258" text-anchor="end">0.0</text>
+                  <text x="42" y="218" text-anchor="end">0.2</text>
+                  <text x="42" y="178" text-anchor="end">0.4</text>
+                  <text x="42" y="138" text-anchor="end">0.6</text>
+                  <text x="42" y="98" text-anchor="end">0.8</text>
+                  <text x="42" y="58" text-anchor="end">1.0</text>
+                  <text class="label-muted" x="68" y="31">exchange index, mean ± SE</text>
+                  <g id="bar-marks"></g>
+                </svg>
+              </div>
+              <figcaption class="fig-caption">
+                <strong>Fig. 3 —</strong>
+                <span>Chamber exchange index by substrate class, with standard error. <span class="data-note">Data note: fictional repeated chamber pulls, k=5 per class.</span></span>
+              </figcaption>
+            </figure>
+
+            <figure class="figure" id="fig-4" data-wide="true">
+              <h3 class="figure-title">Transect contour and late-day sparkline</h3>
+              <div class="chart-frame">
+                <svg class="chart" id="contour-chart" viewBox="0 0 720 300" role="img" aria-labelledby="contour-title contour-desc">
+                  <title id="contour-title">Contour mini figure and sparkline</title>
+                  <desc id="contour-desc">A compact contour map and a sparkline showing late-day wind drift along a fictional transect.</desc>
+                  <rect x="0" y="0" width="720" height="300" fill="#fff"></rect>
+                  <rect class="shade" x="46" y="40" width="410" height="206"></rect>
+                  <g aria-hidden="true">
+                    <line class="grid-line" x1="46" y1="91" x2="456" y2="91"></line>
+                    <line class="grid-line" x1="46" y1="143" x2="456" y2="143"></line>
+                    <line class="grid-line" x1="46" y1="194" x2="456" y2="194"></line>
+                    <line class="grid-line" x1="148" y1="40" x2="148" y2="246"></line>
+                    <line class="grid-line" x1="251" y1="40" x2="251" y2="246"></line>
+                    <line class="grid-line" x1="353" y1="40" x2="353" y2="246"></line>
+                  </g>
+                  <rect x="46" y="40" width="410" height="206" fill="none" stroke="#000" stroke-width="1" vector-effect="non-scaling-stroke"></rect>
+                  <path class="plot-line" d="M55 205 C92 183, 102 160, 142 151 C195 139, 218 104, 267 116 C312 127, 335 160, 385 148 C418 140, 432 116, 449 98"></path>
+                  <path class="plot-line" d="M55 174 C95 161, 122 131, 163 128 C207 125, 230 79, 278 88 C324 96, 342 133, 390 123 C421 116, 436 93, 449 73"></path>
+                  <path class="plot-line" d="M55 229 C100 215, 138 189, 187 187 C241 185, 266 151, 318 160 C365 169, 389 198, 449 177"></path>
+                  <path class="plot-line line-dashed" d="M72 70 C113 92, 128 115, 165 105 C211 92, 225 55, 270 58 C326 62, 338 92, 386 82 C414 77, 432 58, 449 52"></path>
+                  <path class="plot-line line-dashed" d="M66 126 C108 137, 132 164, 174 154 C223 143, 242 108, 289 117 C331 125, 353 155, 407 139 C430 132, 439 120, 449 108"></path>
+                  <text class="label-muted" x="46" y="27">contour residual, mm</text>
+                  <text x="46" y="266" text-anchor="middle">0m</text>
+                  <text x="251" y="266" text-anchor="middle">25m</text>
+                  <text x="456" y="266" text-anchor="middle">50m</text>
+                  <text x="24" y="44" text-anchor="end">N</text>
+                  <text x="24" y="246" text-anchor="end">S</text>
+                  <line class="axis" x1="506" y1="246" x2="676" y2="246"></line>
+                  <line class="axis" x1="506" y1="72" x2="506" y2="246"></line>
+                  <line class="grid-line" x1="506" y1="202" x2="676" y2="202"></line>
+                  <line class="grid-line" x1="506" y1="158" x2="676" y2="158"></line>
+                  <line class="grid-line" x1="506" y1="114" x2="676" y2="114"></line>
+                  <text x="492" y="250" text-anchor="end">0</text>
+                  <text x="492" y="206" text-anchor="end">2</text>
+                  <text x="492" y="162" text-anchor="end">4</text>
+                  <text x="492" y="118" text-anchor="end">6</text>
+                  <text class="label-muted" x="506" y="54">drift sparkline</text>
+                  <g id="sparkline"></g>
+                </svg>
+              </div>
+              <figcaption class="fig-caption">
+                <strong>Fig. 4 —</strong>
+                <span>Contour plate for fictional transect residuals with a compact wind-drift sparkline. <span class="data-note">Data note: contours are illustrative isolines, sparkline markers are hoverable.</span></span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+      </section>
+
+      <section class="table-section" aria-label="Field readings table">
+        <div class="table-layout">
+          <div>
+            <p class="section-label">数据 / Field register</p>
+            <h2>Ruled readings from the field day.</h2>
+            <p>The table records a small subset of the fictional register used for the figure plates. The table scrolls within its own wrapper on narrow screens.</p>
+            <p class="fineprint">All values are invented for this design study. Units follow common field notation: °C, %, kPa, µmol m-2 s-1, and mm.</p>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <caption>Table 1. Selected fictional readings, White Elm transect, 30 Jun 2026.</caption>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Site</th>
+                  <th>Air °C</th>
+                  <th>RH %</th>
+                  <th>Soil ψ kPa</th>
+                  <th>PAR µmol m-2 s-1</th>
+                  <th>Drift mm</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>06:00</td><td>Reed margin</td><td>14.8</td><td>82</td><td>-12.4</td><td>118</td><td>0.7</td></tr>
+                <tr><td>09:00</td><td>Reed margin</td><td>18.2</td><td>74</td><td>-14.1</td><td>612</td><td>1.5</td></tr>
+                <tr><td>12:00</td><td>Reed margin</td><td>23.7</td><td>61</td><td>-17.6</td><td>1094</td><td>3.8</td></tr>
+                <tr><td>15:00</td><td>Reed margin</td><td>26.1</td><td>55</td><td>-19.2</td><td>846</td><td>5.9</td></tr>
+                <tr><td>18:00</td><td>Reed margin</td><td>21.6</td><td>67</td><td>-15.7</td><td>291</td><td>4.2</td></tr>
+                <tr><td>12:00</td><td>Gravel bank</td><td>26.8</td><td>49</td><td>-28.3</td><td>1188</td><td>4.1</td></tr>
+                <tr><td>15:00</td><td>Gravel bank</td><td>29.4</td><td>43</td><td>-31.0</td><td>921</td><td>6.5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Scientific Journal Graphics》 by matthewwhe32040（社区 #87）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const svgNS = document.getElementById("line-chart").namespaceURI;
+      const readoutTarget = document.getElementById("readout-target");
+      const readoutValue = document.getElementById("readout-value");
+      const readoutNote = document.getElementById("readout-note");
+      const siteLabel = document.getElementById("line-site-label");
+
+      const state = {
+        site: "a"
+      };
+
+      const siteSeries = {
+        a: {
+          label: "Site A",
+          longLabel: "Site A / reed margin",
+          temp: [14.8, 18.2, 23.7, 26.1, 21.6, 17.4, 15.6],
+          rh: [82, 74, 61, 55, 67, 78, 84]
+        },
+        b: {
+          label: "Site B",
+          longLabel: "Site B / gravel bank",
+          temp: [16.1, 20.7, 26.8, 29.4, 24.8, 19.3, 17.0],
+          rh: [76, 65, 49, 43, 53, 68, 73]
+        }
+      };
+
+      const hours = ["06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "24:00"];
+
+      const scatterData = [
+        { id: "P01", moisture: 12.6, cooling: .9 },
+        { id: "P02", moisture: 14.8, cooling: 1.4 },
+        { id: "P03", moisture: 16.2, cooling: 1.6 },
+        { id: "P04", moisture: 18.5, cooling: 2.1 },
+        { id: "P05", moisture: 19.7, cooling: 2.3 },
+        { id: "P06", moisture: 21.8, cooling: 2.8 },
+        { id: "P07", moisture: 23.4, cooling: 3.0 },
+        { id: "P08", moisture: 25.6, cooling: 3.6 },
+        { id: "P09", moisture: 27.1, cooling: 3.7 },
+        { id: "P10", moisture: 29.5, cooling: 4.2 },
+        { id: "P11", moisture: 31.4, cooling: 4.7 },
+        { id: "P12", moisture: 33.2, cooling: 4.9 }
+      ];
+
+      const barData = [
+        { label: "reed", value: .58, error: .05 },
+        { label: "silt", value: .37, error: .06 },
+        { label: "gravel", value: .29, error: .04 },
+        { label: "shrub", value: .64, error: .07 }
+      ];
+
+      const sparkData = [
+        { t: "15:00", v: 2.1 },
+        { t: "15:30", v: 2.7 },
+        { t: "16:00", v: 3.8 },
+        { t: "16:30", v: 5.9 },
+        { t: "17:00", v: 6.5 },
+        { t: "17:30", v: 4.8 },
+        { t: "18:00", v: 4.2 }
+      ];
+
+      function createSvg(tag, attrs = {}) {
+        const el = document.createElementNS(svgNS, tag);
+        Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, String(value)));
+        return el;
+      }
+
+      function scale(value, inMin, inMax, outMin, outMax) {
+        const ratio = (value - inMin) / (inMax - inMin);
+        return outMin + ratio * (outMax - outMin);
+      }
+
+      function pointPath(points) {
+        return points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(" ");
+      }
+
+      function setReadout(target, value, note) {
+        readoutTarget.textContent = target;
+        readoutValue.textContent = value;
+        readoutNote.textContent = note;
+      }
+
+      function bindReadout(el, target, value, note) {
+        el.setAttribute("tabindex", "0");
+        el.setAttribute("role", "button");
+        el.setAttribute("aria-label", `${target}: ${value}`);
+        const show = () => setReadout(target, value, note);
+        el.addEventListener("mouseenter", show);
+        el.addEventListener("focus", show);
+      }
+
+      function drawLineChart() {
+        const site = siteSeries[state.site];
+        const pathGroup = document.getElementById("line-paths");
+        const markerGroup = document.getElementById("line-markers");
+        pathGroup.textContent = "";
+        markerGroup.textContent = "";
+        siteLabel.textContent = site.label;
+
+        const xMin = 62;
+        const xMax = 650;
+        const yMin = 47;
+        const yMax = 259;
+        const tempMin = 12;
+        const tempMax = 30;
+        const rhMin = 38;
+        const rhMax = 88;
+
+        const tempPoints = site.temp.map((value, index) => ({
+          x: scale(index, 0, site.temp.length - 1, xMin, xMax),
+          y: scale(value, tempMin, tempMax, yMax, yMin),
+          value,
+          index
+        }));
+
+        const rhPoints = site.rh.map((value, index) => ({
+          x: scale(index, 0, site.rh.length - 1, xMin, xMax),
+          y: scale(value, rhMin, rhMax, yMax, yMin),
+          value,
+          index
+        }));
+
+        pathGroup.append(
+          createSvg("path", { class: "plot-line", d: pointPath(tempPoints) }),
+          createSvg("path", { class: "plot-line line-dashed", d: pointPath(rhPoints) })
+        );
+
+        tempPoints.forEach((point) => {
+          const circle = createSvg("circle", {
+            class: "data-target point-solid",
+            cx: point.x,
+            cy: point.y,
+            r: 4.2
+          });
+          bindReadout(
+            circle,
+            `${site.longLabel}, ${hours[point.index]}`,
+            `air ${point.value.toFixed(1)}°C`,
+            "Fig. 1 solid marker, fictional temperature logger"
+          );
+          markerGroup.appendChild(circle);
+        });
+
+        rhPoints.forEach((point) => {
+          const circle = createSvg("circle", {
+            class: "data-target point-open",
+            cx: point.x,
+            cy: point.y,
+            r: 4.2
+          });
+          bindReadout(
+            circle,
+            `${site.longLabel}, ${hours[point.index]}`,
+            `relative humidity ${point.value.toFixed(0)}%`,
+            "Fig. 1 open marker, fictional humidity logger"
+          );
+          markerGroup.appendChild(circle);
+        });
+      }
+
+      function drawScatter() {
+        const fitGroup = document.getElementById("scatter-fit");
+        const pointGroup = document.getElementById("scatter-points");
+        fitGroup.textContent = "";
+        pointGroup.textContent = "";
+
+        const xMin = 10;
+        const xMax = 35;
+        const yMin = 0;
+        const yMax = 5;
+        const plot = {
+          left: 66,
+          right: 366,
+          top: 48,
+          bottom: 253
+        };
+
+        const n = scatterData.length;
+        const sumX = scatterData.reduce((total, d) => total + d.moisture, 0);
+        const sumY = scatterData.reduce((total, d) => total + d.cooling, 0);
+        const sumXY = scatterData.reduce((total, d) => total + d.moisture * d.cooling, 0);
+        const sumXX = scatterData.reduce((total, d) => total + d.moisture * d.moisture, 0);
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+
+        const lineStartY = slope * xMin + intercept;
+        const lineEndY = slope * xMax + intercept;
+        fitGroup.appendChild(createSvg("line", {
+          class: "plot-line",
+          x1: plot.left,
+          y1: scale(lineStartY, yMin, yMax, plot.bottom, plot.top),
+          x2: plot.right,
+          y2: scale(lineEndY, yMin, yMax, plot.bottom, plot.top)
+        }));
+
+        scatterData.forEach((d) => {
+          const circle = createSvg("circle", {
+            class: "data-target point-open",
+            cx: scale(d.moisture, xMin, xMax, plot.left, plot.right),
+            cy: scale(d.cooling, yMin, yMax, plot.bottom, plot.top),
+            r: 4.5
+          });
+          bindReadout(
+            circle,
+            `plot ${d.id}`,
+            `${d.moisture.toFixed(1)}% soil moisture, cooling ${d.cooling.toFixed(1)}°C`,
+            "Fig. 2 point, fictional paired plot measurement"
+          );
+          pointGroup.appendChild(circle);
+        });
+      }
+
+      function drawBars() {
+        const group = document.getElementById("bar-marks");
+        group.textContent = "";
+        const yMin = 0;
+        const yMax = 1;
+        const plot = {
+          left: 68,
+          right: 366,
+          top: 54,
+          bottom: 254
+        };
+        const step = (plot.right - plot.left) / barData.length;
+        const barWidth = 34;
+
+        barData.forEach((d, index) => {
+          const centerX = plot.left + step * index + step / 2;
+          const y = scale(d.value, yMin, yMax, plot.bottom, plot.top);
+          const errTop = scale(d.value + d.error, yMin, yMax, plot.bottom, plot.top);
+          const errBottom = scale(d.value - d.error, yMin, yMax, plot.bottom, plot.top);
+          const rect = createSvg("rect", {
+            class: `data-target ${index === 1 ? "bar-muted" : "bar"}`,
+            x: centerX - barWidth / 2,
+            y,
+            width: barWidth,
+            height: plot.bottom - y
+          });
+          bindReadout(
+            rect,
+            `${d.label} substrate`,
+            `exchange ${d.value.toFixed(2)} ±${d.error.toFixed(2)}`,
+            "Fig. 3 bar, fictional chamber mean with standard error"
+          );
+          group.appendChild(rect);
+          group.appendChild(createSvg("line", {
+            class: "error-line",
+            x1: centerX,
+            y1: errTop,
+            x2: centerX,
+            y2: errBottom,
+            stroke: "#000",
+            "stroke-width": 1.2
+          }));
+          group.appendChild(createSvg("line", {
+            class: "error-line",
+            x1: centerX - 10,
+            y1: errTop,
+            x2: centerX + 10,
+            y2: errTop,
+            stroke: "#000",
+            "stroke-width": 1.2
+          }));
+          group.appendChild(createSvg("line", {
+            class: "error-line",
+            x1: centerX - 10,
+            y1: errBottom,
+            x2: centerX + 10,
+            y2: errBottom,
+            stroke: "#000",
+            "stroke-width": 1.2
+          }));
+          const label = createSvg("text", {
+            x: centerX,
+            y: 282,
+            "text-anchor": "middle"
+          });
+          label.textContent = d.label;
+          group.appendChild(label);
+        });
+      }
+
+      function drawSparkline() {
+        const group = document.getElementById("sparkline");
+        group.textContent = "";
+        const plot = {
+          left: 506,
+          right: 676,
+          top: 72,
+          bottom: 246
+        };
+        const points = sparkData.map((d, index) => ({
+          x: scale(index, 0, sparkData.length - 1, plot.left, plot.right),
+          y: scale(d.v, 0, 8, plot.bottom, plot.top),
+          source: d
+        }));
+        group.appendChild(createSvg("path", {
+          class: "plot-line",
+          d: pointPath(points)
+        }));
+        points.forEach((point) => {
+          const circle = createSvg("circle", {
+            class: "data-target point-solid",
+            cx: point.x,
+            cy: point.y,
+            r: 4
+          });
+          bindReadout(
+            circle,
+            `drift ${point.source.t}`,
+            `${point.source.v.toFixed(1)} mm`,
+            "Fig. 4 sparkline marker, fictional late-day drift"
+          );
+          group.appendChild(circle);
+        });
+      }
+
+      document.querySelectorAll("[data-site]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.site = button.dataset.site;
+          document.querySelectorAll("[data-site]").forEach((candidate) => {
+            candidate.setAttribute("aria-pressed", String(candidate === button));
+          });
+          drawLineChart();
+          setReadout(
+            "series switched",
+            `${siteSeries[state.site].longLabel}`,
+            "Fig. 1 redrawn from the local fictional array"
+          );
+        });
+      });
+
+      drawLineChart();
+      drawScatter();
+      drawBars();
+      drawSparkline();
+    })();
+  </script>
+</body>
+</html>
