@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orb Capture Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0a0a;
+      --panel: #111113;
+      --panel-2: #171719;
+      --panel-3: #202024;
+      --line: rgba(255, 255, 255, .1);
+      --line-soft: rgba(255, 255, 255, .065);
+      --text: #ececef;
+      --text-2: #d5d5dc;
+      --text-3: #cfcfd3;
+      --muted: #9ca3af;
+      --accent: #ff4a2b;
+      --accent-soft: rgba(255, 74, 43, .18);
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100svh;
+      margin: 0;
+      overflow-x: clip;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .035), transparent 19rem),
+        linear-gradient(120deg, rgba(255, 74, 43, .07), transparent 23rem),
+        #0a0a0a;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .26;
+      background:
+        linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(180deg, transparent, #000 18%, #000 72%, transparent);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      position: relative;
+      width: min(100%, 430px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: 18px 16px 136px;
+      isolation: isolate;
+    }
+
+    .app::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      z-index: -1;
+      width: min(100%, 430px);
+      transform: translateX(-50%);
+      background:
+        radial-gradient(ellipse at 50% 5%, rgba(232, 232, 232, .065), transparent 24rem),
+        linear-gradient(180deg, rgba(19, 19, 21, .88), rgba(10, 10, 10, .96) 56%, #0a0a0a);
+      border-inline: 1px solid rgba(255, 255, 255, .045);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-width: 0;
+      padding: 0 2px 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 13px;
+      background:
+        radial-gradient(circle at 32% 27%, rgba(255, 255, 255, .22), transparent 24px),
+        #151517;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+    }
+
+    .wordmark {
+      min-width: 0;
+    }
+
+    .wordmark strong {
+      display: block;
+      overflow: hidden;
+      color: var(--text);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wordmark span,
+    .hud-label,
+    .micro-label,
+    .token-rarity {
+      font-family: var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .wordmark span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .seed-pill {
+      min-width: 0;
+      flex: 0 1 auto;
+      display: grid;
+      justify-items: end;
+      gap: 3px;
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text-2);
+      background: rgba(20, 20, 22, .86);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .055);
+    }
+
+    .seed-pill span {
+      color: var(--muted);
+      font: 700 9px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .seed-pill strong {
+      overflow: hidden;
+      max-width: 112px;
+      font: 700 11px/1 var(--mono);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .capture-card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, .09);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .012)),
+        var(--panel);
+      box-shadow:
+        0 18px 42px -30px rgba(0, 0, 0, .95),
+        inset 0 1px 0 rgba(255, 255, 255, .06),
+        inset 0 -1px 0 rgba(0, 0, 0, .7);
+    }
+
+    .capture-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background:
+        linear-gradient(rgba(255, 255, 255, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+      background-size: 100% 16px, 28px 100%;
+      mask-image: radial-gradient(circle at center, #000, transparent 78%);
+    }
+
+    .scan-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      color: var(--muted);
+      font: 700 10px/1 var(--mono);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .scan-state {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      gap: 8px;
+    }
+
+    .scan-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(255, 74, 43, .1), 0 0 18px rgba(255, 74, 43, .74);
+    }
+
+    .scan-time {
+      overflow: hidden;
+      color: var(--text-3);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .orb-stage {
+      all: unset;
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: clamp(286px, 78vw, 344px);
+      margin-top: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 24px;
+      color: inherit;
+      cursor: pointer;
+      touch-action: manipulation;
+      background:
+        radial-gradient(ellipse at 50% 48%, rgba(255, 255, 255, .045), transparent 52%),
+        linear-gradient(180deg, rgba(255, 255, 255, .026), rgba(255, 255, 255, 0) 45%),
+        #09090a;
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, .65),
+        inset 0 0 46px rgba(255, 255, 255, .025);
+    }
+
+    .orb-stage:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .orb-stage.is-pressing {
+      transform: translateY(1px);
+      border-color: rgba(255, 74, 43, .38);
+    }
+
+    .orb-stage.is-capturing {
+      border-color: rgba(255, 74, 43, .55);
+    }
+
+    #orbCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .stage-sheen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 20%, transparent 76%, rgba(255, 255, 255, .035)),
+        radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, .42));
+      mix-blend-mode: screen;
+      opacity: .35;
+    }
+
+    .prompt {
+      position: absolute;
+      right: 17px;
+      bottom: 16px;
+      left: 17px;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .prompt strong {
+      color: var(--text);
+      font: 800 12px/1.05 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .prompt span {
+      color: var(--text-2);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .charge {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 11px;
+      margin-top: 15px;
+    }
+
+    .micro-label {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .meter {
+      height: 7px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .075);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .055);
+    }
+
+    .meter-fill {
+      width: 72%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #e8e8e8, #ff4a2b);
+      box-shadow: 0 0 16px rgba(255, 74, 43, .35);
+    }
+
+    .lock-readout {
+      min-width: 42px;
+      color: var(--text-2);
+      font: 800 10px/1 var(--mono);
+      text-align: right;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 13px;
+    }
+
+    .stat {
+      min-width: 0;
+      padding: 13px 11px 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      background: rgba(20, 20, 22, .9);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    }
+
+    .hud-label {
+      display: block;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 800;
+      line-height: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .stat strong {
+      display: block;
+      overflow: hidden;
+      margin-top: 8px;
+      color: var(--text);
+      font: 800 19px/1 var(--mono);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .stat span:last-child {
+      display: block;
+      overflow: hidden;
+      margin-top: 7px;
+      color: var(--text-3);
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .collection {
+      margin-top: 23px;
+      min-width: 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      padding: 0 2px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font: 700 10px/1 var(--mono);
+      letter-spacing: .08em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .collection-strip {
+      display: flex;
+      gap: 10px;
+      min-width: 0;
+      margin: 14px -16px 0 0;
+      padding: 0 16px 8px 2px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    .collection-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .token {
+      flex: 0 0 118px;
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012)),
+        var(--panel-2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045);
+    }
+
+    .token-visual {
+      width: 100%;
+      height: 70px;
+      display: block;
+      border-radius: 13px;
+      background: #0b0b0c;
+    }
+
+    .token-id {
+      overflow: hidden;
+      margin-top: 9px;
+      color: var(--text);
+      font: 800 12px/1 var(--mono);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .token-rarity {
+      display: inline-flex;
+      max-width: 100%;
+      margin-top: 7px;
+      padding: 5px 7px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 999px;
+      color: var(--text-2);
+      background: rgba(255, 255, 255, .045);
+      font-size: 8px;
+      font-weight: 800;
+      line-height: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .token.is-hot .token-rarity {
+      color: #ffffff;
+      border-color: rgba(255, 74, 43, .32);
+      background: rgba(255, 74, 43, .16);
+    }
+
+    .dock {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 17px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, .075);
+      border-radius: 22px;
+      background: rgba(16, 16, 18, .9);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    }
+
+    .dock-item {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 38px;
+      border-radius: 14px;
+      color: var(--muted);
+      font: 800 9px/1 var(--mono);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .dock-item.is-active {
+      color: var(--text);
+      background: rgba(255, 255, 255, .07);
+    }
+
+    .dock-item svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 372px) {
+      .app {
+        padding-inline: 12px;
+      }
+
+      .capture-card {
+        padding: 14px;
+        border-radius: 24px;
+      }
+
+      .orb-stage {
+        height: 280px;
+      }
+
+      .stat-grid {
+        gap: 7px;
+      }
+
+      .stat {
+        padding-inline: 9px;
+      }
+
+      .stat strong {
+        font-size: 17px;
+      }
+
+      .dock-item span {
+        display: none;
+      }
+    }
+
+    @media (min-width: 560px) {
+      body {
+        display: grid;
+        place-items: start center;
+        padding-top: 24px;
+      }
+
+      .app {
+        min-height: 820px;
+        border-radius: 34px;
+      }
+
+      .app::before {
+        top: 24px;
+        bottom: 24px;
+        border: 1px solid rgba(255, 255, 255, .075);
+        border-radius: 36px;
+        box-shadow: 0 30px 80px -42px rgba(0, 0, 0, 1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .orb-stage.is-pressing {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="Mote Lab orb capture app">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <circle cx="19" cy="19" r="10.5" stroke="currentColor" stroke-width="1.4" opacity=".78"></circle>
+          <circle cx="19" cy="19" r="3.8" fill="currentColor"></circle>
+          <path d="M8.8 21.4c4.1 3.6 16.3 3.6 20.4 0" stroke="#ff4a2b" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+        <div class="wordmark">
+          <strong>Mote Lab</strong>
+          <span>光粒捕获</span>
+        </div>
+      </div>
+      <div class="seed-pill" aria-live="polite">
+        <span>seed</span>
+        <strong id="seedLabel">SCN-0000</strong>
+      </div>
+    </header>
+
+    <section class="capture-card" aria-label="Orb capture field">
+      <div class="scan-row">
+        <div class="scan-state">
+          <span class="scan-dot" aria-hidden="true"></span>
+          <span id="scanState">LIVE SCAN</span>
+        </div>
+        <span class="scan-time" id="scanTime">FIELD 00:00:00</span>
+      </div>
+
+      <button class="orb-stage" id="orbStage" type="button" aria-label="轻点捕获当前光球">
+        <canvas id="orbCanvas"></canvas>
+        <span class="stage-sheen" aria-hidden="true"></span>
+        <span class="prompt">
+          <strong id="promptEn">TAP TO CAPTURE</strong>
+          <span id="promptZh">轻点捕获</span>
+        </span>
+      </button>
+
+      <div class="charge" aria-label="Signal lock">
+        <span class="micro-label">lock</span>
+        <div class="meter" aria-hidden="true"><div class="meter-fill" id="meterFill"></div></div>
+        <span class="lock-readout" id="lockReadout">72%</span>
+      </div>
+    </section>
+
+    <section class="stat-grid" aria-label="Capture readouts">
+      <div class="stat">
+        <span class="hud-label">captured</span>
+        <strong id="captureCount">03</strong>
+        <span>已捕获</span>
+      </div>
+      <div class="stat">
+        <span class="hud-label">rarity</span>
+        <strong id="rarityNow">QUIET</strong>
+        <span id="rarityZh">静息</span>
+      </div>
+      <div class="stat">
+        <span class="hud-label">mass</span>
+        <strong id="massNow">1.00</strong>
+        <span>球核密度</span>
+      </div>
+    </section>
+
+    <section class="collection" aria-label="Captured orb collection">
+      <div class="section-head">
+        <h2>Collection / 收藏</h2>
+        <p id="collectionStatus">RECENT CAPTURES</p>
+      </div>
+      <div class="collection-strip" id="collectionStrip"></div>
+    </section>
+
+    <footer class="dock" aria-label="App controls">
+      <div class="dock-item is-active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="8.2"></circle>
+          <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"></circle>
+        </svg>
+        <span>field</span>
+      </div>
+      <div class="dock-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M5 18V6"></path>
+          <path d="M10 16V8"></path>
+          <path d="M15 19V5"></path>
+          <path d="M20 15V9"></path>
+        </svg>
+        <span>vault</span>
+      </div>
+      <div class="dock-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="5" y="5" width="14" height="14" rx="4"></rect>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>scan</span>
+      </div>
+    </footer>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Orb Capture App》（社区 Featured · #90）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("orbCanvas");
+      const ctx = canvas.getContext("2d");
+      const stage = document.getElementById("orbStage");
+      const seedLabel = document.getElementById("seedLabel");
+      const scanState = document.getElementById("scanState");
+      const scanTime = document.getElementById("scanTime");
+      const promptEn = document.getElementById("promptEn");
+      const promptZh = document.getElementById("promptZh");
+      const meterFill = document.getElementById("meterFill");
+      const lockReadout = document.getElementById("lockReadout");
+      const captureCount = document.getElementById("captureCount");
+      const rarityNow = document.getElementById("rarityNow");
+      const rarityZh = document.getElementById("rarityZh");
+      const massNow = document.getElementById("massNow");
+      const collectionStrip = document.getElementById("collectionStrip");
+      const collectionStatus = document.getElementById("collectionStatus");
+      const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const TAU = Math.PI * 2;
+      const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+      const DPR_LIMIT = 2;
+      const captureDuration = 720;
+      const rarities = [
+        { en: "QUIET", zh: "静息", tag: "QT", weight: .52, heat: false, glow: [232, 232, 232], haze: [156, 163, 175] },
+        { en: "BRIGHT", zh: "明核", tag: "BR", weight: .29, heat: false, glow: [236, 236, 239], haze: [213, 213, 220] },
+        { en: "RARE", zh: "稀有", tag: "RR", weight: .15, heat: true, glow: [255, 231, 220], haze: [255, 74, 43] },
+        { en: "PHASE", zh: "相位", tag: "PH", weight: .04, heat: true, glow: [255, 255, 255], haze: [255, 112, 82] }
+      ];
+
+      let reduceMotion = reduceQuery.matches;
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let rafId = 0;
+      let lastNow = 0;
+      let startedAt = performance.now();
+      let captureStarted = 0;
+      let isPointerDown = false;
+      let lastLock = -1;
+      let currentOrb = null;
+      let captured = [];
+
+      function prng(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value += 0x6D2B79F5;
+          let t = value;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function pickRarity(rand) {
+        const roll = rand();
+        let cursor = 0;
+        for (const rarity of rarities) {
+          cursor += rarity.weight;
+          if (roll <= cursor) return rarity;
+        }
+        return rarities[0];
+      }
+
+      function base36(seed) {
+        return (seed >>> 0).toString(36).toUpperCase().padStart(7, "0").slice(-7);
+      }
+
+      function createPoints(count, rand) {
+        const points = [];
+        for (let i = 0; i < count; i += 1) {
+          const y = 1 - (i + .5) * 2 / count;
+          const radius = Math.sqrt(Math.max(0, 1 - y * y));
+          const jitter = (rand() - .5) * .28;
+          const phi = (i + jitter) * GOLDEN;
+          const shell = .93 + rand() * .11;
+          points.push({
+            x: Math.cos(phi) * radius * shell,
+            y: y * shell,
+            z: Math.sin(phi) * radius * shell,
+            pulse: rand() * TAU,
+            grain: .72 + rand() * .56
+          });
+        }
+        return points;
+      }
+
+      function createOrbiters(count, rand) {
+        const items = [];
+        for (let i = 0; i < count; i += 1) {
+          items.push({
+            angle: rand() * TAU,
+            speed: .26 + rand() * .34,
+            tilt: -.56 + rand() * 1.12,
+            lane: .82 + rand() * .38,
+            size: .75 + rand() * 1.7
+          });
+        }
+        return items;
+      }
+
+      function makeOrb(seed) {
+        const rand = prng(seed);
+        const rarity = pickRarity(rand);
+        const count = reduceMotion ? 340 : Math.floor(390 + rand() * 170);
+        const mass = .86 + rand() * .42 + (rarity.heat ? .12 : 0);
+        return {
+          seed,
+          rand,
+          rarity,
+          id: `${rarity.tag}-${base36(seed).slice(1, 6)}`,
+          seedLabel: `SCN-${base36(seed).slice(0, 4)}`,
+          points: createPoints(count, rand),
+          orbiters: createOrbiters(reduceMotion ? 6 : 13, rand),
+          yaw: rand() * TAU,
+          pitch: -.18 + rand() * .36,
+          roll: rand() * TAU,
+          speed: .22 + rand() * .26,
+          size: .9 + rand() * .18 + (rarity.heat ? .03 : 0),
+          mass,
+          lockBase: 70 + rand() * 15
+        };
+      }
+
+      function nextSeed() {
+        if (window.crypto && window.crypto.getRandomValues) {
+          const data = new Uint32Array(1);
+          window.crypto.getRandomValues(data);
+          return data[0] >>> 0;
+        }
+        return Math.floor(Math.random() * 4294967295) >>> 0;
+      }
+
+      function rgb(values, alpha) {
+        return `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${alpha})`;
+      }
+
+      function mix(a, b, t) {
+        return [
+          Math.round(a[0] + (b[0] - a[0]) * t),
+          Math.round(a[1] + (b[1] - a[1]) * t),
+          Math.round(a[2] + (b[2] - a[2]) * t)
+        ];
+      }
+
+      function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+      }
+
+      function easeInQuart(t) {
+        return t * t * t * t;
+      }
+
+      function resizeCanvas() {
+        const rect = stage.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        dpr = Math.min(window.devicePixelRatio || 1, DPR_LIMIT);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        draw(performance.now(), true);
+      }
+
+      function setUiForOrb(orb) {
+        seedLabel.textContent = orb.seedLabel;
+        rarityNow.textContent = orb.rarity.en;
+        rarityZh.textContent = orb.rarity.zh;
+        massNow.textContent = orb.mass.toFixed(2);
+        captureCount.textContent = String(captured.length).padStart(2, "0");
+        collectionStatus.textContent = `${captured.length} SAVED`;
+      }
+
+      function drawField(now) {
+        const elapsed = (now - startedAt) / 1000;
+        const total = Math.floor(elapsed);
+        const h = Math.floor(total / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const s = total % 60;
+        scanTime.textContent = `FIELD ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      }
+
+      function setLock(now) {
+        const elapsed = (now - startedAt) / 1000;
+        const lock = isPointerDown || captureStarted
+          ? 100
+          : Math.round(currentOrb.lockBase + Math.sin(elapsed * 1.35 + currentOrb.seed * .0001) * 7);
+        if (lock !== lastLock) {
+          lastLock = lock;
+          const clamped = Math.max(48, Math.min(100, lock));
+          meterFill.style.width = `${clamped}%`;
+          lockReadout.textContent = `${clamped}%`;
+        }
+      }
+
+      function projectOrbPoint(point, yaw, pitch, roll, radius, cx, cy, collapse, time) {
+        const cosY = Math.cos(yaw);
+        const sinY = Math.sin(yaw);
+        const cosX = Math.cos(pitch);
+        const sinX = Math.sin(pitch);
+        const cosZ = Math.cos(roll);
+        const sinZ = Math.sin(roll);
+        let x = point.x;
+        let y = point.y;
+        let z = point.z;
+        const x1 = x * cosY + z * sinY;
+        const z1 = -x * sinY + z * cosY;
+        const y1 = y * cosX - z1 * sinX;
+        const z2 = y * sinX + z1 * cosX;
+        const x2 = x1 * cosZ - y1 * sinZ;
+        const y2 = x1 * sinZ + y1 * cosZ;
+        const pulse = reduceMotion ? 1 : 1 + Math.sin(time * 1.8 + point.pulse) * .018;
+        const fov = 2.55;
+        const perspective = fov / (fov - z2 * .58);
+        return {
+          x: cx + x2 * radius * perspective * collapse * pulse,
+          y: cy + y2 * radius * perspective * collapse * pulse,
+          z: z2,
+          p: perspective,
+          grain: point.grain
+        };
+      }
+
+      function drawOrb(now) {
+        const time = (now - startedAt) / 1000;
+        const cx = width / 2;
+        const cy = height * .485;
+        const baseRadius = Math.min(width, height) * .285 * currentOrb.size;
+        let captureProgress = 0;
+        if (captureStarted) {
+          captureProgress = Math.min(1, (now - captureStarted) / captureDuration);
+        }
+        const captureEase = easeOutQuart(captureProgress);
+        const implode = captureStarted ? 1 - captureEase * .76 : 1;
+        const fade = captureStarted ? Math.max(.2, 1 - easeInQuart(captureProgress) * .72) : 1;
+        const yaw = reduceMotion
+          ? currentOrb.yaw + .52
+          : currentOrb.yaw + time * currentOrb.speed + captureEase * 2.1;
+        const pitch = reduceMotion
+          ? currentOrb.pitch
+          : currentOrb.pitch + Math.sin(time * .52 + currentOrb.seed * .00001) * .16;
+        const roll = reduceMotion
+          ? currentOrb.roll
+          : currentOrb.roll + Math.sin(time * .31) * .18;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const glowRadius = baseRadius * (captureStarted ? 1.18 + captureEase * .55 : 1.55);
+        const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowRadius);
+        glow.addColorStop(0, rgb(currentOrb.rarity.glow, .2 * fade));
+        glow.addColorStop(.34, rgb(currentOrb.rarity.haze, .12 * fade));
+        glow.addColorStop(1, "rgba(10, 10, 10, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(cx, cy, glowRadius, 0, TAU);
+        ctx.fill();
+
+        ctx.save();
+        ctx.globalAlpha = .55 * fade;
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(232, 232, 232, .16)";
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, baseRadius * .92 * implode, baseRadius * .23 * implode, yaw * .62, 0, TAU);
+        ctx.stroke();
+        ctx.strokeStyle = currentOrb.rarity.heat ? "rgba(255, 74, 43, .32)" : "rgba(213, 213, 220, .16)";
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, baseRadius * 1.06 * implode, baseRadius * .18 * implode, -yaw * .48, 0, TAU);
+        ctx.stroke();
+        ctx.restore();
+
+        const projected = [];
+        for (const point of currentOrb.points) {
+          projected.push(projectOrbPoint(point, yaw, pitch, roll, baseRadius, cx, cy, implode, time));
+        }
+        projected.sort((a, b) => a.z - b.z);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        for (const point of projected) {
+          const depth = (point.z + 1) / 2;
+          const front = Math.max(0, Math.min(1, depth));
+          const alpha = (.13 + front * .72) * fade;
+          const tone = mix([156, 163, 175], currentOrb.rarity.glow, front * .85);
+          const dot = (.55 + front * 1.9) * point.grain * (captureStarted ? .82 + captureEase * .32 : 1);
+          ctx.fillStyle = rgb(tone, alpha);
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, dot * point.p, 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        const core = ctx.createRadialGradient(cx - baseRadius * .12 * implode, cy - baseRadius * .16 * implode, 0, cx, cy, baseRadius * .62 * implode);
+        core.addColorStop(0, `rgba(255, 255, 255, ${.34 * fade})`);
+        core.addColorStop(.32, rgb(currentOrb.rarity.glow, .13 * fade));
+        core.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = core;
+        ctx.beginPath();
+        ctx.arc(cx, cy, baseRadius * .66 * implode, 0, TAU);
+        ctx.fill();
+
+        drawOrbiters(time, cx, cy, baseRadius, implode, fade);
+
+        if (captureStarted) {
+          drawCaptureBurst(cx, cy, baseRadius, captureProgress);
+        }
+      }
+
+      function drawOrbiters(time, cx, cy, radius, collapse, fade) {
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        for (const orbiter of currentOrb.orbiters) {
+          const angle = orbiter.angle + (reduceMotion ? .8 : time * orbiter.speed);
+          const spin = angle + orbiter.tilt;
+          const x = cx + Math.cos(angle) * radius * orbiter.lane * collapse;
+          const y = cy + Math.sin(spin) * radius * .27 * collapse;
+          const depth = (Math.sin(angle) + 1) / 2;
+          const alpha = (.24 + depth * .46) * fade;
+          const tone = currentOrb.rarity.heat && depth > .55 ? [255, 111, 82] : [232, 232, 232];
+          ctx.fillStyle = rgb(tone, alpha);
+          ctx.beginPath();
+          ctx.arc(x, y, orbiter.size + depth * 1.2, 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawCaptureBurst(cx, cy, radius, progress) {
+        const eased = easeOutQuart(progress);
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        for (let i = 0; i < 3; i += 1) {
+          const q = Math.max(0, Math.min(1, (progress - i * .13) / (1 - i * .13)));
+          if (q <= 0) continue;
+          ctx.strokeStyle = `rgba(255, 74, 43, ${(1 - q) * .72})`;
+          ctx.lineWidth = 2 + (1 - q) * 4;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * (.54 + q * 1.72), 0, TAU);
+          ctx.stroke();
+        }
+        const flash = Math.max(0, .34 - Math.abs(progress - .28)) / .34;
+        ctx.fillStyle = `rgba(255, 74, 43, ${flash * .13})`;
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = `rgba(255, 74, 43, ${(1 - eased) * .78})`;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius * (.19 + (1 - eased) * .16), 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function draw(now, force) {
+        if (!force && reduceMotion) return;
+        if (!lastNow) lastNow = now;
+        lastNow = now;
+        drawField(now);
+        setLock(now);
+        drawOrb(now);
+
+        if (captureStarted && now - captureStarted >= captureDuration) {
+          finishCapture(currentOrb);
+        }
+
+        if (!reduceMotion) {
+          rafId = requestAnimationFrame(draw);
+        }
+      }
+
+      function startLoop() {
+        cancelAnimationFrame(rafId);
+        lastNow = 0;
+        if (reduceMotion) {
+          draw(performance.now(), true);
+        } else {
+          rafId = requestAnimationFrame(draw);
+        }
+      }
+
+      function setCapturing(value) {
+        stage.classList.toggle("is-capturing", value);
+        promptEn.textContent = value ? "CAPTURING" : "TAP TO CAPTURE";
+        promptZh.textContent = value ? "捕获中" : "轻点捕获";
+        scanState.textContent = value ? "CAPTURE LOCK" : "LIVE SCAN";
+      }
+
+      function startCapture() {
+        if (captureStarted) return;
+        if (reduceMotion) {
+          finishCapture(currentOrb);
+          return;
+        }
+        captureStarted = performance.now();
+        setCapturing(true);
+      }
+
+      function finishCapture(orb) {
+        captureStarted = 0;
+        setCapturing(false);
+        addCaptured(orb);
+        currentOrb = makeOrb(nextSeed());
+        setUiForOrb(currentOrb);
+        lastLock = -1;
+        draw(performance.now(), true);
+      }
+
+      function addCaptured(orb) {
+        captured.unshift({
+          id: orb.id,
+          seed: orb.seed,
+          rarity: orb.rarity,
+          mass: orb.mass
+        });
+        captured = captured.slice(0, 10);
+        renderCollection();
+      }
+
+      function renderMini(canvasEl, item) {
+        const rect = canvasEl.getBoundingClientRect();
+        const ratio = Math.min(window.devicePixelRatio || 1, DPR_LIMIT);
+        const w = Math.max(1, rect.width);
+        const h = Math.max(1, rect.height);
+        canvasEl.width = Math.floor(w * ratio);
+        canvasEl.height = Math.floor(h * ratio);
+        const mini = canvasEl.getContext("2d");
+        mini.setTransform(ratio, 0, 0, ratio, 0, 0);
+        mini.clearRect(0, 0, w, h);
+        const rand = prng(item.seed);
+        const cx = w / 2;
+        const cy = h / 2;
+        const r = Math.min(w, h) * (.24 + rand() * .05);
+        const glow = mini.createRadialGradient(cx, cy, 0, cx, cy, r * 2.2);
+        glow.addColorStop(0, rgb(item.rarity.glow, .28));
+        glow.addColorStop(.5, rgb(item.rarity.haze, .16));
+        glow.addColorStop(1, "rgba(0,0,0,0)");
+        mini.fillStyle = glow;
+        mini.beginPath();
+        mini.arc(cx, cy, r * 2.2, 0, TAU);
+        mini.fill();
+        mini.globalCompositeOperation = "lighter";
+        for (let i = 0; i < 72; i += 1) {
+          const y = 1 - (i + .5) * 2 / 72;
+          const rr = Math.sqrt(Math.max(0, 1 - y * y));
+          const phi = i * GOLDEN + rand() * .16;
+          const depth = (Math.sin(phi) * rr + 1) / 2;
+          const x = cx + Math.cos(phi) * rr * r;
+          const yy = cy + y * r;
+          const tone = mix([156, 163, 175], item.rarity.glow, depth);
+          mini.fillStyle = rgb(tone, .22 + depth * .62);
+          mini.beginPath();
+          mini.arc(x, yy, .75 + depth * 1.15, 0, TAU);
+          mini.fill();
+        }
+        mini.globalCompositeOperation = "source-over";
+      }
+
+      function renderCollection() {
+        collectionStrip.textContent = "";
+        for (const item of captured) {
+          const card = document.createElement("article");
+          card.className = `token${item.rarity.heat ? " is-hot" : ""}`;
+          const visual = document.createElement("canvas");
+          visual.className = "token-visual";
+          visual.setAttribute("aria-hidden", "true");
+          const id = document.createElement("div");
+          id.className = "token-id";
+          id.textContent = item.id;
+          const rarity = document.createElement("div");
+          rarity.className = "token-rarity";
+          rarity.textContent = item.rarity.en;
+          card.append(visual, id, rarity);
+          collectionStrip.append(card);
+          renderMini(visual, item);
+        }
+      }
+
+      function handlePointerDown() {
+        isPointerDown = true;
+        stage.classList.add("is-pressing");
+        setLock(performance.now());
+      }
+
+      function handlePointerUp(event) {
+        const target = document.elementFromPoint(event.clientX, event.clientY);
+        isPointerDown = false;
+        stage.classList.remove("is-pressing");
+        setLock(performance.now());
+        if (target === stage || stage.contains(target)) startCapture();
+      }
+
+      function handlePointerCancel() {
+        isPointerDown = false;
+        stage.classList.remove("is-pressing");
+        setLock(performance.now());
+      }
+
+      function init() {
+        captured = [
+          makeOrb(0x7B4A21D1),
+          makeOrb(0x2D9E61B4),
+          makeOrb(0xB6104C8A)
+        ].map((orb) => ({
+          id: orb.id,
+          seed: orb.seed,
+          rarity: orb.rarity,
+          mass: orb.mass
+        }));
+        currentOrb = makeOrb(nextSeed());
+        renderCollection();
+        setUiForOrb(currentOrb);
+        resizeCanvas();
+        startLoop();
+      }
+
+      stage.addEventListener("pointerdown", handlePointerDown);
+      stage.addEventListener("pointerup", handlePointerUp);
+      stage.addEventListener("pointercancel", handlePointerCancel);
+      stage.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          startCapture();
+        }
+      });
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+        renderCollection();
+      }, { passive: true });
+      reduceQuery.addEventListener("change", () => {
+        reduceMotion = reduceQuery.matches;
+        currentOrb = makeOrb(currentOrb.seed);
+        setCapturing(false);
+        captureStarted = 0;
+        resizeCanvas();
+        startLoop();
+      });
+
+      init();
+    })();
+  </script>
+</body>
+</html>
