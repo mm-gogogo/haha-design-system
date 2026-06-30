@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Warm Board Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f9f8f4;
+      --paper-warm: #fffdf2;
+      --paper-soft: #fff9e6;
+      --paper-gold: #fffbe0;
+      --panel: rgba(255, 253, 242, .82);
+      --panel-strong: #fffdf2;
+      --teal: #4a9e8e;
+      --teal-deep: #246b5f;
+      --sage: #cbdad7;
+      --sage-deep: #7c9a92;
+      --clay: #d4a883;
+      --tan: #e8d5c4;
+      --gold: #e5d5a0;
+      --warm-line: rgba(112, 98, 78, .18);
+      --ink: #2c2a26;
+      --muted: #655f54;
+      --soft-muted: #6b665c;
+      --shadow: 0 18px 46px -28px rgba(77, 61, 42, .68);
+      --shadow-lift: 0 24px 54px -28px rgba(74, 54, 31, .78);
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --accent-font: "Quicksand", "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--paper);
+    }
+
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px 16px 108px;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 18% 9%, rgba(229, 213, 160, .35), transparent 27%),
+        radial-gradient(circle at 86% 16%, rgba(74, 158, 142, .16), transparent 28%),
+        radial-gradient(circle at 76% 92%, rgba(212, 168, 131, .24), transparent 31%),
+        linear-gradient(180deg, #fffdf2 0%, #f9f8f4 52%, #f2eadf 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(84, 72, 54, .052) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(84, 72, 54, .04) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .72) 66%, transparent 100%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .32;
+      background-image:
+        radial-gradient(circle at 18px 22px, rgba(82, 69, 49, .16) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 48px 58px, rgba(255, 255, 255, .8) 0 1px, transparent 1.4px);
+      background-size: 72px 72px, 96px 96px;
+      mix-blend-mode: multiply;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1236px, calc(100vw - 32px));
+      margin: 0 auto;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .board-shell {
+      border: 1px solid rgba(118, 101, 73, .2);
+      border-radius: 28px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(255, 251, 224, .44)),
+        rgba(255, 253, 242, .7);
+      box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .88),
+        inset 0 -1px 0 rgba(154, 129, 91, .12);
+      overflow: hidden;
+    }
+
+    .topbar {
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto minmax(210px, 1fr);
+      align-items: center;
+      gap: 18px;
+      padding: 16px 22px;
+      border-bottom: 1px solid rgba(118, 101, 73, .16);
+      background:
+        linear-gradient(90deg, rgba(255, 253, 242, .94), rgba(255, 249, 230, .82)),
+        rgba(255, 253, 242, .86);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px 18px 13px 18px;
+      background:
+        radial-gradient(circle at 66% 30%, rgba(255, 253, 242, .95) 0 3px, transparent 3.5px),
+        linear-gradient(145deg, #4a9e8e, #7c9a92 58%, #e5d5a0);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .62),
+        0 12px 24px -16px rgba(36, 107, 95, .9);
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .mark::before,
+    .mark::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px 999px 999px 6px;
+      background: rgba(255, 253, 242, .82);
+      transform-origin: 4px 16px;
+    }
+
+    .mark::before {
+      width: 15px;
+      height: 8px;
+      left: 10px;
+      top: 16px;
+      transform: rotate(-32deg);
+    }
+
+    .mark::after {
+      width: 12px;
+      height: 7px;
+      left: 18px;
+      top: 12px;
+      transform: rotate(34deg);
+      opacity: .82;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .wordmark {
+      margin: 0;
+      font-family: var(--accent-font);
+      font-size: 20px;
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: .01em;
+      color: #2f342d;
+    }
+
+    .workspace {
+      margin: 4px 0 0;
+      font: 600 11px/1.2 var(--mono);
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .board-title {
+      text-align: center;
+      min-width: 0;
+    }
+
+    .board-title h1 {
+      margin: 0;
+      font-size: clamp(20px, 2.1vw, 28px);
+      line-height: 1.08;
+      font-weight: 780;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .board-title p {
+      margin: 7px 0 0;
+      font: 600 11px/1.2 var(--mono);
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .chip-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      border-radius: 999px;
+      border: 1px solid rgba(74, 158, 142, .25);
+      padding: 0 12px;
+      background: rgba(255, 253, 242, .68);
+      color: #275a52;
+      font: 700 11px/1 var(--mono);
+      letter-spacing: .03em;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .76);
+    }
+
+    .chip.is-primary {
+      background: #4a9e8e;
+      border-color: rgba(42, 97, 87, .22);
+      color: #102520;
+    }
+
+    .avatar-group {
+      display: flex;
+      align-items: center;
+      padding-left: 4px;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      margin-left: -7px;
+      border-radius: 999px;
+      border: 2px solid #fffdf2;
+      box-shadow: 0 5px 12px -8px rgba(44, 42, 38, .7);
+      flex: 0 0 auto;
+    }
+
+    .avatar:first-child {
+      margin-left: 0;
+    }
+
+    .board-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 22px 0;
+      color: var(--muted);
+      font: 600 11px/1.4 var(--mono);
+      letter-spacing: .03em;
+    }
+
+    .board-meta strong {
+      color: #2f5f56;
+      font-weight: 800;
+    }
+
+    .board-scroll {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 18px 22px 24px;
+      scrollbar-color: rgba(74, 158, 142, .45) transparent;
+      scrollbar-width: thin;
+    }
+
+    .board-scroll::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .board-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 253, 242, .32);
+      border-radius: 999px;
+    }
+
+    .board-scroll::-webkit-scrollbar-thumb {
+      background: rgba(74, 158, 142, .42);
+      border-radius: 999px;
+      border: 2px solid rgba(255, 253, 242, .82);
+    }
+
+    .board-track {
+      min-width: 1060px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(248px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .column {
+      min-width: 0;
+      border: 1px solid rgba(118, 101, 73, .16);
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 253, 242, .7), rgba(255, 249, 230, .58)),
+        rgba(255, 253, 242, .74);
+      box-shadow:
+        0 14px 34px -30px rgba(77, 61, 42, .72),
+        inset 0 1px 0 rgba(255, 255, 255, .78);
+      padding: 12px;
+    }
+
+    .column:nth-child(2) {
+      background:
+        linear-gradient(180deg, rgba(203, 218, 215, .42), rgba(255, 253, 242, .7)),
+        rgba(255, 253, 242, .78);
+    }
+
+    .column:nth-child(3) {
+      background:
+        linear-gradient(180deg, rgba(232, 213, 196, .46), rgba(255, 253, 242, .72)),
+        rgba(255, 253, 242, .78);
+    }
+
+    .column:nth-child(4) {
+      background:
+        linear-gradient(180deg, rgba(229, 213, 160, .36), rgba(255, 253, 242, .74)),
+        rgba(255, 253, 242, .78);
+    }
+
+    .column-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 6px 12px;
+    }
+
+    .column-title {
+      min-width: 0;
+    }
+
+    .column-title h2 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.15;
+      font-weight: 780;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .column-title span {
+      display: block;
+      margin-top: 4px;
+      font: 600 10px/1 var(--mono);
+      letter-spacing: .05em;
+      color: var(--muted);
+    }
+
+    .count-pill {
+      min-width: 32px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid rgba(74, 158, 142, .22);
+      background: rgba(255, 253, 242, .76);
+      color: #265c53;
+      font: 800 12px/1 var(--mono);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .84);
+      flex: 0 0 auto;
+    }
+
+    .cards {
+      display: grid;
+      gap: 11px;
+    }
+
+    .task-card {
+      width: 100%;
+      display: block;
+      text-align: left;
+      appearance: none;
+      border: 1px solid rgba(111, 92, 63, .14);
+      border-radius: 18px;
+      padding: 14px;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .62), rgba(255, 253, 242, .58)),
+        var(--paper-warm);
+      box-shadow:
+        0 12px 30px -26px rgba(65, 49, 27, .74),
+        inset 0 1px 0 rgba(255, 255, 255, .86);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .55;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255, 251, 224, .76), transparent 34%),
+        linear-gradient(90deg, rgba(255, 255, 255, .36), transparent 48%);
+    }
+
+    .task-card:focus-visible {
+      outline: 3px solid rgba(74, 158, 142, .42);
+      outline-offset: 3px;
+    }
+
+    .task-card.is-complete {
+      border-color: rgba(74, 158, 142, .38);
+      background:
+        linear-gradient(180deg, rgba(203, 218, 215, .48), rgba(255, 253, 242, .68)),
+        #fffdf2;
+    }
+
+    .task-card.is-complete .task-title {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(74, 158, 142, .58);
+      color: #4f4a41;
+    }
+
+    .task-card.is-complete .check {
+      color: #102520;
+      background: #4a9e8e;
+      border-color: rgba(36, 107, 95, .28);
+    }
+
+    .task-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .task-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 0 9px;
+      font: 800 10px/1 var(--mono);
+      letter-spacing: .04em;
+      color: #192823;
+      border: 1px solid rgba(44, 42, 38, .08);
+      white-space: nowrap;
+    }
+
+    .label.teal {
+      background: #4a9e8e;
+      color: #102520;
+    }
+
+    .label.clay {
+      background: #d4a883;
+      color: #2c2119;
+    }
+
+    .label.sage {
+      background: #cbdad7;
+      color: #1f312e;
+    }
+
+    .label.gold {
+      background: #e5d5a0;
+      color: #2a271f;
+    }
+
+    .check {
+      width: 25px;
+      height: 25px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(104, 87, 62, .18);
+      background: rgba(255, 253, 242, .72);
+      color: rgba(82, 76, 64, .72);
+      font: 900 12px/1 var(--mono);
+      flex: 0 0 auto;
+    }
+
+    .task-title {
+      margin: 0 0 13px;
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 760;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--soft-muted);
+      font: 650 10.5px/1.3 var(--mono);
+      letter-spacing: .015em;
+    }
+
+    .meta-left {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .tiny-rule {
+      width: 1px;
+      height: 12px;
+      background: rgba(103, 91, 70, .24);
+    }
+
+    .person {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(73, 84, 78, .16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72);
+      flex: 0 0 auto;
+    }
+
+    .add-card {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 12px;
+      border-radius: 16px;
+      border: 1px dashed rgba(74, 158, 142, .38);
+      background: rgba(255, 253, 242, .42);
+      color: #315f57;
+      font: 800 11px/1 var(--mono);
+      letter-spacing: .02em;
+      cursor: pointer;
+    }
+
+    .add-card:focus-visible {
+      outline: 3px solid rgba(74, 158, 142, .36);
+      outline-offset: 2px;
+    }
+
+    .quiet-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 22px 20px;
+      color: var(--muted);
+      font: 650 11px/1.45 var(--mono);
+      letter-spacing: .02em;
+    }
+
+    .quiet-note span:last-child {
+      color: #2d5f56;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .task-card {
+        opacity: 0;
+        transform: translateY(14px) rotate(var(--tilt, 0deg));
+        animation: card-in .52s cubic-bezier(.16, 1, .3, 1) forwards;
+        animation-delay: calc(var(--i, 0) * 64ms);
+        transition:
+          transform .24s cubic-bezier(.16, 1, .3, 1),
+          box-shadow .24s cubic-bezier(.16, 1, .3, 1),
+          border-color .24s ease,
+          background-color .24s ease;
+      }
+
+      .task-card:hover {
+        transform: translateY(-4px) rotate(var(--tilt, 0deg));
+        box-shadow: var(--shadow-lift), inset 0 1px 0 rgba(255, 255, 255, .9);
+      }
+
+      .task-card:active {
+        transform: translateY(-1px) rotate(var(--tilt, 0deg));
+      }
+
+      .task-card.is-picked {
+        animation: card-tap .34s cubic-bezier(.16, 1, .3, 1);
+      }
+
+      .add-card {
+        transition:
+          transform .22s cubic-bezier(.16, 1, .3, 1),
+          background-color .22s ease,
+          border-color .22s ease;
+      }
+
+      .add-card:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 253, 242, .7);
+        border-color: rgba(74, 158, 142, .56);
+      }
+
+      @keyframes card-in {
+        to {
+          opacity: 1;
+          transform: translateY(0) rotate(var(--tilt, 0deg));
+        }
+      }
+
+      @keyframes card-tap {
+        0% {
+          transform: translateY(-4px) scale(1) rotate(var(--tilt, 0deg));
+        }
+        48% {
+          transform: translateY(-6px) scale(1.018) rotate(var(--tilt, 0deg));
+        }
+        100% {
+          transform: translateY(0) scale(1) rotate(var(--tilt, 0deg));
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+    @media (max-width: 920px) {
+      body {
+        padding: 14px 12px 116px;
+      }
+
+      .page {
+        width: min(100%, calc(100vw - 24px));
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 14px;
+      }
+
+      .board-title {
+        text-align: left;
+      }
+
+      .toolbar {
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .chip-row {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 12px 10px 126px;
+      }
+
+      .page {
+        width: min(100%, calc(100vw - 20px));
+      }
+
+      .board-shell {
+        border-radius: 22px;
+      }
+
+      .topbar,
+      .board-meta,
+      .quiet-note {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .topbar {
+        min-height: 0;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .wordmark {
+        font-size: 18px;
+      }
+
+      .workspace,
+      .board-title p {
+        font-size: 10px;
+      }
+
+      .board-meta,
+      .quiet-note {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .board-scroll {
+        padding: 16px 14px 20px;
+      }
+
+      .board-track {
+        min-width: 984px;
+        grid-template-columns: repeat(4, 234px);
+      }
+
+      .chip {
+        min-height: 30px;
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Warm organic kanban board effect study">
+    <section class="board-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="Brewleaf Studio">
+          <div class="mark" aria-hidden="true"></div>
+          <div class="brand-copy">
+            <p class="wordmark">Brewleaf Studio</p>
+            <p class="workspace">茶棚与小厨房工作台</p>
+          </div>
+        </div>
+
+        <div class="board-title">
+          <h1>温棚路线 · Warm Board</h1>
+          <p>14 cards / garden, tea, print, pantry</p>
+        </div>
+
+        <div class="toolbar" aria-label="Board controls">
+          <div class="chip-row">
+            <span class="chip is-primary">本周</span>
+            <span class="chip">低噪视图</span>
+            <span class="chip">按温度</span>
+          </div>
+          <div class="avatar-group" aria-label="Board members">
+            <svg class="avatar" viewBox="0 0 32 32" role="img" aria-label="Lin">
+              <rect width="32" height="32" rx="16" fill="#cbdad7"></rect>
+              <text x="16" y="19.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#24342f">LN</text>
+            </svg>
+            <svg class="avatar" viewBox="0 0 32 32" role="img" aria-label="Mao">
+              <rect width="32" height="32" rx="16" fill="#e5d5a0"></rect>
+              <text x="16" y="19.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#30291d">MO</text>
+            </svg>
+            <svg class="avatar" viewBox="0 0 32 32" role="img" aria-label="Tao">
+              <rect width="32" height="32" rx="16" fill="#d4a883"></rect>
+              <text x="16" y="19.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#30231a">TA</text>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <div class="board-meta">
+        <span><strong>Primary accent</strong> #4a9e8e / handmade software surface</span>
+        <span>点击卡片可标记完成，列计数会同步</span>
+      </div>
+
+      <div class="board-scroll" aria-label="Kanban board scroll region">
+        <div class="board-track">
+          <section class="column" data-column>
+            <header class="column-head">
+              <div class="column-title">
+                <h2>待采样</h2>
+                <span>Backlog</span>
+              </div>
+              <span class="count-pill" data-count>4</span>
+            </header>
+            <div class="cards">
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 1; --tilt: -0.45deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label sage">GARDEN</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">给薄荷箱补一张阴影时间表</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.06</span><span class="tiny-rule"></span><span>1/4</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Lin">
+                      <rect width="28" height="28" rx="14" fill="#cbdad7"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#24342f">LN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 2; --tilt: 0.35deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label gold">MENU</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">试写三款晚间热饮的小卡标题</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.08</span><span class="tiny-rule"></span><span>2/5</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Mao">
+                      <rect width="28" height="28" rx="14" fill="#e5d5a0"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#30291d">MO</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 3; --tilt: -0.2deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label clay">PANTRY</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">整理果酱架标签，留下空瓶编号</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.10</span><span class="tiny-rule"></span><span>0/3</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Tao">
+                      <rect width="28" height="28" rx="14" fill="#d4a883"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#30231a">TA</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 4; --tilt: 0.25deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label teal">BOARD</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">给周会板加一个安静的归档入口</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.12</span><span class="tiny-rule"></span><span>2/6</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Ren">
+                      <rect width="28" height="28" rx="14" fill="#4a9e8e"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#102520">RN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button class="add-card" type="button">+ 添加卡片 / Add card</button>
+          </section>
+
+          <section class="column" data-column>
+            <header class="column-head">
+              <div class="column-title">
+                <h2>正在温着</h2>
+                <span>In Progress</span>
+              </div>
+              <span class="count-pill" data-count>3</span>
+            </header>
+            <div class="cards">
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 5; --tilt: 0.3deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label teal">FLOW</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">把取茶流程拆成五个慢步骤</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.05</span><span class="tiny-rule"></span><span>3/5</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Ren">
+                      <rect width="28" height="28" rx="14" fill="#4a9e8e"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#102520">RN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 6; --tilt: -0.55deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label sage">PRINT</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">校对手写收据模板的边距</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.07</span><span class="tiny-rule"></span><span>4/6</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Lin">
+                      <rect width="28" height="28" rx="14" fill="#cbdad7"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#24342f">LN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 7; --tilt: 0.15deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label clay">TABLE</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">为长桌预约本加一列雨天备注</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.09</span><span class="tiny-rule"></span><span>2/4</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Tao">
+                      <rect width="28" height="28" rx="14" fill="#d4a883"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#30231a">TA</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button class="add-card" type="button">+ 添加卡片 / Add card</button>
+          </section>
+
+          <section class="column" data-column>
+            <header class="column-head">
+              <div class="column-title">
+                <h2>桌前评审</h2>
+                <span>Review</span>
+              </div>
+              <span class="count-pill" data-count>3</span>
+            </header>
+            <div class="cards">
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 8; --tilt: -0.25deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label gold">LIGHT</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">确认窗边货架在午后仍能读清</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.04</span><span class="tiny-rule"></span><span>5/5</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Mao">
+                      <rect width="28" height="28" rx="14" fill="#e5d5a0"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#30291d">MO</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 9; --tilt: 0.45deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label teal">COPY</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">删掉菜单里太用力的形容词</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.06</span><span class="tiny-rule"></span><span>3/4</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Ren">
+                      <rect width="28" height="28" rx="14" fill="#4a9e8e"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#102520">RN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card" type="button" aria-pressed="false" style="--i: 10; --tilt: -0.1deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label sage">SHELF</span>
+                    <span class="check" aria-hidden="true"> </span>
+                  </span>
+                  <span class="task-title">复核干花柜的低库存提示</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>截止 07.11</span><span class="tiny-rule"></span><span>2/3</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Lin">
+                      <rect width="28" height="28" rx="14" fill="#cbdad7"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#24342f">LN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button class="add-card" type="button">+ 添加卡片 / Add card</button>
+          </section>
+
+          <section class="column" data-column data-mode="complete">
+            <header class="column-head">
+              <div class="column-title">
+                <h2>已收进抽屉</h2>
+                <span>Done</span>
+              </div>
+              <span class="count-pill" data-count>4</span>
+            </header>
+            <div class="cards">
+              <button class="task-card is-complete" type="button" aria-pressed="true" style="--i: 11; --tilt: 0.2deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label clay">SIGN</span>
+                    <span class="check" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4l3.2 3.2L13 4"/></svg></span>
+                  </span>
+                  <span class="task-title">换掉门口小牌的冷白底色</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>完成 06.28</span><span class="tiny-rule"></span><span>4/4</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Tao">
+                      <rect width="28" height="28" rx="14" fill="#d4a883"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#30231a">TA</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card is-complete" type="button" aria-pressed="true" style="--i: 12; --tilt: -0.35deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label gold">NOTE</span>
+                    <span class="check" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4l3.2 3.2L13 4"/></svg></span>
+                  </span>
+                  <span class="task-title">把员工餐便签改成可撕的短句</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>完成 06.30</span><span class="tiny-rule"></span><span>3/3</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Mao">
+                      <rect width="28" height="28" rx="14" fill="#e5d5a0"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#30291d">MO</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card is-complete" type="button" aria-pressed="true" style="--i: 13; --tilt: 0.5deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label sage">SEED</span>
+                    <span class="check" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4l3.2 3.2L13 4"/></svg></span>
+                  </span>
+                  <span class="task-title">给香草种子盒补齐月份分隔</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>完成 07.01</span><span class="tiny-rule"></span><span>6/6</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Lin">
+                      <rect width="28" height="28" rx="14" fill="#cbdad7"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#24342f">LN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <button class="task-card is-complete" type="button" aria-pressed="true" style="--i: 14; --tilt: -0.15deg;">
+                <span class="task-inner">
+                  <span class="task-top">
+                    <span class="label teal">VIEW</span>
+                    <span class="check" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4l3.2 3.2L13 4"/></svg></span>
+                  </span>
+                  <span class="task-title">把看板背景压低一档饱和度</span>
+                  <span class="task-meta">
+                    <span class="meta-left"><span>完成 07.02</span><span class="tiny-rule"></span><span>2/2</span></span>
+                    <svg class="person" viewBox="0 0 28 28" aria-label="Ren">
+                      <rect width="28" height="28" rx="14" fill="#4a9e8e"></rect>
+                      <text x="14" y="17.4" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#102520">RN</text>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button class="add-card" type="button">+ 添加卡片 / Add card</button>
+          </section>
+        </div>
+      </div>
+
+      <footer class="quiet-note">
+        <span>Warm board study / tactile kanban with soft counts</span>
+        <span id="board-status" aria-live="polite">10 active cards</span>
+      </footer>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Oryzae Board View》 by dominickchen（社区 #77）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (function () {
+      var columns = Array.prototype.slice.call(document.querySelectorAll("[data-column]"));
+      var status = document.getElementById("board-status");
+
+      function refreshCounts() {
+        var activeTotal = 0;
+
+        columns.forEach(function (column) {
+          var cards = Array.prototype.slice.call(column.querySelectorAll(".task-card"));
+          var mode = column.getAttribute("data-mode");
+          var matching = cards.filter(function (card) {
+            var complete = card.classList.contains("is-complete");
+            return mode === "complete" ? complete : !complete;
+          }).length;
+          var active = cards.filter(function (card) {
+            return !card.classList.contains("is-complete");
+          }).length;
+          var count = column.querySelector("[data-count]");
+
+          if (count) {
+            count.textContent = String(matching);
+          }
+
+          activeTotal += active;
+        });
+
+        if (status) {
+          status.textContent = activeTotal + " active cards";
+        }
+      }
+
+      document.querySelectorAll(".task-card").forEach(function (card) {
+        card.addEventListener("click", function () {
+          var isComplete = card.classList.toggle("is-complete");
+          var check = card.querySelector(".check");
+          card.setAttribute("aria-pressed", isComplete ? "true" : "false");
+          if (check) {
+            check.classList.toggle("is-on", isComplete);
+          }
+          card.classList.remove("is-picked");
+          void card.offsetWidth;
+          card.classList.add("is-picked");
+          refreshCounts();
+        });
+      });
+
+      document.querySelectorAll(".add-card").forEach(function (button) {
+        button.addEventListener("click", function () {
+          button.textContent = "+ 已记下 / Noted";
+          window.setTimeout(function () {
+            button.textContent = "+ 添加卡片 / Add card";
+          }, 1200);
+        });
+      });
+
+      refreshCounts();
+    })();
+  </script>
+</body>
+</html>
