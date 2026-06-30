@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paperkern Light TUI Effect Study</title>
+  <link rel="stylesheet" href="../../_fonts/fonts.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f7f7f7;
+      --paper: #ffffff;
+      --panel: #fbfbfb;
+      --panel-soft: #f0f0f0;
+      --panel-line: #e5e5e5;
+      --rule: #d6d6d6;
+      --rule-dark: #bcbcbc;
+      --ink: #111111;
+      --muted: #5e5e5e;
+      --faint: #747474;
+      --wash: #ededed;
+      --focus: #2f2f2f;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --mono-size: clamp(10px, .8vw, 13px);
+      --tight: .01em;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 28px 20px 98px;
+      display: grid;
+      place-items: center;
+      overflow-x: clip;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: var(--mono-size);
+      letter-spacing: var(--tight);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      background:
+        linear-gradient(rgba(17, 17, 17, .026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 17, 17, .022) 1px, transparent 1px),
+        radial-gradient(circle at 30% 0%, #ffffff 0%, transparent 38%),
+        var(--page);
+      background-size: 28px 28px, 28px 28px, auto, auto;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .terminal-frame {
+      width: min(1360px, calc(100vw - 40px));
+      min-height: min(790px, calc(100dvh - 126px));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      border: 1px solid var(--rule-dark);
+      background: var(--paper);
+      box-shadow:
+        0 26px 70px -58px rgba(17, 17, 17, .5),
+        inset 0 0 0 1px #ffffff;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .terminal-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0 calc(100% - 1px), var(--panel-line) calc(100% - 1px)),
+        linear-gradient(180deg, transparent 0 calc(100% - 1px), var(--panel-line) calc(100% - 1px));
+      background-size: 18px 18px;
+      opacity: .22;
+      z-index: -1;
+    }
+
+    .status-bar {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: stretch;
+      border-bottom: 1px solid var(--rule-dark);
+      background: linear-gradient(180deg, #ffffff, #f7f7f7);
+    }
+
+    .title-cell,
+    .clock-cell,
+    .token-cell {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-right: 1px solid var(--panel-line);
+    }
+
+    .token-cell {
+      border-right: 0;
+      gap: 7px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .title-mark {
+      width: 24px;
+      height: 18px;
+      margin-right: 12px;
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      border: 1px solid var(--ink);
+      background:
+        linear-gradient(90deg, transparent calc(33.333% - .5px), var(--ink) calc(33.333% - .5px) calc(33.333% + .5px), transparent calc(33.333% + .5px) calc(66.666% - .5px), var(--ink) calc(66.666% - .5px) calc(66.666% + .5px), transparent calc(66.666% + .5px)),
+        linear-gradient(180deg, transparent calc(50% - .5px), var(--ink) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px));
+    }
+
+    .title-main {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .title-main strong {
+      font-size: clamp(12px, 1vw, 15px);
+      font-weight: 500;
+      letter-spacing: .08em;
+    }
+
+    .title-main span,
+    .clock-cell,
+    .token {
+      color: var(--muted);
+      font-size: clamp(9px, .72vw, 11px);
+    }
+
+    .clock-cell {
+      justify-content: center;
+      min-width: 118px;
+      color: var(--ink);
+    }
+
+    .token {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 0 8px;
+      border: 1px solid var(--rule);
+      background: #ffffff;
+      white-space: nowrap;
+    }
+
+    .workspace {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(210px, 268px) minmax(0, 1fr);
+      background: var(--paper);
+    }
+
+    .pane {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      background: var(--panel);
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+    }
+
+    .pane:last-child {
+      border-right: 0;
+    }
+
+    .pane-head {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 34px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--panel-line);
+      background: var(--panel-soft);
+      color: var(--ink);
+      font-size: clamp(9px, .72vw, 11px);
+      font-weight: 500;
+      letter-spacing: .08em;
+    }
+
+    .pane-head span:last-child {
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .pane-body {
+      min-width: 0;
+      min-height: 0;
+      padding: 12px;
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #c7c7c7 #f4f4f4;
+    }
+
+    .tree-pane {
+      border-bottom: 0;
+      background: #f8f8f8;
+    }
+
+    .tree-lines {
+      margin: 0;
+      min-width: 210px;
+      color: var(--ink);
+      font: 500 clamp(10px, .78vw, 12px)/1.78 var(--mono);
+      white-space: pre;
+    }
+
+    .tree-lines .muted {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .side-note {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--panel-line);
+      color: var(--muted);
+      font: 400 clamp(9px, .68vw, 11px)/1.65 var(--mono);
+    }
+
+    .side-note b {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ink);
+      font-weight: 500;
+      letter-spacing: .06em;
+    }
+
+    .main-area {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: minmax(262px, 1fr) minmax(250px, .88fr) auto;
+      background: var(--paper);
+    }
+
+    .process-pane {
+      border-right: 0;
+    }
+
+    .table-scroll {
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .proc-table {
+      min-width: 680px;
+      display: grid;
+      gap: 0;
+      border: 1px solid var(--panel-line);
+      background: #ffffff;
+    }
+
+    .proc-row {
+      min-height: 32px;
+      display: grid;
+      grid-template-columns: 7ch minmax(18ch, 1fr) 8ch 8ch minmax(120px, .74fr);
+      align-items: center;
+      gap: 12px;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--panel-line);
+      color: var(--ink);
+      font-size: clamp(10px, .76vw, 12px);
+    }
+
+    .proc-row:last-child {
+      border-bottom: 0;
+    }
+
+    .proc-row.head {
+      min-height: 30px;
+      background: #f1f1f1;
+      color: var(--muted);
+      font-size: clamp(9px, .68vw, 10px);
+      letter-spacing: .08em;
+    }
+
+    .pid {
+      color: var(--muted);
+    }
+
+    .cmd {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .metric {
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+    }
+
+    .meter {
+      height: 7px;
+      border-left: 1px solid var(--rule);
+      border-right: 1px solid var(--rule);
+      background:
+        linear-gradient(90deg, rgba(17, 17, 17, .09) 1px, transparent 1px),
+        #f8f8f8;
+      background-size: 12.5% 100%, auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      display: block;
+      width: var(--value);
+      height: 100%;
+      background: var(--ink);
+      transition: width .24s ease;
+    }
+
+    .lower-grid {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(310px, .82fr) minmax(0, 1.18fr);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .resource-pane {
+      background: #ffffff;
+    }
+
+    .resource-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .resource-card {
+      min-width: 0;
+      border: 1px solid var(--panel-line);
+      background: #fbfbfb;
+    }
+
+    .resource-top {
+      min-height: 31px;
+      display: grid;
+      grid-template-columns: 8ch 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 7px 9px;
+      border-bottom: 1px solid var(--panel-line);
+    }
+
+    .resource-name {
+      color: var(--ink);
+      font-weight: 500;
+      letter-spacing: .06em;
+    }
+
+    .resource-value {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .thin-bar {
+      height: 6px;
+      background:
+        linear-gradient(90deg, transparent calc(25% - .5px), var(--rule) calc(25% - .5px) calc(25% + .5px), transparent calc(25% + .5px) calc(50% - .5px), var(--rule) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px) calc(75% - .5px), var(--rule) calc(75% - .5px) calc(75% + .5px), transparent calc(75% + .5px)),
+        #f2f2f2;
+      position: relative;
+    }
+
+    .thin-bar i {
+      display: block;
+      width: var(--load);
+      height: 100%;
+      background: #111111;
+      transition: width .24s ease;
+    }
+
+    .spark-wrap {
+      padding: 7px 8px 6px;
+    }
+
+    .sparkline {
+      display: block;
+      width: 100%;
+      height: 42px;
+      color: #111111;
+      overflow: visible;
+    }
+
+    .sparkline .grid {
+      stroke: #e1e1e1;
+      stroke-width: 1;
+    }
+
+    .sparkline .trace {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .sparkline .ghost {
+      fill: none;
+      stroke: #9b9b9b;
+      stroke-width: 1;
+      stroke-dasharray: 2 4;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .sparkline .cursor-line {
+      stroke: #777777;
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .log-pane {
+      border-right: 0;
+      background: #fbfbfb;
+    }
+
+    .log-lines {
+      display: grid;
+      gap: 7px;
+      min-width: 360px;
+      font-size: clamp(10px, .76vw, 12px);
+      line-height: 1.46;
+    }
+
+    .log-line {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 8ch 7ch minmax(0, 1fr);
+      gap: 9px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #ececec;
+      color: var(--ink);
+    }
+
+    .log-line:last-child {
+      border-bottom: 0;
+    }
+
+    .log-time,
+    .log-tag {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .log-msg {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .command-pane {
+      min-width: 0;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 13px;
+      background: #ffffff;
+      border-top: 0;
+      overflow: hidden;
+    }
+
+    .prompt {
+      color: var(--ink);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .typed {
+      min-width: 0;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    .caret {
+      display: inline-block;
+      width: .64ch;
+      height: 1.25em;
+      margin-left: 2px;
+      background: var(--ink);
+      vertical-align: -.22em;
+      opacity: 1;
+    }
+
+    .micro-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .micro-cell {
+      min-width: 0;
+      padding: 8px 9px;
+      border: 1px solid var(--panel-line);
+      background: #ffffff;
+    }
+
+    .micro-cell b,
+    .micro-cell span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .micro-cell b {
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: clamp(9px, .68vw, 10px);
+      font-weight: 400;
+    }
+
+    .micro-cell span {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    @keyframes caret-blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .caret {
+        animation: caret-blink 1s steps(1, end) infinite;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .caret {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 980px) {
+      body {
+        place-items: start center;
+      }
+
+      .terminal-frame {
+        min-height: auto;
+      }
+
+      .status-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .title-cell,
+      .clock-cell,
+      .token-cell {
+        min-height: 38px;
+        border-right: 0;
+        border-bottom: 1px solid var(--panel-line);
+        justify-content: flex-start;
+      }
+
+      .token-cell {
+        justify-content: flex-start;
+        border-bottom: 0;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .tree-pane {
+        border-right: 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .main-area {
+        grid-template-rows: auto auto auto;
+      }
+
+      .lower-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .resource-pane {
+        border-right: 0;
+      }
+
+      .pane-body {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding: 12px 10px 138px;
+      }
+
+      .terminal-frame {
+        width: min(100%, calc(100vw - 20px));
+      }
+
+      .title-cell,
+      .clock-cell,
+      .token-cell,
+      .pane-head,
+      .pane-body,
+      .command-pane {
+        padding-left: 9px;
+        padding-right: 9px;
+      }
+
+      .title-main {
+        display: block;
+      }
+
+      .title-main span {
+        display: block;
+        margin-top: 4px;
+      }
+
+      .micro-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .log-lines {
+        min-width: 330px;
+      }
+
+      .log-line {
+        grid-template-columns: 8ch 6ch minmax(0, 1fr);
+        gap: 7px;
+      }
+
+      .command-pane {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .terminal-frame {
+        width: min(100%, calc(100vw - 16px));
+      }
+
+      .title-mark {
+        display: none;
+      }
+
+      .pane-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .micro-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="terminal-frame" aria-label="Paperkern light terminal dashboard">
+    <header class="status-bar">
+      <div class="title-cell">
+        <span class="title-mark" aria-hidden="true"></span>
+        <div class="title-main">
+          <strong>PAPERKERN :: SIGNAL MAP</strong>
+          <span>light tty / session a17 / tty-grid 04</span>
+        </div>
+      </div>
+      <time class="clock-cell" id="clock" datetime="2026-06-30T09:42:18">09:42:18</time>
+      <div class="token-cell" aria-label="System status tokens">
+        <span class="token">fs: clean</span>
+        <span class="token">net: low</span>
+        <span class="token">ctl: ready</span>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="pane tree-pane" aria-label="Kernel module file tree">
+        <div class="pane-head">
+          <span>FS TREE</span>
+          <span>/paper/root</span>
+        </div>
+        <div class="pane-body">
+<pre class="tree-lines">paperkern
+├─ boot
+│  ├─ seed.map
+│  ├─ init.line
+│  └─ tty.light
+├─ core
+│  ├─ scheduler
+│  │  ├─ lace.tick
+│  │  └─ turn.guard
+│  ├─ memory
+│  │  ├─ pale.heap
+│  │  └─ page.fold
+│  └─ bus
+│     ├─ quiet.spi
+│     └─ local.io
+├─ tools
+│  ├─ traceview
+│  ├─ meterfold
+│  └─ logtail
+└─ users
+   └─ mino
+      ├─ draft.cmd
+      └─ study.notes <span class="muted">open</span></pre>
+
+          <div class="side-note">
+            <b>SESSION NOTE</b>
+            pane mode is compact. all meters are sample values for a fictional lab kernel. terminal output is local only.
+          </div>
+        </div>
+      </aside>
+
+      <section class="main-area">
+        <article class="pane process-pane" aria-label="Process and system monitor">
+          <div class="pane-head">
+            <span>PROC / SYSTEM MONITOR</span>
+            <span>sampled every 1.6s</span>
+          </div>
+          <div class="pane-body">
+            <div class="table-scroll">
+              <div class="proc-table" role="table" aria-label="Fictional process table">
+                <div class="proc-row head" role="row">
+                  <span>PID</span><span>CMD</span><span>CPU%</span><span>MEM%</span><span>LOAD</span>
+                </div>
+                <div class="proc-row" role="row" id="live-proc">
+                  <span class="pid">0412</span>
+                  <span class="cmd">sched-lace --slice 08</span>
+                  <span class="metric cpu-value">18.4</span>
+                  <span class="metric">07.1</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 18%;"></i></span>
+                </div>
+                <div class="proc-row" role="row">
+                  <span class="pid">0528</span>
+                  <span class="cmd">paperd --fold pages</span>
+                  <span class="metric">09.7</span>
+                  <span class="metric">12.8</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 10%;"></i></span>
+                </div>
+                <div class="proc-row" role="row">
+                  <span class="pid">0617</span>
+                  <span class="cmd">ionkeeper --bus local</span>
+                  <span class="metric">04.2</span>
+                  <span class="metric">03.6</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 4%;"></i></span>
+                </div>
+                <div class="proc-row" role="row">
+                  <span class="pid">0784</span>
+                  <span class="cmd">cache-loom --warm 2</span>
+                  <span class="metric">12.1</span>
+                  <span class="metric">18.9</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 12%;"></i></span>
+                </div>
+                <div class="proc-row" role="row">
+                  <span class="pid">0849</span>
+                  <span class="cmd">glyphd --render tty</span>
+                  <span class="metric">02.8</span>
+                  <span class="metric">05.4</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 3%;"></i></span>
+                </div>
+                <div class="proc-row" role="row">
+                  <span class="pid">0913</span>
+                  <span class="cmd">trace-sink --tail core</span>
+                  <span class="metric">06.5</span>
+                  <span class="metric">04.9</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 7%;"></i></span>
+                </div>
+                <div class="proc-row" role="row">
+                  <span class="pid">1021</span>
+                  <span class="cmd">port-hush --mute aux</span>
+                  <span class="metric">01.4</span>
+                  <span class="metric">02.2</span>
+                  <span class="meter" aria-hidden="true"><i class="meter-fill" style="--value: 2%;"></i></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="micro-grid" aria-label="Kernel summary metrics">
+              <div class="micro-cell"><b>uptime</b><span>14h 38m</span></div>
+              <div class="micro-cell"><b>threads</b><span>146 active</span></div>
+              <div class="micro-cell"><b>irq wait</b><span>01.8 ms</span></div>
+              <div class="micro-cell"><b>thermal</b><span>32.6 C</span></div>
+            </div>
+          </div>
+        </article>
+
+        <section class="lower-grid">
+          <article class="pane resource-pane" aria-label="Resource sparklines and bars">
+            <div class="pane-head">
+              <span>RESOURCE TRACE</span>
+              <span>cpu / mem / net</span>
+            </div>
+            <div class="pane-body">
+              <div class="resource-grid">
+                <div class="resource-card">
+                  <div class="resource-top">
+                    <span class="resource-name">CPU</span>
+                    <span class="thin-bar" aria-hidden="true"><i id="cpu-load" style="--load: 34%;"></i></span>
+                    <span class="resource-value" id="cpu-resource">34%</span>
+                  </div>
+                  <div class="spark-wrap">
+                    <svg class="sparkline" viewBox="0 0 300 54" preserveAspectRatio="none" aria-label="CPU sparkline">
+                      <path class="grid" d="M0 13.5H300M0 27H300M0 40.5H300"></path>
+                      <polyline class="ghost" id="cpu-ghost" points="0,37 25,34 50,30 75,32 100,24 125,28 150,20 175,31 200,26 225,29 250,22 275,24 300,18"></polyline>
+                      <polyline class="trace" id="cpu-spark" points="0,36 25,31 50,34 75,26 100,29 125,21 150,28 175,18 200,25 225,20 250,24 275,17 300,19"></polyline>
+                      <line class="cursor-line" x1="300" y1="8" x2="300" y2="46"></line>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="resource-card">
+                  <div class="resource-top">
+                    <span class="resource-name">MEM</span>
+                    <span class="thin-bar" aria-hidden="true"><i style="--load: 61%;"></i></span>
+                    <span class="resource-value">61%</span>
+                  </div>
+                  <div class="spark-wrap">
+                    <svg class="sparkline" viewBox="0 0 300 54" preserveAspectRatio="none" aria-label="Memory sparkline">
+                      <path class="grid" d="M0 13.5H300M0 27H300M0 40.5H300"></path>
+                      <polyline class="ghost" points="0,31 25,28 50,29 75,26 100,27 125,25 150,24 175,23 200,22 225,21 250,21 275,20 300,19"></polyline>
+                      <polyline class="trace" points="0,33 25,30 50,30 75,28 100,27 125,26 150,25 175,23 200,22 225,22 250,20 275,19 300,18"></polyline>
+                      <line class="cursor-line" x1="300" y1="8" x2="300" y2="46"></line>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="resource-card">
+                  <div class="resource-top">
+                    <span class="resource-name">NET</span>
+                    <span class="thin-bar" aria-hidden="true"><i style="--load: 22%;"></i></span>
+                    <span class="resource-value">22%</span>
+                  </div>
+                  <div class="spark-wrap">
+                    <svg class="sparkline" viewBox="0 0 300 54" preserveAspectRatio="none" aria-label="Network sparkline">
+                      <path class="grid" d="M0 13.5H300M0 27H300M0 40.5H300"></path>
+                      <polyline class="ghost" points="0,42 25,40 50,39 75,41 100,30 125,39 150,36 175,41 200,28 225,35 250,38 275,33 300,37"></polyline>
+                      <polyline class="trace" points="0,41 25,39 50,40 75,38 100,23 125,37 150,35 175,39 200,19 225,34 250,36 275,31 300,35"></polyline>
+                      <line class="cursor-line" x1="300" y1="8" x2="300" y2="46"></line>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="pane log-pane" aria-label="Kernel log stream">
+            <div class="pane-head">
+              <span>LOG / OUTPUT STREAM</span>
+              <span>tail -f /core/events</span>
+            </div>
+            <div class="pane-body">
+              <div class="log-lines" id="log-lines" aria-live="polite">
+                <div class="log-line"><span class="log-time">09:41:02</span><span class="log-tag">sched</span><span class="log-msg">slice window narrowed to 8 ms for paperd.</span></div>
+                <div class="log-line"><span class="log-time">09:41:07</span><span class="log-tag">mem</span><span class="log-msg">page fold kept 18 cold leaves in reserve.</span></div>
+                <div class="log-line"><span class="log-time">09:41:15</span><span class="log-tag">bus</span><span class="log-msg">local io lane accepted quiet spi packet 42.</span></div>
+                <div class="log-line"><span class="log-time">09:41:21</span><span class="log-tag">tty</span><span class="log-msg">glyph cache warmed for light grid profile.</span></div>
+                <div class="log-line"><span class="log-time">09:41:29</span><span class="log-tag">net</span><span class="log-msg">loopback trace settled below low threshold.</span></div>
+                <div class="log-line"><span class="log-time">09:41:36</span><span class="log-tag">core</span><span class="log-msg">init line stayed clean after guard scan.</span></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div class="command-pane" aria-label="Command prompt">
+          <span class="prompt">mino@paperkern ~ $</span>
+          <span class="typed">scan bus --quiet --format pane</span><span class="caret" aria-hidden="true"></span>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <a id="ds-home-back" href="../../index.html" target="_top" aria-label="返回哈哈设计系统首页" style="position:fixed;left:18px;bottom:18px;z-index:2147483600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 13px/1 -apple-system,'PingFang SC',sans-serif;color:#fff;background:rgba(18,18,23,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);padding:10px 15px;border-radius:999px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)">‹ 哈哈设计系统</a>
+  <div style="position:fixed;right:14px;bottom:14px;z-index:2147483600;max-width:min(92vw,460px);font:500 11px/1.45 -apple-system,'PingFang SC',sans-serif;color:#d6d6e6;background:rgba(18,18,23,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5)"><b style="color:#ffd166">效果临摹 · Effect Study（非原创）</b><br>临摹自 variant.com 社区作品《Modern Linux TUI》 by guppythedeadcat（社区 #69）· 仅作前端技法学习，版权归原作者</div>
+
+  <script>
+    (function () {
+      const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const timers = [];
+
+      const clock = document.getElementById("clock");
+      const cpuRow = document.getElementById("live-proc");
+      const cpuValue = cpuRow ? cpuRow.querySelector(".cpu-value") : null;
+      const cpuMeter = cpuRow ? cpuRow.querySelector(".meter-fill") : null;
+      const cpuLoad = document.getElementById("cpu-load");
+      const cpuResource = document.getElementById("cpu-resource");
+      const spark = document.getElementById("cpu-spark");
+      const ghost = document.getElementById("cpu-ghost");
+      const logLines = document.getElementById("log-lines");
+
+      const sparkData = [32, 38, 35, 44, 40, 52, 43, 56, 46, 51, 47, 59, 55];
+      const ghostData = [30, 34, 39, 36, 45, 41, 50, 38, 45, 42, 49, 47, 52];
+      const logSamples = [
+        ["sched", "turn guard released one waiting lane."],
+        ["core", "paper heap compacted two pale pages."],
+        ["tty", "cursor layer stayed inside pane boundary."],
+        ["bus", "quiet spi packet accepted by local io."],
+        ["mem", "cache loom trimmed stale glyph segment."],
+        ["net", "thin link held at low jitter band."],
+        ["trace", "meterfold wrote summary to session a17."]
+      ];
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function currentTime() {
+        const now = new Date();
+        return pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+      }
+
+      function renderSpark(points, target) {
+        if (!target) return;
+        const width = 300;
+        const height = 54;
+        const step = width / (points.length - 1);
+        const plotted = points.map(function (value, index) {
+          const y = height - 8 - (value / 100) * 38;
+          return (index * step).toFixed(1) + "," + y.toFixed(1);
+        });
+        target.setAttribute("points", plotted.join(" "));
+      }
+
+      function tickCpu() {
+        const next = 14 + Math.random() * 18;
+        const rounded = next.toFixed(1);
+        if (cpuValue) cpuValue.textContent = rounded;
+        if (cpuMeter) cpuMeter.style.setProperty("--value", Math.max(4, Math.round(next)) + "%");
+        if (cpuLoad) cpuLoad.style.setProperty("--load", Math.round(next + 16) + "%");
+        if (cpuResource) cpuResource.textContent = Math.round(next + 16) + "%";
+
+        sparkData.shift();
+        sparkData.push(22 + Math.random() * 46);
+        ghostData.shift();
+        ghostData.push(28 + Math.random() * 34);
+        renderSpark(sparkData, spark);
+        renderSpark(ghostData, ghost);
+      }
+
+      function appendLog() {
+        if (!logLines) return;
+        const sample = logSamples[Math.floor(Math.random() * logSamples.length)];
+        const row = document.createElement("div");
+        row.className = "log-line";
+        row.innerHTML = '<span class="log-time">' + currentTime() + '</span><span class="log-tag">' + sample[0] + '</span><span class="log-msg">' + sample[1] + '</span>';
+        logLines.appendChild(row);
+        while (logLines.children.length > 8) {
+          logLines.removeChild(logLines.firstElementChild);
+        }
+      }
+
+      function clearTimers() {
+        while (timers.length) {
+          window.clearInterval(timers.pop());
+        }
+      }
+
+      function startLiveMode() {
+        clearTimers();
+        if (reduceQuery.matches) return;
+        if (clock) {
+          clock.textContent = currentTime();
+          timers.push(window.setInterval(function () {
+            clock.textContent = currentTime();
+          }, 1000));
+        }
+        timers.push(window.setInterval(tickCpu, 1600));
+        timers.push(window.setInterval(appendLog, 4200));
+      }
+
+      renderSpark(sparkData, spark);
+      renderSpark(ghostData, ghost);
+      startLiveMode();
+
+      if (typeof reduceQuery.addEventListener === "function") {
+        reduceQuery.addEventListener("change", startLiveMode);
+      } else if (typeof reduceQuery.addListener === "function") {
+        reduceQuery.addListener(startLiveMode);
+      }
+    }());
+  </script>
+</body>
+</html>
