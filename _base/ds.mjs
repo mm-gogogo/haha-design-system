@@ -40,8 +40,8 @@ function parseArr(html, declName) {
         color: fields[fields.length - 1] };
     });
 }
-function parseCatMap(html) {
-  const m = html.match(/const STUDY_CAT = \{([\s\S]*?)\};/);
+function parseCatMap(html, name = 'STUDY_CAT') {
+  const m = html.match(new RegExp(`const ${name} = \\{([\\s\\S]*?)\\};`));
   const map = {};
   if (m) for (const x of m[1].matchAll(/"([a-z0-9-]+)"\s*:\s*"([a-z0-9]+)"/g)) map[x[1]] = x[2];
   return map;
@@ -84,12 +84,18 @@ function cmdCheck() {
   for (const [k,v] of Object.entries(counts)) if (String(v) !== String(n)) { bad(`计数 ${k}=${v} ≠ 实际 ${n}`); countBad++; }
   if (countBad) fail++; else ok(`计数一致（${n} 例）`);
 
-  // 4) 分类覆盖
+  // 4) 临摹分类覆盖
   const uncat = slugs.filter(s => !cat[s]);
-  if (uncat.length) { bad(`未归类（将默认 tool）：${uncat.join(', ')}`); fail++; } else ok(`分类全覆盖（${n} 例）`);
+  if (uncat.length) { bad(`临摹未归类（将默认 tool）：${uncat.join(', ')}`); fail++; } else ok(`临摹分类全覆盖（${n} 例）`);
+
+  // 5) 风格分类覆盖
+  const styles = parseArr(html, 'styles');
+  const styleCat = parseCatMap(html, 'STYLE_CAT');
+  const styleUncat = styles.map(s => s.slug).filter(s => !styleCat[s]);
+  if (styleUncat.length) { bad(`风格未归类（将默认 expressive）：${styleUncat.join(', ')}`); fail++; } else ok(`风格分类全覆盖（${styles.length} 套）`);
 
   console.log('');
-  info(`风格 ${parseArr(html,'styles').length} · 项目 ${parseArr(html,'projects').length} · 临摹 ${n}`);
+  info(`风格 ${styles.length} · 临摹 ${n}`);
   if (fail) { bad(`${C.bold}check 失败：${fail} 项${C.r}`); process.exit(1); }
   ok(`${C.bold}check 通过${C.r}`);
 }
@@ -105,11 +111,15 @@ function qcOne(slug) {
   // 去掉内联 <svg>…</svg> 后再扫字形，避免误报 SVG 内的 path 数据
   const noSvg = h.replace(/<svg[\s\S]*?<\/svg>/gi, '');
   const glyph = GLYPH.test(noSvg);
+  // 来源白名单：临摹只允许来自 variant.com 社区 / mulerun / marvis（用户指定）。
+  // 任何其它来源（尤其内部/商业产品）一律拦下，避免误发内部资产。
+  const approvedSource = /variant\.com|mulerun|marvis/i.test(h);
   const probs = [];
   if (ext) probs.push(`外链×${ext}`);
   if (!back) probs.push('缺返回');
   if (!credit) probs.push('缺 credit');
   if (glyph) probs.push('含 emoji/字形');
+  if (!approvedSource) probs.push('来源不在白名单(variant/mulerun/marvis)——疑似非授权来源，禁止发布');
   const sz = (fs.statSync(fp).size/1024).toFixed(1);
   if (probs.length) bad(`${slug} (${sz}KB)：${probs.join(' / ')}`);
   else ok(`${slug} (${sz}KB)`);

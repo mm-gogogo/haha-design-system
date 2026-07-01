@@ -4,10 +4,10 @@
 
 ## 仓库速览
 
-- `index.html` —— 在线站点首页 = 截图总览画廊。三栏：通用风格库（49）/ 开源项目定制（6）/ 效果临摹（`studies/`）。
-  - 卡片数据是页内 JS 数组：`styles[]` `projects[]`（4 段 `[f,slug,name,#color]`）、`studies[]`（5 段 `[f,slug,name,cite,#color]`）。
-  - 计数**全部动态**（由数组长度驱动 `cntStudies/statStudies/ftStudies` 等）；只有 `<meta description>` 里的数字与各静态兜底需手动同步 —— 用 `ds count --fix`。
-  - 临摹分类靠 `STUDY_CAT`（slug→类别）+ 顶部分类筛选 chips；**新增临摹必须同时登记 `STUDY_CAT`**，否则 `ds check` 会报未归类。
+- `index.html` —— 在线站点首页 = 截图总览画廊。两栏：通用风格库（49）/ 效果临摹（`studies/`）。
+  - 卡片数据是页内 JS 数组：`styles[]`（4 段 `[f,slug,name,#color]`）、`studies[]`（5 段 `[f,slug,name,cite,#color]`）。
+  - 计数**全部动态**（由数组长度驱动 `cntStudies/statStudies/ftStudies/nvStudies` 等）；只有 `<meta description>` 与各静态兜底需手动同步 —— 用 `ds count --fix`。
+  - 两栏各有分类筛选 chips：风格靠 `STYLE_CAT`（slug→类别）、临摹靠 `STUDY_CAT`；**新增条目必须同时登记对应分类表**，否则 `ds check` 报未归类。筛选状态可深链（`?cat=styles:retro` / `?cat=studies:dash`）。
 - `studies/<slug>/index.html` —— 单文件、单主题、自包含的效果临摹页（非 token 套）。
 - `_base/ds.mjs` —— 项目 CLI（见下）。`_base/shoot_study.mjs` —— 单图截图。
 
@@ -44,6 +44,7 @@ node _base/ds.mjs shoot <slug>  # 截图
 
 ## 红线
 
+- **来源白名单**：临摹**只**允许来自 variant.com 社区、mulerun.com、marvis.qq.com（用户指定）。**严禁临摹任何内部 / 公司 / 商业产品资产**（例如内部控制台、未公开工具等）——这类内容禁止建页、禁止入库、禁止部署。`ds qc` 已内置白名单检查，来源不符即拦下。拿不准就**不做**。
 - **别重复临摹同一来源**：加之前先 `ds dup`、并搜 `index.html` 里是否已有同一《作品》/社区号。
 - **绝不提交密钥**（Cloudflare key 等只走环境变量）。
 - 改 `index.html` 前先读它——画廊可能被其它进程并发改过；改完务必 `ds check` 兜底。

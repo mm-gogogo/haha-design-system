@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>哈哈设计系统 · 截图总览</title>
-<meta name="description" content="一份 --ds-* Token 契约，换出 49 套设计风格 + 6 个开源项目定制 + 67 例效果临摹。亮 / 暗双主题，含 iPhone 真机布局。">
+<meta name="description" content="一份 --ds-* Token 契约，换出 49 套设计风格 + 67 例效果临摹。亮 / 暗双主题，含 iPhone 真机布局。">
 <link rel="stylesheet" href="_fonts/fonts.css">
 <style>
   :root{
@@ -190,12 +190,11 @@
   <a class="brand" href="#top"><span class="mk">哈</span><span class="full">哈哈设计系统</span></a>
   <nav class="secnav" id="secnav" aria-label="区块导航">
     <a href="#sec-styles">风格<span class="n" id="nvStyles">49</span></a>
-    <a href="#sec-projects">项目<span class="n">6</span></a>
     <a href="#sec-studies">临摹<span class="n" id="nvStudies">67</span></a>
   </nav>
   <label class="filter">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
-    <input id="q" type="search" placeholder="搜风格、项目、临摹…" aria-label="筛选卡片" autocomplete="off">
+    <input id="q" type="search" placeholder="搜风格、临摹…" aria-label="筛选卡片" autocomplete="off">
     <kbd>/</kbd>
   </label>
   <div class="links">
@@ -218,7 +217,6 @@
       <p>每套都有亮、暗两版，带 hero 大图、图标用法，还有桌面和 <span class="nb">iPhone 17 Pro Max</span> 的真机布局。点缩略图能放大看，点「打开」进可交互的 preview。</p>
       <div class="stats">
         <a class="stat" href="#sec-styles"><b id="statStyles">49</b><span>通用风格</span></a>
-        <a class="stat" href="#sec-projects"><b>6</b><span>项目定制</span></a>
         <a class="stat" href="#sec-studies"><b id="statStudies">67</b><span>效果临摹</span></a>
         <span class="stat"><b>AA</b><span>对比度</span></span>
       </div>
@@ -233,13 +231,8 @@
     <section class="sec" id="sec-styles" data-sec>
       <div class="sec-head"><h2>通用风格库</h2><span class="count" id="cntStyles">49</span><span class="rule"></span></div>
       <p class="sub">都用同一套 <code>--ds-*</code> 变量，换一份 tokens.css 就能整体换肤。</p>
+      <div class="chips" id="styleChips" role="group" aria-label="按类别筛选设计风格"></div>
       <div class="grid" id="styles"></div>
-    </section>
-
-    <section class="sec" id="sec-projects" data-sec>
-      <div class="sec-head"><h2>开源项目定制</h2><span class="count">6</span><span class="rule"></span></div>
-      <p class="sub">读各项目的真实上下文后单独定制，保留它们原本的品牌和约定。</p>
-      <div class="grid" id="projects"></div>
     </section>
 
     <section class="sec" id="sec-studies" data-sec>
@@ -257,7 +250,7 @@
   </main>
 
   <footer>
-    <code>~/mineproj/designsystem</code> · <span id="ftStyles">49</span> 套风格 + 6 个项目定制 + <span id="ftStudies">67</span> 例临摹。<br>
+    <code>~/mineproj/designsystem</code> · <span id="ftStyles">49</span> 套风格 + <span id="ftStudies">67</span> 例临摹。<br>
     骨架与思想基于 <a href="https://vercel.com/geist" target="_blank" rel="noopener">Geist（Vercel）</a> 衍生。顶部可切亮 / 暗预览；每个 preview.html 双击就能离线打开。
   </footer>
 </div>
@@ -320,14 +313,6 @@ const styles = [
   ["style-47-ticket","47-ticket","票据印章 Ticketing","#b8362a"],
   ["style-48-manga","48-manga","漫画 Manga","#cf2417"],
   ["style-49-hifi","49-hifi","复古音响 Hi-Fi","#d0892a"],
-];
-const projects = [
-  ["proj-hahatool","hahatool","hahatool · 企业 + 4 主题","#7c3aed"],
-  ["proj-hahafree-research","hahafree-research","hahafree · 玫瑰情报台","#9e4799"],
-  ["proj-hahamail","hahamail","hahamail · 邮件靛蓝","#3d4eea"],
-  ["proj-hahaagent","hahaagent","hahaagent · Agent 控制台","#22d3ee"],
-  ["proj-hahaclean","hahaclean","hahaclean · 新拟物清理","#11806c"],
-  ["proj-haha-soft-research","haha-soft-research","haha-soft · 开源全家桶","#0f7d5e"],
 ];
 // 效果临摹（单图单主题，非 token 套；每张标注原作来源/作者）
 const studies = [
@@ -402,9 +387,25 @@ const studies = [
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function render(list, dir, mount){
+// 风格分类（slug → 类别）；未登记默认「表现·活力」
+const STYLE_CAT_DEFS = [
+  ["all","全部 All"],["biz","商务·系统"],["tech","暗色·科技"],["retro","复古·怀旧"],
+  ["art","艺术·流派"],["texture","质感·拟物"],["edito","编辑·极简"],["expressive","表现·活力"],
+];
+const STYLE_CAT = {
+  "03-enterprise":"biz","04-b-side":"biz","05-gov-cn":"biz","15-material":"biz","20-swiss":"biz","46-metro":"biz",
+  "06-dark-tech":"tech","13-cyberpunk":"tech","17-scifi-hud":"tech","29-blueprint":"tech","39-terminal":"tech","40-acid-chrome":"tech",
+  "02-pixel":"retro","19-y2k-aqua":"retro","27-synthwave":"retro","30-vintage-americana":"retro","35-web1":"retro","43-steampunk":"retro","49-hifi":"retro",
+  "21-art-deco":"art","22-risograph":"art","23-bauhaus":"art","24-memphis":"art","25-art-nouveau":"art","28-pop-art":"art","31-collage":"art","33-constructivism":"art",
+  "08-neumorphism":"texture","09-glassmorphism":"texture","16-claymorphism":"texture","32-skeuomorphism":"texture",
+  "07-editorial":"edito","11-luxury":"edito","14-japanese":"edito","18-mineral-editorial":"edito","26-newspaper":"edito","34-dark-academia":"edito","38-noir":"edito","44-mono":"edito",
+  "01-cute":"expressive","10-guochao":"expressive","12-brutalism":"expressive","36-flat-illustration":"expressive","37-dopamine":"expressive","41-grunge-zine":"expressive","42-aurora":"expressive","45-celestial":"expressive","47-ticket":"expressive","48-manga":"expressive",
+};
+const styleCatOf = slug => STYLE_CAT[slug] || "expressive";
+
+function render(list, dir, mount, catFn){
   document.getElementById(mount).innerHTML = list.map(([f,slug,name,color],i)=>`
-    <div class="card" style="--i:${Math.min(i,14)}" data-name="${esc((name+' '+slug).toLowerCase())}">
+    <div class="card" style="--i:${Math.min(i,14)}"${catFn?` data-cat="${catFn(slug)}"`:''} data-name="${esc((name+' '+slug).toLowerCase())}">
       <div class="ttl"><span class="dot" style="background:${color}"></span><b>${esc(name)}</b><a class="open" href="${dir}/${slug}/preview.html" target="_blank" rel="noopener">打开</a></div>
       <a class="zoom" data-zoom href="screenshots/${f}.png" data-l="screenshots/${f}.png" data-d="screenshots/${f}--dark.png">
         <img class="shot" data-l="screenshots/thumbs/${f}.jpg" data-d="screenshots/thumbs/${f}--dark.jpg" src="screenshots/thumbs/${f}.jpg" decoding="async" loading="lazy" alt="${esc(name)}">
@@ -412,8 +413,7 @@ function render(list, dir, mount){
       </a>
     </div>`).join("");
 }
-render(styles,"styles","styles");
-render(projects,"projects","projects");
+render(styles,"styles","styles",styleCatOf);
 // 计数与 hero 调色板永远跟随 styles[]，不再手动维护
 document.getElementById("cntStyles").textContent = styles.length;
 document.getElementById("statStyles").textContent = styles.length;
@@ -513,19 +513,23 @@ function setShot(mode){
 }
 try{ if(localStorage.getItem('ds-shot')==='dark') setShot('dark'); }catch(e){}
 
-// —— 搜索 + 分类筛选 ——
+// —— 搜索 + 分类筛选（风格 / 临摹 两栏各有 chips；同一时刻只聚焦一栏一类）——
 const q = document.getElementById('q'), empty = document.getElementById('empty');
-let activeCat = 'all';
+const CHIP_SECS = {
+  'sec-styles':  { host:'styleChips', defs: STYLE_CAT_DEFS, catOf: styleCatOf, rows: styles },
+  'sec-studies': { host:'studyChips', defs: STUDY_CAT_DEFS, catOf: catOf,      rows: studies },
+};
+let focus = { sec:null, cat:'all' };   // sec=null → 不聚焦（仅搜索）
+
 function applyFilter(){
   const term = q.value.trim().toLowerCase();
   let total = 0;
   document.querySelectorAll('[data-sec]').forEach(sec=>{
-    const isStudies = sec.id === 'sec-studies';
-    if(!isStudies && activeCat !== 'all'){ sec.hidden = true; return; } // 选定类别时聚焦临摹栏
+    if(focus.sec && sec.id !== focus.sec){ sec.hidden = true; return; }   // 聚焦时只显示该栏
     let shown = 0;
     sec.querySelectorAll('.card').forEach(c=>{
       let hit = !term || c.dataset.name.includes(term);
-      if(hit && isStudies && activeCat !== 'all') hit = c.dataset.cat === activeCat;
+      if(hit && focus.sec === sec.id && focus.cat !== 'all') hit = c.dataset.cat === focus.cat;
       c.hidden = !hit; if(hit) shown++;
     });
     sec.hidden = shown === 0; total += shown;
@@ -534,38 +538,59 @@ function applyFilter(){
 }
 q.addEventListener('input', applyFilter);
 
-// 分类 chips：按类别计数、渲染、切换（默认「全部」）
-(function(){
-  const counts = {};
-  studies.forEach(([f,slug])=>{ const c = catOf(slug); counts[c] = (counts[c]||0) + 1; });
-  const host = document.getElementById('studyChips');
-  host.innerHTML = STUDY_CAT_DEFS.map(([k,label])=>{
-    const n = k==='all' ? studies.length : (counts[k]||0);
+function renderChips(secId){
+  const cfg = CHIP_SECS[secId];
+  const counts = {}; cfg.rows.forEach(r=>{ const c = cfg.catOf(r[1]); counts[c] = (counts[c]||0) + 1; });
+  const activeK = focus.sec === secId ? focus.cat : 'all';
+  document.getElementById(cfg.host).innerHTML = cfg.defs.map(([k,label])=>{
+    const n = k==='all' ? cfg.rows.length : (counts[k]||0);
     if(k!=='all' && n===0) return '';
-    return `<button class="chip" type="button" data-cat="${k}" aria-pressed="${k==='all'}">${esc(label)}<span class="n">${n}</span></button>`;
+    return `<button class="chip" type="button" data-cat="${k}" aria-pressed="${k===activeK}">${esc(label)}<span class="n">${n}</span></button>`;
   }).join('');
-  host.addEventListener('click', e=>{
+}
+function syncChips(){
+  for(const secId in CHIP_SECS){
+    const activeK = focus.sec === secId ? focus.cat : 'all';
+    document.querySelectorAll('#'+CHIP_SECS[secId].host+' .chip').forEach(c=> c.setAttribute('aria-pressed', String(c.dataset.cat === activeK)));
+  }
+}
+function setFocus(f, opts){
+  focus = f; syncChips(); applyFilter(); writeState();
+  if(!(opts&&opts.silent) && focus.sec){ const el = document.getElementById(focus.sec); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+for(const secId in CHIP_SECS){
+  renderChips(secId);
+  document.getElementById(CHIP_SECS[secId].host).addEventListener('click', e=>{
     const b = e.target.closest('.chip'); if(!b) return;
-    activeCat = b.dataset.cat;
-    host.querySelectorAll('.chip').forEach(c=> c.setAttribute('aria-pressed', String(c.dataset.cat === activeCat)));
-    applyFilter();
+    setFocus(b.dataset.cat === 'all' ? {sec:null, cat:'all'} : {sec:secId, cat:b.dataset.cat});
   });
+}
+
+// —— 可分享的筛选状态：?cat=styles:retro / ?cat=studies:dash ——
+function writeState(){
+  const u = new URL(location.href);
+  if(focus.sec) u.searchParams.set('cat', focus.sec.replace('sec-','') + ':' + focus.cat);
+  else u.searchParams.delete('cat');
+  history.replaceState(null, '', u.pathname + u.search + u.hash);
+}
+(function readState(){
+  const v = new URL(location.href).searchParams.get('cat'); if(!v) return;
+  const [sec, cat] = v.split(':'); const secId = 'sec-' + sec;
+  if(CHIP_SECS[secId] && cat){
+    focus = {sec:secId, cat}; syncChips(); applyFilter();
+    requestAnimationFrame(()=>{ const el = document.getElementById(secId); if(el) el.scrollIntoView({block:'start'}); });
+  }
 })();
+
 // 「/」聚焦搜索；Esc 清空
 document.addEventListener('keydown', e=>{
   if(e.key==='/' && document.activeElement!==q){ e.preventDefault(); q.focus(); }
   else if(e.key==='Escape' && document.activeElement===q && q.value){ q.value=''; applyFilter(); }
 });
 
-// 点「区块导航 / hero 统计」跳转前，先清掉分类筛选，保证目标栏可见
+// 点「区块导航 / hero 统计」跳转前，先清掉分类聚焦，保证目标栏可见
 document.querySelectorAll('.secnav a, a.stat[href^="#sec-"]').forEach(a=>{
-  a.addEventListener('click', ()=>{
-    if(activeCat !== 'all'){
-      activeCat = 'all';
-      document.querySelectorAll('#studyChips .chip').forEach(c=> c.setAttribute('aria-pressed', String(c.dataset.cat === 'all')));
-      applyFilter();
-    }
-  });
+  a.addEventListener('click', ()=>{ if(focus.sec) setFocus({sec:null, cat:'all'}, {silent:true}); });
 });
 
 // —— 灯箱 ——
