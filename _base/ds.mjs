@@ -149,7 +149,8 @@ function cmdCount(fix) {
     .replace(/[0-9]+ 例效果临摹/g, `${n} 例效果临摹`)
     .replace(/(id="cntStudies">)[0-9]+/, `$1${n}`)
     .replace(/(id="statStudies">)[0-9]+/, `$1${n}`)
-    .replace(/(id="ftStudies">)[0-9]+/, `$1${n}`);
+    .replace(/(id="ftStudies">)[0-9]+/, `$1${n}`)
+    .replace(/(id="nvStudies">)[0-9]+/, `$1${n}`);
   fs.writeFileSync(IDX, out);
   ok(`已把 meta / 区块 / 页脚 计数同步到 ${n}`);
 }

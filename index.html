@@ -87,6 +87,19 @@
   .stat{display:flex;align-items:baseline;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:9px 14px}
   .stat b{font:700 19px/1 var(--mono);letter-spacing:-.02em}
   .stat span{font-size:12.5px;color:var(--mut)}
+  a.stat{text-decoration:none;color:inherit;cursor:pointer;transition:border-color .16s,transform .12s}
+  a.stat:hover{border-color:var(--acc);transform:translateY(-1px)}
+  a.stat:hover b{color:var(--acc-2)}
+
+  /* —— 区块跳转导航（滚动高亮 scroll-spy） —— */
+  .secnav{display:none}
+  @media(min-width:860px){ .secnav{display:inline-flex;gap:2px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:3px;flex:none} }
+  .secnav a{font:600 13px/1 var(--sans);color:var(--mut);text-decoration:none;padding:7px 11px;border-radius:7px;
+    display:inline-flex;align-items:center;gap:6px;transition:background .16s,color .16s}
+  .secnav a:hover{color:var(--ink)}
+  .secnav a[aria-current="true"]{background:var(--acc);color:var(--acc-ink)}
+  .secnav a .n{font:600 11px/1 var(--mono);opacity:.6}
+  .secnav a[aria-current="true"] .n{opacity:.85}
   .curl{display:inline-flex;align-items:center;gap:9px;margin-top:18px;cursor:pointer;
     color:var(--mut);background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
     padding:9px 13px;font:12.5px/1 var(--mono);transition:border-color .18s,color .18s}
@@ -175,6 +188,11 @@
 <body>
 <header class="top">
   <a class="brand" href="#top"><span class="mk">哈</span><span class="full">哈哈设计系统</span></a>
+  <nav class="secnav" id="secnav" aria-label="区块导航">
+    <a href="#sec-styles">风格<span class="n" id="nvStyles">49</span></a>
+    <a href="#sec-projects">项目<span class="n">6</span></a>
+    <a href="#sec-studies">临摹<span class="n" id="nvStudies">67</span></a>
+  </nav>
   <label class="filter">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
     <input id="q" type="search" placeholder="搜风格、项目、临摹…" aria-label="筛选卡片" autocomplete="off">
@@ -199,9 +217,9 @@
       <h1><span class="nb">四十九套设计风格，</span><span class="nb">一份共享 Token 契约。</span></h1>
       <p>每套都有亮、暗两版，带 hero 大图、图标用法，还有桌面和 <span class="nb">iPhone 17 Pro Max</span> 的真机布局。点缩略图能放大看，点「打开」进可交互的 preview。</p>
       <div class="stats">
-        <span class="stat"><b id="statStyles">49</b><span>通用风格</span></span>
-        <span class="stat"><b>6</b><span>项目定制</span></span>
-        <span class="stat"><b id="statStudies">67</b><span>效果临摹</span></span>
+        <a class="stat" href="#sec-styles"><b id="statStyles">49</b><span>通用风格</span></a>
+        <a class="stat" href="#sec-projects"><b>6</b><span>项目定制</span></a>
+        <a class="stat" href="#sec-studies"><b id="statStudies">67</b><span>效果临摹</span></a>
         <span class="stat"><b>AA</b><span>对比度</span></span>
       </div>
       <div class="curl" id="curl" role="button" tabindex="0" title="点击复制">
@@ -437,6 +455,24 @@ document.getElementById("cntStudies").textContent = studies.length;
 document.getElementById("statStudies").textContent = studies.length;
 document.getElementById("ftStudies").textContent = studies.length;
 document.getElementById("ftStyles").textContent = styles.length;
+document.getElementById("nvStyles").textContent = styles.length;
+document.getElementById("nvStudies").textContent = studies.length;
+
+// —— 区块跳转导航：scroll-spy 高亮当前栏 ——
+(function(){
+  const links = {};
+  document.querySelectorAll('.secnav a').forEach(a=>{ links[a.getAttribute('href').slice(1)] = a; });
+  const secs = Object.keys(links).map(id=>document.getElementById(id)).filter(Boolean);
+  function setActive(id){ for(const k in links) links[k].setAttribute('aria-current', String(k===id)); }
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries=>{
+      const vis = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
+      if(vis.length) setActive(vis[0].target.id);
+    }, { rootMargin:'-72px 0px -55% 0px', threshold:0 });
+    secs.forEach(s=>io.observe(s));
+  }
+  setActive('sec-styles');
+})();
 // 临摹分类（slug → 类别）；新条目未登记时归入「工具交互」
 const STUDY_CAT_DEFS = [
   ["all","全部 All"],["dash","仪表盘 Dashboard"],["gen","生成视觉 Generative"],
