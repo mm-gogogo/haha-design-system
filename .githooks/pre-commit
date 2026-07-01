@@ -1,0 +1,25 @@
+#!/bin/sh
+# 哈哈设计系统 · pre-commit 质量闸
+#   1) ds check      —— 画廊完整性（数组↔目录 · 孤儿 · 重复 slug · 计数 · 分类覆盖）
+#   2) ds qc <slug>  —— 只对本次改动的临摹跑静态 QC（外链 / 返回 / credit / emoji 字形）
+# 启用：git config core.hooksPath .githooks
+# 跳过（有意提交中间态时）：git commit --no-verify
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$root" || exit 0
+[ -f _base/ds.mjs ] || exit 0
+command -v node >/dev/null 2>&1 || exit 0   # 没有 node 就不拦
+
+fail=0
+node _base/ds.mjs check || fail=1
+
+changed=$(git diff --cached --name-only --diff-filter=ACM | sed -n 's#^studies/\([^/]*\)/index.html$#\1#p' | sort -u)
+for slug in $changed; do
+  node _base/ds.mjs qc "$slug" || fail=1
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "pre-commit 校验未通过（确需提交中间态：git commit --no-verify）"
+  exit 1
+fi
+exit 0

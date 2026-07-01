@@ -38,6 +38,10 @@ node _base/ds.mjs shoot <slug>  # 截图
 新增一例的流程：建 `studies/<slug>/index.html` → `ds shoot <slug>` → `ds qc <slug>`（须全过）→
 加进 `index.html` 的 `studies[]` + `STUDY_CAT` → `ds count --fix` → `ds check`（须通过）→ 部署 → commit。
 
+**提交前质量闸（推荐启用）**：`git config core.hooksPath .githooks`
+启用后每次 commit 自动跑 `ds check` + 对改动的临摹跑 `ds qc`，不过就拦下。
+有意提交中间态时用 `git commit --no-verify` 跳过。
+
 ## 红线
 
 - **别重复临摹同一来源**：加之前先 `ds dup`、并搜 `index.html` 里是否已有同一《作品》/社区号。
