@@ -557,6 +557,17 @@ document.addEventListener('keydown', e=>{
   else if(e.key==='Escape' && document.activeElement===q && q.value){ q.value=''; applyFilter(); }
 });
 
+// 点「区块导航 / hero 统计」跳转前，先清掉分类筛选，保证目标栏可见
+document.querySelectorAll('.secnav a, a.stat[href^="#sec-"]').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    if(activeCat !== 'all'){
+      activeCat = 'all';
+      document.querySelectorAll('#studyChips .chip').forEach(c=> c.setAttribute('aria-pressed', String(c.dataset.cat === 'all')));
+      applyFilter();
+    }
+  });
+});
+
 // —— 灯箱 ——
 const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
 document.addEventListener('click', e=>{
